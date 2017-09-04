@@ -17,9 +17,19 @@ class PlaceVCCell: UITableViewCell {
         // Initialization code
     }
     
+    private let contentsTag = 18
+    
     func setup(withContents contents: UIView) {
-        self.contents?.removeFromSuperview()
+        contents.tag = contentsTag
+        
+        for view in contentView.subviews {
+            if view.tag == contentsTag {
+                view.removeFromSuperview()
+            }
+        }
+
         self.contents = contents
+        
         contents.frameWidth = contentView.frameWidth
         contentView.frameHeight = contents.frameHeight
         contentView.addSubview(contents)

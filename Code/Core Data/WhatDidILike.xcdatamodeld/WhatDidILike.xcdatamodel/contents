@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13221.4" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13233.4" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="BaseObject" representedClassName="BaseObject" isAbstract="YES" syncable="YES">
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="modificationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -37,7 +37,7 @@
         <attribute name="generalDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlaceCategory" inverseName="places" inverseEntity="PlaceCategory" syncable="YES"/>
-        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="place" inverseEntity="Item" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Item" inverseName="place" inverseEntity="Item" syncable="YES"/>
         <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PlaceList" inverseName="places" inverseEntity="PlaceList" syncable="YES"/>
         <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Location" inverseName="place" inverseEntity="Location" syncable="YES"/>
     </entity>
@@ -52,11 +52,11 @@
     <elements>
         <element name="BaseObject" positionX="-63" positionY="-18" width="128" height="90"/>
         <element name="Comment" positionX="-54" positionY="18" width="128" height="120"/>
+        <element name="Image" positionX="-27" positionY="81" width="128" height="90"/>
         <element name="Item" positionX="-36" positionY="27" width="128" height="90"/>
         <element name="Location" positionX="-18" positionY="36" width="128" height="180"/>
         <element name="Place" positionX="0" positionY="45" width="128" height="135"/>
         <element name="PlaceCategory" positionX="-27" positionY="81" width="128" height="75"/>
         <element name="PlaceList" positionX="-18" positionY="90" width="128" height="75"/>
-        <element name="Image" positionX="-27" positionY="81" width="128" height="90"/>
     </elements>
 </model>

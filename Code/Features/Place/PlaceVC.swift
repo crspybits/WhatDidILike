@@ -53,8 +53,9 @@ class PlaceVC: UIViewController {
             }
         }
         
-        if let items = place.items as? Set<Item> {
+        if let items = place.items {
             for item in items {
+                let item = item as! Item
                 let itemNameView = ItemNameView.create()!
                 itemNameView.itemName.text = item.name
                 rowViews.append(RowView(contents: itemNameView))
@@ -66,11 +67,13 @@ class PlaceVC: UIViewController {
                         for commentView in commentViewsForItem {
                             commentView.displayed = showHideState
                         }
+                        Log.msg("commentViewsForItem.count: \(commentViewsForItem.count)")
                         self.tableView.reloadData()
                     }
                 }
                 
                 if let comments = item.comments {
+                    Log.msg("comments.count: \(comments.count)")
                     for comment in comments {
                         let comment = comment as! Comment
                         let commentView = CommentView.create()!
@@ -88,6 +91,9 @@ class PlaceVC: UIViewController {
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.separatorStyle = .none
+        
+        let cellNib = UINib(nibName: "PlaceVCCell", bundle: nil)
+        tableView.register(cellNib, forCellReuseIdentifier: placeCellReuseId)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,6 +105,7 @@ extension PlaceVC : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let contents = displayedRowViews[indexPath.row].contents!
         Log.msg("cell.contents.frame: \(contents.frame); superview: \(contents.superview!.frame); contents.isHidden: \(contents.isHidden);  superview.isHidden: \(contents.superview!.isHidden)")
+        Log.msg("cell.contentView.subviews.count: \(cell.contentView.subviews.count)")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -124,6 +131,11 @@ extension PlaceVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let contents = displayedRowViews[indexPath.row].contents!
+        return contents.frameHeight
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         let contents = displayedRowViews[indexPath.row].contents!
         return contents.frameHeight
     }

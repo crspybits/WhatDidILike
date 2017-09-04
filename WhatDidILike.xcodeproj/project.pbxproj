@@ -54,6 +54,7 @@
 		83D49CE41F4AC44F00409B0F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CE21F4AC44F00409B0F /* Main.storyboard */; };
 		83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */; };
 		83EE7DCE1F5D164B00628CA8 /* ItemNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B5337A1F5D09E70028E6B5 /* ItemNameView.xib */; };
+		83EE7DD21F5DB9F300628CA8 /* PlaceVCCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83EE7DD01F5DB9F300628CA8 /* PlaceVCCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +120,7 @@
 		83D49CDD1F4AC2C700409B0F /* WhatDidILikeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhatDidILikeTests.swift; sourceTree = "<group>"; };
 		83D49CE21F4AC44F00409B0F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Features/Main List/Main.storyboard"; sourceTree = "<group>"; };
 		83D49CE31F4AC44F00409B0F /* MainListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainListVC.swift; path = "Features/Main List/MainListVC.swift"; sourceTree = "<group>"; };
+		83EE7DD01F5DB9F300628CA8 /* PlaceVCCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlaceVCCell.xib; path = Features/Place/PlaceVCCell.xib; sourceTree = "<group>"; };
 		C19DC61269D8F3C48ED7774F /* Pods-WhatDidILike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatDidILike.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -180,6 +182,7 @@
 				83A2D5E81F5CE33A0003C5F9 /* Place.storyboard */,
 				83A2D5EA1F5CE3670003C5F9 /* PlaceVC.swift */,
 				83A2D5EC1F5CE4330003C5F9 /* PlaceVCCell.swift */,
+				83EE7DD01F5DB9F300628CA8 /* PlaceVCCell.xib */,
 				83A2D5E61F5CE1310003C5F9 /* PlaceNameView.xib */,
 				83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */,
 				83401D9F1F5CEEB300A96C8D /* PlaceDetailsView.xib */,
@@ -396,6 +399,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83B533841F5D0C670028E6B5 /* RatingView.xib in Resources */,
+				83EE7DD21F5DB9F300628CA8 /* PlaceVCCell.xib in Resources */,
 				83401DA61F5CFB5300A96C8D /* LocationView.xib in Resources */,
 				83A2D5E91F5CE33A0003C5F9 /* Place.storyboard in Resources */,
 				83D49CD31F4AC26A00409B0F /* LaunchScreen.storyboard in Resources */,
