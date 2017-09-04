@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CoreData.registerSession(coreDataSession, forName: CoreDataExtras.sessionName)
         
         // TODO: Need to check an NSUserDefaults value to see if the conversion has already been done.
-        ConvertFromV1().doIt()
+        // ConvertFromV1().doIt()
         
         return true
     }

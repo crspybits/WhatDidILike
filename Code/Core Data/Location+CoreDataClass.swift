@@ -12,6 +12,8 @@ import SMCoreLib
 
 @objc(Location)
 public class Location: BaseObject {
+    static let NAME_KEY = "name"
+    
     class func entityName() -> String {
         return "Location"
     }
@@ -19,5 +21,17 @@ public class Location: BaseObject {
     class func newObject() -> Location {
         let location = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Location
         return location
+    }
+    
+    class func fetchRequestForAllObjects() -> NSFetchRequest<NSFetchRequestResult>? {
+        var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
+        fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(withEntityName: self.entityName(), modifyingFetchRequestWith: nil)
+        
+        if fetchRequest != nil {
+            let sortDescriptor = NSSortDescriptor(key: NAME_KEY, ascending: true)
+            fetchRequest!.sortDescriptors = [sortDescriptor]
+        }
+        
+        return fetchRequest
     }
 }
