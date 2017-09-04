@@ -23,5 +23,7 @@ class PlaceVCCell: UITableViewCell {
         contents.frameWidth = contentView.frameWidth
         contentView.frameHeight = contents.frameHeight
         contentView.addSubview(contents)
+        
+        // Log.msg("contents.frame: \(contents.frame)")
     }
 }

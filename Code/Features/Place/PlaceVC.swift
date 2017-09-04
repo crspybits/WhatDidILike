@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SMCoreLib
 
 class PlaceVC: UIViewController {
     // Set this before presenting VC
@@ -35,11 +36,6 @@ class PlaceVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.separatorStyle = .none
         
         let placeNameView = PlaceNameView.create()!
         placeNameView.placeName.text = place.name
@@ -87,10 +83,24 @@ class PlaceVC: UIViewController {
                 }
             }
         }
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.separatorStyle = .none
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
 }
 
 extension PlaceVC : UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let contents = displayedRowViews[indexPath.row].contents!
+        Log.msg("cell.contents.frame: \(contents.frame); superview: \(contents.superview!.frame); contents.isHidden: \(contents.isHidden);  superview.isHidden: \(contents.superview!.isHidden)")
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return displayedRowViews.count
     }
@@ -107,6 +117,8 @@ extension PlaceVC : UITableViewDelegate, UITableViewDataSource {
         else {
             contents.backgroundColor = UIColor.rowColor2
         }
+        
+        cell.layoutIfNeeded()
         
         return cell
     }
