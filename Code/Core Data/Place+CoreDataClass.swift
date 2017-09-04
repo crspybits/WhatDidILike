@@ -11,7 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Place)
-public class Place: BaseObjeect {
+public class Place: BaseObject {
     class func entityName() -> String {
         return "Place"
     }

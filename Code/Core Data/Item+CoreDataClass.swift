@@ -11,7 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Item)
-public class Item: BaseObjeect {
+public class Item: BaseObject {
     class func entityName() -> String {
         return "Item"
     }

@@ -2,7 +2,7 @@
 //  Place+CoreDataProperties.swift
 //  WhatDidILike
 //
-//  Created by Christopher G Prince on 8/21/17.
+//  Created by Christopher G Prince on 9/3/17.
 //  Copyright © 2017 Spastic Muffin, LLC. All rights reserved.
 //
 //
@@ -19,10 +19,10 @@ extension Place {
 
     @NSManaged public var generalDescription: String?
     @NSManaged public var name: String?
-    @NSManaged public var category: String?
-    @NSManaged public var csvListNames: String?
     @NSManaged public var items: NSSet?
     @NSManaged public var locations: NSSet?
+    @NSManaged public var category: PlaceCategory?
+    @NSManaged public var lists: NSSet?
 
 }
 
@@ -57,5 +57,22 @@ extension Place {
 
     @objc(removeLocations:)
     @NSManaged public func removeFromLocations(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for lists
+extension Place {
+
+    @objc(addListsObject:)
+    @NSManaged public func addToLists(_ value: PlaceList)
+
+    @objc(removeListsObject:)
+    @NSManaged public func removeFromLists(_ value: PlaceList)
+
+    @objc(addLists:)
+    @NSManaged public func addToLists(_ values: NSSet)
+
+    @objc(removeLists:)
+    @NSManaged public func removeFromLists(_ values: NSSet)
 
 }

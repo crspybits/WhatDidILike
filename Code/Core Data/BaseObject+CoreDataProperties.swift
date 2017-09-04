@@ -1,19 +1,20 @@
 //
-//  BaseObjeect+CoreDataProperties.swift
+//  BaseObject+CoreDataProperties.swift
 //  WhatDidILike
 //
-//  Created by Christopher G Prince on 8/21/17.
+//  Created by Christopher G Prince on 9/3/17.
 //  Copyright © 2017 Spastic Muffin, LLC. All rights reserved.
+//
 //
 
 import Foundation
 import CoreData
 
 
-extension BaseObjeect {
+extension BaseObject {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<BaseObjeect> {
-        return NSFetchRequest<BaseObjeect>(entityName: "BaseObjeect")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<BaseObject> {
+        return NSFetchRequest<BaseObject>(entityName: "BaseObject")
     }
 
     @NSManaged public var creationDate: NSDate?

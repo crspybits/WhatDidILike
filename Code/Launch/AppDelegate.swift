@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Fabric
 import Crashlytics
+import SMCoreLib
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +20,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
         Fabric.with([Crashlytics.self])
+        
+        let coreDataSession = CoreData(options: [
+            CoreDataBundleModelName: "WhatDidILike",
+            CoreDataSqlliteBackupFileName: "~WhatDidILike.sqlite",
+            CoreDataSqlliteFileName: "WhatDidILike.sqlite",
+            CoreDataLightWeightMigration: true
+        ]);
+        
+        CoreData.registerSession(coreDataSession, forName: CoreDataExtras.sessionName)
+        
+        // TODO: Need to check an NSUserDefaults value to see if the conversion has already been done.
+        ConvertFromV1().doIt()
         
         return true
     }

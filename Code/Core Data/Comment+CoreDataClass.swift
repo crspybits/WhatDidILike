@@ -11,7 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Comment)
-public class Comment: BaseObjeect {
+public class Comment: BaseObject {
     class func entityName() -> String {
         return "Comment"
     }
