@@ -56,6 +56,37 @@ class PlaceVC: UIViewController {
                 rowViews.append(RowView(contents: locationView))
             }
         }
+        
+        if let items = place.items as? Set<Item> {
+            for item in items {
+                let itemNameView = ItemNameView.create()!
+                itemNameView.itemName.text = item.name
+                rowViews.append(RowView(contents: itemNameView))
+                
+                var commentViewsForItem = [RowView]()
+                itemNameView.showHide = { [unowned self] in
+                    if commentViewsForItem.count > 0 {
+                        let showHideState = !commentViewsForItem[0].displayed
+                        for commentView in commentViewsForItem {
+                            commentView.displayed = showHideState
+                        }
+                        self.tableView.reloadData()
+                    }
+                }
+                
+                if let comments = item.comments {
+                    for comment in comments {
+                        let comment = comment as! Comment
+                        let commentView = CommentView.create()!
+                        commentView.setup(withComment: comment)
+                        let commentRowView = RowView(contents: commentView)
+                        commentRowView.displayed = false
+                        rowViews.append(commentRowView)
+                        commentViewsForItem.append(commentRowView)
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -67,6 +98,7 @@ extension PlaceVC : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: placeCellReuseId, for: indexPath) as! PlaceVCCell
         let contents = displayedRowViews[indexPath.row].contents!
+
         cell.setup(withContents: contents)
         
         if indexPath.row % 2 == 0 {

@@ -31,7 +31,6 @@
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iEI-1C-ttA">
                     <rect key="frame" x="0.0" y="249" width="451" height="170"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="170" id="sex-u9-YCw"/>
                     </constraints>

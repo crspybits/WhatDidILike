@@ -28,7 +28,7 @@ class PlaceDetailsView: UIView, XibBasics {
             var placeListText = ""
             for placeList in placeListObjs {
                 if placeListText.count > 0 {
-                    placeListText += "\n"
+                    placeListText += ", "
                 }
                 
                 placeListText += placeList.name!

@@ -53,6 +53,7 @@
 		83D49CDF1F4AC2C700409B0F /* WhatDidILikeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D49CDD1F4AC2C700409B0F /* WhatDidILikeTests.swift */; };
 		83D49CE41F4AC44F00409B0F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CE21F4AC44F00409B0F /* Main.storyboard */; };
 		83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */; };
+		83EE7DCE1F5D164B00628CA8 /* ItemNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B5337A1F5D09E70028E6B5 /* ItemNameView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,7 +102,7 @@
 		83B496BE1F4BD3C60083610D /* ConvertFromV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertFromV1.swift; sourceTree = "<group>"; };
 		83B496C01F4BDE300083610D /* CoreDataExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataExtras.swift; sourceTree = "<group>"; };
 		83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		83B5337A1F5D09E70028E6B5 /* ItemNameVIew.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ItemNameVIew.xib; path = Features/Place/ItemNameVIew.xib; sourceTree = "<group>"; };
+		83B5337A1F5D09E70028E6B5 /* ItemNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ItemNameView.xib; path = Features/Place/ItemNameView.xib; sourceTree = "<group>"; };
 		83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ItemNameView.swift; path = Features/Place/ItemNameView.swift; sourceTree = "<group>"; };
 		83B5337D1F5D0A6D0028E6B5 /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommentView.swift; path = Features/Place/CommentView.swift; sourceTree = "<group>"; };
 		83B5337F1F5D0A980028E6B5 /* CommentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CommentView.xib; path = Features/Place/CommentView.xib; sourceTree = "<group>"; };
@@ -187,7 +188,7 @@
 				83401DA31F5CFB3D00A96C8D /* LocationView.swift */,
 				83B533811F5D0C450028E6B5 /* RatingView.swift */,
 				83B533831F5D0C670028E6B5 /* RatingView.xib */,
-				83B5337A1F5D09E70028E6B5 /* ItemNameVIew.xib */,
+				83B5337A1F5D09E70028E6B5 /* ItemNameView.xib */,
 				83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */,
 				83B5337D1F5D0A6D0028E6B5 /* CommentView.swift */,
 				83B5337F1F5D0A980028E6B5 /* CommentView.xib */,
@@ -402,6 +403,7 @@
 				83A2D5E71F5CE1310003C5F9 /* PlaceNameView.xib in Resources */,
 				835F44011F4AC75200A7748B /* Main.storyboard in Resources */,
 				83B533801F5D0A980028E6B5 /* CommentView.xib in Resources */,
+				83EE7DCE1F5D164B00628CA8 /* ItemNameView.xib in Resources */,
 				83401DA01F5CEEB300A96C8D /* PlaceDetailsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

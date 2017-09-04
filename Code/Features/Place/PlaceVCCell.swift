@@ -20,8 +20,8 @@ class PlaceVCCell: UITableViewCell {
     func setup(withContents contents: UIView) {
         self.contents?.removeFromSuperview()
         self.contents = contents
-        contents.frameWidth = frameWidth
-        frameHeight = contents.frameHeight
+        contents.frameWidth = contentView.frameWidth
+        contentView.frameHeight = contents.frameHeight
         contentView.addSubview(contents)
     }
 }

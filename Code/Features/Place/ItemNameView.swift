@@ -11,9 +11,14 @@ import UIKit
 class ItemNameView: UIView, XibBasics {
     typealias ViewType = ItemNameView
     @IBOutlet weak var itemName: UITextField!
+    var showHide: (()->())?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         Layout.format(textBox: itemName)
+    }
+    
+    @IBAction func showHideAction(_ sender: Any) {
+        showHide?()
     }
 }
