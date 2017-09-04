@@ -21,6 +21,7 @@
 		83401DA21F5CF59F00A96C8D /* UIColor+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83401DA11F5CF59F00A96C8D /* UIColor+Extras.swift */; };
 		83401DA41F5CFB3D00A96C8D /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83401DA31F5CFB3D00A96C8D /* LocationView.swift */; };
 		83401DA61F5CFB5300A96C8D /* LocationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83401DA51F5CFB5300A96C8D /* LocationView.xib */; };
+		83401DA81F5CFD7400A96C8D /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83401DA71F5CFD7400A96C8D /* Layout.swift */; };
 		835F44011F4AC75200A7748B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CE21F4AC44F00409B0F /* Main.storyboard */; };
 		835F44021F4AC76C00A7748B /* MainListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D49CE31F4AC44F00409B0F /* MainListVC.swift */; };
 		8396CE381F4BCB8A00660D73 /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE2E1F4BCB8A00660D73 /* Item+CoreDataClass.swift */; };
@@ -41,12 +42,17 @@
 		83B496BF1F4BD3C60083610D /* ConvertFromV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496BE1F4BD3C60083610D /* ConvertFromV1.swift */; };
 		83B496C11F4BDE300083610D /* CoreDataExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496C01F4BDE300083610D /* CoreDataExtras.swift */; };
 		83B496C51F4BE0F40083610D /* Place+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */; };
+		83B5337E1F5D0A6D0028E6B5 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5337D1F5D0A6D0028E6B5 /* CommentView.swift */; };
+		83B533801F5D0A980028E6B5 /* CommentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B5337F1F5D0A980028E6B5 /* CommentView.xib */; };
+		83B533821F5D0C450028E6B5 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B533811F5D0C450028E6B5 /* RatingView.swift */; };
+		83B533841F5D0C670028E6B5 /* RatingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B533831F5D0C670028E6B5 /* RatingView.xib */; };
 		83D49CD11F4AC26A00409B0F /* WhatDidILike.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 83D49CCA1F4AC26900409B0F /* WhatDidILike.xcdatamodeld */; };
 		83D49CD21F4AC26A00409B0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D49CCD1F4AC26A00409B0F /* AppDelegate.swift */; };
 		83D49CD31F4AC26A00409B0F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CCE1F4AC26A00409B0F /* LaunchScreen.storyboard */; };
 		83D49CD91F4AC2AA00409B0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CD71F4AC2AA00409B0F /* Assets.xcassets */; };
 		83D49CDF1F4AC2C700409B0F /* WhatDidILikeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D49CDD1F4AC2C700409B0F /* WhatDidILikeTests.swift */; };
 		83D49CE41F4AC44F00409B0F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CE21F4AC44F00409B0F /* Main.storyboard */; };
+		83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +81,7 @@
 		83401DA11F5CF59F00A96C8D /* UIColor+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extras.swift"; sourceTree = "<group>"; };
 		83401DA31F5CFB3D00A96C8D /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationView.swift; path = Features/Place/LocationView.swift; sourceTree = "<group>"; };
 		83401DA51F5CFB5300A96C8D /* LocationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LocationView.xib; path = Features/Place/LocationView.xib; sourceTree = "<group>"; };
+		83401DA71F5CFD7400A96C8D /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		8396CE2D1F4BCAD500660D73 /* WhatDidILike-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WhatDidILike-Bridging-Header.h"; sourceTree = "<group>"; };
 		8396CE2E1F4BCB8A00660D73 /* Item+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8396CE2F1F4BCB8A00660D73 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -94,6 +101,12 @@
 		83B496BE1F4BD3C60083610D /* ConvertFromV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertFromV1.swift; sourceTree = "<group>"; };
 		83B496C01F4BDE300083610D /* CoreDataExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataExtras.swift; sourceTree = "<group>"; };
 		83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		83B5337A1F5D09E70028E6B5 /* ItemNameVIew.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ItemNameVIew.xib; path = Features/Place/ItemNameVIew.xib; sourceTree = "<group>"; };
+		83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ItemNameView.swift; path = Features/Place/ItemNameView.swift; sourceTree = "<group>"; };
+		83B5337D1F5D0A6D0028E6B5 /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommentView.swift; path = Features/Place/CommentView.swift; sourceTree = "<group>"; };
+		83B5337F1F5D0A980028E6B5 /* CommentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CommentView.xib; path = Features/Place/CommentView.xib; sourceTree = "<group>"; };
+		83B533811F5D0C450028E6B5 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RatingView.swift; path = Features/Place/RatingView.swift; sourceTree = "<group>"; };
+		83B533831F5D0C670028E6B5 /* RatingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RatingView.xib; path = Features/Place/RatingView.xib; sourceTree = "<group>"; };
 		83D49CA21F4AC16100409B0F /* WhatDidILike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatDidILike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83D49CB91F4AC16100409B0F /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		83D49CCB1F4AC26900409B0F /* WhatDidILike.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.xcdatamodel; sourceTree = "<group>"; };
@@ -170,8 +183,14 @@
 				83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */,
 				83401D9F1F5CEEB300A96C8D /* PlaceDetailsView.xib */,
 				83401D9D1F5CEE8900A96C8D /* PlaceDetailsView.swift */,
-				83401DA31F5CFB3D00A96C8D /* LocationView.swift */,
 				83401DA51F5CFB5300A96C8D /* LocationView.xib */,
+				83401DA31F5CFB3D00A96C8D /* LocationView.swift */,
+				83B533811F5D0C450028E6B5 /* RatingView.swift */,
+				83B533831F5D0C670028E6B5 /* RatingView.xib */,
+				83B5337A1F5D09E70028E6B5 /* ItemNameVIew.xib */,
+				83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */,
+				83B5337D1F5D0A6D0028E6B5 /* CommentView.swift */,
+				83B5337F1F5D0A980028E6B5 /* CommentView.xib */,
 			);
 			name = Place;
 			sourceTree = "<group>";
@@ -180,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				83401D991F5CEA4E00A96C8D /* XibBasics.swift */,
+				83401DA71F5CFD7400A96C8D /* Layout.swift */,
 				83B496BC1F4BCFB50083610D /* Identifiers.swift */,
 				83401D9B1F5CEAB000A96C8D /* Types.swift */,
 				83401DA11F5CF59F00A96C8D /* UIColor+Extras.swift */,
@@ -374,12 +394,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83B533841F5D0C670028E6B5 /* RatingView.xib in Resources */,
 				83401DA61F5CFB5300A96C8D /* LocationView.xib in Resources */,
 				83A2D5E91F5CE33A0003C5F9 /* Place.storyboard in Resources */,
 				83D49CD31F4AC26A00409B0F /* LaunchScreen.storyboard in Resources */,
 				83D49CD91F4AC2AA00409B0F /* Assets.xcassets in Resources */,
 				83A2D5E71F5CE1310003C5F9 /* PlaceNameView.xib in Resources */,
 				835F44011F4AC75200A7748B /* Main.storyboard in Resources */,
+				83B533801F5D0A980028E6B5 /* CommentView.xib in Resources */,
 				83401DA01F5CEEB300A96C8D /* PlaceDetailsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -474,9 +496,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83B533821F5D0C450028E6B5 /* RatingView.swift in Sources */,
 				8396CE391F4BCB8A00660D73 /* Item+CoreDataProperties.swift in Sources */,
 				831B04161F5CC297000E21C4 /* BaseObject+CoreDataClass.swift in Sources */,
 				83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */,
+				83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */,
 				8396CE381F4BCB8A00660D73 /* Item+CoreDataClass.swift in Sources */,
 				8396CE3A1F4BCB8A00660D73 /* Place+CoreDataClass.swift in Sources */,
 				83A2D5ED1F5CE4330003C5F9 /* PlaceVCCell.swift in Sources */,
@@ -485,6 +509,7 @@
 				83A2D5EB1F5CE3670003C5F9 /* PlaceVC.swift in Sources */,
 				83401DA21F5CF59F00A96C8D /* UIColor+Extras.swift in Sources */,
 				83A2D5E01F5CD6B60003C5F9 /* Image+CoreDataClass.swift in Sources */,
+				83401DA81F5CFD7400A96C8D /* Layout.swift in Sources */,
 				831B04291F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift in Sources */,
 				835F44021F4AC76C00A7748B /* MainListVC.swift in Sources */,
 				831B042B1F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift in Sources */,
@@ -499,6 +524,7 @@
 				83D49CD11F4AC26A00409B0F /* WhatDidILike.xcdatamodeld in Sources */,
 				831B04171F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift in Sources */,
 				83B496C11F4BDE300083610D /* CoreDataExtras.swift in Sources */,
+				83B5337E1F5D0A6D0028E6B5 /* CommentView.swift in Sources */,
 				8396CE3E1F4BCB8A00660D73 /* Location+CoreDataClass.swift in Sources */,
 				831B04281F5CC7BD000E21C4 /* PlaceList+CoreDataClass.swift in Sources */,
 				83401D9C1F5CEAB000A96C8D /* Types.swift in Sources */,

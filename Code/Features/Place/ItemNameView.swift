@@ -1,5 +1,5 @@
 //
-//  PlaceNameView.swift
+//  ItemNameView.swift
 //  WhatDidILike
 //
 //  Created by Christopher G Prince on 9/3/17.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-class PlaceNameView: UIView, XibBasics {
-    typealias ViewType = PlaceNameView
-    @IBOutlet weak var placeName: UITextField!
+class ItemNameView: UIView, XibBasics {
+    typealias ViewType = ItemNameView
+    @IBOutlet weak var itemName: UITextField!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        Layout.format(textBox: placeName)
+        Layout.format(textBox: itemName)
     }
 }

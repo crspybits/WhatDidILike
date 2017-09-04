@@ -44,10 +44,18 @@ class PlaceVC: UIViewController {
         let placeNameView = PlaceNameView.create()!
         placeNameView.placeName.text = place.name
         rowViews.append(RowView(contents: placeNameView))
-        
+
         let placeDetailsView = PlaceDetailsView.create()!
         placeDetailsView.setup(withPlace: place)
         rowViews.append(RowView(contents: placeDetailsView))
+        
+        if let locations = place.locations as? Set<Location> {
+            for location in locations {
+                let locationView = LocationView.create()!
+                locationView.setup(withLocation: location)
+                rowViews.append(RowView(contents: locationView))
+            }
+        }
     }
 }
 
@@ -60,6 +68,14 @@ extension PlaceVC : UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: placeCellReuseId, for: indexPath) as! PlaceVCCell
         let contents = displayedRowViews[indexPath.row].contents!
         cell.setup(withContents: contents)
+        
+        if indexPath.row % 2 == 0 {
+            contents.backgroundColor = UIColor.rowColor1
+        }
+        else {
+            contents.backgroundColor = UIColor.rowColor2
+        }
+        
         return cell
     }
     

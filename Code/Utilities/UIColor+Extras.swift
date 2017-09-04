@@ -11,6 +11,14 @@ import UIKit
 
 extension UIColor {
     static var textBoxLightGray: UIColor {
+        return UIColor(white: 0.95, alpha: 1.0)
+    }
+    
+    static var rowColor1: UIColor {
         return UIColor(white: 0.80, alpha: 1.0)
+    }
+    
+    static var rowColor2: UIColor {
+        return UIColor(white: 0.70, alpha: 1.0)
     }
 }

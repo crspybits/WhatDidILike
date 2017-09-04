@@ -16,15 +16,8 @@ class PlaceDetailsView: UIView, XibBasics {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        let descrLayer = generalDescription.layer
-        descrLayer.borderColor = UIColor.textBoxLightGray.cgColor
-        descrLayer.borderWidth = 1.0
-        descrLayer.cornerRadius = 5.0
-        
-        let placeListsLayer = placeLists.layer
-        placeListsLayer.borderColor = UIColor.textBoxLightGray.cgColor
-        placeListsLayer.borderWidth = 1.0
-        placeListsLayer.cornerRadius = 5.0
+        Layout.format(textBox: generalDescription)
+        Layout.format(textBox: placeLists)
     }
     
     func setup(withPlace place:Place) {
