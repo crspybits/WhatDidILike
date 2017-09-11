@@ -18,6 +18,7 @@ class PlaceDetailsView: UIView, XibBasics {
         super.awakeFromNib()
         Layout.format(textBox: generalDescription)
         Layout.format(textBox: placeLists)
+        generalDescription.addToolBar()
     }
     
     func setup(withPlace place:Place) {

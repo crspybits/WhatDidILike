@@ -21,6 +21,7 @@ class CommentView: UIView, XibBasics {
         
         rating.frameWidth = ratingContainer.frameWidth
         ratingContainer.addSubview(rating)
+        comment.addToolBar()
     }
     
     func setup(withComment comment: Comment) {

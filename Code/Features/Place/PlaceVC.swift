@@ -15,6 +15,7 @@ class PlaceVC: UIViewController {
     
     fileprivate let placeCellReuseId = "PlaceVCCell"
     @IBOutlet weak private var tableView: UITableView!
+    @IBOutlet weak private var tableViewBottom: NSLayoutConstraint!
     
     fileprivate class RowView {
         let contents:UIView!
@@ -91,6 +92,7 @@ class PlaceVC: UIViewController {
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.separatorStyle = .none
+        tableView.allowsSelection = false
         
         let cellNib = UINib(nibName: "PlaceVCCell", bundle: nil)
         tableView.register(cellNib, forCellReuseIdentifier: placeCellReuseId)
@@ -98,6 +100,21 @@ class PlaceVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        scrollingSetup(selector: #selector(keyboardWillChangeFrame))
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        scrollingTearDown()
+    }
+    
+    @objc func keyboardWillChangeFrame(notification:NSNotification) {
+        guard let firstResponder = UIResponder.currentFirstResponder() as? UIView else {
+            Log.error("No first responder view!!!")
+            return
+        }
+
+        scrollingKeyboardWillChangeFrame(notification: notification, scrollViewBottom: tableViewBottom, scrollView: tableView, showView: firstResponder)
     }
 }
 

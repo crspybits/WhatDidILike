@@ -16,6 +16,7 @@ class ItemNameView: UIView, XibBasics {
     override func awakeFromNib() {
         super.awakeFromNib()
         Layout.format(textBox: itemName)
+        itemName.addToolBar()
     }
     
     @IBAction func showHideAction(_ sender: Any) {

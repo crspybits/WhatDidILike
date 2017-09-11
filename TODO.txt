@@ -1,4 +1,4 @@
 WhatDidILike
 
-* We need to sort the lists of a place before presenting.
+* We need to sort the lists of a place before presenting. So that the order is consistent.
 * We should sort the locations of a place before presenting-- in some, say, user defined order. This is needed because otherwise with table views we run into problems with unordered sets.

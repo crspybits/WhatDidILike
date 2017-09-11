@@ -24,6 +24,10 @@
 		83401DA81F5CFD7400A96C8D /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83401DA71F5CFD7400A96C8D /* Layout.swift */; };
 		835F44011F4AC75200A7748B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CE21F4AC44F00409B0F /* Main.storyboard */; };
 		835F44021F4AC76C00A7748B /* MainListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D49CE31F4AC44F00409B0F /* MainListVC.swift */; };
+		837788EA1F6607020014B8A2 /* UIViewController+Scrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837788E91F6607010014B8A2 /* UIViewController+Scrolling.swift */; };
+		837788ED1F6608670014B8A2 /* UIResponder+FirstResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 837788EB1F6608670014B8A2 /* UIResponder+FirstResponder.m */; };
+		837788EF1F66151F0014B8A2 /* UITextField+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837788EE1F66151F0014B8A2 /* UITextField+Extras.swift */; };
+		837788F11F661A8F0014B8A2 /* UITextVew+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837788F01F661A8F0014B8A2 /* UITextVew+Extras.swift */; };
 		8396CE381F4BCB8A00660D73 /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE2E1F4BCB8A00660D73 /* Item+CoreDataClass.swift */; };
 		8396CE391F4BCB8A00660D73 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE2F1F4BCB8A00660D73 /* Item+CoreDataProperties.swift */; };
 		8396CE3A1F4BCB8A00660D73 /* Place+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE301F4BCB8A00660D73 /* Place+CoreDataClass.swift */; };
@@ -84,6 +88,11 @@
 		83401DA31F5CFB3D00A96C8D /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationView.swift; path = Features/Place/LocationView.swift; sourceTree = "<group>"; };
 		83401DA51F5CFB5300A96C8D /* LocationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LocationView.xib; path = Features/Place/LocationView.xib; sourceTree = "<group>"; };
 		83401DA71F5CFD7400A96C8D /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
+		837788E91F6607010014B8A2 /* UIViewController+Scrolling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Scrolling.swift"; sourceTree = "<group>"; };
+		837788EB1F6608670014B8A2 /* UIResponder+FirstResponder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+FirstResponder.m"; sourceTree = "<group>"; };
+		837788EC1F6608670014B8A2 /* UIResponder+FirstResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIResponder+FirstResponder.h"; sourceTree = "<group>"; };
+		837788EE1F66151F0014B8A2 /* UITextField+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extras.swift"; sourceTree = "<group>"; };
+		837788F01F661A8F0014B8A2 /* UITextVew+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextVew+Extras.swift"; sourceTree = "<group>"; };
 		8396CE2D1F4BCAD500660D73 /* WhatDidILike-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WhatDidILike-Bridging-Header.h"; sourceTree = "<group>"; };
 		8396CE2E1F4BCB8A00660D73 /* Item+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8396CE2F1F4BCB8A00660D73 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -189,12 +198,12 @@
 				83401D9D1F5CEE8900A96C8D /* PlaceDetailsView.swift */,
 				83401DA51F5CFB5300A96C8D /* LocationView.xib */,
 				83401DA31F5CFB3D00A96C8D /* LocationView.swift */,
-				83B533811F5D0C450028E6B5 /* RatingView.swift */,
 				83B533831F5D0C670028E6B5 /* RatingView.xib */,
+				83B533811F5D0C450028E6B5 /* RatingView.swift */,
 				83B5337A1F5D09E70028E6B5 /* ItemNameView.xib */,
 				83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */,
-				83B5337D1F5D0A6D0028E6B5 /* CommentView.swift */,
 				83B5337F1F5D0A980028E6B5 /* CommentView.xib */,
+				83B5337D1F5D0A6D0028E6B5 /* CommentView.swift */,
 			);
 			name = Place;
 			sourceTree = "<group>";
@@ -202,11 +211,16 @@
 		83B496BB1F4BCFB50083610D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				837788EC1F6608670014B8A2 /* UIResponder+FirstResponder.h */,
+				837788EB1F6608670014B8A2 /* UIResponder+FirstResponder.m */,
+				837788E91F6607010014B8A2 /* UIViewController+Scrolling.swift */,
 				83401D991F5CEA4E00A96C8D /* XibBasics.swift */,
 				83401DA71F5CFD7400A96C8D /* Layout.swift */,
 				83B496BC1F4BCFB50083610D /* Identifiers.swift */,
 				83401D9B1F5CEAB000A96C8D /* Types.swift */,
 				83401DA11F5CF59F00A96C8D /* UIColor+Extras.swift */,
+				837788EE1F66151F0014B8A2 /* UITextField+Extras.swift */,
+				837788F01F661A8F0014B8A2 /* UITextVew+Extras.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -443,7 +457,6 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/HPTextViewTapGestureRecognizer/HPTextViewTapGestureRecognizer.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SMCoreLib/SMCoreLib.framework",
@@ -451,7 +464,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HPTextViewTapGestureRecognizer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SMCoreLib.framework",
@@ -502,13 +514,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				837788F11F661A8F0014B8A2 /* UITextVew+Extras.swift in Sources */,
 				83B533821F5D0C450028E6B5 /* RatingView.swift in Sources */,
 				8396CE391F4BCB8A00660D73 /* Item+CoreDataProperties.swift in Sources */,
+				837788EA1F6607020014B8A2 /* UIViewController+Scrolling.swift in Sources */,
 				831B04161F5CC297000E21C4 /* BaseObject+CoreDataClass.swift in Sources */,
 				83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */,
 				83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */,
 				8396CE381F4BCB8A00660D73 /* Item+CoreDataClass.swift in Sources */,
 				8396CE3A1F4BCB8A00660D73 /* Place+CoreDataClass.swift in Sources */,
+				837788EF1F66151F0014B8A2 /* UITextField+Extras.swift in Sources */,
+				837788ED1F6608670014B8A2 /* UIResponder+FirstResponder.m in Sources */,
 				83A2D5ED1F5CE4330003C5F9 /* PlaceVCCell.swift in Sources */,
 				8396CE401F4BCB8A00660D73 /* Comment+CoreDataClass.swift in Sources */,
 				83401D9E1F5CEE8900A96C8D /* PlaceDetailsView.swift in Sources */,
@@ -673,6 +689,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = BH68R29JBE;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = biz.SpasticMuffin.WhatDIdILike;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -680,6 +697,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -691,12 +709,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = BH68R29JBE;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = biz.SpasticMuffin.WhatDIdILike;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Code/WhatDidILike-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

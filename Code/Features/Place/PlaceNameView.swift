@@ -15,5 +15,6 @@ class PlaceNameView: UIView, XibBasics {
     override func awakeFromNib() {
         super.awakeFromNib()
         Layout.format(textBox: placeName)
+        placeName.addToolBar()
     }
 }

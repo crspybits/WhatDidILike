@@ -19,6 +19,6 @@ extension UIColor {
     }
     
     static var rowColor2: UIColor {
-        return UIColor(white: 0.70, alpha: 1.0)
+        return UIColor(red: 135.0/255.0, green:206.0/255.0, blue: 255.0/250.0, alpha: 1.0)
     }
 }

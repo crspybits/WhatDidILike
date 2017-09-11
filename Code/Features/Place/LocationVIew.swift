@@ -25,6 +25,8 @@ class LocationView: UIView, XibBasics {
         
         rating.frameWidth = ratingContainer.frameWidth
         ratingContainer.addSubview(rating)
+        address.addToolBar()
+        specificDescription.addToolBar()
     }
     
     func setup(withLocation location: Location) {
