@@ -13,19 +13,26 @@ class MainListVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var coreDataSource:CoreDataSource!
     let cellReuseId = "LocationTableViewCell"
+    private var showDetailsForIndexPath:IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         coreDataSource = CoreDataSource(delegate: self)
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseId)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         coreDataSource.fetchData()
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseId)
+        if let showDetailsForIndexPath = showDetailsForIndexPath {
+            // Just in case the displayed summary info (e.g., name) changed. This doesn't get updated automagically by Core Data since the name is accessed via a relation.
+            tableView.reloadRows(at: [showDetailsForIndexPath], with: .automatic)
+            self.showDetailsForIndexPath = nil
+        }
     }
 }
 
@@ -37,7 +44,7 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseId, for: indexPath)
         let location = self.coreDataSource.object(at: indexPath) as! Location
-        cell.textLabel?.text = location.name
+        cell.textLabel?.text = location.place?.name
         return cell
     }
     
@@ -46,6 +53,7 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
         let placeVC = PlaceVC.create()
         let location = self.coreDataSource.object(at: indexPath) as! Location
         placeVC.place = location.place
+        showDetailsForIndexPath = indexPath
         navigationController!.pushViewController(placeVC, animated: true)
     }
 }

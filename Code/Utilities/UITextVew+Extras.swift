@@ -10,8 +10,8 @@ import Foundation
 
 extension UITextView {    
     func addToolBar() {
-        let toolbar = UITextField.makeToolBar(doneButtonTarget: self, andAction: #selector(doneButtonAction))
-        inputAccessoryView = toolbar
+        // let toolbar = UITextField.makeToolBar(doneButtonTarget: self, andAction: #selector(doneButtonAction))
+        //inputAccessoryView = toolbar
     }
     
     @objc private func doneButtonAction() {

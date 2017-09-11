@@ -14,7 +14,7 @@ import SMCoreLib
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    private static let converted = SMPersistItemBool(name: "AppDelegate.converted", initialBoolValue: false, persistType: .userDefaults)
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -30,10 +30,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         CoreData.registerSession(coreDataSession, forName: CoreDataExtras.sessionName)
         
-        // TODO: Need to check an NSUserDefaults value to see if the conversion has already been done.
         // TODO: When doing the conversion need to present a progress indicator to show what's going on and how far the conversion has progressed.
-        // ConvertFromV1().doIt()
-        
+        //if !AppDelegate.converted.boolValue {
+            //AppDelegate.converted.boolValue = true
+            // ConvertFromV1().doIt()
+        //}
         return true
     }
 

@@ -35,11 +35,19 @@ class PlaceVC: UIViewController {
         return UIStoryboard(name: "Place", bundle: nil).instantiateViewController(withIdentifier: "PlaceVC") as! PlaceVC
     }
     
+    private func save() {
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let placeNameView = PlaceNameView.create()!
         placeNameView.placeName.text = place.name
+        placeNameView.placeName.save = {[unowned self] update in
+            self.place.name = update
+            self.save()
+        }
         rowViews.append(RowView(contents: placeNameView))
 
         let placeDetailsView = PlaceDetailsView.create()!

@@ -166,7 +166,6 @@ class ConvertFromV1 {
             coreDataLocation.creationDate = coreDataPlace.creationDate
             coreDataLocation.modificationDate = coreDataPlace.modificationDate
             coreDataLocation.userName = coreDataPlace.userName
-            coreDataLocation.name = coreDataPlace.name
             
             if let imageNames = restaurant[PLACE_KEY_IMAGES] as? [String], imageNames.count > 0 {
                 for imageName in imageNames {
@@ -176,7 +175,7 @@ class ConvertFromV1 {
                         coreDataLocation.addToImages(newImage)
                     }
                     else {
-                        if let name = coreDataLocation.name {
+                        if let name = coreDataPlace.name {
                             imageErrorDescriptions.append("Place Image error for: \(name)")
                         }
                     }

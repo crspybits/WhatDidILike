@@ -10,11 +10,10 @@ import UIKit
 
 class PlaceNameView: UIView, XibBasics {
     typealias ViewType = PlaceNameView
-    @IBOutlet weak var placeName: UITextField!
+    @IBOutlet weak var placeName: TextField!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         Layout.format(textBox: placeName)
-        placeName.addToolBar()
     }
 }

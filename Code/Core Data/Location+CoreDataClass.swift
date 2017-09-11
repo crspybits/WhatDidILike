@@ -12,7 +12,7 @@ import SMCoreLib
 
 @objc(Location)
 public class Location: BaseObject {
-    static let NAME_KEY = "name"
+    static let NAME_KEY = "place.name"
     
     class func entityName() -> String {
         return "Location"
