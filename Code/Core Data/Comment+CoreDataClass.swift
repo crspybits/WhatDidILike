@@ -20,4 +20,8 @@ public class Comment: BaseObject {
         let comment = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Comment
         return comment
     }
+    
+    func save() {
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
 }

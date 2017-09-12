@@ -20,4 +20,8 @@ public class Place: BaseObject {
         let place = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Place
         return place
     }
+    
+    func save() {
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
 }

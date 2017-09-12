@@ -1,5 +1,5 @@
 //
-//  TextField.swift
+//  TextView.swift
 //  WhatDidILike
 //
 //  Created by Christopher G Prince on 9/11/17.
@@ -7,9 +7,11 @@
 //
 
 import Foundation
+
+import Foundation
 import UIKit
 
-class TextField : UITextField {
+class TextView : UITextView {
     var save:((_ update: String)->())?
     var previousValue:String!
     
@@ -48,12 +50,13 @@ class TextField : UITextField {
     }
 }
 
-extension TextField : UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        previousValue = textField.text
+extension TextView : UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        previousValue = textView.text
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    func textViewDidEndEditing(_ textView: UITextView) {
+        // This will take place even if the user just changes to editing a different field. By default, I'm going to save changes.
         saveIfNeeded()
     }
 }

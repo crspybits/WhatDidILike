@@ -10,7 +10,7 @@ import UIKit
 
 class ItemNameView: UIView, XibBasics {
     typealias ViewType = ItemNameView
-    @IBOutlet weak var itemName: UITextField!
+    @IBOutlet weak var itemName: TextField!
     var showHide: (()->())?
     
     override func awakeFromNib() {

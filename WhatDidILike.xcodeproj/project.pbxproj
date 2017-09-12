@@ -27,7 +27,6 @@
 		837788EA1F6607020014B8A2 /* UIViewController+Scrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837788E91F6607010014B8A2 /* UIViewController+Scrolling.swift */; };
 		837788ED1F6608670014B8A2 /* UIResponder+FirstResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 837788EB1F6608670014B8A2 /* UIResponder+FirstResponder.m */; };
 		837788EF1F66151F0014B8A2 /* UITextField+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837788EE1F66151F0014B8A2 /* UITextField+Extras.swift */; };
-		837788F11F661A8F0014B8A2 /* UITextVew+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837788F01F661A8F0014B8A2 /* UITextVew+Extras.swift */; };
 		837788F31F6673470014B8A2 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837788F21F6673470014B8A2 /* TextField.swift */; };
 		8396CE381F4BCB8A00660D73 /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE2E1F4BCB8A00660D73 /* Item+CoreDataClass.swift */; };
 		8396CE391F4BCB8A00660D73 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE2F1F4BCB8A00660D73 /* Item+CoreDataProperties.swift */; };
@@ -43,6 +42,9 @@
 		83A2D5E91F5CE33A0003C5F9 /* Place.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83A2D5E81F5CE33A0003C5F9 /* Place.storyboard */; };
 		83A2D5EB1F5CE3670003C5F9 /* PlaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5EA1F5CE3670003C5F9 /* PlaceVC.swift */; };
 		83A2D5ED1F5CE4330003C5F9 /* PlaceVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5EC1F5CE4330003C5F9 /* PlaceVCCell.swift */; };
+		83A597BE1F6788ED00736DE2 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A597BD1F6788ED00736DE2 /* TextView.swift */; };
+		83A597C01F67961600736DE2 /* ListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A597BF1F67961600736DE2 /* ListManager.swift */; };
+		83A597C61F67A24100736DE2 /* ListManager.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A597C41F67A24100736DE2 /* ListManager.xib */; };
 		83B496BD1F4BD0830083610D /* Identifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496BC1F4BCFB50083610D /* Identifiers.swift */; };
 		83B496BF1F4BD3C60083610D /* ConvertFromV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496BE1F4BD3C60083610D /* ConvertFromV1.swift */; };
 		83B496C11F4BDE300083610D /* CoreDataExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496C01F4BDE300083610D /* CoreDataExtras.swift */; };
@@ -93,7 +95,6 @@
 		837788EB1F6608670014B8A2 /* UIResponder+FirstResponder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+FirstResponder.m"; sourceTree = "<group>"; };
 		837788EC1F6608670014B8A2 /* UIResponder+FirstResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIResponder+FirstResponder.h"; sourceTree = "<group>"; };
 		837788EE1F66151F0014B8A2 /* UITextField+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extras.swift"; sourceTree = "<group>"; };
-		837788F01F661A8F0014B8A2 /* UITextVew+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextVew+Extras.swift"; sourceTree = "<group>"; };
 		837788F21F6673470014B8A2 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		8396CE2D1F4BCAD500660D73 /* WhatDidILike-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WhatDidILike-Bridging-Header.h"; sourceTree = "<group>"; };
 		8396CE2E1F4BCB8A00660D73 /* Item+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -110,6 +111,9 @@
 		83A2D5E81F5CE33A0003C5F9 /* Place.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Place.storyboard; path = Features/Place/Place.storyboard; sourceTree = "<group>"; };
 		83A2D5EA1F5CE3670003C5F9 /* PlaceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlaceVC.swift; path = Features/Place/PlaceVC.swift; sourceTree = "<group>"; };
 		83A2D5EC1F5CE4330003C5F9 /* PlaceVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlaceVCCell.swift; path = Features/Place/PlaceVCCell.swift; sourceTree = "<group>"; };
+		83A597BD1F6788ED00736DE2 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
+		83A597BF1F67961600736DE2 /* ListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListManager.swift; sourceTree = "<group>"; };
+		83A597C41F67A24100736DE2 /* ListManager.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListManager.xib; sourceTree = "<group>"; };
 		83B496BC1F4BCFB50083610D /* Identifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiers.swift; sourceTree = "<group>"; };
 		83B496BE1F4BD3C60083610D /* ConvertFromV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertFromV1.swift; sourceTree = "<group>"; };
 		83B496C01F4BDE300083610D /* CoreDataExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataExtras.swift; sourceTree = "<group>"; };
@@ -223,7 +227,9 @@
 				83401DA11F5CF59F00A96C8D /* UIColor+Extras.swift */,
 				837788EE1F66151F0014B8A2 /* UITextField+Extras.swift */,
 				837788F21F6673470014B8A2 /* TextField.swift */,
-				837788F01F661A8F0014B8A2 /* UITextVew+Extras.swift */,
+				83A597BD1F6788ED00736DE2 /* TextView.swift */,
+				83A597BF1F67961600736DE2 /* ListManager.swift */,
+				83A597C41F67A24100736DE2 /* ListManager.xib */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -419,6 +425,7 @@
 				83EE7DD21F5DB9F300628CA8 /* PlaceVCCell.xib in Resources */,
 				83401DA61F5CFB5300A96C8D /* LocationView.xib in Resources */,
 				83A2D5E91F5CE33A0003C5F9 /* Place.storyboard in Resources */,
+				83A597C61F67A24100736DE2 /* ListManager.xib in Resources */,
 				83D49CD31F4AC26A00409B0F /* LaunchScreen.storyboard in Resources */,
 				83D49CD91F4AC2AA00409B0F /* Assets.xcassets in Resources */,
 				83A2D5E71F5CE1310003C5F9 /* PlaceNameView.xib in Resources */,
@@ -517,7 +524,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				837788F11F661A8F0014B8A2 /* UITextVew+Extras.swift in Sources */,
 				83B533821F5D0C450028E6B5 /* RatingView.swift in Sources */,
 				8396CE391F4BCB8A00660D73 /* Item+CoreDataProperties.swift in Sources */,
 				837788EA1F6607020014B8A2 /* UIViewController+Scrolling.swift in Sources */,
@@ -526,6 +532,7 @@
 				83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */,
 				8396CE381F4BCB8A00660D73 /* Item+CoreDataClass.swift in Sources */,
 				8396CE3A1F4BCB8A00660D73 /* Place+CoreDataClass.swift in Sources */,
+				83A597BE1F6788ED00736DE2 /* TextView.swift in Sources */,
 				837788EF1F66151F0014B8A2 /* UITextField+Extras.swift in Sources */,
 				837788ED1F6608670014B8A2 /* UIResponder+FirstResponder.m in Sources */,
 				83A2D5ED1F5CE4330003C5F9 /* PlaceVCCell.swift in Sources */,
@@ -536,6 +543,7 @@
 				83A2D5E01F5CD6B60003C5F9 /* Image+CoreDataClass.swift in Sources */,
 				83401DA81F5CFD7400A96C8D /* Layout.swift in Sources */,
 				837788F31F6673470014B8A2 /* TextField.swift in Sources */,
+				83A597C01F67961600736DE2 /* ListManager.swift in Sources */,
 				831B04291F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift in Sources */,
 				835F44021F4AC76C00A7748B /* MainListVC.swift in Sources */,
 				831B042B1F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift in Sources */,

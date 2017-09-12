@@ -12,7 +12,7 @@ class CommentView: UIView, XibBasics {
     typealias ViewType = CommentView
     @IBOutlet weak var commentImagesContainer: UIView!
     @IBOutlet weak var ratingContainer: UIView!
-    @IBOutlet weak var comment: UITextView!
+    @IBOutlet weak var comment: TextView!
     let rating = RatingView.create()!
 
     override func awakeFromNib() {
@@ -21,7 +21,6 @@ class CommentView: UIView, XibBasics {
         
         rating.frameWidth = ratingContainer.frameWidth
         ratingContainer.addSubview(rating)
-        comment.addToolBar()
     }
     
     func setup(withComment comment: Comment) {

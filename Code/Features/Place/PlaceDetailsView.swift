@@ -11,17 +11,18 @@ import UIKit
 class PlaceDetailsView: UIView, XibBasics {
     typealias ViewType = PlaceDetailsView
     @IBOutlet weak var placeCategory: UITextField!
-    @IBOutlet weak var generalDescription: UITextView!
+    @IBOutlet weak var generalDescription: TextView!
     @IBOutlet weak var placeLists: UITextView!
+    private weak var parentVC: UIViewController!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         Layout.format(textBox: generalDescription)
         Layout.format(textBox: placeLists)
-        generalDescription.addToolBar()
     }
     
-    func setup(withPlace place:Place) {
+    func setup(withPlace place:Place, andParentVC parentVC: UIViewController) {
+        self.parentVC = parentVC
         generalDescription.text = place.generalDescription
         placeCategory.text = place.category?.name
         
@@ -37,5 +38,18 @@ class PlaceDetailsView: UIView, XibBasics {
             
             placeLists.text = placeListText
         }
+    }
+    
+    @IBAction func placeCategoryButtonAction(_ sender: Any) {
+        ListManager.showFrom(parentVC: parentVC, delegate: self)
+    }
+}
+
+extension PlaceDetailsView : ListManagerDelegate {
+    func listManagerNumberOfRows(_ listManager: ListManager) -> UInt {
+        return 0
+    }
+    func listManager(_ listManager: ListManager, itemForRow row: UInt) -> String {
+        return ""
     }
 }

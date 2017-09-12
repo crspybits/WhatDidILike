@@ -11,10 +11,10 @@ import MapKit
 
 class LocationView: UIView, XibBasics {
     typealias ViewType = LocationView
-    @IBOutlet weak var address: UITextView!
+    @IBOutlet weak var address: TextView!
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var gpsLocation: UISegmentedControl!
-    @IBOutlet weak var specificDescription: UITextView!
+    @IBOutlet weak var specificDescription: TextView!
     @IBOutlet weak var ratingContainer: UIView!
     let rating = RatingView.create()!
     
@@ -25,11 +25,10 @@ class LocationView: UIView, XibBasics {
         
         rating.frameWidth = ratingContainer.frameWidth
         ratingContainer.addSubview(rating)
-        address.addToolBar()
-        specificDescription.addToolBar()
     }
     
     func setup(withLocation location: Location) {
         address.text = location.address
+        specificDescription.text = location.specificDescription
     }
 }

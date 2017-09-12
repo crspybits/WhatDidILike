@@ -34,4 +34,8 @@ public class Location: BaseObject {
         
         return fetchRequest
     }
+    
+    func save() {
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
 }

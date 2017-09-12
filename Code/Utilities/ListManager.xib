@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ListManager" customModule="WhatDidILike" customModuleProvider="target">
+            <connections>
+                <outlet property="newListItem" destination="6iI-Sj-Us0" id="sxL-Pf-S9z"/>
+                <outlet property="tableView" destination="EGy-Em-vrJ" id="S1a-Xh-RPH"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qa7-pz-tno">
+                    <rect key="frame" x="10" y="7" width="355" height="70"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xyh-fU-egP">
+                            <rect key="frame" x="14" y="8" width="31" height="30"/>
+                            <state key="normal" title="New"/>
+                            <connections>
+                                <action selector="newListItemAction:" destination="-1" eventType="touchUpInside" id="KnA-hc-TS8"/>
+                            </connections>
+                        </button>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6iI-Sj-Us0">
+                            <rect key="frame" x="14" y="38" width="327" height="30"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="xyh-fU-egP" firstAttribute="top" secondItem="Qa7-pz-tno" secondAttribute="top" constant="8" id="0ea-Oz-IEn"/>
+                        <constraint firstItem="xyh-fU-egP" firstAttribute="leading" secondItem="Qa7-pz-tno" secondAttribute="leading" constant="14" id="2Id-VN-kag"/>
+                        <constraint firstAttribute="height" constant="70" id="6aE-v9-rUM"/>
+                        <constraint firstItem="6iI-Sj-Us0" firstAttribute="leading" secondItem="Qa7-pz-tno" secondAttribute="leading" constant="14" id="SDS-t0-WLq"/>
+                        <constraint firstItem="6iI-Sj-Us0" firstAttribute="leading" secondItem="Qa7-pz-tno" secondAttribute="leading" constant="14" id="WRz-7O-ibM"/>
+                        <constraint firstItem="6iI-Sj-Us0" firstAttribute="top" secondItem="xyh-fU-egP" secondAttribute="bottom" id="dPU-JY-bs0"/>
+                        <constraint firstItem="6iI-Sj-Us0" firstAttribute="top" secondItem="xyh-fU-egP" secondAttribute="bottom" id="qPj-2N-NoO"/>
+                        <constraint firstAttribute="trailing" secondItem="6iI-Sj-Us0" secondAttribute="trailing" constant="14" id="teU-18-VVe"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="EGy-Em-vrJ">
+                    <rect key="frame" x="0.0" y="97" width="375" height="570"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="EGy-Em-vrJ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="9x6-Iw-tqx"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="EGy-Em-vrJ" secondAttribute="bottom" id="LR3-5O-xcQ"/>
+                <constraint firstItem="EGy-Em-vrJ" firstAttribute="top" secondItem="Qa7-pz-tno" secondAttribute="bottom" constant="20" id="OxI-iU-MtS"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Qa7-pz-tno" secondAttribute="trailing" constant="10" id="R2o-yb-U8d"/>
+                <constraint firstItem="EGy-Em-vrJ" firstAttribute="top" secondItem="Qa7-pz-tno" secondAttribute="bottom" constant="20" id="ViA-3c-T0s"/>
+                <constraint firstItem="EGy-Em-vrJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="XYR-7G-rhu"/>
+                <constraint firstItem="Qa7-pz-tno" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="jdP-3H-9Y0"/>
+                <constraint firstItem="Qa7-pz-tno" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="7" id="qMo-yM-18O"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+</document>

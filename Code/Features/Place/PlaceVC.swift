@@ -35,10 +35,6 @@ class PlaceVC: UIViewController {
         return UIStoryboard(name: "Place", bundle: nil).instantiateViewController(withIdentifier: "PlaceVC") as! PlaceVC
     }
     
-    private func save() {
-        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,18 +42,30 @@ class PlaceVC: UIViewController {
         placeNameView.placeName.text = place.name
         placeNameView.placeName.save = {[unowned self] update in
             self.place.name = update
-            self.save()
+            self.place.save()
         }
         rowViews.append(RowView(contents: placeNameView))
 
         let placeDetailsView = PlaceDetailsView.create()!
-        placeDetailsView.setup(withPlace: place)
+        placeDetailsView.setup(withPlace: place, andParentVC: self)
+        placeDetailsView.generalDescription.save = {[unowned self] update in
+            self.place.generalDescription = update
+            self.place.save()
+        }
         rowViews.append(RowView(contents: placeDetailsView))
         
         if let locations = place.locations as? Set<Location> {
             for location in locations {
                 let locationView = LocationView.create()!
                 locationView.setup(withLocation: location)
+                locationView.address.save = { update in
+                    location.address = update
+                    location.save()
+                }
+                locationView.specificDescription.save = { update in
+                    location.specificDescription = update
+                    location.save()
+                }
                 rowViews.append(RowView(contents: locationView))
             }
         }
@@ -67,6 +75,10 @@ class PlaceVC: UIViewController {
                 let item = item as! Item
                 let itemNameView = ItemNameView.create()!
                 itemNameView.itemName.text = item.name
+                itemNameView.itemName.save = { update in
+                    item.name = update
+                    item.save()
+                }
                 rowViews.append(RowView(contents: itemNameView))
                 
                 var commentViewsForItem = [RowView]()
@@ -87,6 +99,10 @@ class PlaceVC: UIViewController {
                         let comment = comment as! Comment
                         let commentView = CommentView.create()!
                         commentView.setup(withComment: comment)
+                        commentView.comment.save = {update in
+                            comment.comment = update
+                            comment.save()
+                        }
                         let commentRowView = RowView(contents: commentView)
                         commentRowView.displayed = false
                         rowViews.append(commentRowView)
