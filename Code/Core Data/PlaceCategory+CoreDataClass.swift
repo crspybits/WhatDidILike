@@ -13,6 +13,8 @@ import SMCoreLib
 
 @objc(PlaceCategory)
 public class PlaceCategory: NSManagedObject {
+    static let NAME_KEY = "name"
+    
     enum PlaceCategoryErrors : Error {
         case moreThanOneCategoryWithName(String)
     }
@@ -32,13 +34,17 @@ public class PlaceCategory: NSManagedObject {
         return placeCategory
     }
     
+    // Looks up the category in a case insensitive manner.
     class func getCategory(withName name: String) -> PlaceCategory? {
         var result: PlaceCategory?
         
         do {
             let categories = try CoreData.sessionNamed(CoreDataExtras.sessionName)
                 .fetchAllObjects(withEntityName: entityName()) as! [PlaceCategory]
-            let filteredCategories = categories.filter({$0.name! == name})
+            
+            let filteredCategories = categories.filter({
+                return $0.name!.caseInsensitiveCompare(name) == ComparisonResult.orderedSame
+            })
             
             switch filteredCategories.count {
             case 0:
@@ -55,5 +61,21 @@ public class PlaceCategory: NSManagedObject {
         }
         
         return result
+    }
+    
+    class func fetchRequestForAllObjects() -> NSFetchRequest<NSFetchRequestResult>? {
+        var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
+        fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(withEntityName: self.entityName(), modifyingFetchRequestWith: nil)
+        
+        if fetchRequest != nil {
+            let sortDescriptor = NSSortDescriptor(key: NAME_KEY, ascending: true)
+            fetchRequest!.sortDescriptors = [sortDescriptor]
+        }
+        
+        return fetchRequest
+    }
+    
+    func save() {
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
 }

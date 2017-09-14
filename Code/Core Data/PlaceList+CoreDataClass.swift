@@ -56,4 +56,8 @@ public class PlaceList: NSManagedObject {
         
         return result
     }
+    
+    func save() {
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
 }
