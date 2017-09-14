@@ -21,7 +21,7 @@ protocol ListManagerDelegate {
     func listManagerNumberOfRows(_ listManager: ListManager) -> UInt
     func listManager(_ listManager: ListManager, itemForRow row: UInt) -> String
     func listManager(_ listManager: ListManager, rowItemIsSelected row: UInt) -> Bool
-    func listManager(_ listManager: ListManager, selectionChangedFor row: UInt, isSelected: Bool)
+    func listManager(_ listManager: ListManager, selectedRows: [UInt])
     func listManager(_ listManager: ListManager, deleteItemAtRow row: UInt, completion : @escaping  (_ deleted: Bool)->())
     func listManager(_ listManager: ListManager, insertItem: String, completion : @escaping  (_ inserted: Bool)->())
 }
@@ -156,29 +156,33 @@ extension ListManager : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        let row = UInt(indexPath.row)
-        let selected = delegate.listManager(self, rowItemIsSelected: row)
+        var selectedItems = indexPathsForSelectedItems()
         let selectionType = delegate.listManagerSelectionsAllowed(self)
-        delegate.listManager(self, selectionChangedFor: row, isSelected: !selected)
         
-        // To change checkmark state.
-        tableView.reloadRows(at: [indexPath], with: .automatic)
+        // See if this is a selection or a deselection; cheat and just use the checkmark state of our row!
+        let cell = tableView.cellForRow(at: indexPath)!
+        if cell.accessoryType == .checkmark {
+            // Deselection
+            selectedItems = selectedItems.filter({$0.row != indexPath.row})
+        }
+        else {
+            // Selection
+            selectedItems += [indexPath]
+        }
         
         switch selectionType {
         case .single:
-            // Must have only a single item selected-- so if there is another selected, turn it off.
-            let selectedItems = indexPathsForSelectedItems()
+            // Can have only a single item selected-- so if there is another selected, remove it.
             if selectedItems.count > 1 {
-                let others = selectedItems.filter({$0.row != indexPath.row})
-                _ = others.map({ indexPath in
-                    delegate.listManager(self, selectionChangedFor: UInt(indexPath.row), isSelected: false)
-                })
-                tableView.reloadRows(at: others, with: .automatic)
+                selectedItems = selectedItems.filter({$0.row == indexPath.row})
             }
+
         case .multiple:
             // Nothing else to do.
             break
         }
+        
+        delegate.listManager(self, selectedRows: selectedItems.map({UInt($0.row)}))
+        reloadData()
     }
 }

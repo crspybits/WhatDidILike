@@ -74,12 +74,20 @@ extension PlaceDetailsView : ListManagerDelegate {
         }*/
     }
     
-    func listManager(_ listManager: ListManager, selectionChangedFor row: UInt, isSelected: Bool) {
-        if isSelected {
-            let category = dataSource.object(at: IndexPath(row: Int(row), section: 0)) as! PlaceCategory
+    func listManager(_ listManager: ListManager, selectedRows: [UInt]) {
+        if selectedRows.count == 0 {
+            place.category = nil
+            placeCategory.text = ""
+            place.save()
+        }
+        else if selectedRows.count == 1 {
+            let category = dataSource.object(at: IndexPath(row: Int(selectedRows[0]), section: 0)) as! PlaceCategory
             place.category = category
             placeCategory.text = category.name
             place.save()
+        }
+        else {
+            assert(false)
         }
     }
     
