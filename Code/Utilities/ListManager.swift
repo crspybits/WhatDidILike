@@ -47,6 +47,13 @@ class ListManager : SMModal {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseId)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let firstSelectedItem = indexPathForFirstSelectedItem() {
+            tableView.scrollToRow(at: firstSelectedItem, at: .middle, animated: true)
+        }
+    }
+    
     @objc private func doneAction() {
         close()
     }
@@ -55,14 +62,26 @@ class ListManager : SMModal {
         tableView.setEditing(!tableView.isEditing, animated: true)
     }
     
-    static func showFrom(parentVC: UIViewController, delegate: ListManagerDelegate) -> ListManager {
+    @discardableResult
+    static func showFrom(parentVC: UIViewController, delegate: ListManagerDelegate, title: String) -> ListManager {
         let listManager = ListManager(nibName: "ListManager", bundle: nil)
         listManager.modalSize = CGSize(width: parentVC.view.frameWidth*0.9, height: parentVC.view.frameHeight*0.9)
         listManager.modalParentVC = parentVC
         listManager.delegate = delegate
+        listManager.title = title
         listManager.show()
         
         return listManager
+    }
+    
+    private func indexPathForFirstSelectedItem() -> IndexPath? {
+        for itemNumber in 0..<delegate.listManagerNumberOfRows(self) {
+            if delegate.listManager(self, rowItemIsSelected: itemNumber) {
+                return IndexPath(row: Int(itemNumber), section: 0)
+            }
+        }
+        
+        return nil
     }
     
     private func indexPathForItem(listItem: String) -> IndexPath? {

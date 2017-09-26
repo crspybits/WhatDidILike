@@ -13,6 +13,8 @@ import SMCoreLib
 
 @objc(PlaceList)
 public class PlaceList: NSManagedObject {
+    static let NAME_KEY = "name"
+
     enum PlaceListErrors : Error {
         case moreThanOnePlaceListWithName(String)
     }
@@ -59,5 +61,17 @@ public class PlaceList: NSManagedObject {
     
     func save() {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
+    
+    class func fetchRequestForAllObjects() -> NSFetchRequest<NSFetchRequestResult>? {
+        var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
+        fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(withEntityName: self.entityName(), modifyingFetchRequestWith: nil)
+        
+        if fetchRequest != nil {
+            let sortDescriptor = NSSortDescriptor(key: NAME_KEY, ascending: true)
+            fetchRequest!.sortDescriptors = [sortDescriptor]
+        }
+        
+        return fetchRequest
     }
 }

@@ -9,6 +9,22 @@ target 'WhatDidILike' do
     pod 'Fabric'
     pod 'Crashlytics'
 
-    # pod 'SMCoreLib', '~> 0.1'
-	pod 'SMCoreLib', :path => '../Common/SMCoreLib/'
+    pod 'SMCoreLib', '~> 1.0'
+	# pod 'SMCoreLib', :path => '../Common/SMCoreLib/'
+	
+    # 9/24/17; Dealing with Cocoapods inability to specify Swift versions...
+
+	post_install do |installer|
+	
+		myTargets = ['SMCoreLib']
+		
+		installer.pods_project.targets.each do |target|
+			if myTargets.include? target.name
+				target.build_configurations.each do |config|
+					config.build_settings['OTHER_SWIFT_FLAGS'] = '-DSWIFT4'
+				end
+			end
+		end
+	end
+	
 end
