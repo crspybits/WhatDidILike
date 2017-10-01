@@ -1,5 +1,5 @@
 //
-//  Item+CoreDataClass.swift
+//  Place.swift
 //  WhatDidILike
 //
 //  Created by Christopher G Prince on 8/21/17.
@@ -10,15 +10,15 @@ import Foundation
 import CoreData
 import SMCoreLib
 
-@objc(Item)
-public class Item: BaseObject {
+@objc(Place)
+public class Place: BaseObject {
     class func entityName() -> String {
-        return "Item"
+        return "Place"
     }
     
-    class func newObject() -> Item {
-        let item = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Item
-        return item
+    class func newObject() -> Place {
+        let place = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Place
+        return place
     }
     
     func save() {

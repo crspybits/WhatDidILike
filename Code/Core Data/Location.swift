@@ -1,5 +1,5 @@
 //
-//  Location+CoreDataClass.swift
+//  Location.swift
 //  WhatDidILike
 //
 //  Created by Christopher G Prince on 8/21/17.
@@ -13,6 +13,27 @@ import SMCoreLib
 @objc(Location)
 public class Location: BaseObject {
     static let NAME_KEY = "place.name"
+    
+    // Doesn't save the core data object when you set.
+    // Don't access internalLocation directly. Use this method instead.
+    var location:CLLocation? {
+        set {
+            if newValue == nil {
+                internalLocation = nil
+            }
+            else {
+                internalLocation = NSKeyedArchiver.archivedData(withRootObject: newValue!) as NSData
+            }
+        }
+        get {
+            if internalLocation == nil {
+                return nil
+            }
+            else {
+                return (NSKeyedUnarchiver.unarchiveObject(with: internalLocation! as Data) as! CLLocation)
+            }
+        }
+    }
     
     class func entityName() -> String {
         return "Location"

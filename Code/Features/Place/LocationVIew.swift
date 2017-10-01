@@ -13,17 +13,20 @@ import SMCoreLib
 class LocationView: UIView, XibBasics {
     typealias ViewType = LocationView
     @IBOutlet weak var address: TextView!
-    @IBOutlet weak var map: MKMapView!
-    @IBOutlet weak var gpsLocation: UISegmentedControl!
+    @IBOutlet private weak var map: MKMapView!
+    @IBOutlet private weak var gpsLocation: UISegmentedControl!
     @IBOutlet weak var specificDescription: TextView!
-    @IBOutlet weak var ratingContainer: UIView!
-    let rating = RatingView.create()!
+    @IBOutlet private weak var ratingContainer: UIView!
+    private let rating = RatingView.create()!
     
-    // Used when converting an address to coordinates.
-    private var addressCoords: CLLocation?
+    private var defaultRegion:MKCoordinateRegion!
     
     private static let numberOfTimesLocationServicesFailed = SMPersistItemInt(name: "LocationView.numberOfTimesLocationServicesFailed", initialIntValue: 0, persistType: .userDefaults)
     
+    fileprivate weak var viewController: UIViewController!
+    fileprivate var location: Location!
+    fileprivate var place: Place!
+
     // I'm no longer using this to establish the actual location
     // of the user/place, but rather to supply an initial set location
     // for purposes of the user interface and displaying the pulsing blue
@@ -32,13 +35,13 @@ class LocationView: UIView, XibBasics {
     // the user. I can't be assured of a reasonable level of accuracy
     // with the lat/long coords if I directly obtain the coords from
     // the map just after I turn on the display of the pulsing blue dot.
-    var ll:LatLong!
+    private var ll:LatLong!
     
-    // coordinates that were stored by the user previously to coming
-    // into AddChangeRestaurant this time.
-    var oldCoords:CLLocation?
+    private var currentCoords:CLLocation? {
+        return location.location
+    }
     
-    var convertAddress: GeocodeAddressToLatLong?
+    private var convertAddress: GeocodeAddressToLatLong?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -49,10 +52,27 @@ class LocationView: UIView, XibBasics {
         ratingContainer.addSubview(rating)
     }
     
-    func setup(withLocation location: Location, viewController: UIViewController) {
+    func setup(withLocation location: Location, place: Place, viewController: UIViewController) {
+        self.location = location
+        self.place = place
+        self.viewController = viewController
         address.text = location.address
         specificDescription.text = location.specificDescription
         convertAddress = GeocodeAddressToLatLong(delegate: self, andViewController: viewController)
+        defaultRegion = map.region
+        
+        if let currentCoords = currentCoords {
+            // We have coords; show them as a point on the map
+            annotateMap(coords: currentCoords.coordinate)
+        }
+        
+        // So we can tap on the map to navigate to the location
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapGestureAction))
+        map.addGestureRecognizer(tap)
+    }
+    
+    @objc private func tapGestureAction() {
+        mapTap()
     }
     
     enum GPSLocationType : Int {
@@ -62,8 +82,6 @@ class LocationView: UIView, XibBasics {
     }
 
     @IBAction func gpsLocationAction(_ sender: Any) {
-        addressCoords = nil
-        
         let gpsLocationType = GPSLocationType(rawValue: gpsLocation.selectedSegmentIndex)!
         switch gpsLocationType {
         case .current:
@@ -72,32 +90,27 @@ class LocationView: UIView, XibBasics {
             
         case .previous:
             // Need to set ll to nil so that there is no record of a change
-            // to the lat/long for dataHasChanged.
+            // to the lat/long.
 
             if ll != nil {
                 ll.stopWithoutCallback()
             }
             ll = nil
-            if oldCoords == nil {
-                map.showsUserLocation = false
-                removeAnnotation()
-            } else {
-                annnotateMap(coords: oldCoords!.coordinate)
-            }
+            
+            showPreviousLocation()
             
         case .address:
             map.showsUserLocation = false
             removeAnnotation()
 
-            // If there is an address, attempt to
-            // geocode that address.
-            geocodeIfNeeded()
- 
             // If they are asking to use an address, then stop dealing with current GPS location. This is mostly to deal with the user having location services turned off. If location services are turned off, shouldn't give them an error and switch GPS location button to "Off" after they select "Address".
             if ll != nil {
                 ll.stopWithoutCallback()
                 ll = nil
             }
+            
+            // If there is an address, attempt to geocode that address.
+            geocodeIfNeeded()
         }
     }
     
@@ -109,8 +122,7 @@ class LocationView: UIView, XibBasics {
         }
     }
     
-    private func annnotateMap(coords: CLLocationCoordinate2D) {
-        map.showsUserLocation = false
+    private func annotateMap(coords: CLLocationCoordinate2D) {
         removeAnnotation()
         let r = MKCoordinateRegionMakeWithDistance(coords, 1000, 1000)
         map.setRegion(r, animated: true)
@@ -131,7 +143,7 @@ class LocationView: UIView, XibBasics {
          map.addAnnotation(annotation!)
     }
     
-    func geocodeIfNeeded() {
+    private func geocodeIfNeeded() {
         let gpsLocationType = GPSLocationType(rawValue: gpsLocation.selectedSegmentIndex)!
         if gpsLocationType == .address {
             let spaces = CharacterSet.whitespacesAndNewlines
@@ -146,13 +158,169 @@ class LocationView: UIView, XibBasics {
             }
         }
     }
+    
+    func showUserLocation() {
+        map.showsUserLocation = true
+        let r = MKCoordinateRegionMakeWithDistance(ll.coords.coordinate, 1000, 1000)
+        map.setRegion(r, animated: true)
+        removeAnnotation()
+    }
+    
+    private func mapTap() {
+        // TODO: Should we do an `updateCoordinates` here?
+        if let currentCoords = currentCoords {
+            if UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!) {
+                var message = "Navigate "
+                if let placeName = place.name {
+                    message += "to \(placeName) "
+                }
+                message += "using: "
+                
+                let alert = UIAlertController(title: message, message: nil, preferredStyle: .actionSheet)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { alert in
+                })
+                alert.addAction(UIAlertAction(title: "Apple Maps", style: .default) { alert in
+                    self.navigateUsingAppleMaps(to: currentCoords)
+                })
+                alert.addAction(UIAlertAction(title: "Google Maps", style: .default) { alert in
+                    self.navigateUsingGoogleMaps(to: currentCoords)
+                })
+                viewController.present(alert, animated: true, completion: nil)
+            }
+            else {
+                // No Google maps; just use the native map app
+                navigateUsingAppleMaps(to: currentCoords)
+            }
+        }
+    }
+    
+    private func navigateUsingGoogleMaps(to coords:CLLocation) {
+        // URL from https://developers.google.com/maps/documentation/urls/guide#directions-action
+        UIApplication.shared.open(URL(string:"https://www.google.com/maps/dir/?api=1&destination=\(coords.coordinate.latitude),\(coords.coordinate.longitude)")!, options: [:], completionHandler: nil)
+    }
+    
+    // Based on https://stackoverflow.com/questions/12504294/programmatically-open-maps-app-in-ios-6/46507696#46507696
+    private func navigateUsingAppleMaps(to coords:CLLocation, locationName: String? = nil) {
+        var mapItemName:String?
+        if let locationName = locationName {
+            mapItemName = locationName
+        }
+        else {
+            mapItemName = place.name
+        }
+    
+        let placemark = MKPlacemark(coordinate: coords.coordinate, addressDictionary:nil)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = mapItemName
+        let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
+        let currentLocationMapItem = MKMapItem.forCurrentLocation()
+
+        MKMapItem.openMaps(with: [currentLocationMapItem, mapItem], launchOptions: launchOptions)
+    }
+    
+    fileprivate func saveNewCoordinatesIfNeeded(newLocation: CLLocation) {
+        // Check to see if the new coordinates are (a) really far away
+        // from the old coordinates, and if so alert the user to this
+        // fact, and (b) better quality; If they are better quality and
+        // relatively close to old coordinates just update coords
+        // silently; if worse, throw away new silently.
+    
+        let THRESHOLD_DISTANCE_METERS = 100.0
+        var doneAlert = false
+        
+        func save() {
+            location.location = newLocation
+            location.save()
+        }
+        
+        func metersToMiles(meters: Float) -> Float {
+            return (meters/1000.0)*0.621371
+        }
+    
+        if let currentCoords = currentCoords {
+            let dist = newLocation.distance(from: currentCoords)
+            if dist > THRESHOLD_DISTANCE_METERS {
+                let miles = metersToMiles(meters: Float(dist))
+                let message = "The new coordinates are \(miles) miles away from the previous coordinates."
+                let alert = UIAlertController(title: message, message: nil, preferredStyle: .actionSheet)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { alert in
+                    self.gpsLocation.selectedSegmentIndex = GPSLocationType.previous.rawValue
+                    self.showPreviousLocation()
+                })
+                alert.addAction(UIAlertAction(title: "Use New", style: .destructive) { alert in
+                    save()
+                })
+                viewController.present(alert, animated: true, completion: nil)
+            } else {
+                // Greater accuracy numbers actually mean poorer results
+                if (newLocation.horizontalAccuracy > currentCoords.horizontalAccuracy) {
+                    // Poorer new results, so get rid of them
+                    Log.msg("Less accurate new \(newLocation.horizontalAccuracy) coords; keeping previous \(currentCoords.horizontalAccuracy)")
+                }
+                else {
+                    save()
+                }
+            }
+        }
+        else {
+            save()
+        }
+    }
 }
 
 extension LocationView : LatLongDelegate {
     func haveReasonablyAccurateCoordinates() {
+        Log.msg("haveReasonablyAccurateCoordinates")
+
+        // Wait until now to show the user location, because my implementation of `showUserLocation` depends on ll having established the user location.
+        showUserLocation()
     }
     
     func finishedAttemptingToObtainCoordinates() {
+        Log.msg("finishedAttemptingToObtainCoordinates: ll: \(ll)")
+        if ll.coords == nil {
+            // We could not obtain coords; change the gpsLocation to `previous`
+            // to indicate to the user that we failed getting coords.
+            gpsLocation.selectedSegmentIndex = GPSLocationType.previous.rawValue
+            showPreviousLocation()
+
+            // If we do this too many times, then turn off showing this message until the user presses the "Current" GPS location button.
+            let limitLocationServicesFailed = 3
+            if LocationView.numberOfTimesLocationServicesFailed.intValue < limitLocationServicesFailed {
+                Alert.show(fromVC: viewController, withTitle: "Could not obtain your current location.", message: "Are location services turned off?")
+                LocationView.numberOfTimesLocationServicesFailed.intValue += 1
+            }
+        }
+        else {
+            let mapLocation = map.userLocation.location
+            
+            // I'm going to ignore whether or not the map is still updating
+            // the location (mapLocation.updating) and just take the most
+            // accurate coordinates from ll or the map.
+            
+            var mostAccurateLocation: CLLocation
+            if mapLocation != nil && mapLocation!.horizontalAccuracy < ll.coords.horizontalAccuracy {
+                mostAccurateLocation = mapLocation!
+                Log.msg("Taking coords from map (accuracy = \(mapLocation!.horizontalAccuracy)")
+            }
+            else {
+                mostAccurateLocation = ll.coords
+                Log.msg("Taking coords from ll")
+            }
+
+            saveNewCoordinatesIfNeeded(newLocation: mostAccurateLocation)
+        }
+    }
+    
+    private func showPreviousLocation() {
+        map.showsUserLocation = false
+        if let currentCoords = currentCoords {
+            annotateMap(coords: currentCoords.coordinate)
+        }
+        else {
+            removeAnnotation()
+            map.setRegion(defaultRegion, animated: false)
+        }
     }
 }
 
@@ -166,5 +334,11 @@ extension LocationView : GeocodeAddressToLatLongDelegate {
     // Called when successful; with the latitude and longitude of the successful
     // conversion.
     func successLookingupAddress(_ latitude: Float, andLongitude longitude: Float) {
+        let gpsLocationType = GPSLocationType(rawValue: gpsLocation.selectedSegmentIndex)!
+        if gpsLocationType == .address {
+            let addressLocation = CLLocation(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
+            annotateMap(coords: addressLocation.coordinate)
+            saveNewCoordinatesIfNeeded(newLocation: addressLocation)
+        }
     }
 }

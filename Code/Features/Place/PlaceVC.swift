@@ -57,7 +57,7 @@ class PlaceVC: UIViewController {
         if let locations = place.locations as? Set<Location> {
             for location in locations {
                 let locationView = LocationView.create()!
-                locationView.setup(withLocation: location, viewController: self)
+                locationView.setup(withLocation: location, place: place, viewController: self)
                 locationView.address.save = { update in
                     location.address = update
                     location.save()

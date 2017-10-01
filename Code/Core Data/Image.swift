@@ -1,5 +1,5 @@
 //
-//  Image+CoreDataClass.swift
+//  Image.swift
 //  WhatDidILike
 //
 //  Created by Christopher G Prince on 9/3/17.

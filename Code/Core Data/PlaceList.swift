@@ -1,5 +1,5 @@
 //
-//  PlaceList+CoreDataClass.swift
+//  PlaceList.swift
 //  WhatDidILike
 //
 //  Created by Christopher G Prince on 9/3/17.

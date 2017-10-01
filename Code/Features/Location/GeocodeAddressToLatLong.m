@@ -105,7 +105,7 @@
                     CLLocation *location = placemark.location;
                     CLLocationCoordinate2D coords = location.coordinate;
                     
-                    NSLog(@"Preferences.lookupAddress: Latitude = %f, Longitude = %f",
+                    NSLog(@"GeocodeAddressToLatLong.lookupAddress: Latitude = %f, Longitude = %f",
                           coords.latitude, coords.longitude);
                     
                     [self.delegate successLookingupAddress: coords.latitude andLongitude: coords.longitude];

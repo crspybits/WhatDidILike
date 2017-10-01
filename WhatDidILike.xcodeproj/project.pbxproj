@@ -8,11 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		146991ADF5C9C882E6AABE63 /* Pods_WhatDidILike.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2F0394E5734A520BA46C48 /* Pods_WhatDidILike.framework */; };
-		831B04161F5CC297000E21C4 /* BaseObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04101F5CC297000E21C4 /* BaseObject+CoreDataClass.swift */; };
+		83019F891F80924400E1E117 /* BaseObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F871F80924400E1E117 /* BaseObject+CoreDataClass.swift */; };
+		83019F8E1F8092EE00E1E117 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F8C1F8092EE00E1E117 /* Location+CoreDataProperties.swift */; };
 		831B04171F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04111F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift */; };
-		831B04281F5CC7BD000E21C4 /* PlaceList+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04241F5CC7BD000E21C4 /* PlaceList+CoreDataClass.swift */; };
+		831B04281F5CC7BD000E21C4 /* PlaceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04241F5CC7BD000E21C4 /* PlaceList.swift */; };
 		831B04291F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */; };
-		831B042A1F5CC7BD000E21C4 /* PlaceCategory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04261F5CC7BD000E21C4 /* PlaceCategory+CoreDataClass.swift */; };
+		831B042A1F5CC7BD000E21C4 /* PlaceCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04261F5CC7BD000E21C4 /* PlaceCategory.swift */; };
 		831B042B1F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04271F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift */; };
 		83401D9A1F5CEA4E00A96C8D /* XibBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83401D991F5CEA4E00A96C8D /* XibBasics.swift */; };
 		83401D9C1F5CEAB000A96C8D /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83401D9B1F5CEAB000A96C8D /* Types.swift */; };
@@ -32,14 +33,13 @@
 		837788ED1F6608670014B8A2 /* UIResponder+FirstResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 837788EB1F6608670014B8A2 /* UIResponder+FirstResponder.m */; };
 		837788EF1F66151F0014B8A2 /* UITextField+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837788EE1F66151F0014B8A2 /* UITextField+Extras.swift */; };
 		837788F31F6673470014B8A2 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837788F21F6673470014B8A2 /* TextField.swift */; };
-		8396CE381F4BCB8A00660D73 /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE2E1F4BCB8A00660D73 /* Item+CoreDataClass.swift */; };
+		8396CE381F4BCB8A00660D73 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE2E1F4BCB8A00660D73 /* Item.swift */; };
 		8396CE391F4BCB8A00660D73 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE2F1F4BCB8A00660D73 /* Item+CoreDataProperties.swift */; };
-		8396CE3A1F4BCB8A00660D73 /* Place+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE301F4BCB8A00660D73 /* Place+CoreDataClass.swift */; };
-		8396CE3E1F4BCB8A00660D73 /* Location+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE341F4BCB8A00660D73 /* Location+CoreDataClass.swift */; };
-		8396CE3F1F4BCB8A00660D73 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE351F4BCB8A00660D73 /* Location+CoreDataProperties.swift */; };
-		8396CE401F4BCB8A00660D73 /* Comment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE361F4BCB8A00660D73 /* Comment+CoreDataClass.swift */; };
+		8396CE3A1F4BCB8A00660D73 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE301F4BCB8A00660D73 /* Place.swift */; };
+		8396CE3E1F4BCB8A00660D73 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE341F4BCB8A00660D73 /* Location.swift */; };
+		8396CE401F4BCB8A00660D73 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE361F4BCB8A00660D73 /* Comment.swift */; };
 		8396CE411F4BCB8A00660D73 /* Comment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE371F4BCB8A00660D73 /* Comment+CoreDataProperties.swift */; };
-		83A2D5E01F5CD6B60003C5F9 /* Image+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image+CoreDataClass.swift */; };
+		83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image.swift */; };
 		83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */; };
 		83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */; };
 		83A2D5E71F5CE1310003C5F9 /* PlaceNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A2D5E61F5CE1310003C5F9 /* PlaceNameView.xib */; };
@@ -81,11 +81,12 @@
 /* Begin PBXFileReference section */
 		53DBFE2078F6DB8452485085 /* Pods-WhatDidILike.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatDidILike.release.xcconfig"; path = "Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike.release.xcconfig"; sourceTree = "<group>"; };
 		6B2F0394E5734A520BA46C48 /* Pods_WhatDidILike.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhatDidILike.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		831B04101F5CC297000E21C4 /* BaseObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseObject+CoreDataClass.swift"; sourceTree = "<group>"; };
+		83019F871F80924400E1E117 /* BaseObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseObject+CoreDataClass.swift"; sourceTree = "<group>"; };
+		83019F8C1F8092EE00E1E117 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		831B04111F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		831B04241F5CC7BD000E21C4 /* PlaceList+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceList+CoreDataClass.swift"; sourceTree = "<group>"; };
+		831B04241F5CC7BD000E21C4 /* PlaceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceList.swift; sourceTree = "<group>"; };
 		831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceList+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		831B04261F5CC7BD000E21C4 /* PlaceCategory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceCategory+CoreDataClass.swift"; sourceTree = "<group>"; };
+		831B04261F5CC7BD000E21C4 /* PlaceCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCategory.swift; sourceTree = "<group>"; };
 		831B04271F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceCategory+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83401D991F5CEA4E00A96C8D /* XibBasics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XibBasics.swift; sourceTree = "<group>"; };
 		83401D9B1F5CEAB000A96C8D /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
@@ -111,14 +112,13 @@
 		837788EE1F66151F0014B8A2 /* UITextField+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extras.swift"; sourceTree = "<group>"; };
 		837788F21F6673470014B8A2 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		8396CE2D1F4BCAD500660D73 /* WhatDidILike-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WhatDidILike-Bridging-Header.h"; sourceTree = "<group>"; };
-		8396CE2E1F4BCB8A00660D73 /* Item+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8396CE2E1F4BCB8A00660D73 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		8396CE2F1F4BCB8A00660D73 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		8396CE301F4BCB8A00660D73 /* Place+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Place+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8396CE341F4BCB8A00660D73 /* Location+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8396CE351F4BCB8A00660D73 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		8396CE361F4BCB8A00660D73 /* Comment+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8396CE301F4BCB8A00660D73 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		8396CE341F4BCB8A00660D73 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		8396CE361F4BCB8A00660D73 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		8396CE371F4BCB8A00660D73 /* Comment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		83A2D5DC1F5CD6B60003C5F9 /* Image+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataClass.swift"; sourceTree = "<group>"; };
+		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlaceNameView.swift; path = Features/Place/PlaceNameView.swift; sourceTree = "<group>"; };
 		83A2D5E61F5CE1310003C5F9 /* PlaceNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlaceNameView.xib; path = Features/Place/PlaceNameView.xib; sourceTree = "<group>"; };
@@ -209,14 +209,14 @@
 		8396CE421F4BCBAD00660D73 /* Other files */ = {
 			isa = PBXGroup;
 			children = (
+				83019F8C1F8092EE00E1E117 /* Location+CoreDataProperties.swift */,
+				83019F871F80924400E1E117 /* BaseObject+CoreDataClass.swift */,
 				83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */,
 				831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */,
 				831B04271F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift */,
-				831B04101F5CC297000E21C4 /* BaseObject+CoreDataClass.swift */,
 				831B04111F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift */,
 				83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */,
 				8396CE371F4BCB8A00660D73 /* Comment+CoreDataProperties.swift */,
-				8396CE351F4BCB8A00660D73 /* Location+CoreDataProperties.swift */,
 				8396CE2F1F4BCB8A00660D73 /* Item+CoreDataProperties.swift */,
 			);
 			name = "Other files";
@@ -269,6 +269,8 @@
 			isa = PBXGroup;
 			children = (
 				83D49CC81F4AC26900409B0F /* Code */,
+				83D49CDB1F4AC2C700409B0F /* UnitTests */,
+				83D49CD61F4AC2AA00409B0F /* Resources */,
 				83D49CA31F4AC16100409B0F /* Products */,
 				21A163075C1F424B6B602B7B /* Pods */,
 				37E9A543F5EBBA6AA3C37AB4 /* Frameworks */,
@@ -292,8 +294,6 @@
 				83D49CE01F4AC3D100409B0F /* Features */,
 				83D49CC91F4AC26900409B0F /* Core Data */,
 				83B496BB1F4BCFB50083610D /* Utilities */,
-				83D49CD61F4AC2AA00409B0F /* Resources */,
-				83D49CDB1F4AC2C700409B0F /* UnitTests */,
 			);
 			path = Code;
 			sourceTree = "<group>";
@@ -302,14 +302,14 @@
 			isa = PBXGroup;
 			children = (
 				83D49CCA1F4AC26900409B0F /* WhatDidILike.xcdatamodeld */,
-				831B04241F5CC7BD000E21C4 /* PlaceList+CoreDataClass.swift */,
-				831B04261F5CC7BD000E21C4 /* PlaceCategory+CoreDataClass.swift */,
-				8396CE2E1F4BCB8A00660D73 /* Item+CoreDataClass.swift */,
-				8396CE301F4BCB8A00660D73 /* Place+CoreDataClass.swift */,
-				8396CE361F4BCB8A00660D73 /* Comment+CoreDataClass.swift */,
-				8396CE341F4BCB8A00660D73 /* Location+CoreDataClass.swift */,
+				831B04241F5CC7BD000E21C4 /* PlaceList.swift */,
+				831B04261F5CC7BD000E21C4 /* PlaceCategory.swift */,
+				8396CE2E1F4BCB8A00660D73 /* Item.swift */,
+				8396CE301F4BCB8A00660D73 /* Place.swift */,
+				8396CE361F4BCB8A00660D73 /* Comment.swift */,
+				8396CE341F4BCB8A00660D73 /* Location.swift */,
 				83B496C01F4BDE300083610D /* CoreDataExtras.swift */,
-				83A2D5DC1F5CD6B60003C5F9 /* Image+CoreDataClass.swift */,
+				83A2D5DC1F5CD6B60003C5F9 /* Image.swift */,
 				8396CE421F4BCBAD00660D73 /* Other files */,
 				83B496BE1F4BD3C60083610D /* ConvertFromV1.swift */,
 			);
@@ -559,22 +559,22 @@
 				83B533821F5D0C450028E6B5 /* RatingView.swift in Sources */,
 				8396CE391F4BCB8A00660D73 /* Item+CoreDataProperties.swift in Sources */,
 				837788EA1F6607020014B8A2 /* UIViewController+Scrolling.swift in Sources */,
-				831B04161F5CC297000E21C4 /* BaseObject+CoreDataClass.swift in Sources */,
 				83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */,
 				83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */,
 				8366CD3D1F7CA65F00E9D6FF /* Map.m in Sources */,
-				8396CE381F4BCB8A00660D73 /* Item+CoreDataClass.swift in Sources */,
-				8396CE3A1F4BCB8A00660D73 /* Place+CoreDataClass.swift in Sources */,
+				8396CE381F4BCB8A00660D73 /* Item.swift in Sources */,
+				8396CE3A1F4BCB8A00660D73 /* Place.swift in Sources */,
 				83A597BE1F6788ED00736DE2 /* TextView.swift in Sources */,
 				837788EF1F66151F0014B8A2 /* UITextField+Extras.swift in Sources */,
 				837788ED1F6608670014B8A2 /* UIResponder+FirstResponder.m in Sources */,
 				83A2D5ED1F5CE4330003C5F9 /* PlaceVCCell.swift in Sources */,
-				8396CE401F4BCB8A00660D73 /* Comment+CoreDataClass.swift in Sources */,
+				8396CE401F4BCB8A00660D73 /* Comment.swift in Sources */,
 				83401D9E1F5CEE8900A96C8D /* PlaceDetailsView.swift in Sources */,
+				83019F8E1F8092EE00E1E117 /* Location+CoreDataProperties.swift in Sources */,
 				83A2D5EB1F5CE3670003C5F9 /* PlaceVC.swift in Sources */,
 				83401DA21F5CF59F00A96C8D /* UIColor+Extras.swift in Sources */,
 				8366CD401F7CA65F00E9D6FF /* LatLong.m in Sources */,
-				83A2D5E01F5CD6B60003C5F9 /* Image+CoreDataClass.swift in Sources */,
+				83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */,
 				83401DA81F5CFD7400A96C8D /* Layout.swift in Sources */,
 				8366CD3F1F7CA65F00E9D6FF /* GeocodeAddressToLatLong.m in Sources */,
 				837788F31F6673470014B8A2 /* TextField.swift in Sources */,
@@ -587,18 +587,18 @@
 				8396CE411F4BCB8A00660D73 /* Comment+CoreDataProperties.swift in Sources */,
 				83401DA41F5CFB3D00A96C8D /* LocationView.swift in Sources */,
 				83D49CD21F4AC26A00409B0F /* AppDelegate.swift in Sources */,
+				83019F891F80924400E1E117 /* BaseObject+CoreDataClass.swift in Sources */,
 				83B496C51F4BE0F40083610D /* Place+CoreDataProperties.swift in Sources */,
 				83B496BF1F4BD3C60083610D /* ConvertFromV1.swift in Sources */,
-				8396CE3F1F4BCB8A00660D73 /* Location+CoreDataProperties.swift in Sources */,
 				83D49CD11F4AC26A00409B0F /* WhatDidILike.xcdatamodeld in Sources */,
 				831B04171F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift in Sources */,
 				83B496C11F4BDE300083610D /* CoreDataExtras.swift in Sources */,
 				83B5337E1F5D0A6D0028E6B5 /* CommentView.swift in Sources */,
-				8396CE3E1F4BCB8A00660D73 /* Location+CoreDataClass.swift in Sources */,
-				831B04281F5CC7BD000E21C4 /* PlaceList+CoreDataClass.swift in Sources */,
+				8396CE3E1F4BCB8A00660D73 /* Location.swift in Sources */,
+				831B04281F5CC7BD000E21C4 /* PlaceList.swift in Sources */,
 				83401D9C1F5CEAB000A96C8D /* Types.swift in Sources */,
 				83B496BD1F4BD0830083610D /* Identifiers.swift in Sources */,
-				831B042A1F5CC7BD000E21C4 /* PlaceCategory+CoreDataClass.swift in Sources */,
+				831B042A1F5CC7BD000E21C4 /* PlaceCategory.swift in Sources */,
 				8366CD3E1F7CA65F00E9D6FF /* MapAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -739,7 +739,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = biz.SpasticMuffin.WhatDIdILike;
+				PRODUCT_BUNDLE_IDENTIFIER = biz.SpasticMuffin.WhatDIdILike2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Code/WhatDidILike-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -759,7 +759,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = biz.SpasticMuffin.WhatDIdILike;
+				PRODUCT_BUNDLE_IDENTIFIER = biz.SpasticMuffin.WhatDIdILike2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Code/WhatDidILike-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

@@ -183,8 +183,7 @@ class ConvertFromV1 {
             }
             
             if let location = restaurant[PLACE_KEY_COORDS] as? CLLocation {
-                coreDataLocation.latitude = location.coordinate.latitude
-                coreDataLocation.longitude = location.coordinate.longitude
+                coreDataLocation.location = location
             }
             
             if let menuItems = restaurant[PLACE_KEY_MENU] as? [[String:Any]], menuItems.count > 0 {

@@ -14,10 +14,13 @@
 
 #import "LatLong.h"
 
+@interface LatLong()
+@property (nonatomic) int timeout;
+@end
+
 @implementation LatLong
 @synthesize coords;
 
-// See [MEM2] in AddChangeRestaurant
 - (void) cleanup {
     theDelegate = nil;
     lock = nil;
@@ -138,6 +141,22 @@
     }
 }
 
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status;
+{
+    switch ([CLLocationManager authorizationStatus]) {
+    case kCLAuthorizationStatusAuthorizedWhenInUse:
+    case kCLAuthorizationStatusAuthorizedAlways:
+        NSLog(@"User authorized location services!");
+        [self start];
+        break;
+    
+    case kCLAuthorizationStatusRestricted:
+    case kCLAuthorizationStatusDenied:
+    case kCLAuthorizationStatusNotDetermined:
+        break;
+    }
+}
+
 - (id) initGeneralWithDelegate: (id) delegate andTimeout: (int) timeout {
     coords = nil;
     theDelegate = delegate;
@@ -152,10 +171,12 @@
         return nil;
     }
     
-    NSLog(@"LatLong.init: Location services enabled");
+    NSLog(@"Location services generally enabled");
     
     self = [super init];
     if (self) {
+        self.timeout = timeout;
+        
         // desiredAccuracyRepresents accuracy in meters; kCLLocationAccuracyBest is a code
         //  (-1) indicating best accuracy. I'm going to use best
         // accuracy because in some cases places (e.g., restaurants)
@@ -165,18 +186,35 @@
         //[self setDistanceFilter:kCLDistanceFilterNone];
         self.delegate = self;
         
-        [self startUpdatingLocation];
+        switch ([CLLocationManager authorizationStatus]) {
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+        case kCLAuthorizationStatusAuthorizedAlways:
+            [self start];
+            break;
         
-        // run the location hardware for at most this amount of time;
-        // trying to conserve power.
-        NSTimeInterval t = timeout;
+        case kCLAuthorizationStatusRestricted:
+        case kCLAuthorizationStatusDenied:
+            return nil;
         
-        [self performSelector:@selector(stopUpdatingLocation:) withObject:nil afterDelay:t];
+        case kCLAuthorizationStatusNotDetermined:
+            [self requestWhenInUseAuthorization];
+        }
     } else {
         NSLog(@"LatLong.initGeneralWithDelegate: nil result of call to super init");
     }
     
     return self;
+}
+
+- (void) start;
+{
+    [self startUpdatingLocation];
+
+    // run the location hardware for at most this amount of time;
+    // trying to conserve power.
+    NSTimeInterval t = self.timeout;
+
+    [self performSelector:@selector(stopUpdatingLocation:) withObject:nil afterDelay:t];
 }
 
 - (LatLong *) initWithDelegate: (NSObject<LatLongDelegate> *) delegate andTimeout: (int) timeoutDurationInSeconds {

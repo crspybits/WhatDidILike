@@ -1,5 +1,5 @@
 //
-//  Comment+CoreDataClass.swift
+//  Item.swift
 //  WhatDidILike
 //
 //  Created by Christopher G Prince on 8/21/17.
@@ -10,15 +10,15 @@ import Foundation
 import CoreData
 import SMCoreLib
 
-@objc(Comment)
-public class Comment: BaseObject {
+@objc(Item)
+public class Item: BaseObject {
     class func entityName() -> String {
-        return "Comment"
+        return "Item"
     }
     
-    class func newObject() -> Comment {
-        let comment = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Comment
-        return comment
+    class func newObject() -> Item {
+        let item = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Item
+        return item
     }
     
     func save() {
