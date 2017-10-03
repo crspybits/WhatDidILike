@@ -16,6 +16,7 @@ public class Place: BaseObject {
         return "Place"
     }
     
+    // After you create a Place, make sure you give it at least one Location-- this is required by the model.
     class func newObject() -> Place {
         let place = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Place
         return place
@@ -23,5 +24,15 @@ public class Place: BaseObject {
     
     func save() {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
+    
+    // Assumes deletion of any needed location has already occurred.
+    func remove() {
+        for itemObj in items! {
+            let item = itemObj as! Item
+            item.remove()
+        }
+        
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
     }
 }

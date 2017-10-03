@@ -10,6 +10,11 @@ import UIKit
 import MapKit
 import SMCoreLib
 
+protocol LocationViewDelegate : class {
+    func locationViewStartedUsingGPS(_ lv: LocationView)
+    func locationViewStoppedUsingGPS(_ lv: LocationView)
+}
+
 class LocationView: UIView, XibBasics {
     typealias ViewType = LocationView
     @IBOutlet weak var address: TextView!
@@ -18,6 +23,7 @@ class LocationView: UIView, XibBasics {
     @IBOutlet weak var specificDescription: TextView!
     @IBOutlet private weak var ratingContainer: UIView!
     private let rating = RatingView.create()!
+    weak var delegate:LocationViewDelegate!
     
     private var defaultRegion:MKCoordinateRegion!
     
@@ -71,6 +77,13 @@ class LocationView: UIView, XibBasics {
         map.addGestureRecognizer(tap)
     }
     
+    func close() {
+        ll?.stopWithoutCallback()
+        ll?.cleanup()
+        delegate?.locationViewStoppedUsingGPS(self)
+        convertAddress?.cleanup()
+    }
+    
     @objc private func tapGestureAction() {
         mapTap()
     }
@@ -86,6 +99,7 @@ class LocationView: UIView, XibBasics {
         switch gpsLocationType {
         case .current:
             LocationView.numberOfTimesLocationServicesFailed.intValue = 0
+            delegate?.locationViewStartedUsingGPS(self)
             ll = LatLong(delegate: self)
             
         case .previous:
@@ -250,7 +264,7 @@ class LocationView: UIView, XibBasics {
                 alert.addAction(UIAlertAction(title: "Use New", style: .destructive) { alert in
                     save()
                 })
-                viewController.present(alert, animated: true, completion: nil)
+                viewController?.present(alert, animated: true, completion: nil)
             } else {
                 // Greater accuracy numbers actually mean poorer results
                 if (newLocation.horizontalAccuracy > currentCoords.horizontalAccuracy) {
@@ -266,6 +280,17 @@ class LocationView: UIView, XibBasics {
             save()
         }
     }
+    
+    private func showPreviousLocation() {
+        map.showsUserLocation = false
+        if let currentCoords = currentCoords {
+            annotateMap(coords: currentCoords.coordinate)
+        }
+        else {
+            removeAnnotation()
+            map.setRegion(defaultRegion, animated: false)
+        }
+    }
 }
 
 extension LocationView : LatLongDelegate {
@@ -277,6 +302,7 @@ extension LocationView : LatLongDelegate {
     }
     
     func finishedAttemptingToObtainCoordinates() {
+        delegate?.locationViewStoppedUsingGPS(self)
         Log.msg("finishedAttemptingToObtainCoordinates: ll: \(ll)")
         if ll.coords == nil {
             // We could not obtain coords; change the gpsLocation to `previous`
@@ -309,17 +335,6 @@ extension LocationView : LatLongDelegate {
             }
 
             saveNewCoordinatesIfNeeded(newLocation: mostAccurateLocation)
-        }
-    }
-    
-    private func showPreviousLocation() {
-        map.showsUserLocation = false
-        if let currentCoords = currentCoords {
-            annotateMap(coords: currentCoords.coordinate)
-        }
-        else {
-            removeAnnotation()
-            map.setRegion(defaultRegion, animated: false)
         }
     }
 }

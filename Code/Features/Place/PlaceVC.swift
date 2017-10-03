@@ -8,6 +8,7 @@
 
 import UIKit
 import SMCoreLib
+import FLAnimatedImage
 
 class PlaceVC: UIViewController {
     // Set this before presenting VC
@@ -16,6 +17,7 @@ class PlaceVC: UIViewController {
     fileprivate let placeCellReuseId = "PlaceVCCell"
     @IBOutlet weak private var tableView: UITableView!
     @IBOutlet weak private var tableViewBottom: NSLayoutConstraint!
+    private var animatingEarthImageView:FLAnimatedImageView!
     
     fileprivate class RowView {
         let contents:UIView!
@@ -37,6 +39,16 @@ class PlaceVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let gifURL = Bundle.main.url(forResource: "rotatingEarth", withExtension: "gif")
+        let gifData = try! Data(contentsOf: gifURL!)
+        let image = FLAnimatedImage(animatedGIFData: gifData)
+        animatingEarthImageView = FLAnimatedImageView()
+        animatingEarthImageView.animatedImage = image
+        animatingEarthImageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        let earthBarButtonItem = UIBarButtonItem(customView: animatingEarthImageView)
+        animatingEarthImageView.isHidden = true
+        navigationItem.rightBarButtonItem = earthBarButtonItem
         
         let placeNameView = PlaceNameView.create()!
         placeNameView.placeName.text = place.name
@@ -66,6 +78,7 @@ class PlaceVC: UIViewController {
                     location.specificDescription = update
                     location.save()
                 }
+                locationView.delegate = self
                 rowViews.append(RowView(contents: locationView))
             }
         }
@@ -130,6 +143,13 @@ class PlaceVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         scrollingTearDown()
+        
+        for rowView in rowViews {
+            // In case, geocoding is occuring or LocationView is using GPS.
+            if let locationView = rowView.contents as? LocationView {
+                locationView.close()
+            }
+        }
     }
     
     @objc func keyboardWillChangeFrame(notification:NSNotification) {
@@ -179,5 +199,15 @@ extension PlaceVC : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         let contents = displayedRowViews[indexPath.row].contents!
         return contents.frameHeight
+    }
+}
+
+extension PlaceVC : LocationViewDelegate {
+    func locationViewStartedUsingGPS(_ lv: LocationView) {
+        animatingEarthImageView.isHidden = false
+    }
+    
+    func locationViewStoppedUsingGPS(_ lv: LocationView) {
+        animatingEarthImageView.isHidden = true
     }
 }

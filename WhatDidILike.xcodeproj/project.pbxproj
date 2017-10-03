@@ -10,6 +10,8 @@
 		146991ADF5C9C882E6AABE63 /* Pods_WhatDidILike.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2F0394E5734A520BA46C48 /* Pods_WhatDidILike.framework */; };
 		83019F891F80924400E1E117 /* BaseObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F871F80924400E1E117 /* BaseObject+CoreDataClass.swift */; };
 		83019F8E1F8092EE00E1E117 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F8C1F8092EE00E1E117 /* Location+CoreDataProperties.swift */; };
+		83019F901F81730100E1E117 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F8F1F81730100E1E117 /* Spinner.swift */; };
+		830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */ = {isa = PBXBuildFile; fileRef = 830CCC7D1F83276A003668B7 /* rotatingEarth.gif */; };
 		831B04171F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04111F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift */; };
 		831B04281F5CC7BD000E21C4 /* PlaceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04241F5CC7BD000E21C4 /* PlaceList.swift */; };
 		831B04291F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */; };
@@ -83,6 +85,8 @@
 		6B2F0394E5734A520BA46C48 /* Pods_WhatDidILike.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhatDidILike.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83019F871F80924400E1E117 /* BaseObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseObject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		83019F8C1F8092EE00E1E117 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		83019F8F1F81730100E1E117 /* Spinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
+		830CCC7D1F83276A003668B7 /* rotatingEarth.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = rotatingEarth.gif; sourceTree = "<group>"; };
 		831B04111F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		831B04241F5CC7BD000E21C4 /* PlaceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceList.swift; sourceTree = "<group>"; };
 		831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceList+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -248,6 +252,7 @@
 		83B496BB1F4BCFB50083610D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				83019F8F1F81730100E1E117 /* Spinner.swift */,
 				837788EC1F6608670014B8A2 /* UIResponder+FirstResponder.h */,
 				837788EB1F6608670014B8A2 /* UIResponder+FirstResponder.m */,
 				837788E91F6607010014B8A2 /* UIViewController+Scrolling.swift */,
@@ -330,6 +335,7 @@
 			children = (
 				83D49CD71F4AC2AA00409B0F /* Assets.xcassets */,
 				83D49CD81F4AC2AA00409B0F /* Info.plist */,
+				830CCC7D1F83276A003668B7 /* rotatingEarth.gif */,
 			);
 			path = Resources;
 			sourceTree = SOURCE_ROOT;
@@ -453,6 +459,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */,
 				83B533841F5D0C670028E6B5 /* RatingView.xib in Resources */,
 				83EE7DD21F5DB9F300628CA8 /* PlaceVCCell.xib in Resources */,
 				83401DA61F5CFB5300A96C8D /* LocationView.xib in Resources */,
@@ -499,6 +506,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/HPTextViewTapGestureRecognizer/HPTextViewTapGestureRecognizer.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SMCoreLib/SMCoreLib.framework",
@@ -506,6 +514,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HPTextViewTapGestureRecognizer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SMCoreLib.framework",
@@ -575,6 +584,7 @@
 				83401DA21F5CF59F00A96C8D /* UIColor+Extras.swift in Sources */,
 				8366CD401F7CA65F00E9D6FF /* LatLong.m in Sources */,
 				83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */,
+				83019F901F81730100E1E117 /* Spinner.swift in Sources */,
 				83401DA81F5CFD7400A96C8D /* Layout.swift in Sources */,
 				8366CD3F1F7CA65F00E9D6FF /* GeocodeAddressToLatLong.m in Sources */,
 				837788F31F6673470014B8A2 /* TextField.swift in Sources */,

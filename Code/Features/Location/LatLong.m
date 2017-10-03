@@ -7,7 +7,7 @@
 //
 
 // In seconds; duration of attempt to obtain lat/long coordinates
-#define DURATION_OF_ATTEMPT 15.0l
+#define DURATION_OF_ATTEMPT 10.0l
 
 // Reasonably accurate is within 100 meters
 #define REASONABLY_ACCURATE 100.0

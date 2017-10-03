@@ -14,6 +14,7 @@ class MainListVC: UIViewController {
     var coreDataSource:CoreDataSource!
     let cellReuseId = "LocationTableViewCell"
     private var showDetailsForIndexPath:IndexPath?
+    private var indexPathOfNewPlace:IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +23,51 @@ class MainListVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseId)
+        
+        let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPlace))
+        navigationItem.rightBarButtonItem = add
+        
+        let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editAction))
+        navigationItem.leftBarButtonItem = editButton
+    }
+    
+    @objc private func editAction() {
+        tableView.setEditing(!tableView.isEditing, animated: true)
+    }
+    
+    @objc private func addNewPlace() {
+        let newPlace = Place.newObject()
+        newPlace.name = "New Place"
+        
+        // Each place must have at least one location.
+        let location = Location.newObject()
+        newPlace.addToLocations(location)
+        
+        newPlace.save()
+
+        /* Need to:
+            (a) figure out the index path of this new object,
+            (b) scroll to that row, and
+            (c) show this Place in the PlaceVC.
+        */
+        
+        // The `objectWasInserted` delegate method gets called before `save` returns-- so we'll have the index path of the new object.
+        
+        /* TODO: When we get back from the PlaceVC
+            a) scroll to the newly created place,
+            b) refresh it's name-- this may reposition it.
+            NEED to do this for just regular editing too.
+        */
+        tableView.scrollToRow(at: indexPathOfNewPlace!, at: .middle, animated: true)
+        TimedCallback.withDuration(0.2) {
+            self.tableView.flashRow(UInt(self.indexPathOfNewPlace!.row), withDuration: TimeInterval(0.3)) {
+                let placeVC = PlaceVC.create()
+                placeVC.place = newPlace
+                self.showDetailsForIndexPath = self.indexPathOfNewPlace
+                self.navigationController!.pushViewController(placeVC, animated: true)
+                self.indexPathOfNewPlace = nil
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,10 +102,26 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
         showDetailsForIndexPath = indexPath
         navigationController!.pushViewController(placeVC, animated: true)
     }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .delete
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        switch editingStyle {
+        case .delete:
+            let location = self.coreDataSource.object(at: indexPath) as! Location
+            location.remove()
+            tableView.setEditing(false, animated: true)
+        
+        default:
+            assert(false)
+        }
+    }
 }
 
 extension MainListVC : CoreDataSourceDelegate {
-    // This must have sort descriptor(s) because that is required by the NSFetchedResultsController, which is used internally by this class.
+    // 10/2/17; I'm fetching locations here -- becuase each place can have more than one location, and I want to get all of these locations represented here. This also means that a Place *must* have a location or I won't be able to show it here. I'm going to change the Core Data model to require each place have at least one location.
     func coreDataSourceFetchRequest(_ cds: CoreDataSource!) -> NSFetchRequest<NSFetchRequestResult>! {
         return Location.fetchRequestForAllObjects()
     }
@@ -78,6 +140,7 @@ extension MainListVC : CoreDataSourceDelegate {
     }
     
     func coreDataSource(_ cds: CoreDataSource!, objectWasInserted indexPathOfInsertedObject: IndexPath!) {
+        indexPathOfNewPlace = indexPathOfInsertedObject
         tableView.reloadData()
     }
     

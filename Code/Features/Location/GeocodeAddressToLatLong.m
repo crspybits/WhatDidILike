@@ -17,6 +17,7 @@
 @implementation GeocodeAddressToLatLong
 
 - (void) cleanup {
+    [mapAddressToCoordinates cancelGeocode];
     mapAddressToCoordinates = nil;
     self.delegate = nil;
 }

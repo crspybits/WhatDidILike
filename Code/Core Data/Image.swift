@@ -21,4 +21,15 @@ public class Image: NSManagedObject {
         let image = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Image
         return image
     }
+    
+    func remove() {
+        let filePath = FileStorage.path(toItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY) + "/" + fileName!
+        do {
+            try FileManager.default.removeItem(atPath: filePath)
+        } catch {
+            Log.error("Could not delete file: \(filePath)")
+        }
+        
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
+    }
 }

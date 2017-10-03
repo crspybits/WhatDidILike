@@ -59,4 +59,19 @@ public class Location: BaseObject {
     func save() {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
+    
+    func remove() {
+        // Does the place associated with this location have more than one location?
+        if place!.locations!.count == 1 {
+            // No-- then, the associated place needs to be removed too.
+            place!.remove()
+        }
+        
+        for imageObj in images! {
+            let image = imageObj as! Image
+            image.remove()
+        }
+        
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
+    }
 }

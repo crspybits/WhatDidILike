@@ -12,6 +12,9 @@ target 'WhatDidILike' do
     pod 'SMCoreLib', '~> 1.0'
 	# pod 'SMCoreLib', :path => '../Common/SMCoreLib/'
 	
+	# Animated GIF's
+	pod 'FLAnimatedImage', '~> 1.0'
+	
     # 9/24/17; Dealing with Cocoapods inability to specify Swift versions...
 
 	post_install do |installer|

@@ -24,4 +24,13 @@ public class Item: BaseObject {
     func save() {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
+    
+    func remove() {
+        for commentObj in comments! {
+            let comment = commentObj as! Comment
+            comment.remove()
+        }
+        
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
+    }
 }
