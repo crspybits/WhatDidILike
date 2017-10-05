@@ -63,7 +63,7 @@ public class Location: BaseObject {
     func remove() {
         // Does the place associated with this location have more than one location?
         if place!.locations!.count == 1 {
-            // No-- then, the associated place needs to be removed too.
+            // No: the associated place needs to be removed too.
             place!.remove()
         }
         

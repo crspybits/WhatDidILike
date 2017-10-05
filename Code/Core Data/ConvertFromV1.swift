@@ -68,6 +68,7 @@ class ConvertFromV1 {
     var numberCategoryCreationErrors = 0
     var numberListNamesCreated = 0
     var numberListNameCreationErrors = 0
+    var errorRemovingIconsDirectory:Bool = false
 
     // Move a large image in the Documents directory to the LARGE_IMAGE_DIRECTORY. Also renames the image to make the name format more standard. Returns the renamed image file name (without path) or nil on an error.
     private func moveLargeImage(largeImageFileName: String) -> String? {
@@ -95,6 +96,14 @@ class ConvertFromV1 {
     }
     
     func doIt() {
+        // Get rid of "icons" directory-- we can use our current technique for generating these files on the fly-- with naming for their sizes.
+        let iconsDirURL = FileStorage.url(ofItem: "icons")!
+        do {
+            try FileManager.default.removeItem(at: iconsDirURL)
+        } catch {
+            errorRemovingIconsDirectory = true
+        }
+        
         let placeFilePath = FileStorage.path(toItem: RESTAURANTS)
         Log.msg("\(String(describing: placeFilePath))")
         
@@ -195,6 +204,7 @@ class ConvertFromV1 {
 
         // TODO: Turn this into an Alert message. Explain the image errors if non-zero.
         Log.msg("Stats: ")
+        Log.msg("\terrorRemovingIconsDirectory: \(errorRemovingIconsDirectory)")
         Log.msg("\tnumberPlaces: \(numberPlaces)")
         Log.msg("\tnumberImages: \(numberImages)")
         Log.msg("\tnumberImageErrors: \(numberImageErrors)")

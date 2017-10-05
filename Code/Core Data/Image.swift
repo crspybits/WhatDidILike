@@ -30,6 +30,8 @@ public class Image: NSManagedObject {
             Log.error("Could not delete file: \(filePath)")
         }
         
+        // TODO: Remove any scaled images.
+        
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
     }
 }

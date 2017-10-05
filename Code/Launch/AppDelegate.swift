@@ -30,6 +30,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         CoreData.registerSession(coreDataSession, forName: CoreDataExtras.sessionName)
         
+#if DEBUG
+        let numberPlaces = try? CoreData.sessionNamed(CoreDataExtras.sessionName)
+            .fetchAllObjects(withEntityName: Place.entityName()).count
+        let numberLocations = try? CoreData.sessionNamed(CoreDataExtras.sessionName)
+            .fetchAllObjects(withEntityName: Location.entityName()).count
+        let numberItems = try? CoreData.sessionNamed(CoreDataExtras.sessionName)
+            .fetchAllObjects(withEntityName: Item.entityName()).count
+        let numberComments = try? CoreData.sessionNamed(CoreDataExtras.sessionName)
+            .fetchAllObjects(withEntityName: Comment.entityName()).count
+        let numberImages = try? CoreData.sessionNamed(CoreDataExtras.sessionName)
+            .fetchAllObjects(withEntityName: Image.entityName()).count
+    
+        Log.msg("Stats on Core Data objects: ")
+        Log.msg("\tplaces: \(String(describing: numberPlaces))")
+        Log.msg("\tlocations: \(String(describing: numberLocations))")
+        Log.msg("\titems: \(String(describing: numberItems))")
+        Log.msg("\tcomments: \(String(describing: numberComments))")
+        Log.msg("\timages: \(String(describing: numberImages))")
+#endif
+        
         // TODO: When doing the conversion need to present a progress indicator to show what's going on and how far the conversion has progressed.
         //if !AppDelegate.converted.boolValue {
             //AppDelegate.converted.boolValue = true

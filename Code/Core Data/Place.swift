@@ -33,6 +33,9 @@ public class Place: BaseObject {
             item.remove()
         }
         
+        // Not going remove a category even if there are no places referencing it any more. The user can manually delete it if they want to.
+        // Similarly, for lists.
+        
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
     }
 }
