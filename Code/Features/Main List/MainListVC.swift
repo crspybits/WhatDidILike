@@ -62,7 +62,7 @@ class MainListVC: UIViewController {
         TimedCallback.withDuration(0.2) {
             self.tableView.flashRow(UInt(self.indexPathOfNewPlace!.row), withDuration: TimeInterval(0.3)) {
                 let placeVC = PlaceVC.create()
-                placeVC.place = newPlace
+                placeVC.location = location
                 self.showDetailsForIndexPath = self.indexPathOfNewPlace
                 self.navigationController!.pushViewController(placeVC, animated: true)
                 self.indexPathOfNewPlace = nil
@@ -157,7 +157,7 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         let placeVC = PlaceVC.create()
         let location = self.coreDataSource.object(at: indexPath) as! Location
-        placeVC.place = location.place
+        placeVC.location = location
         showDetailsForIndexPath = indexPath
         navigationController!.pushViewController(placeVC, animated: true)
     }

@@ -12,7 +12,9 @@ import FLAnimatedImage
 
 class PlaceVC: UIViewController {
     // Set this before presenting VC
-    var place:Place!
+    var location:Location!
+    
+    private var place:Place!
     
     fileprivate let placeCellReuseId = "PlaceVCCell"
     @IBOutlet weak private var tableView: UITableView!
@@ -40,6 +42,8 @@ class PlaceVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        place = location.place
+        
         let gifURL = Bundle.main.url(forResource: "rotatingEarth", withExtension: "gif")
         let gifData = try! Data(contentsOf: gifURL!)
         let image = FLAnimatedImage(animatedGIFData: gifData)
@@ -66,20 +70,28 @@ class PlaceVC: UIViewController {
         }
         rowViews.append(RowView(contents: placeDetailsView))
         
+        let newLocation = NewLocation.create()!
+        rowViews.append(RowView(contents: newLocation))
+
+        newLocation.newLocation = {
+            let location = Location.newObject()
+            self.place.addToLocations(location)
+            self.place.save()
+            
+            // Need to add a RowView immediately after this `NewLocation` header.
+            // 1) Figure out where the newLocation instance is in the rowViews
+            // 2) Add in the new location
+            
+            let newLocationIndex =
+                self.rowViews.index(where: {$0.contents == newLocation})!
+            self.insertLocation(location, startingAtRowViewIndex: newLocationIndex+1)
+            self.tableView.reloadData()
+        }
+        
         if let locations = place.locations as? Set<Location> {
             for location in locations {
-                let locationView = LocationView.create()!
-                locationView.setup(withLocation: location, place: place, viewController: self)
-                locationView.address.save = { update in
-                    location.address = update
-                    location.save()
-                }
-                locationView.specificDescription.save = { update in
-                    location.specificDescription = update
-                    location.save()
-                }
-                locationView.delegate = self
-                rowViews.append(RowView(contents: locationView))
+                let markLocation = location == self.location
+                insertLocation(location, startingAtRowViewIndex: rowViews.endIndex, markLocation: markLocation)
             }
         }
         
@@ -133,6 +145,36 @@ class PlaceVC: UIViewController {
         
         let cellNib = UINib(nibName: "PlaceVCCell", bundle: nil)
         tableView.register(cellNib, forCellReuseIdentifier: placeCellReuseId)
+    }
+    
+    private func insertLocation(_ location: Location, startingAtRowViewIndex index: Int, markLocation:Bool = false) {
+        let locationHeader = LocationHeader.create()!
+        locationHeader.setup(withLocation: location)
+        if markLocation {
+            // Do something fancier...
+            locationHeader.debugBlackBorder = true
+        }
+        rowViews.insert(RowView(contents: locationHeader), at: index)
+
+        let locationView = LocationView.create()!
+        locationView.setup(withLocation: location, place: place, viewController: self)
+        locationView.address.save = { update in
+            location.address = update
+            location.save()
+        }
+        locationView.specificDescription.save = { update in
+            location.specificDescription = update
+            location.save()
+        }
+        locationView.delegate = self
+        let locationViewRow = RowView(contents: locationView)
+        locationViewRow.displayed = false
+        rowViews.insert(locationViewRow, at: index+1)
+
+        locationHeader.showHide = {
+            locationViewRow.displayed = !locationViewRow.displayed
+            self.tableView.reloadData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

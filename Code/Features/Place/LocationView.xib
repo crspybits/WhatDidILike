@@ -13,17 +13,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LocationView" customModule="WhatDidILike" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="447" height="915"/>
+            <rect key="frame" x="0.0" y="0.0" width="447" height="866"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Place location info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pfN-xQ-6MN">
-                    <rect key="frame" x="154" y="30" width="139.5" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="8a6-H2-Khc" customClass="TextView" customModule="WhatDidILike" customModuleProvider="target">
-                    <rect key="frame" x="10" y="61" width="427" height="89"/>
+                    <rect key="frame" x="10" y="10" width="427" height="89"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="89" id="hYL-zz-BQk"/>
@@ -32,19 +26,19 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MGu-Nz-gXx">
-                    <rect key="frame" x="10" y="155" width="46.5" height="15"/>
+                    <rect key="frame" x="10" y="104" width="46.5" height="15"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="MRz-zE-n5X">
-                    <rect key="frame" x="10" y="190" width="427" height="145"/>
+                    <rect key="frame" x="10" y="139" width="427" height="145"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="145" id="yOf-4r-Owx"/>
                     </constraints>
                 </mapView>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="4kX-U9-MTM">
-                    <rect key="frame" x="10" y="345" width="210" height="29"/>
+                    <rect key="frame" x="10" y="294" width="210" height="29"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="210" id="GrW-hK-a2f"/>
                     </constraints>
@@ -58,13 +52,13 @@
                     </connections>
                 </segmentedControl>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GPS location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sZR-zc-EBA">
-                    <rect key="frame" x="10" y="378" width="72.5" height="15"/>
+                    <rect key="frame" x="10" y="327" width="72.5" height="15"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="D2X-YV-mTL" customClass="TextView" customModule="WhatDidILike" customModuleProvider="target">
-                    <rect key="frame" x="10" y="413" width="427" height="90"/>
+                    <rect key="frame" x="10" y="362" width="427" height="90"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="90" id="AfT-yQ-icn"/>
@@ -73,26 +67,26 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Specific description for this location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zCb-S8-kOL" userLabel="Specific description for this location">
-                    <rect key="frame" x="10" y="508" width="204" height="15"/>
+                    <rect key="frame" x="10" y="457" width="204" height="15"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BpI-1z-Mhz" userLabel="Rating Container">
-                    <rect key="frame" x="0.0" y="528" width="447" height="170"/>
+                    <rect key="frame" x="0.0" y="477" width="447" height="170"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="170" id="DpF-7U-ts5"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pPM-Pb-NnH">
-                    <rect key="frame" x="10" y="703" width="427" height="184"/>
+                    <rect key="frame" x="10" y="652" width="427" height="184"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="184" id="0za-a8-g2j"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location pictures" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qH4-Pi-z18">
-                    <rect key="frame" x="10" y="892" width="98" height="15"/>
+                    <rect key="frame" x="10" y="841" width="98" height="15"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -104,7 +98,6 @@
                 <constraint firstItem="MGu-Nz-gXx" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="23P-Eq-wNj"/>
                 <constraint firstItem="BpI-1z-Mhz" firstAttribute="top" secondItem="zCb-S8-kOL" secondAttribute="bottom" constant="5" id="6TT-uQ-CZX"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="D2X-YV-mTL" secondAttribute="trailing" constant="10" id="8j5-rH-TRS"/>
-                <constraint firstItem="pfN-xQ-6MN" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="9Ot-1Q-Fmo"/>
                 <constraint firstItem="4kX-U9-MTM" firstAttribute="top" secondItem="MRz-zE-n5X" secondAttribute="bottom" constant="10" id="Anf-Y0-Zu5"/>
                 <constraint firstItem="zCb-S8-kOL" firstAttribute="top" secondItem="D2X-YV-mTL" secondAttribute="bottom" constant="5" id="Be6-RC-jvr"/>
                 <constraint firstItem="4kX-U9-MTM" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="C7B-Qw-5Vs"/>
@@ -115,14 +108,13 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="BpI-1z-Mhz" secondAttribute="trailing" id="VKM-J8-IaQ"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="pPM-Pb-NnH" secondAttribute="trailing" constant="10" id="XqL-Nt-BHf"/>
                 <constraint firstItem="qH4-Pi-z18" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="Yr3-Mj-GrD"/>
-                <constraint firstItem="pfN-xQ-6MN" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Zfo-33-M4X"/>
                 <constraint firstItem="sZR-zc-EBA" firstAttribute="top" secondItem="4kX-U9-MTM" secondAttribute="bottom" constant="5" id="Zhy-PM-Wy6"/>
                 <constraint firstItem="8a6-H2-Khc" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="aLh-Bd-UJI"/>
                 <constraint firstItem="BpI-1z-Mhz" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="cDR-S1-Bat"/>
+                <constraint firstItem="8a6-H2-Khc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="lSn-RF-3qq"/>
                 <constraint firstItem="qH4-Pi-z18" firstAttribute="top" secondItem="pPM-Pb-NnH" secondAttribute="bottom" constant="5" id="pVW-cx-TuB"/>
                 <constraint firstItem="MRz-zE-n5X" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="qgH-2o-9OP"/>
                 <constraint firstItem="pPM-Pb-NnH" firstAttribute="top" secondItem="BpI-1z-Mhz" secondAttribute="bottom" constant="5" id="qlR-ff-wZN"/>
-                <constraint firstItem="8a6-H2-Khc" firstAttribute="top" secondItem="pfN-xQ-6MN" secondAttribute="bottom" constant="10" id="r2T-65-8S5"/>
                 <constraint firstItem="zCb-S8-kOL" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="rlb-Am-erh"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="MRz-zE-n5X" secondAttribute="trailing" constant="10" id="tpT-XD-moO"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="8a6-H2-Khc" secondAttribute="trailing" constant="10" id="vDR-eC-1J6"/>
@@ -137,7 +129,7 @@
                 <outlet property="ratingContainer" destination="BpI-1z-Mhz" id="Y1i-sl-eqi"/>
                 <outlet property="specificDescription" destination="D2X-YV-mTL" id="yXP-Sa-ler"/>
             </connections>
-            <point key="canvasLocation" x="48.5" y="133.5"/>
+            <point key="canvasLocation" x="48.5" y="109"/>
         </view>
     </objects>
 </document>

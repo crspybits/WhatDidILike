@@ -12,6 +12,10 @@
 		83019F8E1F8092EE00E1E117 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F8C1F8092EE00E1E117 /* Location+CoreDataProperties.swift */; };
 		83019F901F81730100E1E117 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F8F1F81730100E1E117 /* Spinner.swift */; };
 		830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */ = {isa = PBXBuildFile; fileRef = 830CCC7D1F83276A003668B7 /* rotatingEarth.gif */; };
+		8317E8F01F872D5A004C53BB /* LocationHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E8EF1F872D5A004C53BB /* LocationHeader.swift */; };
+		8317E8F21F872D74004C53BB /* LocationHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8317E8F11F872D74004C53BB /* LocationHeader.xib */; };
+		8317E8F41F8731DD004C53BB /* NewLocation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8317E8F31F8731DD004C53BB /* NewLocation.xib */; };
+		8317E8F61F873204004C53BB /* NewLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E8F51F873204004C53BB /* NewLocation.swift */; };
 		831B04171F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04111F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift */; };
 		831B04281F5CC7BD000E21C4 /* PlaceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04241F5CC7BD000E21C4 /* PlaceList.swift */; };
 		831B04291F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */; };
@@ -87,6 +91,10 @@
 		83019F8C1F8092EE00E1E117 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83019F8F1F81730100E1E117 /* Spinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		830CCC7D1F83276A003668B7 /* rotatingEarth.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = rotatingEarth.gif; sourceTree = "<group>"; };
+		8317E8EF1F872D5A004C53BB /* LocationHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationHeader.swift; path = Features/Place/LocationHeader.swift; sourceTree = "<group>"; };
+		8317E8F11F872D74004C53BB /* LocationHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LocationHeader.xib; path = Features/Place/LocationHeader.xib; sourceTree = "<group>"; };
+		8317E8F31F8731DD004C53BB /* NewLocation.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = NewLocation.xib; path = Features/Place/NewLocation.xib; sourceTree = "<group>"; };
+		8317E8F51F873204004C53BB /* NewLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewLocation.swift; path = Features/Place/NewLocation.swift; sourceTree = "<group>"; };
 		831B04111F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		831B04241F5CC7BD000E21C4 /* PlaceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceList.swift; sourceTree = "<group>"; };
 		831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceList+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -239,6 +247,10 @@
 				83401D9D1F5CEE8900A96C8D /* PlaceDetailsView.swift */,
 				83401DA51F5CFB5300A96C8D /* LocationView.xib */,
 				83401DA31F5CFB3D00A96C8D /* LocationView.swift */,
+				8317E8F31F8731DD004C53BB /* NewLocation.xib */,
+				8317E8F51F873204004C53BB /* NewLocation.swift */,
+				8317E8F11F872D74004C53BB /* LocationHeader.xib */,
+				8317E8EF1F872D5A004C53BB /* LocationHeader.swift */,
 				83B533831F5D0C670028E6B5 /* RatingView.xib */,
 				83B533811F5D0C450028E6B5 /* RatingView.swift */,
 				83B5337A1F5D09E70028E6B5 /* ItemNameView.xib */,
@@ -462,8 +474,10 @@
 				830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */,
 				83B533841F5D0C670028E6B5 /* RatingView.xib in Resources */,
 				83EE7DD21F5DB9F300628CA8 /* PlaceVCCell.xib in Resources */,
+				8317E8F21F872D74004C53BB /* LocationHeader.xib in Resources */,
 				83401DA61F5CFB5300A96C8D /* LocationView.xib in Resources */,
 				83A2D5E91F5CE33A0003C5F9 /* Place.storyboard in Resources */,
+				8317E8F41F8731DD004C53BB /* NewLocation.xib in Resources */,
 				83A597C61F67A24100736DE2 /* ListManager.xib in Resources */,
 				83D49CD31F4AC26A00409B0F /* LaunchScreen.storyboard in Resources */,
 				83D49CD91F4AC2AA00409B0F /* Assets.xcassets in Resources */,
@@ -572,6 +586,7 @@
 				83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */,
 				8366CD3D1F7CA65F00E9D6FF /* Map.m in Sources */,
 				8396CE381F4BCB8A00660D73 /* Item.swift in Sources */,
+				8317E8F61F873204004C53BB /* NewLocation.swift in Sources */,
 				8396CE3A1F4BCB8A00660D73 /* Place.swift in Sources */,
 				83A597BE1F6788ED00736DE2 /* TextView.swift in Sources */,
 				837788EF1F66151F0014B8A2 /* UITextField+Extras.swift in Sources */,
@@ -610,6 +625,7 @@
 				83B496BD1F4BD0830083610D /* Identifiers.swift in Sources */,
 				831B042A1F5CC7BD000E21C4 /* PlaceCategory.swift in Sources */,
 				8366CD3E1F7CA65F00E9D6FF /* MapAnnotation.m in Sources */,
+				8317E8F01F872D5A004C53BB /* LocationHeader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
