@@ -63,6 +63,7 @@ class MainListVC: UIViewController {
             self.tableView.flashRow(UInt(self.indexPathOfNewPlace!.row), withDuration: TimeInterval(0.3)) {
                 let placeVC = PlaceVC.create()
                 placeVC.location = location
+                placeVC.newPlace = true
                 self.showDetailsForIndexPath = self.indexPathOfNewPlace
                 self.navigationController!.pushViewController(placeVC, animated: true)
                 self.indexPathOfNewPlace = nil
@@ -78,65 +79,6 @@ class MainListVC: UIViewController {
             // Just in case the displayed summary info (e.g., name) changed. This doesn't get updated automagically by Core Data since the name is accessed via a relation.
             tableView.reloadRows(at: [showDetailsForIndexPath], with: .automatic)
             self.showDetailsForIndexPath = nil
-        }
-    }
-    
-    private func impactOfDeletionOf(location:Location) -> String? {
-        var messageComponents = [String]()
-        var numberImages = 0
-        var numberComments = 0
-        var numberMenuItems = 0
-        
-        if location.place!.locations!.count == 1 {
-            messageComponents.append("its place information")
-            numberMenuItems += location.place!.items!.count
-            
-            for itemObj in location.place!.items! {
-                let item = itemObj as! Item
-                numberComments += item.comments!.count
-                
-                for commentObj in item.comments! {
-                    let comment = commentObj as! Comment
-                    numberImages += comment.images!.count
-                }
-            }
-        }
-        
-        numberImages += location.images!.count
-        
-        func addToComponents(value: Int, name: String) {
-            if value > 0 {
-                var result = "\(value) \(name)"
-                if value > 1 {
-                    result += "s"
-                }
-                messageComponents.append(result)
-            }
-        }
-        
-        addToComponents(value: numberMenuItems, name: "menu item")
-        addToComponents(value: numberComments, name: "comment")
-        addToComponents(value: numberImages, name: "image")
-        
-        if messageComponents.count > 0 {
-            var message = "Deleting this location will also remove: "
-            for index in 0..<messageComponents.count {
-                let component = messageComponents[index]
-                if index > 0 {
-                    if index == messageComponents.count - 1 {
-                        message += ", and "
-                    }
-                    else {
-                        message += ", "
-                    }
-                }
-                
-                message += component
-            }
-            return message + "."
-        }
-        else {
-            return nil
         }
     }
 }
@@ -170,25 +112,11 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
         switch editingStyle {
         case .delete:
             let location = self.coreDataSource.object(at: indexPath) as! Location
-            var message:String?
-            var title:String
             
-            if let impact = impactOfDeletionOf(location: location) {
-                title = "Warning!"
-                message = impact
-            }
-            else {
-                title = "Really delete this location?"
-            }
-            
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .default) { action in
-            })
-            alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { action in
+            DeletionImpact().showWarning(for: .location(location), using: self, deletionAction: {
                 location.remove()
                 CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
             })
-            present(alert, animated: true, completion: nil)
             
             tableView.setEditing(false, animated: true)
         

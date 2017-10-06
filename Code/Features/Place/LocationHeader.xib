@@ -23,7 +23,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9r-wQ-0h8">
-                    <rect key="frame" x="410" y="7" width="74" height="21"/>
+                    <rect key="frame" x="128" y="7" width="356" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="bvI-E7-Ism"/>
                     </constraints>
@@ -32,9 +32,11 @@
                         <action selector="showHideAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="ZjB-k3-Xs9"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Gg-VB-Oc7">
-                    <rect key="frame" x="102" y="7" width="282" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Gg-VB-Oc7">
+                    <rect key="frame" x="102" y="7" width="0.0" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="rKZ-PV-zCq"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -42,9 +44,12 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="1Gg-VB-Oc7" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="0MK-6f-UvZ"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="M9r-wQ-0h8" secondAttribute="trailing" constant="10" id="DBE-rj-fiB"/>
                 <constraint firstItem="c9W-Dg-WSC" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="HLE-Ym-AgH"/>
+                <constraint firstItem="M9r-wQ-0h8" firstAttribute="leading" secondItem="1Gg-VB-Oc7" secondAttribute="trailing" constant="26" id="YQy-Xl-VYR"/>
                 <constraint firstItem="M9r-wQ-0h8" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Z8y-iE-kJH"/>
+                <constraint firstItem="1Gg-VB-Oc7" firstAttribute="leading" secondItem="c9W-Dg-WSC" secondAttribute="trailing" constant="21.5" id="pan-t1-uUk"/>
                 <constraint firstItem="c9W-Dg-WSC" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="tdb-nl-g0o"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

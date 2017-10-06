@@ -14,8 +14,9 @@
 		830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */ = {isa = PBXBuildFile; fileRef = 830CCC7D1F83276A003668B7 /* rotatingEarth.gif */; };
 		8317E8F01F872D5A004C53BB /* LocationHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E8EF1F872D5A004C53BB /* LocationHeader.swift */; };
 		8317E8F21F872D74004C53BB /* LocationHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8317E8F11F872D74004C53BB /* LocationHeader.xib */; };
-		8317E8F41F8731DD004C53BB /* NewLocation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8317E8F31F8731DD004C53BB /* NewLocation.xib */; };
-		8317E8F61F873204004C53BB /* NewLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E8F51F873204004C53BB /* NewLocation.swift */; };
+		8317E8F41F8731DD004C53BB /* NewObject.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8317E8F31F8731DD004C53BB /* NewObject.xib */; };
+		8317E8F61F873204004C53BB /* NewObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E8F51F873204004C53BB /* NewObject.swift */; };
+		8317E8F81F876E0D004C53BB /* DeletionImpact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E8F71F876E0D004C53BB /* DeletionImpact.swift */; };
 		831B04171F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04111F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift */; };
 		831B04281F5CC7BD000E21C4 /* PlaceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04241F5CC7BD000E21C4 /* PlaceList.swift */; };
 		831B04291F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */; };
@@ -93,8 +94,9 @@
 		830CCC7D1F83276A003668B7 /* rotatingEarth.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = rotatingEarth.gif; sourceTree = "<group>"; };
 		8317E8EF1F872D5A004C53BB /* LocationHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationHeader.swift; path = Features/Place/LocationHeader.swift; sourceTree = "<group>"; };
 		8317E8F11F872D74004C53BB /* LocationHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LocationHeader.xib; path = Features/Place/LocationHeader.xib; sourceTree = "<group>"; };
-		8317E8F31F8731DD004C53BB /* NewLocation.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = NewLocation.xib; path = Features/Place/NewLocation.xib; sourceTree = "<group>"; };
-		8317E8F51F873204004C53BB /* NewLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewLocation.swift; path = Features/Place/NewLocation.swift; sourceTree = "<group>"; };
+		8317E8F31F8731DD004C53BB /* NewObject.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = NewObject.xib; path = Features/Place/NewObject.xib; sourceTree = "<group>"; };
+		8317E8F51F873204004C53BB /* NewObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewObject.swift; path = Features/Place/NewObject.swift; sourceTree = "<group>"; };
+		8317E8F71F876E0D004C53BB /* DeletionImpact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeletionImpact.swift; path = Features/Place/DeletionImpact.swift; sourceTree = "<group>"; };
 		831B04111F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		831B04241F5CC7BD000E21C4 /* PlaceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceList.swift; sourceTree = "<group>"; };
 		831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceList+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -247,8 +249,8 @@
 				83401D9D1F5CEE8900A96C8D /* PlaceDetailsView.swift */,
 				83401DA51F5CFB5300A96C8D /* LocationView.xib */,
 				83401DA31F5CFB3D00A96C8D /* LocationView.swift */,
-				8317E8F31F8731DD004C53BB /* NewLocation.xib */,
-				8317E8F51F873204004C53BB /* NewLocation.swift */,
+				8317E8F31F8731DD004C53BB /* NewObject.xib */,
+				8317E8F51F873204004C53BB /* NewObject.swift */,
 				8317E8F11F872D74004C53BB /* LocationHeader.xib */,
 				8317E8EF1F872D5A004C53BB /* LocationHeader.swift */,
 				83B533831F5D0C670028E6B5 /* RatingView.xib */,
@@ -257,6 +259,7 @@
 				83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */,
 				83B5337F1F5D0A980028E6B5 /* CommentView.xib */,
 				83B5337D1F5D0A6D0028E6B5 /* CommentView.swift */,
+				8317E8F71F876E0D004C53BB /* DeletionImpact.swift */,
 			);
 			name = Place;
 			sourceTree = "<group>";
@@ -477,7 +480,7 @@
 				8317E8F21F872D74004C53BB /* LocationHeader.xib in Resources */,
 				83401DA61F5CFB5300A96C8D /* LocationView.xib in Resources */,
 				83A2D5E91F5CE33A0003C5F9 /* Place.storyboard in Resources */,
-				8317E8F41F8731DD004C53BB /* NewLocation.xib in Resources */,
+				8317E8F41F8731DD004C53BB /* NewObject.xib in Resources */,
 				83A597C61F67A24100736DE2 /* ListManager.xib in Resources */,
 				83D49CD31F4AC26A00409B0F /* LaunchScreen.storyboard in Resources */,
 				83D49CD91F4AC2AA00409B0F /* Assets.xcassets in Resources */,
@@ -586,7 +589,7 @@
 				83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */,
 				8366CD3D1F7CA65F00E9D6FF /* Map.m in Sources */,
 				8396CE381F4BCB8A00660D73 /* Item.swift in Sources */,
-				8317E8F61F873204004C53BB /* NewLocation.swift in Sources */,
+				8317E8F61F873204004C53BB /* NewObject.swift in Sources */,
 				8396CE3A1F4BCB8A00660D73 /* Place.swift in Sources */,
 				83A597BE1F6788ED00736DE2 /* TextView.swift in Sources */,
 				837788EF1F66151F0014B8A2 /* UITextField+Extras.swift in Sources */,
@@ -596,6 +599,7 @@
 				83401D9E1F5CEE8900A96C8D /* PlaceDetailsView.swift in Sources */,
 				83019F8E1F8092EE00E1E117 /* Location+CoreDataProperties.swift in Sources */,
 				83A2D5EB1F5CE3670003C5F9 /* PlaceVC.swift in Sources */,
+				8317E8F81F876E0D004C53BB /* DeletionImpact.swift in Sources */,
 				83401DA21F5CF59F00A96C8D /* UIColor+Extras.swift in Sources */,
 				8366CD401F7CA65F00E9D6FF /* LatLong.m in Sources */,
 				83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */,

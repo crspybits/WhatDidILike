@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13526" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13524"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -38,16 +38,28 @@
                         <action selector="showHideAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="caP-bZ-fmK"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FrP-UC-lUI">
+                    <rect key="frame" x="270" y="42" width="81" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="U97-Ag-ySb"/>
+                    </constraints>
+                    <state key="normal" title="+ Comment"/>
+                    <connections>
+                        <action selector="addCommentAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="koO-zg-JEE"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="B5h-ts-MfA" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="Acn-h4-fKB"/>
+                <constraint firstItem="mtU-WB-kH2" firstAttribute="leading" secondItem="FrP-UC-lUI" secondAttribute="trailing" constant="32" id="Ffl-RP-rrU"/>
                 <constraint firstItem="jPy-uH-P8V" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="H4e-GQ-uO7"/>
                 <constraint firstItem="jPy-uH-P8V" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="TJj-dV-9Nt"/>
                 <constraint firstItem="mtU-WB-kH2" firstAttribute="top" secondItem="jPy-uH-P8V" secondAttribute="bottom" constant="2" id="ZzJ-ep-tSp"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="jPy-uH-P8V" secondAttribute="trailing" constant="10" id="cyZ-Y1-GDo"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="mtU-WB-kH2" secondAttribute="trailing" constant="10" id="iUS-5x-hPF"/>
                 <constraint firstItem="B5h-ts-MfA" firstAttribute="top" secondItem="jPy-uH-P8V" secondAttribute="bottom" constant="5" id="ktk-Uy-yes"/>
+                <constraint firstItem="mtU-WB-kH2" firstAttribute="bottom" secondItem="FrP-UC-lUI" secondAttribute="bottom" id="u3R-M0-mRq"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

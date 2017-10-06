@@ -77,6 +77,12 @@ class LocationView: UIView, XibBasics {
         map.addGestureRecognizer(tap)
     }
     
+    // Useful if the location is new, and you need to establish Current coordinates.
+    func establishCurrentCoordinates() {
+        gpsLocation.selectedSegmentIndex = GPSLocationType.current.rawValue
+        gpsLocationAction()
+    }
+    
     func close() {
         ll?.stopWithoutCallback()
         ll?.cleanup()
@@ -95,6 +101,10 @@ class LocationView: UIView, XibBasics {
     }
 
     @IBAction func gpsLocationAction(_ sender: Any) {
+        gpsLocationAction()
+    }
+    
+    private func gpsLocationAction() {
         let gpsLocationType = GPSLocationType(rawValue: gpsLocation.selectedSegmentIndex)!
         switch gpsLocationType {
         case .current:

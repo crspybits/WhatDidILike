@@ -10,9 +10,21 @@ import UIKit
 import SMCoreLib
 import FLAnimatedImage
 
+class RowView {
+    let contents:UIView!
+    var displayed: Bool = true
+    
+    init(contents: UIView) {
+        self.contents = contents
+    }
+}
+
 class PlaceVC: UIViewController {
     // Set this before presenting VC
     var location:Location!
+    
+    // If you are creating a new place, set this to true before presenting VC.
+    var newPlace = false
     
     private var place:Place!
     
@@ -20,15 +32,6 @@ class PlaceVC: UIViewController {
     @IBOutlet weak private var tableView: UITableView!
     @IBOutlet weak private var tableViewBottom: NSLayoutConstraint!
     private var animatingEarthImageView:FLAnimatedImageView!
-    
-    fileprivate class RowView {
-        let contents:UIView!
-        var displayed: Bool = true
-        
-        init(contents: UIView) {
-            self.contents = contents
-        }
-    }
     
     fileprivate var rowViews = [RowView]()
     fileprivate var displayedRowViews:[RowView] {
@@ -70,10 +73,11 @@ class PlaceVC: UIViewController {
         }
         rowViews.append(RowView(contents: placeDetailsView))
         
-        let newLocation = NewLocation.create()!
+        let newLocation = NewObject.create()!
+        newLocation.setButton(name: "New Location")
         rowViews.append(RowView(contents: newLocation))
 
-        newLocation.newLocation = {
+        newLocation.new = {[unowned newLocation] in
             let location = Location.newObject()
             self.place.addToLocations(location)
             self.place.save()
@@ -85,53 +89,45 @@ class PlaceVC: UIViewController {
             let newLocationIndex =
                 self.rowViews.index(where: {$0.contents == newLocation})!
             self.insertLocation(location, startingAtRowViewIndex: newLocationIndex+1)
+            
             self.tableView.reloadData()
         }
         
         if let locations = place.locations as? Set<Location> {
             for location in locations {
                 let markLocation = location == self.location
-                insertLocation(location, startingAtRowViewIndex: rowViews.endIndex, markLocation: markLocation)
+                insertLocation(location, startingAtRowViewIndex: rowViews.endIndex, markLocation: markLocation, newLocation: newPlace)
             }
+        }
+        
+        let newItem = NewObject.create()!
+        newItem.setButton(name: "New Menu Item")
+        rowViews.append(RowView(contents: newItem))
+        
+        newItem.new = {[unowned newItem] in
+            let item = Item.newObject()
+            let items = NSMutableOrderedSet(orderedSet: self.place.items!)
+            items.insert(item, at: 0)
+            self.place.items = items
+            self.place.save()
+            
+            // Insert this right below the new item header-- newer items float to the top.
+            let newItemIndex = self.rowViews.index(where: {$0.contents == newItem})!
+            self.insertItem(item, atRowViewIndex: newItemIndex+1)
+            self.tableView.reloadData()
         }
         
         if let items = place.items {
             for item in items {
                 let item = item as! Item
-                let itemNameView = ItemNameView.create()!
-                itemNameView.itemName.text = item.name
-                itemNameView.itemName.save = { update in
-                    item.name = update
-                    item.save()
-                }
-                rowViews.append(RowView(contents: itemNameView))
-                
-                var commentViewsForItem = [RowView]()
-                itemNameView.showHide = { [unowned self] in
-                    if commentViewsForItem.count > 0 {
-                        let showHideState = !commentViewsForItem[0].displayed
-                        for commentView in commentViewsForItem {
-                            commentView.displayed = showHideState
-                        }
-                        Log.msg("commentViewsForItem.count: \(commentViewsForItem.count)")
-                        self.tableView.reloadData()
-                    }
-                }
+                let itemNameView = insertItem(item, atRowViewIndex: rowViews.endIndex)
                 
                 if let comments = item.comments {
                     Log.msg("comments.count: \(comments.count)")
                     for comment in comments {
                         let comment = comment as! Comment
-                        let commentView = CommentView.create()!
-                        commentView.setup(withComment: comment)
-                        commentView.comment.save = {update in
-                            comment.comment = update
-                            comment.save()
-                        }
-                        let commentRowView = RowView(contents: commentView)
-                        commentRowView.displayed = false
-                        rowViews.append(commentRowView)
-                        commentViewsForItem.append(commentRowView)
+                        let commentRowView = insertComment(comment, atRowViewIndex: rowViews.endIndex)
+                        itemNameView.commentViewsForItem.append(commentRowView)
                     }
                 }
             }
@@ -147,12 +143,82 @@ class PlaceVC: UIViewController {
         tableView.register(cellNib, forCellReuseIdentifier: placeCellReuseId)
     }
     
-    private func insertLocation(_ location: Location, startingAtRowViewIndex index: Int, markLocation:Bool = false) {
+    @discardableResult
+    private func insertComment(_ comment: Comment, atRowViewIndex index: Int, displayed: Bool = false) -> RowView {
+        let commentView = CommentView.create()!
+        commentView.setup(withComment: comment)
+        commentView.comment.save = {update in
+            comment.comment = update
+            comment.save()
+        }
+        let commentRowView = RowView(contents: commentView)
+        commentRowView.displayed = displayed
+        rowViews.insert(commentRowView, at: index)
+        
+        return commentRowView
+    }
+    
+    @discardableResult
+    private func insertItem(_ item: Item, atRowViewIndex index: Int) -> ItemNameView {
+        let itemNameView = ItemNameView.create()!
+        itemNameView.itemName.text = item.name
+        itemNameView.itemName.save = { update in
+            item.name = update
+            item.save()
+        }
+        rowViews.insert(RowView(contents: itemNameView), at: index)
+        
+        itemNameView.delete = {[unowned itemNameView] in
+            DeletionImpact().showWarning(for: .item(item), using: self, deletionAction: {
+            
+                item.remove()
+                CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+                
+                let itemViewIndex = self.rowViews.index(where: {$0.contents == itemNameView})!
+                self.rowViews.remove(at: itemViewIndex)
+                
+                self.tableView.reloadData()
+            })
+        }
+        
+        itemNameView.addComment = {[unowned itemNameView] in
+            let comment = Comment.newObject()
+            let comments = NSMutableOrderedSet(orderedSet: item.comments!)
+            comments.insert(comment, at: 0)
+            item.comments = comments
+            item.save()
+            
+            let newCommentIndex = self.rowViews.index(where: {$0.contents == itemNameView})!
+            let commentRowView = self.insertComment(comment, atRowViewIndex: newCommentIndex+1, displayed: true)
+            itemNameView.commentViewsForItem.append(commentRowView)
+            
+            self.tableView.reloadData()
+        }
+        
+        itemNameView.showHide = { [unowned self, unowned itemNameView] in
+            if itemNameView.commentViewsForItem.count > 0 {
+                let showHideState = !itemNameView.commentViewsForItem[0].displayed
+                for commentView in itemNameView.commentViewsForItem {
+                    commentView.displayed = showHideState
+                }
+                Log.msg("commentViewsForItem.count: \(itemNameView.commentViewsForItem.count)")
+                self.tableView.reloadData()
+            }
+        }
+        
+        return itemNameView
+    }
+    
+    private func insertLocation(_ location: Location, startingAtRowViewIndex index: Int, markLocation:Bool = false, newLocation: Bool = false) {
+    
         let locationHeader = LocationHeader.create()!
         locationHeader.setup(withLocation: location)
+        
         if markLocation {
-            // Do something fancier...
-            locationHeader.debugBlackBorder = true
+            let layer = locationHeader.layer
+            layer.borderColor = UIColor.lightGray.cgColor
+            layer.borderWidth = 2.0
+            layer.cornerRadius = 8.0
         }
         rowViews.insert(RowView(contents: locationHeader), at: index)
 
@@ -170,6 +236,10 @@ class PlaceVC: UIViewController {
         let locationViewRow = RowView(contents: locationView)
         locationViewRow.displayed = false
         rowViews.insert(locationViewRow, at: index+1)
+        
+        if newLocation {
+            locationView.establishCurrentCoordinates()
+        }
 
         locationHeader.showHide = {
             locationViewRow.displayed = !locationViewRow.displayed
