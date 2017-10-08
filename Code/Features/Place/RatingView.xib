@@ -33,19 +33,25 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="rateDynamicColor" value="YES"/>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="rateShowEyes" value="YES"/>
                         <userDefinedRuntimeAttribute type="number" keyPath="rateValue">
-                            <real key="value" value="2.5"/>
+                            <real key="value" value="4"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="rateEyeVerticalPosition">
-                            <real key="value" value="0.0"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="rateLipWidth">
-                            <real key="value" value="0.0"/>
+                            <real key="value" value="0.59999999999999998"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="rateLineWidth">
                             <real key="value" value="14"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="color" keyPath="rateColor">
-                            <color key="value" red="0.18721670158914677" green="0.63328117519180072" blue="0.93163383007049561" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="value" red="0.071510336966041727" green="0.84363188706531422" blue="0.4430437904337366" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="rateMouthWidth">
+                            <real key="value" value="0.59999999999999998"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="rateMouthVerticalPosition">
+                            <real key="value" value="0.34999999999999998"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="rateEyeWidth">
+                            <real key="value" value="0.20000000000000001"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
