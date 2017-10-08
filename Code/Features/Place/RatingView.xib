@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13526" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13524"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,46 +16,53 @@
             <rect key="frame" x="0.0" y="0.0" width="442" height="170"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DJW-YB-b1W">
-                    <rect key="frame" x="307" y="22" width="125" height="125"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="125" id="YVr-ep-mI4"/>
-                        <constraint firstAttribute="height" constant="125" id="rX4-g6-iOa"/>
-                    </constraints>
-                </imageView>
-                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ujs-Xo-f8s">
-                    <rect key="frame" x="8" y="20" width="217" height="31"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="213" id="Vpe-Er-w2W"/>
-                    </constraints>
-                </slider>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="twa-YG-Qif">
-                    <rect key="frame" x="10" y="56" width="49" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="II9-fe-9W5" userLabel="Switch">
-                    <rect key="frame" x="10" y="87" width="144" height="58"/>
-                    <color key="backgroundColor" red="0.82526939659999998" green="0.57365301719999995" blue="0.91441271550000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <rect key="frame" x="10" y="60" width="110" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="144" id="JWo-qx-40X"/>
-                        <constraint firstAttribute="height" constant="58" id="dPk-ZA-Hn3"/>
+                        <constraint firstAttribute="width" constant="110" id="JWo-qx-40X"/>
+                        <constraint firstAttribute="height" constant="50" id="dPk-ZA-Hn3"/>
                     </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tTC-oi-0Ly" userLabel="RateVIew" customClass="EmojiRateView" customModule="TTGEmojiRate">
+                    <rect key="frame" x="262" y="0.0" width="170" height="170"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="170" id="3EZ-1l-64H"/>
+                        <constraint firstAttribute="width" constant="170" id="TQk-fk-UyU"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="rateDynamicColor" value="YES"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="rateShowEyes" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="rateValue">
+                            <real key="value" value="2.5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="rateEyeVerticalPosition">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="rateLipWidth">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="rateLineWidth">
+                            <real key="value" value="14"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="rateColor">
+                            <color key="value" red="0.18721670158914677" green="0.63328117519180072" blue="0.93163383007049561" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
             <constraints>
-                <constraint firstItem="twa-YG-Qif" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="AWX-Z1-E2e"/>
-                <constraint firstItem="II9-fe-9W5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="E4c-iL-TvD"/>
-                <constraint firstItem="ujs-Xo-f8s" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="Rcq-e5-eMp"/>
-                <constraint firstItem="DJW-YB-b1W" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="eI2-Zw-J5b"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="DJW-YB-b1W" secondAttribute="trailing" constant="10" id="gwr-MN-Un3"/>
-                <constraint firstItem="II9-fe-9W5" firstAttribute="top" secondItem="twa-YG-Qif" secondAttribute="bottom" constant="10" id="hS9-9p-kRg"/>
-                <constraint firstItem="ujs-Xo-f8s" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="jEI-Ym-dF2"/>
-                <constraint firstItem="twa-YG-Qif" firstAttribute="top" secondItem="ujs-Xo-f8s" secondAttribute="bottom" constant="6" id="oOO-HH-SfK"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="tTC-oi-0Ly" secondAttribute="trailing" constant="10" id="YlV-Rr-2BR"/>
+                <constraint firstItem="tTC-oi-0Ly" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="e0o-wC-1IY"/>
+                <constraint firstItem="II9-fe-9W5" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="ixx-4F-FgO"/>
+                <constraint firstItem="tTC-oi-0Ly" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="maH-cR-Rc7"/>
+                <constraint firstItem="II9-fe-9W5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="ogi-FN-DTq"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="rateView" destination="tTC-oi-0Ly" id="KLw-zq-gKP"/>
+                <outlet property="switchView" destination="II9-fe-9W5" id="i3U-3M-mrC"/>
+            </connections>
             <point key="canvasLocation" x="68" y="-195"/>
         </view>
     </objects>

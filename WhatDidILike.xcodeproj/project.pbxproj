@@ -70,6 +70,7 @@
 		83D49CD91F4AC2AA00409B0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CD71F4AC2AA00409B0F /* Assets.xcassets */; };
 		83D49CDF1F4AC2C700409B0F /* WhatDidILikeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D49CDD1F4AC2C700409B0F /* WhatDidILikeTests.swift */; };
 		83D49CE41F4AC44F00409B0F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CE21F4AC44F00409B0F /* Main.storyboard */; };
+		83DD5FC61F89ADAC00B23331 /* ShowHideState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DD5FC51F89ADAC00B23331 /* ShowHideState.swift */; };
 		83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */; };
 		83EE7DCE1F5D164B00628CA8 /* ItemNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B5337A1F5D09E70028E6B5 /* ItemNameView.xib */; };
 		83EE7DD21F5DB9F300628CA8 /* PlaceVCCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83EE7DD01F5DB9F300628CA8 /* PlaceVCCell.xib */; };
@@ -163,6 +164,7 @@
 		83D49CDD1F4AC2C700409B0F /* WhatDidILikeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhatDidILikeTests.swift; sourceTree = "<group>"; };
 		83D49CE21F4AC44F00409B0F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Features/Main List/Main.storyboard"; sourceTree = "<group>"; };
 		83D49CE31F4AC44F00409B0F /* MainListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainListVC.swift; path = "Features/Main List/MainListVC.swift"; sourceTree = "<group>"; };
+		83DD5FC51F89ADAC00B23331 /* ShowHideState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ShowHideState.swift; path = Features/Place/ShowHideState.swift; sourceTree = "<group>"; };
 		83EE7DD01F5DB9F300628CA8 /* PlaceVCCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlaceVCCell.xib; path = Features/Place/PlaceVCCell.xib; sourceTree = "<group>"; };
 		C19DC61269D8F3C48ED7774F /* Pods-WhatDidILike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatDidILike.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -260,6 +262,7 @@
 				83B5337F1F5D0A980028E6B5 /* CommentView.xib */,
 				83B5337D1F5D0A6D0028E6B5 /* CommentView.swift */,
 				8317E8F71F876E0D004C53BB /* DeletionImpact.swift */,
+				83DD5FC51F89ADAC00B23331 /* ShowHideState.swift */,
 			);
 			name = Place;
 			sourceTree = "<group>";
@@ -523,19 +526,23 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/DGRunkeeperSwitch/DGRunkeeperSwitch.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/HPTextViewTapGestureRecognizer/HPTextViewTapGestureRecognizer.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SMCoreLib/SMCoreLib.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
+				"${BUILT_PRODUCTS_DIR}/TTGEmojiRate/TTGEmojiRate.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DGRunkeeperSwitch.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HPTextViewTapGestureRecognizer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SMCoreLib.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TTGEmojiRate.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -613,6 +620,7 @@
 				831B042B1F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift in Sources */,
 				83401D9A1F5CEA4E00A96C8D /* XibBasics.swift in Sources */,
 				83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */,
+				83DD5FC61F89ADAC00B23331 /* ShowHideState.swift in Sources */,
 				8396CE411F4BCB8A00660D73 /* Comment+CoreDataProperties.swift in Sources */,
 				83401DA41F5CFB3D00A96C8D /* LocationView.swift in Sources */,
 				83D49CD21F4AC26A00409B0F /* AppDelegate.swift in Sources */,

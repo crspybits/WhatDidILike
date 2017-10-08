@@ -15,19 +15,36 @@ target 'WhatDidILike' do
 	# Animated GIF's
 	pod 'FLAnimatedImage', '~> 1.0'
 	
+	# Smiley ratings
+	# Using my version until author accepts my PR which added use with scroll view.
+	# pod 'TTGEmojiRate', '~> 0.2'
+	pod 'TTGEmojiRate', :git => 'https://github.com/crspybits/TTGEmojiRate.git'
+
+	# Labeled switch
+	pod 'DGRunkeeperSwitch', '~> 1.1'
+	
     # 9/24/17; Dealing with Cocoapods inability to specify Swift versions...
 
 	post_install do |installer|
 	
-		myTargets = ['SMCoreLib']
+		swift4Flag = ['SMCoreLib']
 		
 		installer.pods_project.targets.each do |target|
-			if myTargets.include? target.name
+			if swift4Flag.include? target.name
 				target.build_configurations.each do |config|
 					config.build_settings['OTHER_SWIFT_FLAGS'] = '-DSWIFT4'
 				end
 			end
 		end
+		
+		swiftVersion3_2 = ['DGRunkeeperSwitch']
+		
+		installer.pods_project.targets.each do |target|
+			if swiftVersion3_2.include? target.name
+				target.build_configurations.each do |config|
+					config.build_settings['SWIFT_VERSION'] = '3.2'
+				end
+			end
+		end
 	end
-	
 end

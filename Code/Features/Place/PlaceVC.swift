@@ -195,11 +195,10 @@ class PlaceVC: UIViewController {
             self.tableView.reloadData()
         }
         
-        itemNameView.showHide = { [unowned self, unowned itemNameView] in
+        itemNameView.showHide = { [unowned self, unowned itemNameView] state in
             if itemNameView.commentViewsForItem.count > 0 {
-                let showHideState = !itemNameView.commentViewsForItem[0].displayed
                 for commentView in itemNameView.commentViewsForItem {
-                    commentView.displayed = showHideState
+                    commentView.displayed = state == .open
                 }
                 Log.msg("commentViewsForItem.count: \(itemNameView.commentViewsForItem.count)")
                 self.tableView.reloadData()
@@ -241,8 +240,8 @@ class PlaceVC: UIViewController {
             locationView.establishCurrentCoordinates()
         }
 
-        locationHeader.showHide = {
-            locationViewRow.displayed = !locationViewRow.displayed
+        locationHeader.showHide = {[unowned self] state in
+            locationViewRow.displayed = state == .open
             self.tableView.reloadData()
         }
     }
