@@ -25,5 +25,6 @@ class CommentView: UIView, XibBasics {
     
     func setup(withComment comment: Comment) {
         self.comment.text = comment.comment
+        rating.setup(withRating: comment)
     }
 }

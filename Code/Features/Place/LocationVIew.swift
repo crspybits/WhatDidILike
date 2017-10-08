@@ -75,6 +75,8 @@ class LocationView: UIView, XibBasics {
         // So we can tap on the map to navigate to the location
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapGestureAction))
         map.addGestureRecognizer(tap)
+        
+        rating.setup(withRating: location)
     }
     
     // Useful if the location is new, and you need to establish Current coordinates.

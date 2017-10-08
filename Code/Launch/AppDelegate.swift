@@ -21,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         Fabric.with([Crashlytics.self])
         
+        Log.minLevel = .verbose
+        
         let coreDataSession = CoreData(options: [
             CoreDataBundleModelName: "WhatDidILike",
             CoreDataSqlliteBackupFileName: "~WhatDidILike.sqlite",
