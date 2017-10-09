@@ -5,6 +5,9 @@ PODS:
   - Fabric (1.6.13)
   - FLAnimatedImage (1.0.12)
   - HPTextViewTapGestureRecognizer (0.1)
+  - ImageSlideshow (1.4.1):
+    - ImageSlideshow/Core (= 1.4.1)
+  - ImageSlideshow/Core (1.4.1)
   - Reachability (3.2)
   - SMCoreLib (1.0.3):
     - HPTextViewTapGestureRecognizer (~> 0.1)
@@ -18,6 +21,7 @@ DEPENDENCIES:
   - DGRunkeeperSwitch (~> 1.1)
   - Fabric
   - FLAnimatedImage (~> 1.0)
+  - ImageSlideshow (~> 1.4)
   - SMCoreLib (~> 1.0)
   - TTGEmojiRate (from `https://github.com/crspybits/TTGEmojiRate.git`)
 
@@ -27,7 +31,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   TTGEmojiRate:
-    :commit: 71df3412b332e956d7014a93c98455c3564897a8
+    :commit: 52c957c85bf0faa5c7d85e5a926119c39c0360a4
     :git: https://github.com/crspybits/TTGEmojiRate.git
 
 SPEC CHECKSUMS:
@@ -36,11 +40,12 @@ SPEC CHECKSUMS:
   Fabric: 2fb5676bc811af011a04513451f463dac6803206
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   HPTextViewTapGestureRecognizer: 6a73fd09f858e49a2743c3a338dc5c0791b0fae0
+  ImageSlideshow: 1bb0e610e28a71e8936d57265d882f61714a470b
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SMCoreLib: 02aee83cbf49c3295da6ec3ac043682ef68eed4c
   SwiftyBeaver: 91057725648ee4980308f1650af077d04b3654a0
   TTGEmojiRate: 336d8ac5167d66898bf5a147845c3402172242c9
 
-PODFILE CHECKSUM: cbc24471e7942c254d50f1248903de1942789045
+PODFILE CHECKSUM: 72ac572396462960c9a4d0e45c3e6abc410c39c1
 
 COCOAPODS: 1.3.1

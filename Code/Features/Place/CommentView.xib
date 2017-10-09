@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13526" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13524"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,30 +13,24 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CommentView" customModule="WhatDidILike" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="451" height="596"/>
+            <rect key="frame" x="0.0" y="0.0" width="451" height="566"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W1i-mN-QUQ">
-                    <rect key="frame" x="10" y="25" width="431" height="184"/>
+                    <rect key="frame" x="0.0" y="25" width="451" height="180"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="184" id="6b7-a1-MPK"/>
+                        <constraint firstAttribute="height" constant="180" id="6b7-a1-MPK"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comment pictures" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iMt-Ug-Bpa">
-                    <rect key="frame" x="10" y="214" width="104.5" height="15"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iEI-1C-ttA">
-                    <rect key="frame" x="0.0" y="249" width="451" height="170"/>
+                    <rect key="frame" x="0.0" y="220" width="451" height="170"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="170" id="sex-u9-YCw"/>
                     </constraints>
                 </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="w71-dj-rxN" customClass="TextView" customModule="WhatDidILike" customModuleProvider="target">
-                    <rect key="frame" x="10" y="439" width="431" height="125"/>
+                    <rect key="frame" x="10" y="410" width="431" height="125"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="125" id="XBh-Ov-EDE"/>
@@ -45,7 +39,7 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comment text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="03U-O4-aO6">
-                    <rect key="frame" x="10" y="569" width="80" height="15"/>
+                    <rect key="frame" x="10" y="540" width="80" height="15"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -55,15 +49,13 @@
             <constraints>
                 <constraint firstItem="iEI-1C-ttA" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="4Ip-jw-EMw"/>
                 <constraint firstItem="03U-O4-aO6" firstAttribute="top" secondItem="w71-dj-rxN" secondAttribute="bottom" constant="5" id="7fI-uR-3go"/>
-                <constraint firstItem="iMt-Ug-Bpa" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="CVq-9F-gZF"/>
-                <constraint firstItem="iEI-1C-ttA" firstAttribute="top" secondItem="iMt-Ug-Bpa" secondAttribute="bottom" constant="20" id="F2R-C4-CY5"/>
+                <constraint firstItem="iEI-1C-ttA" firstAttribute="top" secondItem="W1i-mN-QUQ" secondAttribute="bottom" constant="15" id="Ahg-ba-6Ds"/>
                 <constraint firstItem="W1i-mN-QUQ" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="5" id="OAc-r0-XeV"/>
                 <constraint firstItem="iEI-1C-ttA" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="ZEN-Ow-Q61"/>
                 <constraint firstItem="03U-O4-aO6" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="ZQr-JK-N0S"/>
-                <constraint firstItem="iMt-Ug-Bpa" firstAttribute="top" secondItem="W1i-mN-QUQ" secondAttribute="bottom" constant="5" id="acL-OZ-Hed"/>
-                <constraint firstAttribute="trailing" secondItem="W1i-mN-QUQ" secondAttribute="trailing" constant="10" id="eaS-3J-cyc"/>
+                <constraint firstAttribute="trailing" secondItem="W1i-mN-QUQ" secondAttribute="trailing" id="eaS-3J-cyc"/>
                 <constraint firstItem="w71-dj-rxN" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="jOa-4b-WRS"/>
-                <constraint firstItem="W1i-mN-QUQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="l0z-Eb-rkQ"/>
+                <constraint firstItem="W1i-mN-QUQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="l0z-Eb-rkQ"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="w71-dj-rxN" secondAttribute="trailing" constant="10" id="nh0-PU-33h"/>
                 <constraint firstItem="w71-dj-rxN" firstAttribute="top" secondItem="iEI-1C-ttA" secondAttribute="bottom" constant="20" id="y4e-b8-raz"/>
             </constraints>
@@ -74,7 +66,7 @@
                 <outlet property="commentImagesContainer" destination="W1i-mN-QUQ" id="HAD-ee-tNb"/>
                 <outlet property="ratingContainer" destination="iEI-1C-ttA" id="d0f-5M-MrJ"/>
             </connections>
-            <point key="canvasLocation" x="95.5" y="-17"/>
+            <point key="canvasLocation" x="95.5" y="-32"/>
         </view>
     </objects>
 </document>

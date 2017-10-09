@@ -146,7 +146,7 @@ class PlaceVC: UIViewController {
     @discardableResult
     private func insertComment(_ comment: Comment, atRowViewIndex index: Int, displayed: Bool = false) -> RowView {
         let commentView = CommentView.create()!
-        commentView.setup(withComment: comment)
+        commentView.setup(withComment: comment, andParentVC: self)
         commentView.comment.save = {update in
             comment.comment = update
             comment.save()

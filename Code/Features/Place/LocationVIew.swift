@@ -23,6 +23,7 @@ class LocationView: UIView, XibBasics {
     @IBOutlet weak var specificDescription: TextView!
     @IBOutlet private weak var ratingContainer: UIView!
     private let rating = RatingView.create()!
+    @IBOutlet weak var imagesContainer: UIView!
     weak var delegate:LocationViewDelegate!
     
     private var defaultRegion:MKCoordinateRegion!
@@ -32,6 +33,7 @@ class LocationView: UIView, XibBasics {
     fileprivate weak var viewController: UIViewController!
     fileprivate var location: Location!
     fileprivate var place: Place!
+    private let images = ImagesView.create()!
 
     // I'm no longer using this to establish the actual location
     // of the user/place, but rather to supply an initial set location
@@ -56,6 +58,9 @@ class LocationView: UIView, XibBasics {
         
         rating.frameWidth = ratingContainer.frameWidth
         ratingContainer.addSubview(rating)
+        
+        images.frameWidth = imagesContainer.frameWidth
+        imagesContainer.addSubview(images)
     }
     
     func setup(withLocation location: Location, place: Place, viewController: UIViewController) {
@@ -77,6 +82,7 @@ class LocationView: UIView, XibBasics {
         map.addGestureRecognizer(tap)
         
         rating.setup(withRating: location)
+        images.setup(withParentVC:viewController, andImagesObj: location)
     }
     
     // Useful if the location is new, and you need to establish Current coordinates.

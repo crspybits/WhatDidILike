@@ -11,7 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Location)
-public class Location: BaseObject, RatingManagedObject {
+public class Location: BaseObject, RatingManagedObject, ImagesManagedObject {
     static let NAME_KEY = "place.name"
     
     // Doesn't save the core data object when you set.

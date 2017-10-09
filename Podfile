@@ -23,6 +23,8 @@ target 'WhatDidILike' do
 	# Labeled switch
 	pod 'DGRunkeeperSwitch', '~> 1.1'
 	
+	pod 'ImageSlideshow', '~> 1.4'
+	
     # 9/24/17; Dealing with Cocoapods inability to specify Swift versions...
 
 	post_install do |installer|

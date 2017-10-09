@@ -13,7 +13,8 @@ class CommentView: UIView, XibBasics {
     @IBOutlet weak var commentImagesContainer: UIView!
     @IBOutlet weak var ratingContainer: UIView!
     @IBOutlet weak var comment: TextView!
-    let rating = RatingView.create()!
+    private let rating = RatingView.create()!
+    private let images = ImagesView.create()!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,10 +22,14 @@ class CommentView: UIView, XibBasics {
         
         rating.frameWidth = ratingContainer.frameWidth
         ratingContainer.addSubview(rating)
+        
+        images.frameWidth = commentImagesContainer.frameWidth
+        commentImagesContainer.addSubview(images)
     }
     
-    func setup(withComment comment: Comment) {
+    func setup(withComment comment: Comment, andParentVC vc: UIViewController) {
         self.comment.text = comment.comment
         rating.setup(withRating: comment)
+        images.setup(withParentVC:vc, andImagesObj: comment)
     }
 }
