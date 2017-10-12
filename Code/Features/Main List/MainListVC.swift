@@ -10,6 +10,8 @@ import UIKit
 import SMCoreLib
 
 class MainListVC: UIViewController {
+    private static let converted = SMPersistItemBool(name: "MainListVC.converted", initialBoolValue: false, persistType: .userDefaults)
+
     @IBOutlet weak var tableView: UITableView!
     var coreDataSource:CoreDataSource!
     let cellReuseId = "LocationTableViewCell"
@@ -79,6 +81,28 @@ class MainListVC: UIViewController {
             // Just in case the displayed summary info (e.g., name) changed. This doesn't get updated automagically by Core Data since the name is accessed via a relation.
             tableView.reloadRows(at: [showDetailsForIndexPath], with: .automatic)
             self.showDetailsForIndexPath = nil
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if !MainListVC.converted.boolValue {
+            if let conversionNeeded = ConvertFromV1() {
+                let prompt = CommentPromptVC.createWith(parentVC: self)
+                prompt.single = {
+                    MainListVC.converted.boolValue = true
+                    conversionNeeded.doIt(commentOption: .singleCommentPerItem)
+                }
+                prompt.multiple = {
+                    MainListVC.converted.boolValue = true
+                    conversionNeeded.doIt(commentOption: .multipleCommentsPerItem)
+                }
+                prompt.show()
+            }
+            else {
+                MainListVC.converted.boolValue = true
+            }
         }
     }
 }

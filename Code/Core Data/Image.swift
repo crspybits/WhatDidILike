@@ -34,4 +34,8 @@ public class Image: NSManagedObject {
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
     }
+    
+    func save() {
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
 }

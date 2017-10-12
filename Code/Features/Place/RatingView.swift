@@ -25,6 +25,7 @@ class RatingView: UIView, XibBasics {
     @IBOutlet private weak var switchView: UIView!
     private let meThemSwitch = DGRunkeeperSwitch()
     private var rating: RatingManagedObject!
+    @IBOutlet private weak var lockButton: UIButton!
     
     private var _ourRating:Float = 0
     private var ourRating:Float {
@@ -62,6 +63,9 @@ class RatingView: UIView, XibBasics {
         switchView.addSubview(meThemSwitch)
         
         rateView.backgroundColor = UIColor.clear
+        let best = UIColor(red: 0.0/255.0, green: 217.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        let worst = UIColor(red: 255.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 1.0)
+        rateView.rateColorRange = (from: worst, to: best)
         
         // Otherwise we get *alot* of changes to core data. And that just seems messy.
         let debounce = Debounce(type: .duration)
@@ -75,6 +79,8 @@ class RatingView: UIView, XibBasics {
                 self.rating.save()
             }
         }
+        
+        enable(false)
     }
     
     @objc private func meThemSwitchAction() {
@@ -89,5 +95,14 @@ class RatingView: UIView, XibBasics {
         meThemSwitch.setSelectedIndex(meThemIndex, animated: false)
         ourRating = rating.rating
         rateView.rateValue = emojiRating
+    }
+    
+    @IBAction func lockButtonAction(_ sender: Any) {
+        enable(!rateView.isUserInteractionEnabled)
+    }
+    
+    private func enable(_ enabled: Bool) {
+        rateView.isUserInteractionEnabled = enabled
+        lockButton.alpha = enabled ? 1.0 : 0.3
     }
 }

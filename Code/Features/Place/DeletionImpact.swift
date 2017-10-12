@@ -126,4 +126,21 @@ class DeletionImpact {
         
         return assembleComponents(initialMessage: "Deleting this location will also remove: ")
     }
+    
+    func imagesAssociatedWith(location:Location) -> [Image] {
+        var images = [Image]()
+        
+        if location.place!.locations!.count == 1 {
+            for itemObj in location.place!.items! {
+                let item = itemObj as! Item
+                for commentObj in item.comments! {
+                    let comment = commentObj as! Comment
+                    images += Array(comment.images!) as! [Image]
+                }
+            }
+        }
+        
+        images += Array(location.images!) as! [Image]
+        return images
+    }
 }

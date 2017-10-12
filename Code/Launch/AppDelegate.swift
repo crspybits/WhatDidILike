@@ -14,7 +14,6 @@ import SMCoreLib
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    private static let converted = SMPersistItemBool(name: "AppDelegate.converted", initialBoolValue: false, persistType: .userDefaults)
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -52,11 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.msg("\timages: \(String(describing: numberImages))")
 #endif
         
-        // TODO: When doing the conversion need to present a progress indicator to show what's going on and how far the conversion has progressed.
-        //if !AppDelegate.converted.boolValue {
-            //AppDelegate.converted.boolValue = true
-            // ConvertFromV1().doIt()
-        //}
         return true
     }
 

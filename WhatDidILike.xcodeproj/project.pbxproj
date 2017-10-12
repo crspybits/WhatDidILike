@@ -40,6 +40,9 @@
 		837788ED1F6608670014B8A2 /* UIResponder+FirstResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 837788EB1F6608670014B8A2 /* UIResponder+FirstResponder.m */; };
 		837788EF1F66151F0014B8A2 /* UITextField+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837788EE1F66151F0014B8A2 /* UITextField+Extras.swift */; };
 		837788F31F6673470014B8A2 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837788F21F6673470014B8A2 /* TextField.swift */; };
+		837E12591F8F2BBA00D8E4E1 /* ConvertFromV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837E12581F8F2BBA00D8E4E1 /* ConvertFromV1.swift */; };
+		837E12601F8F2C4C00D8E4E1 /* CommentPromptVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837E125E1F8F2C4C00D8E4E1 /* CommentPromptVC.swift */; };
+		837E12611F8F2C4C00D8E4E1 /* CommentPromptVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837E125F1F8F2C4C00D8E4E1 /* CommentPromptVC.xib */; };
 		8385206A1F8B2A77001D97D3 /* ImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838520681F8B2A77001D97D3 /* ImagesView.swift */; };
 		8385206B1F8B2A77001D97D3 /* ImagesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 838520691F8B2A77001D97D3 /* ImagesView.xib */; };
 		8396CE381F4BCB8A00660D73 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE2E1F4BCB8A00660D73 /* Item.swift */; };
@@ -59,7 +62,6 @@
 		83A597C01F67961600736DE2 /* ListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A597BF1F67961600736DE2 /* ListManager.swift */; };
 		83A597C61F67A24100736DE2 /* ListManager.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A597C41F67A24100736DE2 /* ListManager.xib */; };
 		83B496BD1F4BD0830083610D /* Identifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496BC1F4BCFB50083610D /* Identifiers.swift */; };
-		83B496BF1F4BD3C60083610D /* ConvertFromV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496BE1F4BD3C60083610D /* ConvertFromV1.swift */; };
 		83B496C11F4BDE300083610D /* CoreDataExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496C01F4BDE300083610D /* CoreDataExtras.swift */; };
 		83B496C51F4BE0F40083610D /* Place+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */; };
 		83B5337E1F5D0A6D0028E6B5 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5337D1F5D0A6D0028E6B5 /* CommentView.swift */; };
@@ -128,6 +130,9 @@
 		837788EC1F6608670014B8A2 /* UIResponder+FirstResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIResponder+FirstResponder.h"; sourceTree = "<group>"; };
 		837788EE1F66151F0014B8A2 /* UITextField+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extras.swift"; sourceTree = "<group>"; };
 		837788F21F6673470014B8A2 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		837E12581F8F2BBA00D8E4E1 /* ConvertFromV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConvertFromV1.swift; path = Features/Conversion/ConvertFromV1.swift; sourceTree = "<group>"; };
+		837E125E1F8F2C4C00D8E4E1 /* CommentPromptVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommentPromptVC.swift; path = Features/Conversion/CommentPromptVC.swift; sourceTree = "<group>"; };
+		837E125F1F8F2C4C00D8E4E1 /* CommentPromptVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CommentPromptVC.xib; path = Features/Conversion/CommentPromptVC.xib; sourceTree = "<group>"; };
 		838520681F8B2A77001D97D3 /* ImagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagesView.swift; path = Features/Place/ImagesView.swift; sourceTree = "<group>"; };
 		838520691F8B2A77001D97D3 /* ImagesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ImagesView.xib; path = Features/Place/ImagesView.xib; sourceTree = "<group>"; };
 		8396CE2D1F4BCAD500660D73 /* WhatDidILike-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WhatDidILike-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -148,7 +153,6 @@
 		83A597BF1F67961600736DE2 /* ListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListManager.swift; sourceTree = "<group>"; };
 		83A597C41F67A24100736DE2 /* ListManager.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListManager.xib; sourceTree = "<group>"; };
 		83B496BC1F4BCFB50083610D /* Identifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiers.swift; sourceTree = "<group>"; };
-		83B496BE1F4BD3C60083610D /* ConvertFromV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertFromV1.swift; sourceTree = "<group>"; };
 		83B496C01F4BDE300083610D /* CoreDataExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataExtras.swift; sourceTree = "<group>"; };
 		83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83B5337A1F5D09E70028E6B5 /* ItemNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ItemNameView.xib; path = Features/Place/ItemNameView.xib; sourceTree = "<group>"; };
@@ -226,6 +230,23 @@
 			name = Location;
 			sourceTree = "<group>";
 		};
+		837E124F1F8F239600D8E4E1 /* SDKs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SDKs;
+			sourceTree = "<group>";
+		};
+		837E12571F8F2B4C00D8E4E1 /* Conversion */ = {
+			isa = PBXGroup;
+			children = (
+				837E12581F8F2BBA00D8E4E1 /* ConvertFromV1.swift */,
+				837E125E1F8F2C4C00D8E4E1 /* CommentPromptVC.swift */,
+				837E125F1F8F2C4C00D8E4E1 /* CommentPromptVC.xib */,
+			);
+			name = Conversion;
+			sourceTree = "<group>";
+		};
 		8396CE421F4BCBAD00660D73 /* Other files */ = {
 			isa = PBXGroup;
 			children = (
@@ -298,6 +319,7 @@
 			isa = PBXGroup;
 			children = (
 				83D49CC81F4AC26900409B0F /* Code */,
+				837E124F1F8F239600D8E4E1 /* SDKs */,
 				83D49CDB1F4AC2C700409B0F /* UnitTests */,
 				83D49CD61F4AC2AA00409B0F /* Resources */,
 				83D49CA31F4AC16100409B0F /* Products */,
@@ -340,7 +362,6 @@
 				83B496C01F4BDE300083610D /* CoreDataExtras.swift */,
 				83A2D5DC1F5CD6B60003C5F9 /* Image.swift */,
 				8396CE421F4BCBAD00660D73 /* Other files */,
-				83B496BE1F4BD3C60083610D /* ConvertFromV1.swift */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";
@@ -379,6 +400,7 @@
 				83D49CE11F4AC3E200409B0F /* Main List */,
 				83A2D5E31F5CE0DC0003C5F9 /* Place */,
 				8366CD321F7CA45500E9D6FF /* Location */,
+				837E12571F8F2B4C00D8E4E1 /* Conversion */,
 			);
 			name = Features;
 			sourceTree = "<group>";
@@ -484,6 +506,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8385206B1F8B2A77001D97D3 /* ImagesView.xib in Resources */,
+				837E12611F8F2C4C00D8E4E1 /* CommentPromptVC.xib in Resources */,
 				830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */,
 				83B533841F5D0C670028E6B5 /* RatingView.xib in Resources */,
 				83EE7DD21F5DB9F300628CA8 /* PlaceVCCell.xib in Resources */,
@@ -537,6 +560,7 @@
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/HPTextViewTapGestureRecognizer/HPTextViewTapGestureRecognizer.framework",
 				"${BUILT_PRODUCTS_DIR}/ImageSlideshow/ImageSlideshow.framework",
+				"${BUILT_PRODUCTS_DIR}/JSSAlertView/JSSAlertView.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SMCoreLib/SMCoreLib.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
@@ -548,6 +572,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HPTextViewTapGestureRecognizer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageSlideshow.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSSAlertView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SMCoreLib.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
@@ -614,6 +639,7 @@
 				8396CE401F4BCB8A00660D73 /* Comment.swift in Sources */,
 				83401D9E1F5CEE8900A96C8D /* PlaceDetailsView.swift in Sources */,
 				83019F8E1F8092EE00E1E117 /* Location+CoreDataProperties.swift in Sources */,
+				837E12601F8F2C4C00D8E4E1 /* CommentPromptVC.swift in Sources */,
 				83A2D5EB1F5CE3670003C5F9 /* PlaceVC.swift in Sources */,
 				8317E8F81F876E0D004C53BB /* DeletionImpact.swift in Sources */,
 				83401DA21F5CF59F00A96C8D /* UIColor+Extras.swift in Sources */,
@@ -630,13 +656,13 @@
 				831B042B1F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift in Sources */,
 				83401D9A1F5CEA4E00A96C8D /* XibBasics.swift in Sources */,
 				83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */,
+				837E12591F8F2BBA00D8E4E1 /* ConvertFromV1.swift in Sources */,
 				83DD5FC61F89ADAC00B23331 /* ShowHideState.swift in Sources */,
 				8396CE411F4BCB8A00660D73 /* Comment+CoreDataProperties.swift in Sources */,
 				83401DA41F5CFB3D00A96C8D /* LocationView.swift in Sources */,
 				83D49CD21F4AC26A00409B0F /* AppDelegate.swift in Sources */,
 				83019F891F80924400E1E117 /* BaseObject+CoreDataClass.swift in Sources */,
 				83B496C51F4BE0F40083610D /* Place+CoreDataProperties.swift in Sources */,
-				83B496BF1F4BD3C60083610D /* ConvertFromV1.swift in Sources */,
 				83D49CD11F4AC26A00409B0F /* WhatDidILike.xcdatamodeld in Sources */,
 				831B04171F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift in Sources */,
 				83B496C11F4BDE300083610D /* CoreDataExtras.swift in Sources */,

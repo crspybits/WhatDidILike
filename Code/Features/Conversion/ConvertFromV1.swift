@@ -69,7 +69,23 @@ class ConvertFromV1 {
     var numberListNamesCreated = 0
     var numberListNameCreationErrors = 0
     var errorRemovingIconsDirectory:Bool = false
-
+    var commentOption: CommentOptions!
+    var places:[[String:Any]]!
+    
+    init?() {
+        // Temporary
+        //let placeFilePath = Bundle.main.path(forResource: "Restaurants", ofType: "dat")
+        
+        let placeFilePath = FileStorage.path(toItem: RESTAURANTS)
+        Log.msg("\(String(describing: placeFilePath))")
+        
+        guard let places = FileStorage.loadApplicationData(fromFlatFile: placeFilePath) as? [[String:Any]] else {
+            return nil
+        }
+        
+        self.places = places
+    }
+    
     // Move a large image in the Documents directory to the LARGE_IMAGE_DIRECTORY. Also renames the image to make the name format more standard. Returns the renamed image file name (without path) or nil on an error.
     private func moveLargeImage(largeImageFileName: String) -> String? {
         let imageFilePath = FileStorage.path(toItem: largeImageFileName)
@@ -95,7 +111,14 @@ class ConvertFromV1 {
         return newFileName
     }
     
-    func doIt() {
+    enum CommentOptions {
+        case multipleCommentsPerItem
+        case singleCommentPerItem
+    }
+    
+    func doIt(commentOption: CommentOptions) {
+        self.commentOption = commentOption
+        
         // Get rid of "icons" directory-- we can use our current technique for generating these files on the fly-- with naming for their sizes.
         let iconsDirURL = FileStorage.url(ofItem: "icons")!
         do {
@@ -103,14 +126,6 @@ class ConvertFromV1 {
         } catch {
             errorRemovingIconsDirectory = true
         }
-        
-        let placeFilePath = FileStorage.path(toItem: RESTAURANTS)
-        Log.msg("\(String(describing: placeFilePath))")
-        
-        // Temporary
-        //let placeFilePath = Bundle.main.path(forResource: "Restaurants", ofType: "dat")
-        
-        let places = FileStorage.loadApplicationData(fromFlatFile: placeFilePath) as! [[String:Any]]
         
         numberPlaces = places.count
         
@@ -231,7 +246,12 @@ class ConvertFromV1 {
             // In the new data format we're not putting a me/them attribute at the item level. If there is a me/them given for the menuItem, we're going to keep it only if there are no comments for the item. To do so, we'll create a dummy comment and set its me/them item. We can also put in some comment text to say that this is just a dummy comment and the rating doesn't have meaning.
             
             if let comments = menuItem[ITEM_KEY_COMMENTS] as? [[String: Any]], comments.count > 0 {
-                add(comments: comments, to: coreDataItem)
+                switch commentOption! {
+                case .singleCommentPerItem:
+                    addSingle(comments: comments, to: coreDataItem)
+                case .multipleCommentsPerItem:
+                    addMultiple(comments: comments, to: coreDataItem)
+                }
             }
             else {
                 // No comments.
@@ -247,7 +267,10 @@ class ConvertFromV1 {
         }
     }
     
-    private func add(comments:[[String: Any]], to item: Item) {
+    private func addMultiple(comments:[[String: Any]], to item: Item) {
+    }
+    
+    private func addSingle(comments:[[String: Any]], to item: Item) {
         // Estimate the last modification date of the item from the latest date in the comments.
         var lastModDateEstimate:NSDate?
         

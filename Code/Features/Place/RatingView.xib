@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13526" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -42,7 +42,7 @@
                             <real key="value" value="14"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="color" keyPath="rateColor">
-                            <color key="value" red="0.071510336966041727" green="0.84363188706531422" blue="0.4430437904337366" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="value" red="0.0" green="0.85098039215686272" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="rateMouthWidth">
                             <real key="value" value="0.59999999999999998"/>
@@ -55,8 +55,21 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hbb-R0-vjK">
+                    <rect key="frame" x="405" y="129" width="35" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="35" id="Fm7-Z3-2EA"/>
+                        <constraint firstAttribute="height" constant="35" id="be1-iq-ZSI"/>
+                    </constraints>
+                    <state key="normal" image="locked"/>
+                    <connections>
+                        <action selector="lockButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="Ilh-ko-zRV"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
+                <constraint firstItem="hbb-R0-vjK" firstAttribute="bottom" secondItem="tTC-oi-0Ly" secondAttribute="bottom" constant="-6" id="Vaw-I9-0ut"/>
+                <constraint firstItem="hbb-R0-vjK" firstAttribute="trailing" secondItem="tTC-oi-0Ly" secondAttribute="trailing" constant="8" id="YHn-Ww-diB"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="tTC-oi-0Ly" secondAttribute="trailing" constant="10" id="YlV-Rr-2BR"/>
                 <constraint firstItem="tTC-oi-0Ly" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="e0o-wC-1IY"/>
                 <constraint firstItem="II9-fe-9W5" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="ixx-4F-FgO"/>
@@ -66,10 +79,14 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="lockButton" destination="hbb-R0-vjK" id="0zp-zV-Rzw"/>
                 <outlet property="rateView" destination="tTC-oi-0Ly" id="KLw-zq-gKP"/>
                 <outlet property="switchView" destination="II9-fe-9W5" id="i3U-3M-mrC"/>
             </connections>
-            <point key="canvasLocation" x="68" y="-195"/>
+            <point key="canvasLocation" x="-69" y="-228"/>
         </view>
     </objects>
+    <resources>
+        <image name="locked" width="64" height="64"/>
+    </resources>
 </document>

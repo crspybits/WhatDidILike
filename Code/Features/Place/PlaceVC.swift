@@ -95,6 +95,9 @@ class PlaceVC: UIViewController {
         
         if let locations = place.locations as? Set<Location> {
             for location in locations {
+                let imageFileNames = (Array(location.images!) as! [Image]).map({$0.fileName!})
+                Log.msg("location imageFileNames: \(imageFileNames)")
+                
                 let markLocation = location == self.location
                 insertLocation(location, startingAtRowViewIndex: rowViews.endIndex, markLocation: markLocation, newLocation: newPlace)
             }
@@ -126,6 +129,10 @@ class PlaceVC: UIViewController {
                     Log.msg("comments.count: \(comments.count)")
                     for comment in comments {
                         let comment = comment as! Comment
+                        
+                        let imageFileNames = (Array(comment.images!) as! [Image]).map({$0.fileName!})
+                        Log.msg("itemName: \(String(describing: item.name)); imageFileNames: \(imageFileNames)")
+                        
                         let commentRowView = insertComment(comment, atRowViewIndex: rowViews.endIndex)
                         itemNameView.commentViewsForItem.append(commentRowView)
                     }
@@ -141,6 +148,10 @@ class PlaceVC: UIViewController {
         
         let cellNib = UINib(nibName: "PlaceVCCell", bundle: nil)
         tableView.register(cellNib, forCellReuseIdentifier: placeCellReuseId)
+        
+        let images = DeletionImpact().imagesAssociatedWith(location: location!)
+        let imageNames = images.map({$0.fileName!})
+        Log.msg("imageNames: \(imageNames)")
     }
     
     @discardableResult

@@ -9,16 +9,16 @@ target 'WhatDidILike' do
     pod 'Fabric'
     pod 'Crashlytics'
 
-    pod 'SMCoreLib', '~> 1.0'
-	# pod 'SMCoreLib', :path => '../Common/SMCoreLib/'
+    # pod 'SMCoreLib', '~> 1.0'
+	pod 'SMCoreLib', :path => '../Common/SMCoreLib/'
 	
 	# Animated GIF's
 	pod 'FLAnimatedImage', '~> 1.0'
 	
 	# Smiley ratings
 	# Using my version until author accepts my PR which added use with scroll view.
-	# pod 'TTGEmojiRate', '~> 0.2'
-	pod 'TTGEmojiRate', :git => 'https://github.com/crspybits/TTGEmojiRate.git'
+	pod 'TTGEmojiRate', '~> 0.3'
+	# pod 'TTGEmojiRate', :git => 'https://github.com/crspybits/TTGEmojiRate.git'
 
 	# Labeled switch
 	pod 'DGRunkeeperSwitch', '~> 1.1'
