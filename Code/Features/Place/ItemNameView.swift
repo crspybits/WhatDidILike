@@ -12,7 +12,7 @@ import SMCoreLib
 class ItemNameView: UIView, XibBasics {
     typealias ViewType = ItemNameView
     @IBOutlet weak var itemName: TextField!
-
+    @IBOutlet weak var addCommentButton: UIButton!
     var showHide: ((_ state: ShowHideState)->())?
     private var showHideState:ShowHideState = .closed
     @IBOutlet private weak var openClosed: UIImageView!
@@ -23,6 +23,7 @@ class ItemNameView: UIView, XibBasics {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        addCommentButton.isHidden = Parameters.commentStyle == .single
         Layout.format(textBox: itemName)
         itemName.addToolBar()
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction))

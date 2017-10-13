@@ -69,7 +69,7 @@ class ConvertFromV1 {
     var numberListNamesCreated = 0
     var numberListNameCreationErrors = 0
     var errorRemovingIconsDirectory:Bool = false
-    var commentOption: CommentOptions!
+    var commentStyle: Parameters.CommentStyle!
     var places:[[String:Any]]!
     
     init?() {
@@ -111,13 +111,8 @@ class ConvertFromV1 {
         return newFileName
     }
     
-    enum CommentOptions {
-        case multipleCommentsPerItem
-        case singleCommentPerItem
-    }
-    
-    func doIt(commentOption: CommentOptions) {
-        self.commentOption = commentOption
+    func doIt(commentStyle: Parameters.CommentStyle) {
+        self.commentStyle = commentStyle
         
         // Get rid of "icons" directory-- we can use our current technique for generating these files on the fly-- with naming for their sizes.
         let iconsDirURL = FileStorage.url(ofItem: "icons")!
@@ -246,10 +241,10 @@ class ConvertFromV1 {
             // In the new data format we're not putting a me/them attribute at the item level. If there is a me/them given for the menuItem, we're going to keep it only if there are no comments for the item. To do so, we'll create a dummy comment and set its me/them item. We can also put in some comment text to say that this is just a dummy comment and the rating doesn't have meaning.
             
             if let comments = menuItem[ITEM_KEY_COMMENTS] as? [[String: Any]], comments.count > 0 {
-                switch commentOption! {
-                case .singleCommentPerItem:
+                switch commentStyle! {
+                case .single:
                     addSingle(comments: comments, to: coreDataItem)
-                case .multipleCommentsPerItem:
+                case .multiple:
                     addMultiple(comments: comments, to: coreDataItem)
                 }
             }
@@ -263,14 +258,116 @@ class ConvertFromV1 {
                     coreDataComment.meThem = iAte
                     coreDataComment.comment = "(Dummy comment: Added during data conversion; only the me/them has meaning, and not the rating)"
                 }
+                
+                coreDataItem.modificationDate = coreDataItem.creationDate
             }
+            
+            coreDataItem.save()
         }
     }
     
-    private func addMultiple(comments:[[String: Any]], to item: Item) {
+    // Each item will have exactly one comment.
+    private func addSingle(comments:[[String: Any]], to item: Item) {
+        /* In this commenting option, I'm going to collapse multiple comments in the old format into a single comment in the new format.
+            I'm going to first sort the comments by date so that when I consolidate the strings, it is from oldest to newest.
+        */
+        
+        var sortedComments = comments
+        sortedComments.sort { (dictElem1, dictElem2) -> Bool in
+            // Parameter areInIncreasingOrder: A predicate that returns `true` if its first argument should be ordered before its second argument; otherwise, `false`.
+            if let date1 = (dictElem1[KEY_DATE] as? NSDate) as Date?,
+                let date2 = (dictElem2[KEY_DATE] as? NSDate) as Date? {
+                return date1 < date2
+            }
+            else {
+                // I'm not sure what to do here!
+                return false
+            }
+        }
+        
+        let coreDataComment = Comment.newObject()
+        item.addToComments(coreDataComment)
+        coreDataComment.meThem = false
+        
+        var numberRatings = 0
+        
+        // We'll average the ratings if there is > 1 existing comment.
+        var totalRating:Float = 0
+        
+        var oldestDate:Date?
+        var mostRecentDate:Date?
+        
+        var extendedComment = ""
+        
+        numberComments += comments.count
+        
+        for comment in sortedComments {
+            // Just take the first userName.
+            if coreDataComment.userName == nil {
+                coreDataComment.userName = comment[KEY_USER_NAME] as? String
+            }
+            
+            if let currentDate = comment[KEY_DATE] as? NSDate as Date? {
+                if oldestDate == nil {
+                    oldestDate = currentDate
+                }
+                else if currentDate < oldestDate! {
+                    oldestDate = currentDate
+                }
+                
+                if mostRecentDate == nil {
+                    mostRecentDate = currentDate
+                }
+                else if currentDate > mostRecentDate! {
+                    mostRecentDate = currentDate
+                }
+            }
+            
+            // If iAte is true on one, keep it that way.
+            if let iAte = comment[KEY_IATE] as? Bool {
+                coreDataComment.meThem = coreDataComment.meThem || iAte
+            }
+            
+            if let rating = comment[KEY_RATING] as? Float {
+                totalRating += rating
+                numberRatings += 1
+            }
+            
+            if let comment = comment[COMMENT_KEY_COMMENT] as? String, comment.count > 0 {
+                if extendedComment.count > 0 {
+                    extendedComment += "\n"
+                }
+                
+                extendedComment += comment
+            }
+            
+            if let commentImageName = comment[COMMENT_KEY_IMAGE_FILENAME] as? String {
+                // This image, if any, needs to be moved to the largeImages folder
+                if let newImageName = moveLargeImage(largeImageFileName: commentImageName) {
+                    let newImage = Image.newObject()
+                    newImage.fileName = newImageName
+                    coreDataComment.addToImages(newImage)
+                }
+                else {
+                    if let name = item.place?.name {
+                        imageErrorDescriptions.append("Comment Image error for: \(name)")
+                    }
+                }
+            }
+        }
+        
+        coreDataComment.creationDate = oldestDate as NSDate?
+        coreDataComment.modificationDate = mostRecentDate as NSDate?
+        coreDataComment.comment = extendedComment
+        
+        if numberRatings > 0 {
+            coreDataComment.rating = totalRating / Float(numberRatings)
+        }
+        
+        item.modificationDate = mostRecentDate as NSDate?
     }
     
-    private func addSingle(comments:[[String: Any]], to item: Item) {
+    private func addMultiple(comments:[[String: Any]], to item: Item) {
         // Estimate the last modification date of the item from the latest date in the comments.
         var lastModDateEstimate:NSDate?
         
@@ -283,7 +380,7 @@ class ConvertFromV1 {
             coreDataComment.userName = comment[KEY_USER_NAME] as? String
             coreDataComment.creationDate = comment[KEY_DATE] as? NSDate
             
-            // This isn't really the last modification date, but we don't have one. If we just leave this as nil, then due to the way WDILCoreData is set up, the modification date will be the date the data conversion took place, which is just odd.
+            // This isn't really the last modification date, but we don't have one.
             coreDataComment.modificationDate = coreDataComment.creationDate
             
             if let iAte = comment[KEY_IATE] as? Bool {

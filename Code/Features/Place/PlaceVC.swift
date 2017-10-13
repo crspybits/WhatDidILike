@@ -112,11 +112,25 @@ class PlaceVC: UIViewController {
             let items = NSMutableOrderedSet(orderedSet: self.place.items!)
             items.insert(item, at: 0)
             self.place.items = items
+            
+            // Creating a new item. If our comment style is single, then we'll also create the single comment for that item.
+            var singleComment:Comment!
+            if Parameters.commentStyle == .single {
+                singleComment = Comment.newObject()
+                item.addToComments(singleComment)
+            }
+            
             self.place.save()
             
             // Insert this right below the new item header-- newer items float to the top.
             let newItemIndex = self.rowViews.index(where: {$0.contents == newItem})!
-            self.insertItem(item, atRowViewIndex: newItemIndex+1)
+            let newItemView = self.insertItem(item, atRowViewIndex: newItemIndex+1)
+            
+            if Parameters.commentStyle == .single {
+                let newCommentView = self.insertComment(singleComment, atRowViewIndex: newItemIndex+2)
+                newItemView.commentViewsForItem.append(newCommentView)
+            }
+            
             self.tableView.reloadData()
         }
         

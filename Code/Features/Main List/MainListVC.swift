@@ -11,7 +11,7 @@ import SMCoreLib
 
 class MainListVC: UIViewController {
     private static let converted = SMPersistItemBool(name: "MainListVC.converted", initialBoolValue: false, persistType: .userDefaults)
-
+    
     @IBOutlet weak var tableView: UITableView!
     var coreDataSource:CoreDataSource!
     let cellReuseId = "LocationTableViewCell"
@@ -87,16 +87,22 @@ class MainListVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // MainListVC.converted.boolValue = false
+        
         if !MainListVC.converted.boolValue {
             if let conversionNeeded = ConvertFromV1() {
                 let prompt = CommentPromptVC.createWith(parentVC: self)
-                prompt.single = {
+                prompt.single = {[unowned prompt] in
                     MainListVC.converted.boolValue = true
-                    conversionNeeded.doIt(commentOption: .singleCommentPerItem)
+                    Parameters.commentStyle = .single
+                    conversionNeeded.doIt(commentStyle: .single)
+                    prompt.close()
                 }
-                prompt.multiple = {
+                prompt.multiple = {[unowned prompt] in
                     MainListVC.converted.boolValue = true
-                    conversionNeeded.doIt(commentOption: .multipleCommentsPerItem)
+                    Parameters.commentStyle = .multiple
+                    conversionNeeded.doIt(commentStyle: .multiple)
+                    prompt.close()
                 }
                 prompt.show()
             }
