@@ -60,6 +60,7 @@ class LocationView: UIView, XibBasics {
         ratingContainer.addSubview(rating)
         
         images.frameWidth = imagesContainer.frameWidth
+        images.frameHeight = imagesContainer.frameHeight
         imagesContainer.addSubview(images)
     }
     

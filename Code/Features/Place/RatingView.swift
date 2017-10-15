@@ -103,6 +103,6 @@ class RatingView: UIView, XibBasics {
     
     private func enable(_ enabled: Bool) {
         rateView.isUserInteractionEnabled = enabled
-        lockButton.alpha = enabled ? 1.0 : 0.3
+        lockButton.alpha = enabled ? 0.3 : 1.0
     }
 }

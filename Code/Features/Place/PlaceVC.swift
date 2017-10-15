@@ -32,7 +32,7 @@ class PlaceVC: UIViewController {
     @IBOutlet weak private var tableView: UITableView!
     @IBOutlet weak private var tableViewBottom: NSLayoutConstraint!
     private var animatingEarthImageView:FLAnimatedImageView!
-    
+
     fileprivate var rowViews = [RowView]()
     fileprivate var displayedRowViews:[RowView] {
         return rowViews.filter({$0.displayed})
@@ -127,7 +127,7 @@ class PlaceVC: UIViewController {
             let newItemView = self.insertItem(item, atRowViewIndex: newItemIndex+1)
             
             if Parameters.commentStyle == .single {
-                let newCommentView = self.insertComment(singleComment, atRowViewIndex: newItemIndex+2)
+                let newCommentView = self.insertComment(singleComment, ownerItemNameView: newItemView, atRowViewIndex: newItemIndex+2)
                 newItemView.commentViewsForItem.append(newCommentView)
             }
             
@@ -147,7 +147,7 @@ class PlaceVC: UIViewController {
                         let imageFileNames = (Array(comment.images!) as! [Image]).map({$0.fileName!})
                         Log.msg("itemName: \(String(describing: item.name)); imageFileNames: \(imageFileNames)")
                         
-                        let commentRowView = insertComment(comment, atRowViewIndex: rowViews.endIndex)
+                        let commentRowView = insertComment(comment, ownerItemNameView: itemNameView, atRowViewIndex: rowViews.endIndex)
                         itemNameView.commentViewsForItem.append(commentRowView)
                     }
                 }
@@ -169,16 +169,39 @@ class PlaceVC: UIViewController {
     }
     
     @discardableResult
-    private func insertComment(_ comment: Comment, atRowViewIndex index: Int, displayed: Bool = false) -> RowView {
+    private func insertComment(_ comment: Comment, ownerItemNameView: ItemNameView, atRowViewIndex index: Int, displayed: Bool = false) -> RowView {
+    
         let commentView = CommentView.create()!
         commentView.setup(withComment: comment, andParentVC: self)
+        
+        let commentRowView = RowView(contents: commentView)
+        commentRowView.displayed = displayed
+        rowViews.insert(commentRowView, at: index)
+        
         commentView.comment.save = {update in
             comment.comment = update
             comment.save()
         }
-        let commentRowView = RowView(contents: commentView)
-        commentRowView.displayed = displayed
-        rowViews.insert(commentRowView, at: index)
+        
+        commentView.removeComment = {
+            DeletionImpact().showWarning(for: .comment(comment), using: self, deletionAction: {
+            
+                comment.remove()
+                CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+                
+                let commentViewIndex = self.rowViews.index(where: {$0.contents == commentView})!
+                self.rowViews.remove(at: commentViewIndex)
+                
+                let commentRowViewIndex = ownerItemNameView.commentViewsForItem.index(where: {$0.contents == commentView})!
+                ownerItemNameView.commentViewsForItem.remove(at: commentRowViewIndex)
+                
+                if ownerItemNameView.commentViewsForItem.count == 0 {
+                    ownerItemNameView.showHideState = .closed
+                }
+                
+                self.tableView.reloadData()
+            })
+        }
         
         return commentRowView
     }
@@ -214,8 +237,12 @@ class PlaceVC: UIViewController {
             item.save()
             
             let newCommentIndex = self.rowViews.index(where: {$0.contents == itemNameView})!
-            let commentRowView = self.insertComment(comment, atRowViewIndex: newCommentIndex+1, displayed: true)
+            let commentRowView = self.insertComment(comment, ownerItemNameView: itemNameView, atRowViewIndex: newCommentIndex+1, displayed: true)
             itemNameView.commentViewsForItem.append(commentRowView)
+            
+            if itemNameView.showHideState == .closed {
+                itemNameView.showHideState = .open
+            }
             
             self.tableView.reloadData()
         }
@@ -308,33 +335,29 @@ extension PlaceVC : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return displayedRowViews.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: placeCellReuseId, for: indexPath) as! PlaceVCCell
         let contents = displayedRowViews[indexPath.row].contents!
 
         cell.setup(withContents: contents)
-        
-        if indexPath.row % 2 == 0 {
-            contents.backgroundColor = UIColor.rowColor1
-        }
-        else {
-            contents.backgroundColor = UIColor.rowColor2
-        }
-        
         cell.layoutIfNeeded()
         
         return cell
     }
     
+    private func rowHeight(_ row:Int) -> CGFloat {
+        let contents = displayedRowViews[row].contents!
+        let rowHeight = contents.frameHeight        
+        return rowHeight
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let contents = displayedRowViews[indexPath.row].contents!
-        return contents.frameHeight
+        return rowHeight(indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        let contents = displayedRowViews[indexPath.row].contents!
-        return contents.frameHeight
+        return rowHeight(indexPath.row)
     }
 }
 

@@ -41,7 +41,6 @@ class ImagesView: UIView, XibBasics {
             }
         }
 
-        images.backgroundColor = UIColor.clear
         images.pageControlPosition = PageControlPosition.underScrollView
         images.pageControl.currentPageIndicatorTintColor = UIColor.lightGray
         images.pageControl.pageIndicatorTintColor = UIColor.black

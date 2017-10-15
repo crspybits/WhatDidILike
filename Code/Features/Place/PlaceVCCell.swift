@@ -14,7 +14,6 @@ class PlaceVCCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     
     private let contentsTag = 18
@@ -29,9 +28,10 @@ class PlaceVCCell: UITableViewCell {
         }
 
         self.contents = contents
+        let cellHeight = contentView.frameWidth
         
         contents.frameWidth = contentView.frameWidth
-        contentView.frameHeight = contents.frameHeight
+        contentView.frameHeight = cellHeight
         contentView.addSubview(contents)
         
         // Log.msg("contents.frame: \(contents.frame)")

@@ -14,8 +14,31 @@ class ItemNameView: UIView, XibBasics {
     @IBOutlet weak var itemName: TextField!
     @IBOutlet weak var addCommentButton: UIButton!
     var showHide: ((_ state: ShowHideState)->())?
-    private var showHideState:ShowHideState = .closed
     @IBOutlet private weak var openClosed: UIImageView!
+    private let animationDuration:TimeInterval = 0.1
+    @IBOutlet private weak var header: UIView!
+    @IBOutlet private weak var footer: UIView!
+    
+    var showHideState:ShowHideState = .closed {
+        didSet {
+            var rotationAngle:Float
+            
+            switch showHideState {
+            case .open:
+                rotationAngle = -Float.pi/2.0
+                
+            case .closed:
+                rotationAngle = 0
+            }
+            
+            UIView.animate(withDuration: animationDuration, animations: {
+                self.openClosed.transform = CGAffineTransform(rotationAngle: CGFloat(rotationAngle));
+            }) { (success) in
+                // Doing this after the animation because I'm doing a table view reload which interferes with the animation.
+                self.showHide?(self.showHideState)
+            }
+        }
+    }
     
     var delete:(()->())?
     var addComment:(()->())?
@@ -36,23 +59,18 @@ class ItemNameView: UIView, XibBasics {
     }
     
     @IBAction func showHideAction(_ sender: Any) {
-        var rotationAngle:Float
-        
         switch showHideState {
         case .closed:
-            rotationAngle = -Float.pi/2.0
             showHideState = .open
-            
+            // Just because it's odd to have this open if there's no comments...
+            // And because this is fun :).
+            if commentViewsForItem.count == 0 {
+                TimedCallback.withDuration(Float(animationDuration * 3)) { [unowned self] in
+                    self.showHideState = .closed
+                }
+            }
         case .open:
-            rotationAngle = 0
             showHideState = .closed
-        }
-        
-        UIView.animate(withDuration: 0.1, animations: {
-            self.openClosed.transform = CGAffineTransform(rotationAngle: CGFloat(rotationAngle));
-        }) { (success) in
-            // Doing this after the animation because I'm doing a table view reload which interferes with the animation.
-            self.showHide?(self.showHideState)
         }
     }
     

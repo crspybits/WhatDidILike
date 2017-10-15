@@ -47,6 +47,7 @@ class DeletionImpact {
     enum DeletionImpactType {
         case item(Item)
         case location(Location)
+        case comment(Comment)
     }
     
     func showWarning(`for` type: DeletionImpactType, using vc: UIViewController, deletionAction: @escaping ()->()) {
@@ -74,12 +75,23 @@ class DeletionImpact {
 
     private func of(_ type: DeletionImpactType) -> (warning: String?, typeName: String) {
         switch type {
+        case .comment(let comment):
+            return (of(comment: comment), "comment")
+            
         case .item(let item):
             return (of(item: item), "menu item")
             
         case .location(let location):
             return (of(location: location), "location")
         }
+    }
+    
+    private func of(comment:Comment) -> String? {
+        let numberImages = comment.images!.count
+        
+        addToComponents(value: numberImages, name: "image")
+        
+        return assembleComponents(initialMessage: "Deleting this comment will also remove: ")
     }
     
     private func of(item:Item) -> String? {

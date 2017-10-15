@@ -15,6 +15,6 @@ class Layout {
         layer.borderColor = UIColor.textBoxLightGray.cgColor
         layer.borderWidth = 1.0
         layer.cornerRadius = 5.0
-        textBox.backgroundColor = UIColor.clear
+        textBox.backgroundColor = UIColor(white: 0.85, alpha: 1.0)
     }
 }

@@ -15,7 +15,9 @@ class CommentView: UIView, XibBasics {
     @IBOutlet weak var comment: TextView!
     private let rating = RatingView.create()!
     private let images = ImagesView.create()!
-
+    @IBOutlet weak var removeButton: UIButton!
+    var removeComment:(()->())?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         Layout.format(textBox: comment)
@@ -31,5 +33,11 @@ class CommentView: UIView, XibBasics {
         self.comment.text = comment.comment
         rating.setup(withRating: comment)
         images.setup(withParentVC:vc, andImagesObj: comment)
+        
+        removeButton.isHidden = Parameters.commentStyle == .single
+    }
+    
+    @IBAction func removeCommentAction(_ sender: Any) {
+        removeComment?()
     }
 }
