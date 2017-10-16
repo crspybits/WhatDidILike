@@ -13,6 +13,18 @@ import SMCoreLib
 @objc(Location)
 public class Location: BaseObject, RatingManagedObject, ImagesManagedObject {
     static let NAME_KEY = "place.name"
+    static let DISTANCE_KEY = "internalDistance"
+
+    // I'm not using `internalDistance` directly just to emphasize that this is a little different. It's for the UI so we can order locations by distance.
+    var sortingDistance:Float {
+        set {
+            internalDistance = newValue
+        }
+        
+        get {
+            return internalDistance
+        }
+    }
     
     // Doesn't save the core data object when you set.
     // Don't access internalLocation directly. Use this method instead.
@@ -44,16 +56,35 @@ public class Location: BaseObject, RatingManagedObject, ImagesManagedObject {
         return location
     }
     
-    class func fetchRequestForAllObjects() -> NSFetchRequest<NSFetchRequestResult>? {
+    class func fetchRequestForAllObjects(sortingOrder: OrderFilter.OrderFilterType) -> NSFetchRequest<NSFetchRequestResult>? {
         var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
         fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(withEntityName: self.entityName(), modifyingFetchRequestWith: nil)
         
+        var key: String
+        var ascending: Bool
+        
+        switch sortingOrder {
+        case .distance(ascending: let ascend):
+            key = DISTANCE_KEY
+            ascending = ascend
+            
+        case .name(ascending: let ascend):
+            key = NAME_KEY
+            ascending = ascend
+        }
+        
         if fetchRequest != nil {
-            let sortDescriptor = NSSortDescriptor(key: NAME_KEY, ascending: true)
+            let sortDescriptor = NSSortDescriptor(key: key, ascending: ascending)
             fetchRequest!.sortDescriptors = [sortDescriptor]
         }
         
         return fetchRequest
+    }
+    
+    class func fetchAllObjects() -> [Location]? {
+        let locations = try? CoreData.sessionNamed(CoreDataExtras.sessionName)
+            .fetchAllObjects(withEntityName: entityName())
+        return locations as? [Location]
     }
     
     func save() {
@@ -73,5 +104,9 @@ public class Location: BaseObject, RatingManagedObject, ImagesManagedObject {
         }
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
+    }
+    
+    static func metersToMiles(meters:Float) -> Float {
+        return (meters/1000.0)*0.621371
     }
 }

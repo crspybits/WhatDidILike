@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		146991ADF5C9C882E6AABE63 /* Pods_WhatDidILike.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2F0394E5734A520BA46C48 /* Pods_WhatDidILike.framework */; };
 		83019F891F80924400E1E117 /* BaseObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F871F80924400E1E117 /* BaseObject+CoreDataClass.swift */; };
-		83019F8E1F8092EE00E1E117 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F8C1F8092EE00E1E117 /* Location+CoreDataProperties.swift */; };
 		83019F901F81730100E1E117 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F8F1F81730100E1E117 /* Spinner.swift */; };
 		830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */ = {isa = PBXBuildFile; fileRef = 830CCC7D1F83276A003668B7 /* rotatingEarth.gif */; };
 		8317E8F01F872D5A004C53BB /* LocationHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E8EF1F872D5A004C53BB /* LocationHeader.swift */; };
@@ -75,6 +74,11 @@
 		83D49CD91F4AC2AA00409B0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CD71F4AC2AA00409B0F /* Assets.xcassets */; };
 		83D49CDF1F4AC2C700409B0F /* WhatDidILikeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D49CDD1F4AC2C700409B0F /* WhatDidILikeTests.swift */; };
 		83D49CE41F4AC44F00409B0F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CE21F4AC44F00409B0F /* Main.storyboard */; };
+		83D752CA1F93D73E00EF4E5D /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D752C71F93D68000EF4E5D /* Location+CoreDataProperties.swift */; };
+		83D752CC1F93D9BE00EF4E5D /* GPS+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D752CB1F93D9BE00EF4E5D /* GPS+Extras.swift */; };
+		83D752D01F93D9F200EF4E5D /* SortFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D752CE1F93D9F200EF4E5D /* SortFilter.swift */; };
+		83D752D11F93D9F200EF4E5D /* SortFilter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D752CF1F93D9F200EF4E5D /* SortFilter.xib */; };
+		83D752D51F9428BF00EF4E5D /* OrderFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D752D41F9428BF00EF4E5D /* OrderFilter.swift */; };
 		83DD5FC61F89ADAC00B23331 /* ShowHideState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DD5FC51F89ADAC00B23331 /* ShowHideState.swift */; };
 		83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */; };
 		83EE7DCE1F5D164B00628CA8 /* ItemNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B5337A1F5D09E70028E6B5 /* ItemNameView.xib */; };
@@ -95,7 +99,6 @@
 		53DBFE2078F6DB8452485085 /* Pods-WhatDidILike.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatDidILike.release.xcconfig"; path = "Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike.release.xcconfig"; sourceTree = "<group>"; };
 		6B2F0394E5734A520BA46C48 /* Pods_WhatDidILike.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhatDidILike.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83019F871F80924400E1E117 /* BaseObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseObject+CoreDataClass.swift"; sourceTree = "<group>"; };
-		83019F8C1F8092EE00E1E117 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83019F8F1F81730100E1E117 /* Spinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		830CCC7D1F83276A003668B7 /* rotatingEarth.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = rotatingEarth.gif; sourceTree = "<group>"; };
 		8317E8EF1F872D5A004C53BB /* LocationHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationHeader.swift; path = Features/Place/LocationHeader.swift; sourceTree = "<group>"; };
@@ -174,6 +177,11 @@
 		83D49CDD1F4AC2C700409B0F /* WhatDidILikeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhatDidILikeTests.swift; sourceTree = "<group>"; };
 		83D49CE21F4AC44F00409B0F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Features/Main List/Main.storyboard"; sourceTree = "<group>"; };
 		83D49CE31F4AC44F00409B0F /* MainListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainListVC.swift; path = "Features/Main List/MainListVC.swift"; sourceTree = "<group>"; };
+		83D752C71F93D68000EF4E5D /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		83D752CB1F93D9BE00EF4E5D /* GPS+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "GPS+Extras.swift"; path = "Features/Place/GPS+Extras.swift"; sourceTree = "<group>"; };
+		83D752CE1F93D9F200EF4E5D /* SortFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortFilter.swift; sourceTree = "<group>"; };
+		83D752CF1F93D9F200EF4E5D /* SortFilter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortFilter.xib; sourceTree = "<group>"; };
+		83D752D41F9428BF00EF4E5D /* OrderFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderFilter.swift; sourceTree = "<group>"; };
 		83DD5FC51F89ADAC00B23331 /* ShowHideState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ShowHideState.swift; path = Features/Place/ShowHideState.swift; sourceTree = "<group>"; };
 		83EE7DD01F5DB9F300628CA8 /* PlaceVCCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlaceVCCell.xib; path = Features/Place/PlaceVCCell.xib; sourceTree = "<group>"; };
 		C19DC61269D8F3C48ED7774F /* Pods-WhatDidILike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatDidILike.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike.debug.xcconfig"; sourceTree = "<group>"; };
@@ -261,7 +269,7 @@
 		8396CE421F4BCBAD00660D73 /* Other files */ = {
 			isa = PBXGroup;
 			children = (
-				83019F8C1F8092EE00E1E117 /* Location+CoreDataProperties.swift */,
+				83D752C71F93D68000EF4E5D /* Location+CoreDataProperties.swift */,
 				83019F871F80924400E1E117 /* BaseObject+CoreDataClass.swift */,
 				83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */,
 				831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */,
@@ -287,6 +295,7 @@
 				83401D9D1F5CEE8900A96C8D /* PlaceDetailsView.swift */,
 				83401DA51F5CFB5300A96C8D /* LocationView.xib */,
 				83401DA31F5CFB3D00A96C8D /* LocationView.swift */,
+				83D752CB1F93D9BE00EF4E5D /* GPS+Extras.swift */,
 				8317E8F31F8731DD004C53BB /* NewObject.xib */,
 				8317E8F51F873204004C53BB /* NewObject.swift */,
 				8317E8F11F872D74004C53BB /* LocationHeader.xib */,
@@ -412,6 +421,7 @@
 				83D49CE11F4AC3E200409B0F /* Main List */,
 				83A2D5E31F5CE0DC0003C5F9 /* Place */,
 				8366CD321F7CA45500E9D6FF /* Location */,
+				83D752CD1F93D9F200EF4E5D /* Sorting and Filtering */,
 				837E12571F8F2B4C00D8E4E1 /* Conversion */,
 			);
 			name = Features;
@@ -424,6 +434,17 @@
 				83D49CE31F4AC44F00409B0F /* MainListVC.swift */,
 			);
 			name = "Main List";
+			sourceTree = "<group>";
+		};
+		83D752CD1F93D9F200EF4E5D /* Sorting and Filtering */ = {
+			isa = PBXGroup;
+			children = (
+				83D752D41F9428BF00EF4E5D /* OrderFilter.swift */,
+				83D752CE1F93D9F200EF4E5D /* SortFilter.swift */,
+				83D752CF1F93D9F200EF4E5D /* SortFilter.xib */,
+			);
+			name = "Sorting and Filtering";
+			path = "Features/Sorting and Filtering";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -520,6 +541,7 @@
 				8385206B1F8B2A77001D97D3 /* ImagesView.xib in Resources */,
 				837E12611F8F2C4C00D8E4E1 /* CommentPromptVC.xib in Resources */,
 				830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */,
+				83D752D11F93D9F200EF4E5D /* SortFilter.xib in Resources */,
 				83B533841F5D0C670028E6B5 /* RatingView.xib in Resources */,
 				83EE7DD21F5DB9F300628CA8 /* PlaceVCCell.xib in Resources */,
 				8317E8F21F872D74004C53BB /* LocationHeader.xib in Resources */,
@@ -568,11 +590,11 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BEMCheckBox/BEMCheckBox.framework",
 				"${BUILT_PRODUCTS_DIR}/DGRunkeeperSwitch/DGRunkeeperSwitch.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/HPTextViewTapGestureRecognizer/HPTextViewTapGestureRecognizer.framework",
 				"${BUILT_PRODUCTS_DIR}/ImageSlideshow/ImageSlideshow.framework",
-				"${BUILT_PRODUCTS_DIR}/JSSAlertView/JSSAlertView.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SMCoreLib/SMCoreLib.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
@@ -580,11 +602,11 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BEMCheckBox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DGRunkeeperSwitch.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HPTextViewTapGestureRecognizer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageSlideshow.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSSAlertView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SMCoreLib.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
@@ -646,11 +668,12 @@
 				8396CE3A1F4BCB8A00660D73 /* Place.swift in Sources */,
 				83A597BE1F6788ED00736DE2 /* TextView.swift in Sources */,
 				837788EF1F66151F0014B8A2 /* UITextField+Extras.swift in Sources */,
+				83D752D01F93D9F200EF4E5D /* SortFilter.swift in Sources */,
 				837788ED1F6608670014B8A2 /* UIResponder+FirstResponder.m in Sources */,
 				83A2D5ED1F5CE4330003C5F9 /* PlaceVCCell.swift in Sources */,
 				8396CE401F4BCB8A00660D73 /* Comment.swift in Sources */,
 				83401D9E1F5CEE8900A96C8D /* PlaceDetailsView.swift in Sources */,
-				83019F8E1F8092EE00E1E117 /* Location+CoreDataProperties.swift in Sources */,
+				83D752CC1F93D9BE00EF4E5D /* GPS+Extras.swift in Sources */,
 				837E12601F8F2C4C00D8E4E1 /* CommentPromptVC.swift in Sources */,
 				83A2D5EB1F5CE3670003C5F9 /* PlaceVC.swift in Sources */,
 				8317E8F81F876E0D004C53BB /* DeletionImpact.swift in Sources */,
@@ -666,7 +689,9 @@
 				831B04291F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift in Sources */,
 				835F44021F4AC76C00A7748B /* MainListVC.swift in Sources */,
 				831B042B1F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift in Sources */,
+				83D752D51F9428BF00EF4E5D /* OrderFilter.swift in Sources */,
 				83401D9A1F5CEA4E00A96C8D /* XibBasics.swift in Sources */,
+				83D752CA1F93D73E00EF4E5D /* Location+CoreDataProperties.swift in Sources */,
 				83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */,
 				837E12591F8F2BBA00D8E4E1 /* ConvertFromV1.swift in Sources */,
 				83DD5FC61F89ADAC00B23331 /* ShowHideState.swift in Sources */,

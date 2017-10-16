@@ -25,6 +25,8 @@ target 'WhatDidILike' do
 	
 	pod 'ImageSlideshow', '~> 1.4'
 	
+	pod 'BEMCheckBox', '~> 1.0'
+	
     # 9/24/17; Dealing with Cocoapods inability to specify Swift versions...
 
 	post_install do |installer|

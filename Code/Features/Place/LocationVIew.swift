@@ -10,11 +10,6 @@ import UIKit
 import MapKit
 import SMCoreLib
 
-protocol LocationViewDelegate : class {
-    func locationViewStartedUsingGPS(_ lv: LocationView)
-    func locationViewStoppedUsingGPS(_ lv: LocationView)
-}
-
 class LocationView: UIView, XibBasics {
     typealias ViewType = LocationView
     @IBOutlet weak var address: TextView!
@@ -24,11 +19,9 @@ class LocationView: UIView, XibBasics {
     @IBOutlet private weak var ratingContainer: UIView!
     private let rating = RatingView.create()!
     @IBOutlet weak var imagesContainer: UIView!
-    weak var delegate:LocationViewDelegate!
+    weak var delegate:GPSDelegate!
     
     private var defaultRegion:MKCoordinateRegion!
-    
-    private static let numberOfTimesLocationServicesFailed = SMPersistItemInt(name: "LocationView.numberOfTimesLocationServicesFailed", initialIntValue: 0, persistType: .userDefaults)
     
     fileprivate weak var viewController: UIViewController!
     fileprivate var location: Location!
@@ -95,7 +88,7 @@ class LocationView: UIView, XibBasics {
     func close() {
         ll?.stopWithoutCallback()
         ll?.cleanup()
-        delegate?.locationViewStoppedUsingGPS(self)
+        delegate?.stoppedUsingGPS(self)
         convertAddress?.cleanup()
     }
     
@@ -117,8 +110,8 @@ class LocationView: UIView, XibBasics {
         let gpsLocationType = GPSLocationType(rawValue: gpsLocation.selectedSegmentIndex)!
         switch gpsLocationType {
         case .current:
-            LocationView.numberOfTimesLocationServicesFailed.intValue = 0
-            delegate?.locationViewStartedUsingGPS(self)
+            Parameters.numberOfTimesLocationServicesFailed.intValue = 0
+            delegate?.startedUsingGPS(self)
             ll = LatLong(delegate: self)
             
         case .previous:
@@ -265,15 +258,11 @@ class LocationView: UIView, XibBasics {
             location.location = newLocation
             location.save()
         }
-        
-        func metersToMiles(meters: Float) -> Float {
-            return (meters/1000.0)*0.621371
-        }
     
         if let currentCoords = currentCoords {
             let dist = newLocation.distance(from: currentCoords)
             if dist > THRESHOLD_DISTANCE_METERS {
-                let miles = metersToMiles(meters: Float(dist))
+                let miles = Location.metersToMiles(meters: Float(dist))
                 let message = "The new coordinates are \(miles) miles away from the previous coordinates."
                 let alert = UIAlertController(title: message, message: nil, preferredStyle: .actionSheet)
                 alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { alert in
@@ -321,7 +310,7 @@ extension LocationView : LatLongDelegate {
     }
     
     func finishedAttemptingToObtainCoordinates() {
-        delegate?.locationViewStoppedUsingGPS(self)
+        delegate?.stoppedUsingGPS(self)
         Log.msg("finishedAttemptingToObtainCoordinates: ll: \(ll)")
         if ll.coords == nil {
             // We could not obtain coords; change the gpsLocation to `previous`
@@ -330,10 +319,9 @@ extension LocationView : LatLongDelegate {
             showPreviousLocation()
 
             // If we do this too many times, then turn off showing this message until the user presses the "Current" GPS location button.
-            let limitLocationServicesFailed = 3
-            if LocationView.numberOfTimesLocationServicesFailed.intValue < limitLocationServicesFailed {
+            if Parameters.numberOfTimesLocationServicesFailed.intValue < Parameters.limitLocationServicesFailed {
                 Alert.show(fromVC: viewController, withTitle: "Could not obtain your current location.", message: "Are location services turned off?")
-                LocationView.numberOfTimesLocationServicesFailed.intValue += 1
+                Parameters.numberOfTimesLocationServicesFailed.intValue += 1
             }
         }
         else {

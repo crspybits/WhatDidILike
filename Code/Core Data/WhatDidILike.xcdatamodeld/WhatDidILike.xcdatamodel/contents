@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13528" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13532" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="BaseObject" representedClassName="BaseObject" isAbstract="YES" syncable="YES">
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="modificationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -24,6 +24,7 @@
     </entity>
     <entity name="Location" representedClassName="Location" parentEntity="BaseObject" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="internalDistance" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="internalLocation" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="meThem" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.5" usesScalarValueType="YES" syncable="YES"/>
@@ -52,7 +53,7 @@
         <element name="Comment" positionX="-54" positionY="18" width="128" height="120"/>
         <element name="Image" positionX="-27" positionY="81" width="128" height="90"/>
         <element name="Item" positionX="-36" positionY="27" width="128" height="90"/>
-        <element name="Location" positionX="-18" positionY="36" width="128" height="150"/>
+        <element name="Location" positionX="-18" positionY="36" width="128" height="165"/>
         <element name="Place" positionX="0" positionY="45" width="128" height="135"/>
         <element name="PlaceCategory" positionX="-27" positionY="81" width="128" height="75"/>
         <element name="PlaceList" positionX="-18" positionY="90" width="128" height="75"/>

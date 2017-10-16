@@ -1,4 +1,5 @@
 PODS:
+  - BEMCheckBox (1.4.1)
   - Crashlytics (3.9.0):
     - Fabric (~> 1.7.0)
   - DGRunkeeperSwitch (1.1.4)
@@ -8,7 +9,6 @@ PODS:
   - ImageSlideshow (1.4.1):
     - ImageSlideshow/Core (= 1.4.1)
   - ImageSlideshow/Core (1.4.1)
-  - JSSAlertView (3.0.4)
   - Reachability (3.2)
   - SMCoreLib (1.0.3):
     - HPTextViewTapGestureRecognizer (~> 0.1)
@@ -18,12 +18,12 @@ PODS:
   - TTGEmojiRate (0.3.0)
 
 DEPENDENCIES:
+  - BEMCheckBox (~> 1.0)
   - Crashlytics
   - DGRunkeeperSwitch (~> 1.1)
   - Fabric
   - FLAnimatedImage (~> 1.0)
   - ImageSlideshow (~> 1.4)
-  - JSSAlertView (~> 3.0)
   - SMCoreLib (from `../Common/SMCoreLib/`)
   - TTGEmojiRate (~> 0.3)
 
@@ -32,18 +32,18 @@ EXTERNAL SOURCES:
     :path: ../Common/SMCoreLib/
 
 SPEC CHECKSUMS:
+  BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   Crashlytics: 64aad5dd97249dd3ff94b979fea140144590cdd3
   DGRunkeeperSwitch: cc237936f42237307f5e212e18136a27bf907bf1
   Fabric: e6be012366472553807dada21243c5ab8d904151
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   HPTextViewTapGestureRecognizer: 6a73fd09f858e49a2743c3a338dc5c0791b0fae0
   ImageSlideshow: 1bb0e610e28a71e8936d57265d882f61714a470b
-  JSSAlertView: 7d8345c88e6fd8b515bc49f0fc8d8c69f6776b9c
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SMCoreLib: 926871f686ee36ca8aed18fd4c3d0ac9bc184824
   SwiftyBeaver: 91057725648ee4980308f1650af077d04b3654a0
   TTGEmojiRate: 9b295b22e42874acfd717a9ae606e259995b83d0
 
-PODFILE CHECKSUM: 5192e9dfd39c7facd5a1fb0b807e6ed55593fcb3
+PODFILE CHECKSUM: f414981715b6639d4cf59e71490e7d9270cea70f
 
 COCOAPODS: 1.3.1

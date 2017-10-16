@@ -24,4 +24,25 @@ class Parameters {
             return CommentStyle(rawValue: _commentStyle.stringValue)!
         }
     }
+
+    private static let _orderFilter = SMPersistItemData(name: "Parameters.orderFilter", initialDataValue: Data(), persistType: .userDefaults)
+    static var orderFilter:OrderFilter.OrderFilterType {
+        set {
+            let obj = OrderFilter(newValue)
+            _orderFilter.dataValue = NSKeyedArchiver.archivedData(withRootObject: obj)
+        }
+        get {
+            if let obj = NSKeyedUnarchiver.unarchiveObject(with: _orderFilter.dataValue) as? OrderFilter {
+                return obj.orderFilter
+            }
+            else {
+                // A default. Something bad happened.
+                Log.error("Yikes: Couldn't unarchive the Sorting.Order object!")
+                return .distance(ascending: true)
+            }
+        }
+    }
+    
+    static let limitLocationServicesFailed = 3
+    static let numberOfTimesLocationServicesFailed = SMPersistItemInt(name: "Parameters.numberOfTimesLocationServicesFailed", initialIntValue: 0, persistType: .userDefaults)
 }

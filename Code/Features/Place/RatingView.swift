@@ -53,12 +53,7 @@ class RatingView: UIView, XibBasics {
         super.awakeFromNib()
         
         meThemSwitch.titles = ["Me", "Them"]
-        meThemSwitch.selectedBackgroundColor = .white
-        meThemSwitch.titleColor = .white
-        meThemSwitch.backgroundColor = UIColor.lightGray
-        meThemSwitch.selectedTitleColor = UIColor(red: 239.0/255.0, green: 95.0/255.0, blue: 49.0/255.0, alpha: 1.0)
-        meThemSwitch.titleFont = UIFont(name: "HelveticaNeue-Medium", size: 17.0)
-        meThemSwitch.frame = CGRect(x: 0, y: 0, width: switchView.frameWidth, height:switchView.frameHeight)
+        Layout.format(switch: meThemSwitch, usingSize: switchView.frameSize)
         meThemSwitch.addTarget(self, action: #selector(meThemSwitchAction), for: .valueChanged)
         switchView.addSubview(meThemSwitch)
         

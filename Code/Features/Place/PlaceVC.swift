@@ -47,15 +47,9 @@ class PlaceVC: UIViewController {
         
         place = location.place
         
-        let gifURL = Bundle.main.url(forResource: "rotatingEarth", withExtension: "gif")
-        let gifData = try! Data(contentsOf: gifURL!)
-        let image = FLAnimatedImage(animatedGIFData: gifData)
-        animatingEarthImageView = FLAnimatedImageView()
-        animatingEarthImageView.animatedImage = image
-        animatingEarthImageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        let earthBarButtonItem = UIBarButtonItem(customView: animatingEarthImageView)
-        animatingEarthImageView.isHidden = true
-        navigationItem.rightBarButtonItem = earthBarButtonItem
+        let (imageView, barButton) = GPSExtras.spinner()
+        navigationItem.rightBarButtonItem = barButton
+        animatingEarthImageView = imageView
         
         let placeNameView = PlaceNameView.create()!
         placeNameView.placeName.text = place.name
@@ -361,12 +355,12 @@ extension PlaceVC : UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension PlaceVC : LocationViewDelegate {
-    func locationViewStartedUsingGPS(_ lv: LocationView) {
+extension PlaceVC : GPSDelegate {
+    func startedUsingGPS(_ obj: Any) {
         animatingEarthImageView.isHidden = false
     }
     
-    func locationViewStoppedUsingGPS(_ lv: LocationView) {
+    func stoppedUsingGPS(_ obj: Any) {
         animatingEarthImageView.isHidden = true
     }
 }

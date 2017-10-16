@@ -17,6 +17,7 @@ class MainListVC: UIViewController {
     let cellReuseId = "LocationTableViewCell"
     private var showDetailsForIndexPath:IndexPath?
     private var indexPathOfNewPlace:IndexPath?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,13 +25,30 @@ class MainListVC: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseId)
         
+        setupBarButtonItems()
+    }
+    
+    private func setupBarButtonItems() {
+        var sortImage:UIImage
+        if Parameters.orderFilter.isAscending {
+            sortImage = #imageLiteral(resourceName: "sortFilterDown")
+        }
+        else {
+            sortImage = #imageLiteral(resourceName: "sortFilterUp")
+        }
+    
+        let sortFilter = UIBarButtonItem(image: sortImage, style: .plain, target: self, action: #selector(sortFilterAction))
         let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPlace))
-        navigationItem.rightBarButtonItem = add
-        
+        navigationItem.rightBarButtonItems = [add, sortFilter]
+    
         let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editAction))
         navigationItem.leftBarButtonItem = editButton
+    }
+    
+    @objc private func sortFilterAction() {
+        let sortFilter = SortFilter.showFrom(parentVC: self)
+        sortFilter.delegate = self
     }
     
     @objc private func editAction() {
@@ -122,6 +140,20 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseId, for: indexPath)
         let location = self.coreDataSource.object(at: indexPath) as! Location
         cell.textLabel?.text = location.place?.name
+        
+        switch Parameters.orderFilter {
+        case .distance:
+            let distanceInMiles = Location.metersToMiles(meters: location.sortingDistance)
+            var distanceString = String(format: "%.2f miles", distanceInMiles)
+            if location.sortingDistance == Float.greatestFiniteMagnitude {
+                distanceString = "\u{221E}" // infinity.
+            }
+            cell.detailTextLabel?.text = "\(distanceString)"
+            
+        case .name:
+            cell.detailTextLabel?.text = nil
+        }
+        
         return cell
     }
     
@@ -159,7 +191,7 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
 extension MainListVC : CoreDataSourceDelegate {
     // 10/2/17; I'm fetching locations here -- becuase each place can have more than one location, and I want to get all of these locations represented here. This also means that a Place *must* have a location or I won't be able to show it here. I'm going to change the Core Data model to require each place have at least one location.
     func coreDataSourceFetchRequest(_ cds: CoreDataSource!) -> NSFetchRequest<NSFetchRequestResult>! {
-        return Location.fetchRequestForAllObjects()
+        return Location.fetchRequestForAllObjects(sortingOrder: Parameters.orderFilter)
     }
     
     func coreDataSourceContext(_ cds: CoreDataSource!) -> NSManagedObjectContext! {
@@ -187,5 +219,17 @@ extension MainListVC : CoreDataSourceDelegate {
     // 5/20/16; Odd. This gets called when an object is updated, sometimes. It may be because the sorting key I'm using in the fetched results controller changed.
     func coreDataSource(_ cds: CoreDataSource!, objectWasMovedFrom oldIndexPath: IndexPath!, to newIndexPath: IndexPath!) {
         tableView.reloadData()
+    }
+}
+
+extension MainListVC : SortFilterDelegate {
+    func sortFilter(_ sortFilterByParameters: SortFilter) {
+        // In-case the ascending/descending has changed.
+        self.setupBarButtonItems()
+        
+        self.coreDataSource.fetchData()
+        
+        // Not quite sure why this is needed-- for change in alphabetic ordering.
+        self.tableView.reloadSections([0], with: .automatic)
     }
 }
