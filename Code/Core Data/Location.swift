@@ -11,7 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Location)
-public class Location: BaseObject, RatingManagedObject, ImagesManagedObject {
+public class Location: BaseObject, ImagesManagedObject {
     static let NAME_KEY = "place.name"
     static let DISTANCE_KEY = "internalDistance"
 
@@ -52,7 +52,9 @@ public class Location: BaseObject, RatingManagedObject, ImagesManagedObject {
     }
     
     override class func newObject() -> Location {
-        return super.newObject() as! Location
+        let newLocation = super.newObject() as! Location
+        newLocation.rating = Rating.newObject()
+        return newLocation
     }
     
     class func fetchRequestForAllObjects(sortingOrder: OrderFilter.OrderFilterType) -> NSFetchRequest<NSFetchRequestResult>? {
@@ -102,6 +104,7 @@ public class Location: BaseObject, RatingManagedObject, ImagesManagedObject {
             image.remove()
         }
         
+        rating!.remove()
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
     }
     

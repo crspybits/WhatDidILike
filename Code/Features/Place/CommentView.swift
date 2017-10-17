@@ -31,7 +31,7 @@ class CommentView: UIView, XibBasics {
     
     func setup(withComment comment: Comment, andParentVC vc: UIViewController) {
         self.comment.text = comment.comment
-        rating.setup(withRating: comment)
+        rating.setup(withRating: comment.rating!)
         images.setup(withParentVC:vc, andImagesObj: comment)
         
         removeButton.isHidden = Parameters.commentStyle == .single

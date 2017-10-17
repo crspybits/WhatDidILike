@@ -7,10 +7,9 @@
     </entity>
     <entity name="Comment" representedClassName="Comment" parentEntity="BaseObject" syncable="YES">
         <attribute name="comment" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="meThem" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.5" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Image" inverseName="comment" inverseEntity="Image" syncable="YES"/>
         <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="comments" inverseEntity="Item" syncable="YES"/>
+        <relationship name="rating" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Rating" inverseName="comment" inverseEntity="Rating" syncable="YES"/>
     </entity>
     <entity name="Image" representedClassName="Image" syncable="YES">
         <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
@@ -26,11 +25,10 @@
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="internalDistance" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="internalLocation" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="meThem" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.5" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="specificDescription" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Image" inverseName="location" inverseEntity="Image" syncable="YES"/>
         <relationship name="place" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Place" inverseName="locations" inverseEntity="Place" syncable="YES"/>
+        <relationship name="rating" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Rating" inverseName="location" inverseEntity="Rating" syncable="YES"/>
     </entity>
     <entity name="Place" representedClassName="Place" parentEntity="BaseObject" syncable="YES">
         <attribute name="generalDescription" optional="YES" attributeType="String" syncable="YES"/>
@@ -48,14 +46,23 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="places" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Place" inverseName="lists" inverseEntity="Place" syncable="YES"/>
     </entity>
+    <entity name="Rating" representedClassName="Rating" syncable="YES">
+        <attribute name="again" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="meThem" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="recommendedBy" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="comment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Comment" inverseName="rating" inverseEntity="Comment" syncable="YES"/>
+        <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="rating" inverseEntity="Location" syncable="YES"/>
+    </entity>
     <elements>
         <element name="BaseObject" positionX="-63" positionY="-18" width="128" height="90"/>
-        <element name="Comment" positionX="-54" positionY="18" width="128" height="120"/>
+        <element name="Comment" positionX="-54" positionY="18" width="128" height="105"/>
         <element name="Image" positionX="-27" positionY="81" width="128" height="90"/>
         <element name="Item" positionX="-36" positionY="27" width="128" height="90"/>
-        <element name="Location" positionX="-18" positionY="36" width="128" height="165"/>
+        <element name="Location" positionX="-18" positionY="36" width="128" height="150"/>
         <element name="Place" positionX="0" positionY="45" width="128" height="135"/>
         <element name="PlaceCategory" positionX="-27" positionY="81" width="128" height="75"/>
         <element name="PlaceList" positionX="-18" positionY="90" width="128" height="75"/>
+        <element name="Rating" positionX="-27" positionY="81" width="128" height="135"/>
     </elements>
 </model>

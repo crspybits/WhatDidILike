@@ -11,21 +11,117 @@ import DGRunkeeperSwitch
 import TTGEmojiRate
 import SMCoreLib
 
-protocol RatingManagedObject {
-    // Value between 0 and 1-- 0 being completely unhappy.
-    var rating: Float {get set}
-    
-    var meThem: Bool {get set}
-    func save()
-}
-
 class RatingView: UIView, XibBasics {
     typealias ViewType = RatingView
     @IBOutlet private weak var rateView: EmojiRateView!
-    @IBOutlet private weak var switchView: UIView!
-    private let meThemSwitch = DGRunkeeperSwitch()
-    private var rating: RatingManagedObject!
     @IBOutlet private weak var lockButton: UIButton!
+    @IBOutlet weak var recommendedByContainer: UIView!
+    @IBOutlet weak var recommendedByText: UITextField!
+    private var rating: Rating!
+    @IBOutlet weak var stackView: UIStackView!
+    private var originalStackViewSpacing:CGFloat!
+    @IBOutlet weak var meThem: UISegmentedControl!
+    @IBOutlet weak var again: UISegmentedControl!
+    
+    enum MeThemType : Int {
+        case me = 0
+        case them = 1
+        case none = 2
+        
+        func toNSNumber() -> NSNumber? {
+            switch self {
+            case .me:
+                return true
+                
+            case .none:
+                return nil
+                
+            case .them:
+                return false
+            }
+        }
+        
+        static func from(_ num: NSNumber?) -> MeThemType {
+            if let num = num as? Bool {
+                return num ? .me : .them
+            }
+            else {
+                return .none
+            }
+        }
+        
+        func toSegmentValue() -> Int {
+            switch self {
+            case .me, .them:
+                return rawValue
+            case .none:
+                return UISegmentedControlNoSegment
+            }
+        }
+        
+        static func fromSegmentValue(_ segment: Int) -> MeThemType {
+            switch segment {
+            case MeThemType.me.rawValue:
+                return .me
+            case MeThemType.them.rawValue:
+                return .them
+            case UISegmentedControlNoSegment:
+                return .none
+            default:
+                assert(false)
+            }
+        }
+    }
+    
+    enum AgainType : Int {
+        case again = 0
+        case notAgain = 1
+        case none = 2
+        
+        func toNSNumber() -> NSNumber? {
+            switch self {
+            case .again:
+                return true
+                
+            case .none:
+                return nil
+                
+            case .notAgain:
+                return false
+            }
+        }
+        
+        static func from(_ num: NSNumber?) -> AgainType {
+            if let num = num as? Bool {
+                return num ? .again : .notAgain
+            }
+            else {
+                return .none
+            }
+        }
+        
+        func toSegmentValue() -> Int {
+            switch self {
+            case .again, .notAgain:
+                return rawValue
+            case .none:
+                return UISegmentedControlNoSegment
+            }
+        }
+        
+        static func fromSegmentValue(_ segment: Int) -> AgainType {
+            switch segment {
+            case AgainType.again.rawValue:
+                return .again
+            case AgainType.notAgain.rawValue:
+                return .notAgain
+            case UISegmentedControlNoSegment:
+                return .none
+            default:
+                assert(false)
+            }
+        }
+    }
     
     private var _ourRating:Float = 0
     private var ourRating:Float {
@@ -52,10 +148,9 @@ class RatingView: UIView, XibBasics {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        meThemSwitch.titles = ["Me", "Them"]
-        Layout.format(switch: meThemSwitch, usingSize: switchView.frameSize)
-        meThemSwitch.addTarget(self, action: #selector(meThemSwitchAction), for: .valueChanged)
-        switchView.addSubview(meThemSwitch)
+        originalStackViewSpacing = stackView.spacing
+        
+        Layout.format(textBox: recommendedByText)
         
         rateView.backgroundColor = UIColor.clear
         let best = UIColor(red: 0.0/255.0, green: 217.0/255.0, blue: 255.0/255.0, alpha: 1.0)
@@ -78,16 +173,48 @@ class RatingView: UIView, XibBasics {
         enable(false)
     }
     
-    @objc private func meThemSwitchAction() {
-        Log.msg("meThemSwitch: \(meThemSwitch.selectedIndex)")
-        rating.meThem = meThemSwitch.selectedIndex == 0
+    @discardableResult
+    private func setupFromMeThem() -> MeThemType {
+        let meThemType = MeThemType.fromSegmentValue(meThem.selectedSegmentIndex)
+        recommendedByContainer.isHidden = meThemType == .me
+        
+        if meThemType == .me {
+            // recommendedByContainer is hidden, so we can use more spacing
+            stackView.spacing = originalStackViewSpacing * 2
+        }
+        else {
+            stackView.spacing = originalStackViewSpacing
+        }
+        
+        return meThemType
+    }
+    
+    @IBAction func meThemControl(_ sender: Any) {
+        var me: MeThemType!
+
+        UIView.animate {
+            me = self.setupFromMeThem()
+        }
+
+        rating.meThem = me.toNSNumber()
         rating.save()
     }
     
-    func setup(withRating rating: RatingManagedObject) {
+    @IBAction func againControl(_ sender: Any) {
+        let againType = AgainType.fromSegmentValue(again.selectedSegmentIndex)
+        rating.again = againType.toNSNumber()
+        rating.save()
+    }
+    
+    func setup(withRating rating: Rating) {
+        let meThemType = MeThemType.from(rating.meThem)
+        meThem.selectedSegmentIndex = meThemType.toSegmentValue()
+        setupFromMeThem()
+        
+        let againType = AgainType.from(rating.again)
+        again.selectedSegmentIndex = againType.toSegmentValue()
+        
         self.rating = rating
-        let meThemIndex: Int = rating.meThem ? 0 : 1
-        meThemSwitch.setSelectedIndex(meThemIndex, animated: false)
         ourRating = rating.rating
         rateView.rateValue = emojiRating
     }

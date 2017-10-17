@@ -1,5 +1,5 @@
 //
-//  BaseObject+CoreDataClass.swift
+//  BaseObject.swift
 //  WhatDidILike
 //
 //  Created by Christopher G Prince on 9/30/17.

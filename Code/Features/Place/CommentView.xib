@@ -13,7 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CommentView" customModule="WhatDidILike" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="451" height="566"/>
+            <rect key="frame" x="0.0" y="0.0" width="451" height="616"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W1i-mN-QUQ">
@@ -24,13 +24,13 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iEI-1C-ttA">
-                    <rect key="frame" x="0.0" y="220" width="451" height="170"/>
+                    <rect key="frame" x="0.0" y="220" width="451" height="220"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="170" id="sex-u9-YCw"/>
+                        <constraint firstAttribute="height" constant="220" id="sex-u9-YCw"/>
                     </constraints>
                 </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="w71-dj-rxN" customClass="TextView" customModule="WhatDidILike" customModuleProvider="target">
-                    <rect key="frame" x="10" y="410" width="431" height="125"/>
+                    <rect key="frame" x="10" y="460" width="431" height="125"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="125" id="XBh-Ov-EDE"/>
@@ -39,13 +39,13 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comment text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="03U-O4-aO6">
-                    <rect key="frame" x="10" y="540" width="80" height="15"/>
+                    <rect key="frame" x="10" y="590" width="80" height="15"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AhD-F7-WdX">
-                    <rect key="frame" x="419" y="522" width="25" height="25"/>
+                    <rect key="frame" x="419" y="572" width="25" height="25"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="2Kk-17-sd0"/>
                         <constraint firstAttribute="height" constant="25" id="Wrj-jZ-kk3"/>

@@ -75,7 +75,7 @@ class LocationView: UIView, XibBasics {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapGestureAction))
         map.addGestureRecognizer(tap)
         
-        rating.setup(withRating: location)
+        rating.setup(withRating: location.rating!)
         images.setup(withParentVC:viewController, andImagesObj: location)
     }
     

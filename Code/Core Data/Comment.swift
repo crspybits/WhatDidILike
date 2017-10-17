@@ -11,13 +11,15 @@ import CoreData
 import SMCoreLib
 
 @objc(Comment)
-public class Comment: BaseObject, RatingManagedObject, ImagesManagedObject {
+public class Comment: BaseObject, ImagesManagedObject {
     override class func entityName() -> String {
         return "Comment"
     }
     
     override class func newObject() -> Comment {
-        return super.newObject() as! Comment
+        let newComment = super.newObject() as! Comment
+        newComment.rating = Rating.newObject()
+        return newComment
     }
     
     func save() {
@@ -30,6 +32,7 @@ public class Comment: BaseObject, RatingManagedObject, ImagesManagedObject {
             image.remove()
         }
         
+        rating!.remove()
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
     }
 }

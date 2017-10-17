@@ -2,7 +2,7 @@
 //  Comment+CoreDataProperties.swift
 //  WhatDidILike
 //
-//  Created by Christopher G Prince on 10/2/17.
+//  Created by Christopher G Prince on 10/16/17.
 //  Copyright © 2017 Spastic Muffin, LLC. All rights reserved.
 //
 //
@@ -18,10 +18,9 @@ extension Comment {
     }
 
     @NSManaged public var comment: String?
-    @NSManaged public var meThem: Bool
-    @NSManaged public var rating: Float
     @NSManaged public var images: NSOrderedSet?
     @NSManaged public var item: Item?
+    @NSManaged public var rating: Rating?
 
 }
 

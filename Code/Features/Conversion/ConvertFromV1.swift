@@ -171,14 +171,13 @@ class ConvertFromV1 {
             let coreDataLocation = Location.newObject()
             coreDataPlace.addToLocations(coreDataLocation)
             
-            if let iAte = restaurant[KEY_IATE] as? Bool {
-                coreDataLocation.meThem = iAte
-            }
+            let iAte = restaurant[KEY_IATE] as? NSNumber
+            coreDataLocation.rating!.meThem = iAte
             
             coreDataLocation.address = restaurant[PLACE_KEY_LOCATION] as? String
             
             if let rating = restaurant[KEY_RATING] as? Float {
-                coreDataLocation.rating = rating
+                coreDataLocation.rating!.rating = rating
             }
             
             // Since the location info was all previously part of the place info, it makes sense to also use the creation date and modification date here.
@@ -250,13 +249,13 @@ class ConvertFromV1 {
             }
             else {
                 // No comments.
-                if let iAte = menuItem[KEY_IATE] as? Bool {
+                if let iAte = menuItem[KEY_IATE] as? NSNumber {
                     // Add the dummy comment for the me/them.
                     let coreDataComment = Comment.newObject()
                     coreDataItem.addToComments(coreDataComment)
                     
-                    coreDataComment.meThem = iAte
-                    coreDataComment.comment = "(Dummy comment: Added during data conversion; only the me/them has meaning, and not the rating)"
+                    coreDataComment.rating!.meThem = iAte
+                    coreDataComment.comment = "Only me/them has meaning."
                 }
                 
                 coreDataItem.modificationDate = coreDataItem.creationDate
@@ -287,7 +286,7 @@ class ConvertFromV1 {
         
         let coreDataComment = Comment.newObject()
         item.addToComments(coreDataComment)
-        coreDataComment.meThem = false
+        coreDataComment.rating!.meThem = false
         
         var numberRatings = 0
         
@@ -325,7 +324,8 @@ class ConvertFromV1 {
             
             // If iAte is true on one, keep it that way.
             if let iAte = comment[KEY_IATE] as? Bool {
-                coreDataComment.meThem = coreDataComment.meThem || iAte
+                let current = coreDataComment.rating!.meThem as! Bool
+                coreDataComment.rating!.meThem = (current || iAte) as NSNumber
             }
             
             if let rating = comment[KEY_RATING] as? Float {
@@ -361,7 +361,7 @@ class ConvertFromV1 {
         coreDataComment.comment = extendedComment
         
         if numberRatings > 0 {
-            coreDataComment.rating = totalRating / Float(numberRatings)
+            coreDataComment.rating!.rating = totalRating / Float(numberRatings)
         }
         
         item.modificationDate = mostRecentDate as NSDate?
@@ -383,12 +383,11 @@ class ConvertFromV1 {
             // This isn't really the last modification date, but we don't have one.
             coreDataComment.modificationDate = coreDataComment.creationDate
             
-            if let iAte = comment[KEY_IATE] as? Bool {
-                coreDataComment.meThem = iAte
-            }
+            let iAte = comment[KEY_IATE] as? NSNumber
+            coreDataComment.rating!.meThem = iAte
             
             if let rating = comment[KEY_RATING] as? Float {
-                coreDataComment.rating = rating
+                coreDataComment.rating!.rating = rating
             }
             
             coreDataComment.comment = comment[COMMENT_KEY_COMMENT] as? String
