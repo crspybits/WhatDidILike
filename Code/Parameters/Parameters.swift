@@ -25,7 +25,7 @@ class Parameters {
         }
     }
 
-    private static let _orderFilter = SMPersistItemData(name: "Parameters.orderFilter", initialDataValue: Data(), persistType: .userDefaults)
+    private static let _orderFilter = SMPersistItemData(name: "Parameters.orderFilter", initialDataValue: NSKeyedArchiver.archivedData(withRootObject: OrderFilter(.name(ascending: true))), persistType: .userDefaults)
     static var orderFilter:OrderFilter.OrderFilterType {
         set {
             let obj = OrderFilter(newValue)
@@ -45,4 +45,6 @@ class Parameters {
     
     static let limitLocationServicesFailed = 3
     static let numberOfTimesLocationServicesFailed = SMPersistItemInt(name: "Parameters.numberOfTimesLocationServicesFailed", initialIntValue: 0, persistType: .userDefaults)
+    
+    static let userName = SMPersistItemString(name: "Parameters.userName", initialStringValue: "", persistType: .userDefaults)
 }

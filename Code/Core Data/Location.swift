@@ -47,13 +47,12 @@ public class Location: BaseObject, RatingManagedObject, ImagesManagedObject {
         }
     }
     
-    class func entityName() -> String {
+    override class func entityName() -> String {
         return "Location"
     }
     
-    class func newObject() -> Location {
-        let location = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Location
-        return location
+    override class func newObject() -> Location {
+        return super.newObject() as! Location
     }
     
     class func fetchRequestForAllObjects(sortingOrder: OrderFilter.OrderFilterType) -> NSFetchRequest<NSFetchRequestResult>? {

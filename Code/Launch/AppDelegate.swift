@@ -50,6 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.msg("\tcomments: \(String(describing: numberComments))")
         Log.msg("\timages: \(String(describing: numberImages))")
 #endif
+
+        // TODO: Add a UI instead of assigning a constant.
+        Parameters.userName.stringValue = "Christopher Prince"
         
         return true
     }

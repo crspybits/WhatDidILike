@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		146991ADF5C9C882E6AABE63 /* Pods_WhatDidILike.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2F0394E5734A520BA46C48 /* Pods_WhatDidILike.framework */; };
-		83019F891F80924400E1E117 /* BaseObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F871F80924400E1E117 /* BaseObject+CoreDataClass.swift */; };
+		83019F891F80924400E1E117 /* BaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F871F80924400E1E117 /* BaseObject.swift */; };
 		83019F901F81730100E1E117 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83019F8F1F81730100E1E117 /* Spinner.swift */; };
 		830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */ = {isa = PBXBuildFile; fileRef = 830CCC7D1F83276A003668B7 /* rotatingEarth.gif */; };
 		8317E8F01F872D5A004C53BB /* LocationHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E8EF1F872D5A004C53BB /* LocationHeader.swift */; };
@@ -98,7 +98,7 @@
 /* Begin PBXFileReference section */
 		53DBFE2078F6DB8452485085 /* Pods-WhatDidILike.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatDidILike.release.xcconfig"; path = "Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike.release.xcconfig"; sourceTree = "<group>"; };
 		6B2F0394E5734A520BA46C48 /* Pods_WhatDidILike.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhatDidILike.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		83019F871F80924400E1E117 /* BaseObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseObject+CoreDataClass.swift"; sourceTree = "<group>"; };
+		83019F871F80924400E1E117 /* BaseObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseObject.swift; sourceTree = "<group>"; };
 		83019F8F1F81730100E1E117 /* Spinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		830CCC7D1F83276A003668B7 /* rotatingEarth.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = rotatingEarth.gif; sourceTree = "<group>"; };
 		8317E8EF1F872D5A004C53BB /* LocationHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationHeader.swift; path = Features/Place/LocationHeader.swift; sourceTree = "<group>"; };
@@ -270,7 +270,6 @@
 			isa = PBXGroup;
 			children = (
 				83D752C71F93D68000EF4E5D /* Location+CoreDataProperties.swift */,
-				83019F871F80924400E1E117 /* BaseObject+CoreDataClass.swift */,
 				83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */,
 				831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */,
 				831B04271F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift */,
@@ -381,6 +380,7 @@
 				8396CE341F4BCB8A00660D73 /* Location.swift */,
 				83B496C01F4BDE300083610D /* CoreDataExtras.swift */,
 				83A2D5DC1F5CD6B60003C5F9 /* Image.swift */,
+				83019F871F80924400E1E117 /* BaseObject.swift */,
 				8396CE421F4BCBAD00660D73 /* Other files */,
 			);
 			path = "Core Data";
@@ -698,7 +698,7 @@
 				8396CE411F4BCB8A00660D73 /* Comment+CoreDataProperties.swift in Sources */,
 				83401DA41F5CFB3D00A96C8D /* LocationView.swift in Sources */,
 				83D49CD21F4AC26A00409B0F /* AppDelegate.swift in Sources */,
-				83019F891F80924400E1E117 /* BaseObject+CoreDataClass.swift in Sources */,
+				83019F891F80924400E1E117 /* BaseObject.swift in Sources */,
 				83B496C51F4BE0F40083610D /* Place+CoreDataProperties.swift in Sources */,
 				83D49CD11F4AC26A00409B0F /* WhatDidILike.xcdatamodeld in Sources */,
 				831B04171F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift in Sources */,

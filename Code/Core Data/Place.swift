@@ -12,14 +12,13 @@ import SMCoreLib
 
 @objc(Place)
 public class Place: BaseObject {
-    class func entityName() -> String {
+    override class func entityName() -> String {
         return "Place"
     }
     
     // After you create a Place, make sure you give it at least one Location-- this is required by the model.
-    class func newObject() -> Place {
-        let place = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Place
-        return place
+    override class func newObject() -> Place {
+        return super.newObject() as! Place
     }
     
     func save() {

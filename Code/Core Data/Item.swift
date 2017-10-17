@@ -12,13 +12,12 @@ import SMCoreLib
 
 @objc(Item)
 public class Item: BaseObject {
-    class func entityName() -> String {
+    override class func entityName() -> String {
         return "Item"
     }
     
-    class func newObject() -> Item {
-        let item = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Item
-        return item
+    override class func newObject() -> Item {
+        return super.newObject() as! Item
     }
     
     func save() {

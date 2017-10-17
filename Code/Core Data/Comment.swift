@@ -12,13 +12,12 @@ import SMCoreLib
 
 @objc(Comment)
 public class Comment: BaseObject, RatingManagedObject, ImagesManagedObject {
-    class func entityName() -> String {
+    override class func entityName() -> String {
         return "Comment"
     }
     
-    class func newObject() -> Comment {
-        let comment = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Comment
-        return comment
+    override class func newObject() -> Comment {
+        return super.newObject() as! Comment
     }
     
     func save() {
