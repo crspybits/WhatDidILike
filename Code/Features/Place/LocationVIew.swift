@@ -76,7 +76,18 @@ class LocationView: UIView, XibBasics {
         map.addGestureRecognizer(tap)
         
         rating.setup(withRating: location.rating!)
+        
         images.setup(withParentVC:viewController, andImagesObj: location)
+        
+        address.save = { update in
+            location.address = update
+            location.save()
+        }
+        
+        specificDescription.save = { update in
+            location.specificDescription = update
+            location.save()
+        }
     }
     
     // Useful if the location is new, and you need to establish Current coordinates.

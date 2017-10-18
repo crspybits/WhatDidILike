@@ -49,7 +49,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MB5-ng-wU8" userLabel="Recommended by container">
                             <rect key="frame" x="0.0" y="112" width="242" height="52"/>
                             <subviews>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eJG-NN-ahq">
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eJG-NN-ahq" customClass="TextField" customModule="WhatDidILike" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="242" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="Yak-ih-4Fj"/>
@@ -155,7 +155,7 @@
                 <outlet property="meThem" destination="Ymo-23-8If" id="vrl-CM-MLJ"/>
                 <outlet property="rateView" destination="tTC-oi-0Ly" id="KLw-zq-gKP"/>
                 <outlet property="recommendedByContainer" destination="MB5-ng-wU8" id="6Ax-iB-hKs"/>
-                <outlet property="recommendedByText" destination="eJG-NN-ahq" id="QbS-ca-O2Q"/>
+                <outlet property="recommendedByText" destination="eJG-NN-ahq" id="arL-MT-HnL"/>
                 <outlet property="stackView" destination="oFx-gk-2zg" id="KWz-XC-J4t"/>
             </connections>
             <point key="canvasLocation" x="-69" y="-228"/>

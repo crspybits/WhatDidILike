@@ -16,7 +16,7 @@ class RatingView: UIView, XibBasics {
     @IBOutlet private weak var rateView: EmojiRateView!
     @IBOutlet private weak var lockButton: UIButton!
     @IBOutlet weak var recommendedByContainer: UIView!
-    @IBOutlet weak var recommendedByText: UITextField!
+    @IBOutlet weak var recommendedByText: TextField!
     private var rating: Rating!
     @IBOutlet weak var stackView: UIStackView!
     private var originalStackViewSpacing:CGFloat!
@@ -217,6 +217,13 @@ class RatingView: UIView, XibBasics {
         self.rating = rating
         ourRating = rating.rating
         rateView.rateValue = emojiRating
+        
+        recommendedByText.text = rating.recommendedBy
+        
+        recommendedByText.save = { update in
+            rating.recommendedBy = update
+            rating.save()
+        }
     }
     
     @IBAction func lockButtonAction(_ sender: Any) {

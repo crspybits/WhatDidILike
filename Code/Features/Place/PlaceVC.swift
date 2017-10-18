@@ -269,14 +269,7 @@ class PlaceVC: UIViewController {
 
         let locationView = LocationView.create()!
         locationView.setup(withLocation: location, place: place, viewController: self)
-        locationView.address.save = { update in
-            location.address = update
-            location.save()
-        }
-        locationView.specificDescription.save = { update in
-            location.specificDescription = update
-            location.save()
-        }
+        
         locationView.delegate = self
         let locationViewRow = RowView(contents: locationView)
         locationViewRow.displayed = false
