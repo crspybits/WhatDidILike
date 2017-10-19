@@ -105,7 +105,7 @@ class MainListVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // MainListVC.converted.boolValue = false
+        // MainListVC.converted.boolValue = true
         
         if !MainListVC.converted.boolValue {
             if let conversionNeeded = ConvertFromV1() {

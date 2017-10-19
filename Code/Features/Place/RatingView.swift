@@ -69,6 +69,7 @@ class RatingView: UIView, XibBasics {
                 return .none
             default:
                 assert(false)
+                return .none
             }
         }
     }
@@ -119,6 +120,7 @@ class RatingView: UIView, XibBasics {
                 return .none
             default:
                 assert(false)
+                return .none
             }
         }
     }
