@@ -19,17 +19,29 @@ protocol ImagesManagedObject {
     func save()
 }
 
+private class WDILImageSource : ImageSource {
+    let imageObj:Image
+    
+    public init(image: UIImage, imageObj:Image) {
+        self.imageObj = imageObj
+        super.init(image: image)
+    }
+}
+
 class ImagesView: UIView, XibBasics {
     typealias ViewType = ImagesView
     @IBOutlet weak var images: ImageSlideshow!
     private weak var vc: UIViewController!
     private var imagesOwnerObj: ImagesManagedObject!
-    private var localSource = [ImageSource]()
+    private var localSource = [WDILImageSource]()
     private var smAcquireImage:SMAcquireImage!
     
     func setup(withParentVC vc: UIViewController, andImagesObj imagesOwnerObj: ImagesManagedObject) {
         self.vc = vc
         self.imagesOwnerObj = imagesOwnerObj
+        
+        images.showActions = true
+        images.delegate = self
         
         // See also https://stackoverflow.com/questions/37574689/how-to-load-image-from-local-path-ios-swift-by-path
         
@@ -37,7 +49,7 @@ class ImagesView: UIView, XibBasics {
             for obj in images {
                 let imageCoreData = obj as! Image
                 let fileURL = FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY + "/" + imageCoreData.fileName!)
-                addImage(from: fileURL!)
+                addImage(from: fileURL!, imageObj: imageCoreData)
             }
         }
 
@@ -53,11 +65,11 @@ class ImagesView: UIView, XibBasics {
         images.addGestureRecognizer(recognizer)
     }
     
-    private func addImage(from url: URL) {
+    private func addImage(from url: URL, imageObj: Image) {
         do {
             let imageData = try Data(contentsOf: url)
             if let image = UIImage(data: imageData) {
-                let source = ImageSource(image: image)
+                let source = WDILImageSource(image: image, imageObj: imageObj)
                 localSource.append(source)
             }
             else {
@@ -93,9 +105,21 @@ extension ImagesView : SMAcquireImageDelegate {
         imagesOwnerObj.addToImages(newImageObj)
         newImageObj.save()
         
-        addImage(from: newImageURL as URL)
+        addImage(from: newImageURL as URL, imageObj: newImageObj)
         images.setImageInputs(localSource)
         
         smAcquireImage = nil
+    }
+}
+
+extension ImagesView : FullScreenSlideshowViewControllerDelegate {
+    func deleteImage(_ controller: FullScreenSlideshowViewController, imageToDelete: InputSource) {
+        guard let imageSource = imageToDelete as? WDILImageSource else {
+            Log.error("Yark: ImageSource did not have type WDILImageSource")
+            return
+        }
+        
+        imageSource.imageObj.remove()
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
 }

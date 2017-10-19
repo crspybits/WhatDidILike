@@ -23,7 +23,8 @@ target 'WhatDidILike' do
 	# Labeled switch
 	pod 'DGRunkeeperSwitch', '~> 1.1'
 	
-	pod 'ImageSlideshow', '~> 1.4'
+	pod 'ImageSlideshow', :git => 'https://github.com/crspybits/ImageSlideshow.git'
+	# pod 'ImageSlideshow', '~> 1.4'
 	
 	pod 'BEMCheckBox', '~> 1.0'
 	

@@ -23,13 +23,20 @@ DEPENDENCIES:
   - DGRunkeeperSwitch (~> 1.1)
   - Fabric
   - FLAnimatedImage (~> 1.0)
-  - ImageSlideshow (~> 1.4)
+  - ImageSlideshow (from `https://github.com/crspybits/ImageSlideshow.git`)
   - SMCoreLib (from `../Common/SMCoreLib/`)
   - TTGEmojiRate (~> 0.3)
 
 EXTERNAL SOURCES:
+  ImageSlideshow:
+    :git: https://github.com/crspybits/ImageSlideshow.git
   SMCoreLib:
     :path: ../Common/SMCoreLib/
+
+CHECKOUT OPTIONS:
+  ImageSlideshow:
+    :commit: f05ee445581c958c9a3ebba076c363ed89e34ffd
+    :git: https://github.com/crspybits/ImageSlideshow.git
 
 SPEC CHECKSUMS:
   BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
@@ -38,12 +45,12 @@ SPEC CHECKSUMS:
   Fabric: e6be012366472553807dada21243c5ab8d904151
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   HPTextViewTapGestureRecognizer: 6a73fd09f858e49a2743c3a338dc5c0791b0fae0
-  ImageSlideshow: 1bb0e610e28a71e8936d57265d882f61714a470b
+  ImageSlideshow: 93ea6afb3b040de46057861f30de2387c330dc8d
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SMCoreLib: 926871f686ee36ca8aed18fd4c3d0ac9bc184824
   SwiftyBeaver: 91057725648ee4980308f1650af077d04b3654a0
   TTGEmojiRate: 9b295b22e42874acfd717a9ae606e259995b83d0
 
-PODFILE CHECKSUM: f414981715b6639d4cf59e71490e7d9270cea70f
+PODFILE CHECKSUM: 90f7eefbbfd0e95a34aa2d62634b52a34df2fcff
 
 COCOAPODS: 1.3.1
