@@ -244,13 +244,6 @@
 			name = Location;
 			sourceTree = "<group>";
 		};
-		837E124F1F8F239600D8E4E1 /* SDKs */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SDKs;
-			sourceTree = "<group>";
-		};
 		837E12571F8F2B4C00D8E4E1 /* Conversion */ = {
 			isa = PBXGroup;
 			children = (
@@ -343,7 +336,6 @@
 			isa = PBXGroup;
 			children = (
 				83D49CC81F4AC26900409B0F /* Code */,
-				837E124F1F8F239600D8E4E1 /* SDKs */,
 				83D49CDB1F4AC2C700409B0F /* UnitTests */,
 				83D49CD61F4AC2AA00409B0F /* Resources */,
 				83D49CA31F4AC16100409B0F /* Products */,
