@@ -22,6 +22,7 @@ class RatingView: UIView, XibBasics {
     private var originalStackViewSpacing:CGFloat!
     @IBOutlet weak var meThem: UISegmentedControl!
     @IBOutlet weak var again: UISegmentedControl!
+    private var debounce:Debounce!
     
     enum MeThemType : Int {
         case me = 0
@@ -160,12 +161,14 @@ class RatingView: UIView, XibBasics {
         rateView.rateColorRange = (from: worst, to: best)
         
         // Otherwise we get *alot* of changes to core data. And that just seems messy.
-        let debounce = Debounce(type: .duration)
-        debounce!.interval = 1
+        debounce = Debounce(type: .duration)
+        debounce.interval = 1
         
-        rateView.rateValueChangeCallback = { emojiRatingValue in
-            debounce!.queue() {[unowned self] in
-                Log.msg("emojiRatingValue: \(emojiRatingValue)")
+        // It's not sufficient to put `[unowned self]` in the queue() closure. Which seems odd to me.
+        // It's kinda funky, but `rateValueChangeCallback` gets called during initialization. Seems like the rating widget could be changed to avoid that.
+        rateView.rateValueChangeCallback = {[unowned self] emojiRatingValue in
+            self.debounce.queue() {[unowned self] in
+               Log.msg("emojiRatingValue: \(emojiRatingValue)")
                 self.emojiRating = emojiRatingValue
                 self.rating.rating = self.ourRating
                 self.rating.save()
@@ -235,5 +238,10 @@ class RatingView: UIView, XibBasics {
     private func enable(_ enabled: Bool) {
         rateView.isUserInteractionEnabled = enabled
         lockButton.alpha = enabled ? 0.3 : 1.0
+    }
+    
+    deinit {
+        Log.msg("deinit")
+        self.debounce.destroy()
     }
 }

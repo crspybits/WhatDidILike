@@ -23,20 +23,15 @@ DEPENDENCIES:
   - DGRunkeeperSwitch (~> 1.1)
   - Fabric
   - FLAnimatedImage (~> 1.0)
-  - ImageSlideshow (from `https://github.com/crspybits/ImageSlideshow.git`)
+  - ImageSlideshow (from `../ImageSlideshow`)
   - SMCoreLib (from `../Common/SMCoreLib/`)
   - TTGEmojiRate (~> 0.3)
 
 EXTERNAL SOURCES:
   ImageSlideshow:
-    :git: https://github.com/crspybits/ImageSlideshow.git
+    :path: ../ImageSlideshow
   SMCoreLib:
     :path: ../Common/SMCoreLib/
-
-CHECKOUT OPTIONS:
-  ImageSlideshow:
-    :commit: f05ee445581c958c9a3ebba076c363ed89e34ffd
-    :git: https://github.com/crspybits/ImageSlideshow.git
 
 SPEC CHECKSUMS:
   BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
@@ -51,6 +46,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 91057725648ee4980308f1650af077d04b3654a0
   TTGEmojiRate: 9b295b22e42874acfd717a9ae606e259995b83d0
 
-PODFILE CHECKSUM: 90f7eefbbfd0e95a34aa2d62634b52a34df2fcff
+PODFILE CHECKSUM: 771749780e5272590d6a8ce82dc270467cbf65b7
 
 COCOAPODS: 1.3.1

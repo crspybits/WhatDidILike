@@ -77,4 +77,8 @@ class ItemNameView: UIView, XibBasics {
     @IBAction func addCommentAction(_ sender: Any) {
         addComment?()
     }
+    
+    deinit {
+        Log.msg("deinit")
+    }
 }

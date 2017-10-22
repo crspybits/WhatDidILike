@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SMCoreLib
 
 class CommentView: UIView, XibBasics {
     typealias ViewType = CommentView
@@ -39,5 +40,9 @@ class CommentView: UIView, XibBasics {
     
     @IBAction func removeCommentAction(_ sender: Any) {
         removeComment?()
+    }
+    
+    deinit {
+        Log.msg("deinit")
     }
 }

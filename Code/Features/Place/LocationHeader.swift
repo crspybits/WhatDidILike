@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SMCoreLib
 
 class LocationHeader : UIView, XibBasics {
     typealias ViewType = LocationHeader
@@ -45,5 +46,9 @@ class LocationHeader : UIView, XibBasics {
     func setup(withLocation location: Location) {
         self.location = location
         address.text = location.address
+    }
+    
+    deinit {
+        Log.msg("deinit")
     }
 }

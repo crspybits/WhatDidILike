@@ -85,6 +85,10 @@ class PlaceDetailsView: UIView, XibBasics {
         coreDataSource.fetchData()
         listManager = ListManager.showFrom(parentVC: parentVC, delegate: self, title: "Place Lists")
     }
+    
+    deinit {
+        Log.msg("deinit")
+    }
 }
 
 extension PlaceDetailsView : ListManagerDelegate {

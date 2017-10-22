@@ -89,6 +89,10 @@ class ImagesView: UIView, XibBasics {
         smAcquireImage.delegate = self
         smAcquireImage.showAlert(fromView: self)
     }
+    
+    deinit {
+        Log.msg("deinit")
+    }
 }
 
 extension ImagesView : SMAcquireImageDelegate {

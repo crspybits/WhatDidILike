@@ -310,6 +310,10 @@ class LocationView: UIView, XibBasics {
             map.setRegion(defaultRegion, animated: false)
         }
     }
+    
+    deinit {
+        Log.msg("deinit")
+    }
 }
 
 extension LocationView : LatLongDelegate {
