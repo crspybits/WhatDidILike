@@ -27,6 +27,7 @@ class PlaceVC: UIViewController {
     var newPlace = false
     
     private var place:Place!
+    private var titleLabel = UILabel()
     
     fileprivate let placeCellReuseId = "PlaceVCCell"
     @IBOutlet weak private var tableView: UITableView!
@@ -42,10 +43,19 @@ class PlaceVC: UIViewController {
         return UIStoryboard(name: "Place", bundle: nil).instantiateViewController(withIdentifier: "PlaceVC") as! PlaceVC
     }
     
+    private func setTitle() {
+        titleLabel.text = place.name
+        titleLabel.sizeToFit()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         place = location.place
+        
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .title1)
+        navigationItem.titleView = titleLabel
+        setTitle()
         
         let (imageView, barButton) = GPSExtras.spinner()
         navigationItem.rightBarButtonItem = barButton
@@ -55,6 +65,7 @@ class PlaceVC: UIViewController {
         placeNameView.placeName.text = place.name
         placeNameView.placeName.save = {[unowned self] update in
             self.place.name = update
+            self.setTitle()
             self.place.save()
         }
         rowViews.append(RowView(contents: placeNameView))
