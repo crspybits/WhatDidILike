@@ -29,6 +29,9 @@ target 'WhatDidILike' do
 
 	pod 'BEMCheckBox', '~> 1.0'
 	
+	# progress indicator for converting from old format data.
+	pod 'M13ProgressSuite', '~> 1.2'
+	
     # 9/24/17; Dealing with Cocoapods inability to specify Swift versions...
 
 	post_install do |installer|

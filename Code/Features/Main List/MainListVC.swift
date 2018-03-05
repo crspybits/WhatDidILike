@@ -8,6 +8,7 @@
 
 import UIKit
 import SMCoreLib
+import M13ProgressSuite
 
 class MainListVC: UIViewController {
     private static let converted = SMPersistItemBool(name: "MainListVC.converted", initialBoolValue: false, persistType: .userDefaults)
@@ -18,7 +19,6 @@ class MainListVC: UIViewController {
     private var showDetailsForIndexPath:IndexPath?
     private var indexPathOfNewPlace:IndexPath?
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         coreDataSource = CoreDataSource(delegate: self)
@@ -105,22 +105,26 @@ class MainListVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // MainListVC.converted.boolValue = true
+        MainListVC.converted.boolValue = false
         
         if !MainListVC.converted.boolValue {
-            if let conversionNeeded = ConvertFromV1() {
+            if let conversionNeeded = ConvertFromV1(viewController: self) {
                 let prompt = CommentPromptVC.createWith(parentVC: self)
                 prompt.single = {[unowned prompt] in
                     MainListVC.converted.boolValue = true
                     Parameters.commentStyle = .single
-                    conversionNeeded.doIt(commentStyle: .single)
                     prompt.close()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                        conversionNeeded.doIt(commentStyle: .single)
+                    }
                 }
                 prompt.multiple = {[unowned prompt] in
                     MainListVC.converted.boolValue = true
                     Parameters.commentStyle = .multiple
-                    conversionNeeded.doIt(commentStyle: .multiple)
                     prompt.close()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                        conversionNeeded.doIt(commentStyle: .multiple)
+                    }
                 }
                 prompt.show()
             }

@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]);
         
         CoreData.registerSession(coreDataSession, forName: CoreDataExtras.sessionName)
-        
+
 #if DEBUG
         let numberPlaces = try? CoreData.sessionNamed(CoreDataExtras.sessionName)
             .fetchAllObjects(withEntityName: Place.entityName()).count

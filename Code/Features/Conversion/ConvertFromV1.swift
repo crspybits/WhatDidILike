@@ -8,6 +8,7 @@
 
 import Foundation
 import SMCoreLib
+import M13ProgressSuite
 
 class ConvertFromV1 {
     let RESTAURANTS = "Restaurants.dat"
@@ -71,8 +72,9 @@ class ConvertFromV1 {
     var errorRemovingIconsDirectory:Bool = false
     var commentStyle: Parameters.CommentStyle!
     var places:[[String:Any]]!
+    var hud:M13ProgressHUD!
     
-    init?() {
+    init?(viewController:UIViewController) {
         // Temporary
         //let placeFilePath = Bundle.main.path(forResource: "Restaurants", ofType: "dat")
         
@@ -82,8 +84,24 @@ class ConvertFromV1 {
         guard let places = FileStorage.loadApplicationData(fromFlatFile: placeFilePath) as? [[String:Any]] else {
             return nil
         }
-        
+
         self.places = places
+    }
+    
+    private func showHud() {
+        let ring = M13ProgressViewRing()
+        ring.showPercentage = false
+        ring.progressRingWidth = 10
+        if let hud = M13ProgressHUD(progressView: ring),
+            let window = UIApplication.shared.delegate?.window,
+            let w = window {
+            hud.progressViewSize = CGSize(width:60.0, height:60.0)
+            hud.animationPoint = CGPoint(x: UIScreen.main.bounds.size.width / 2, y: UIScreen.main.bounds.size.height / 2)
+            w.addSubview(hud)
+            hud.show(true)
+            self.hud = hud
+            w.layoutIfNeeded()
+        }
     }
     
     // Move a large image in the Documents directory to the LARGE_IMAGE_DIRECTORY. Also renames the image to make the name format more standard. Returns the renamed image file name (without path) or nil on an error.
@@ -123,8 +141,17 @@ class ConvertFromV1 {
         }
         
         numberPlaces = places.count
+        var currentPlaceIndex = 0
+
+        showHud()
         
-        for restaurant in places {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+            doNextRestaurant()
+        }
+        
+        func doNextRestaurant() {
+            let restaurant = places[currentPlaceIndex]
+            
             let coreDataPlace = Place.newObject()
             coreDataPlace.creationDate = restaurant[KEY_DATE] as? NSDate
             coreDataPlace.modificationDate = restaurant[KEY_MODIFICATION_DATE] as? NSDate
@@ -209,21 +236,37 @@ class ConvertFromV1 {
             }
             
             CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
-        } // End places
+            
+            currentPlaceIndex += 1
+            
+            if currentPlaceIndex < numberPlaces {
+                hud?.setProgress(CGFloat(currentPlaceIndex)/CGFloat(numberPlaces), animated: true)
 
-        // TODO: Turn this into an Alert message. Explain the image errors if non-zero.
-        Log.msg("Stats: ")
-        Log.msg("\terrorRemovingIconsDirectory: \(errorRemovingIconsDirectory)")
-        Log.msg("\tnumberPlaces: \(numberPlaces)")
-        Log.msg("\tnumberImages: \(numberImages)")
-        Log.msg("\tnumberImageErrors: \(numberImageErrors)")
-        Log.msg("\timageErrorDescriptions: \(imageErrorDescriptions)")
-        Log.msg("\tnumberItems: \(numberItems)")
-        Log.msg("\tnumberComments: \(numberComments)")
-        Log.msg("\tnumberCategoriesCreated: \(numberCategoriesCreated)")
-        Log.msg("\tnumberListNamesCreated: \(numberListNamesCreated)")
-        Log.msg("\tnumberCategoryCreationErrors: \(numberCategoryCreationErrors)")
-        Log.msg("\tnumberListNameCreationErrors: \(numberListNameCreationErrors)")
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                    doNextRestaurant()
+                }
+            }
+            else {
+                hud?.dismiss(true)
+                showStats()
+            }
+        }
+    }
+    
+    private func showStats() {
+        var conversionStats =
+            "\(numberPlaces) places, " +
+            "\(numberImages) images, " +
+            "\(numberItems) items, " +
+            "\(numberComments) comments, " +
+            "\(numberCategoriesCreated) categories, and " +
+            "\(numberListNamesCreated) list names. "
+        
+        if numberImageErrors > 0 {
+            conversionStats += "\nErrors occurred converting \(numberImageErrors) image(s)"
+        }
+        
+        Alert.show(withTitle: "Imported from v1 app: ", message: conversionStats)
     }
     
     private func add(items: [[String: Any]], to place: Place) {
