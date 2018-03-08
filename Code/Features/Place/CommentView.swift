@@ -22,12 +22,15 @@ class CommentView: UIView, XibBasics {
     override func awakeFromNib() {
         super.awakeFromNib()
         Layout.format(textBox: comment)
-        
+        comment.autocapitalizationType = .sentences
+
         rating.frameWidth = ratingContainer.frameWidth
         ratingContainer.addSubview(rating)
         
         images.frameWidth = commentImagesContainer.frameWidth
         commentImagesContainer.addSubview(images)
+        
+        images.lowerLeftLabel.text = "Comment pictures"
     }
     
     func setup(withComment comment: Comment, andParentVC vc: UIViewController) {

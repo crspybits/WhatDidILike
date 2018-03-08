@@ -105,9 +105,8 @@ class MainListVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        MainListVC.converted.boolValue = false
-        
         if !MainListVC.converted.boolValue {
+            // Various `asyncAfter` calls to get conversion progress displayed in the UI.
             if let conversionNeeded = ConvertFromV1(viewController: self) {
                 let prompt = CommentPromptVC.createWith(parentVC: self)
                 prompt.single = {[unowned prompt] in

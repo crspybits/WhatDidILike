@@ -39,6 +39,7 @@ class PlaceDetailsView: UIView, XibBasics {
         super.awakeFromNib()
         Layout.format(textBox: generalDescription)
         Layout.format(textBox: placeLists)
+        generalDescription.autocapitalizationType = .sentences
     }
     
     func setup(withPlace place:Place, andParentVC parentVC: UIViewController) {

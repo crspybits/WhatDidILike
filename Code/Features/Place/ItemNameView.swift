@@ -48,6 +48,7 @@ class ItemNameView: UIView, XibBasics {
         super.awakeFromNib()
         addCommentButton.isHidden = Parameters.commentStyle == .single
         Layout.format(textBox: itemName)
+        itemName.autocapitalizationType = .words
         itemName.addToolBar()
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction))
         gesture.direction = .left

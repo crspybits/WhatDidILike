@@ -48,6 +48,9 @@ class LocationView: UIView, XibBasics {
         super.awakeFromNib()
         Layout.format(textBox: address)
         Layout.format(textBox: specificDescription)
+        address.autocapitalizationType = .words
+        address.autocorrectionType = .no
+        specificDescription.autocapitalizationType = .sentences
         
         rating.frameWidth = ratingContainer.frameWidth
         ratingContainer.addSubview(rating)
@@ -55,6 +58,8 @@ class LocationView: UIView, XibBasics {
         images.frameWidth = imagesContainer.frameWidth
         images.frameHeight = imagesContainer.frameHeight
         imagesContainer.addSubview(images)
+        
+        images.lowerLeftLabel.text = "Location pictures"
     }
     
     func setup(withLocation location: Location, place: Place, viewController: UIViewController) {

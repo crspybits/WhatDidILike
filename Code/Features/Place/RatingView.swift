@@ -154,6 +154,8 @@ class RatingView: UIView, XibBasics {
         originalStackViewSpacing = stackView.spacing
         
         Layout.format(textBox: recommendedByText)
+        recommendedByText.autocapitalizationType = .words
+        recommendedByText.autocorrectionType = .no
         
         rateView.backgroundColor = UIColor.clear
         let best = UIColor(red: 0.0/255.0, green: 217.0/255.0, blue: 255.0/255.0, alpha: 1.0)

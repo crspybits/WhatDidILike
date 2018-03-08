@@ -79,6 +79,9 @@ class SortFilter: SMModal {
         }
         
         radioButtonGroup.mustHaveSelection = true
+        
+        address.autocapitalizationType = .sentences
+        address.autocorrectionType = .no
     }
     
     private func formatBox(view: UIView) {
