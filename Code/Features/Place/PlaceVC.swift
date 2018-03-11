@@ -93,7 +93,7 @@ class PlaceVC: UIViewController {
             
             let newLocationIndex =
                 self.rowViews.index(where: {$0.contents == newLocation})!
-            self.insertLocation(location, startingAtRowViewIndex: newLocationIndex+1)
+            self.insertLocation(location, startingAtRowViewIndex: newLocationIndex+1, newLocation: true)
             
             self.tableView.reloadData()
         }

@@ -274,6 +274,18 @@ class LocationView: UIView, XibBasics {
         
         func save() {
             location.location = newLocation
+            
+            // If we're currently sorting by distance, update the distance from that location datum.
+            switch Parameters.orderFilter {
+            case .distance:
+                if let clLocation = Parameters.sortLocation {
+                    location.setSortingDistance(from: clLocation)
+                }
+                
+            case .name:
+                break
+            }
+            
             location.save()
         }
     

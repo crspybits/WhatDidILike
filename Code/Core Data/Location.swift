@@ -26,6 +26,15 @@ public class Location: BaseObject, ImagesManagedObject {
         }
     }
     
+    func setSortingDistance(from: CLLocation) {
+        if let clLocation = location {
+            sortingDistance = Float(clLocation.distance(from: from))
+        }
+        else {
+            sortingDistance = Float.greatestFiniteMagnitude
+        }
+    }
+    
     // Doesn't save the core data object when you set.
     // Don't access internalLocation directly. Use this method instead.
     var location:CLLocation? {
