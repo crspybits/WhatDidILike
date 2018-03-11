@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,9 +16,14 @@
             <rect key="frame" x="0.0" y="0.0" width="451" height="616"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nqw-Sz-HSW" userLabel="Separator">
+                    <rect key="frame" x="0.0" y="15" width="451" height="10"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="10" id="0sh-Wa-MP6"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W1i-mN-QUQ">
                     <rect key="frame" x="0.0" y="25" width="451" height="180"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="180" id="6b7-a1-MPK"/>
                     </constraints>
@@ -61,10 +66,13 @@
                 <constraint firstItem="iEI-1C-ttA" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="4Ip-jw-EMw"/>
                 <constraint firstItem="03U-O4-aO6" firstAttribute="top" secondItem="w71-dj-rxN" secondAttribute="bottom" constant="5" id="7fI-uR-3go"/>
                 <constraint firstItem="iEI-1C-ttA" firstAttribute="top" secondItem="W1i-mN-QUQ" secondAttribute="bottom" constant="15" id="Ahg-ba-6Ds"/>
+                <constraint firstItem="nqw-Sz-HSW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="LTP-eg-nHc"/>
                 <constraint firstItem="W1i-mN-QUQ" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="5" id="OAc-r0-XeV"/>
                 <constraint firstItem="iEI-1C-ttA" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="ZEN-Ow-Q61"/>
                 <constraint firstItem="03U-O4-aO6" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="ZQr-JK-N0S"/>
+                <constraint firstItem="W1i-mN-QUQ" firstAttribute="top" secondItem="nqw-Sz-HSW" secondAttribute="bottom" id="dBd-T2-TJw"/>
                 <constraint firstAttribute="trailing" secondItem="W1i-mN-QUQ" secondAttribute="trailing" id="eaS-3J-cyc"/>
+                <constraint firstAttribute="trailing" secondItem="nqw-Sz-HSW" secondAttribute="trailing" id="jOA-cB-kNf"/>
                 <constraint firstItem="w71-dj-rxN" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="jOa-4b-WRS"/>
                 <constraint firstItem="W1i-mN-QUQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="l0z-Eb-rkQ"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="w71-dj-rxN" secondAttribute="trailing" constant="10" id="nh0-PU-33h"/>
@@ -79,6 +87,7 @@
                 <outlet property="commentImagesContainer" destination="W1i-mN-QUQ" id="HAD-ee-tNb"/>
                 <outlet property="ratingContainer" destination="iEI-1C-ttA" id="d0f-5M-MrJ"/>
                 <outlet property="removeButton" destination="AhD-F7-WdX" id="rCl-YU-3Zf"/>
+                <outlet property="separator" destination="nqw-Sz-HSW" id="jt5-Hv-rGN"/>
             </connections>
             <point key="canvasLocation" x="95.5" y="-32"/>
         </view>

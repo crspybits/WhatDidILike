@@ -16,17 +16,21 @@ target 'WhatDidILike' do
 	pod 'FLAnimatedImage', '~> 1.0'
 	
 	# Smiley ratings
-	# Using my version until author accepts my PR which added use with scroll view.
 	pod 'TTGEmojiRate', '~> 0.3'
 	# pod 'TTGEmojiRate', :git => 'https://github.com/crspybits/TTGEmojiRate.git'
+	# pod 'TTGEmojiRate', :path => '../TTGEmojiRate'
 
 	# Labeled switch
 	pod 'DGRunkeeperSwitch', '~> 1.1'
 	
-	pod 'ImageSlideshow', :git => 'https://github.com/crspybits/ImageSlideshow.git'
+	# pod 'ImageSlideshow', :git => 'https://github.com/crspybits/ImageSlideshow.git'
 	# pod 'ImageSlideshow', '~> 1.4'
-	
+	pod 'ImageSlideshow', :path => '../ImageSlideshow'
+
 	pod 'BEMCheckBox', '~> 1.0'
+	
+	# progress indicator for converting from old format data.
+	pod 'M13ProgressSuite', '~> 1.2'
 	
     # 9/24/17; Dealing with Cocoapods inability to specify Swift versions...
 

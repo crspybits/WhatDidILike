@@ -10,8 +10,6 @@ import UIKit
 import SMCoreLib
 
 class PlaceVCCell: UITableViewCell {
-    private var contents:UIView?
-    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -27,7 +25,6 @@ class PlaceVCCell: UITableViewCell {
             }
         }
 
-        self.contents = contents
         let cellHeight = contentView.frameWidth
         
         contents.frameWidth = contentView.frameWidth
@@ -35,5 +32,9 @@ class PlaceVCCell: UITableViewCell {
         contentView.addSubview(contents)
         
         // Log.msg("contents.frame: \(contents.frame)")
+    }
+    
+    deinit {
+        Log.msg("deinit")
     }
 }

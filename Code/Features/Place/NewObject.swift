@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SMCoreLib
 
 class NewObject: UIView, XibBasics {
     typealias ViewType = NewObject
@@ -19,5 +20,9 @@ class NewObject: UIView, XibBasics {
     
     @IBAction func newAction(_ sender: Any) {
         new?()
+    }
+    
+    deinit {
+        Log.msg("deinit")
     }
 }

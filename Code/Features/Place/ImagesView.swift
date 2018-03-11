@@ -31,6 +31,7 @@ private class WDILImageSource : ImageSource {
 class ImagesView: UIView, XibBasics {
     typealias ViewType = ImagesView
     @IBOutlet weak var images: ImageSlideshow!
+    @IBOutlet weak var lowerLeftLabel: UILabel!
     private weak var vc: UIViewController!
     private var imagesOwnerObj: ImagesManagedObject!
     private var localSource = [WDILImageSource]()
@@ -88,6 +89,10 @@ class ImagesView: UIView, XibBasics {
         smAcquireImage = SMAcquireImage(withParentViewController: vc)
         smAcquireImage.delegate = self
         smAcquireImage.showAlert(fromView: self)
+    }
+    
+    deinit {
+        Log.msg("deinit")
     }
 }
 

@@ -47,4 +47,21 @@ class Parameters {
     static let numberOfTimesLocationServicesFailed = SMPersistItemInt(name: "Parameters.numberOfTimesLocationServicesFailed", initialIntValue: 0, persistType: .userDefaults)
     
     static let userName = SMPersistItemString(name: "Parameters.userName", initialStringValue: "", persistType: .userDefaults)
+    
+    private static let _sortLocation = SMPersistItemData(name: "Parameters.sortLocation", initialDataValue: NSKeyedArchiver.archivedData(withRootObject: CLLocation()), persistType: .userDefaults)
+    static var sortLocation:CLLocation? {
+        set {
+            _sortLocation.dataValue = NSKeyedArchiver.archivedData(withRootObject: newValue as Any)
+        }
+        get {
+            if let obj = NSKeyedUnarchiver.unarchiveObject(with: _sortLocation.dataValue) as? CLLocation {
+                return obj
+            }
+            else {
+                // A default. Something bad happened.
+                Log.error("Yikes: Couldn't unarchive the sortLocations object!")
+                return nil
+            }
+        }
+    }
 }

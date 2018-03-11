@@ -48,6 +48,9 @@ class LocationView: UIView, XibBasics {
         super.awakeFromNib()
         Layout.format(textBox: address)
         Layout.format(textBox: specificDescription)
+        address.autocapitalizationType = .words
+        address.autocorrectionType = .no
+        specificDescription.autocapitalizationType = .sentences
         
         rating.frameWidth = ratingContainer.frameWidth
         ratingContainer.addSubview(rating)
@@ -55,6 +58,8 @@ class LocationView: UIView, XibBasics {
         images.frameWidth = imagesContainer.frameWidth
         images.frameHeight = imagesContainer.frameHeight
         imagesContainer.addSubview(images)
+        
+        images.lowerLeftLabel.text = "Location pictures"
     }
     
     func setup(withLocation location: Location, place: Place, viewController: UIViewController) {
@@ -88,6 +93,8 @@ class LocationView: UIView, XibBasics {
             location.specificDescription = update
             location.save()
         }
+        
+        Layout.format(location: self)
     }
     
     // Useful if the location is new, and you need to establish Current coordinates.
@@ -267,6 +274,18 @@ class LocationView: UIView, XibBasics {
         
         func save() {
             location.location = newLocation
+            
+            // If we're currently sorting by distance, update the distance from that location datum.
+            switch Parameters.orderFilter {
+            case .distance:
+                if let clLocation = Parameters.sortLocation {
+                    location.setSortingDistance(from: clLocation)
+                }
+                
+            case .name:
+                break
+            }
+            
             location.save()
         }
     
@@ -309,6 +328,10 @@ class LocationView: UIView, XibBasics {
             removeAnnotation()
             map.setRegion(defaultRegion, animated: false)
         }
+    }
+    
+    deinit {
+        Log.msg("deinit")
     }
 }
 

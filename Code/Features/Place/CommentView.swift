@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SMCoreLib
 
 class CommentView: UIView, XibBasics {
     typealias ViewType = CommentView
@@ -16,17 +17,23 @@ class CommentView: UIView, XibBasics {
     private let rating = RatingView.create()!
     private let images = ImagesView.create()!
     @IBOutlet weak var removeButton: UIButton!
+    @IBOutlet weak var separator: UIView!
     var removeComment:(()->())?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         Layout.format(textBox: comment)
-        
+        comment.autocapitalizationType = .sentences
+
         rating.frameWidth = ratingContainer.frameWidth
         ratingContainer.addSubview(rating)
         
         images.frameWidth = commentImagesContainer.frameWidth
         commentImagesContainer.addSubview(images)
+        
+        images.lowerLeftLabel.text = "Comment pictures"
+        
+        Layout.format(comment: self)
     }
     
     func setup(withComment comment: Comment, andParentVC vc: UIViewController) {
@@ -39,5 +46,9 @@ class CommentView: UIView, XibBasics {
     
     @IBAction func removeCommentAction(_ sender: Any) {
         removeComment?()
+    }
+    
+    deinit {
+        Log.msg("deinit")
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SMCoreLib
 
 class DeletionImpact {
     private var messageComponents = [String]()
@@ -154,5 +155,9 @@ class DeletionImpact {
         
         images += Array(location.images!) as! [Image]
         return images
+    }
+    
+    deinit {
+        Log.msg("deinit")
     }
 }

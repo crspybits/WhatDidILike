@@ -79,6 +79,9 @@ class SortFilter: SMModal {
         }
         
         radioButtonGroup.mustHaveSelection = true
+        
+        address.autocapitalizationType = .sentences
+        address.autocorrectionType = .no
     }
     
     private func formatBox(view: UIView) {
@@ -137,12 +140,7 @@ class SortFilter: SMModal {
         }
         
         for location in locations {
-            if let clLocation = location.location {
-                location.sortingDistance = Float(clLocation.distance(from: from))
-            }
-            else {
-                location.sortingDistance = Float.greatestFiniteMagnitude
-            }
+            location.setSortingDistance(from: from)
         }
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
@@ -191,6 +189,7 @@ extension SortFilter : LatLongDelegate {
         else {
             let coords = ll.coords!
             Log.msg("Coords from ll: \(coords)")
+            Parameters.sortLocation = coords
             computeDistances(from: coords)
         }
     }

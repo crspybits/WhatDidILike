@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SMCoreLib
 
 class PlaceNameView: UIView, XibBasics {
     typealias ViewType = PlaceNameView
@@ -15,5 +16,11 @@ class PlaceNameView: UIView, XibBasics {
     override func awakeFromNib() {
         super.awakeFromNib()
         Layout.format(textBox: placeName)
+        placeName.autocorrectionType = .no
+        placeName.autocapitalizationType = .words
+    }
+    
+    deinit {
+        Log.msg("deinit")
     }
 }

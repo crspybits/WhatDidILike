@@ -8,6 +8,7 @@
 
 import UIKit
 import SMCoreLib
+import M13ProgressSuite
 
 class MainListVC: UIViewController {
     private static let converted = SMPersistItemBool(name: "MainListVC.converted", initialBoolValue: false, persistType: .userDefaults)
@@ -18,7 +19,6 @@ class MainListVC: UIViewController {
     private var showDetailsForIndexPath:IndexPath?
     private var indexPathOfNewPlace:IndexPath?
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         coreDataSource = CoreDataSource(delegate: self)
@@ -84,6 +84,7 @@ class MainListVC: UIViewController {
                 let placeVC = PlaceVC.create()
                 placeVC.location = location
                 placeVC.newPlace = true
+                placeVC.delegate = self
                 self.showDetailsForIndexPath = self.indexPathOfNewPlace
                 self.navigationController!.pushViewController(placeVC, animated: true)
                 self.indexPathOfNewPlace = nil
@@ -105,22 +106,25 @@ class MainListVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // MainListVC.converted.boolValue = true
-        
         if !MainListVC.converted.boolValue {
-            if let conversionNeeded = ConvertFromV1() {
+            // Various `asyncAfter` calls to get conversion progress displayed in the UI.
+            if let conversionNeeded = ConvertFromV1(viewController: self) {
                 let prompt = CommentPromptVC.createWith(parentVC: self)
                 prompt.single = {[unowned prompt] in
                     MainListVC.converted.boolValue = true
                     Parameters.commentStyle = .single
-                    conversionNeeded.doIt(commentStyle: .single)
                     prompt.close()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                        conversionNeeded.doIt(commentStyle: .single)
+                    }
                 }
                 prompt.multiple = {[unowned prompt] in
                     MainListVC.converted.boolValue = true
                     Parameters.commentStyle = .multiple
-                    conversionNeeded.doIt(commentStyle: .multiple)
                     prompt.close()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                        conversionNeeded.doIt(commentStyle: .multiple)
+                    }
                 }
                 prompt.show()
             }
@@ -160,6 +164,7 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let placeVC = PlaceVC.create()
+        placeVC.delegate = self
         let location = self.coreDataSource.object(at: indexPath) as! Location
         placeVC.location = location
         showDetailsForIndexPath = indexPath
@@ -231,5 +236,22 @@ extension MainListVC : SortFilterDelegate {
         
         // Not quite sure why this is needed-- for change in alphabetic ordering.
         self.tableView.reloadSections([0], with: .automatic)
+    }
+}
+
+extension MainListVC : PlaceVCDelegate {
+    func placeNameChanged(forPlaceLocation placeLocation: Location) {
+        // Not quite sure why both of these are needed.
+        self.coreDataSource.fetchData()
+        self.tableView.reloadSections([0], with: .none)
+        
+        // Need to figure out the row this location is in. And scroll to it. The only way I know how to do this is by iterating over all possible index paths.
+        for row in 0...self.coreDataSource.numberOfRows(inSection: 0) {
+            let indexPath = IndexPath(row: Int(row), section: 0)
+            if let location = self.coreDataSource.object(at: indexPath) as? Location, location == placeLocation {
+                tableView.scrollToRow(at: indexPath, at: .middle, animated: false)
+                break
+            }
+        }
     }
 }

@@ -19,14 +19,22 @@ class RowView {
     }
 }
 
+protocol PlaceVCDelegate {
+    // Reference a location here and not a place because a place can have multiple locations, and if we're sorting by location on the main screen, we can't scroll to both of them.
+    func placeNameChanged(forPlaceLocation: Location)
+}
+
 class PlaceVC: UIViewController {
     // Set this before presenting VC
     var location:Location!
+    
+    var delegate:PlaceVCDelegate?
     
     // If you are creating a new place, set this to true before presenting VC.
     var newPlace = false
     
     private var place:Place!
+    private var titleLabel = UILabel()
     
     fileprivate let placeCellReuseId = "PlaceVCCell"
     @IBOutlet weak private var tableView: UITableView!
@@ -42,10 +50,19 @@ class PlaceVC: UIViewController {
         return UIStoryboard(name: "Place", bundle: nil).instantiateViewController(withIdentifier: "PlaceVC") as! PlaceVC
     }
     
+    private func setTitle() {
+        titleLabel.text = place.name
+        titleLabel.sizeToFit()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         place = location.place
+        
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .title1)
+        navigationItem.titleView = titleLabel
+        setTitle()
         
         let (imageView, barButton) = GPSExtras.spinner()
         navigationItem.rightBarButtonItem = barButton
@@ -55,7 +72,9 @@ class PlaceVC: UIViewController {
         placeNameView.placeName.text = place.name
         placeNameView.placeName.save = {[unowned self] update in
             self.place.name = update
+            self.setTitle()
             self.place.save()
+            self.delegate?.placeNameChanged(forPlaceLocation: self.location)
         }
         rowViews.append(RowView(contents: placeNameView))
 
@@ -71,7 +90,7 @@ class PlaceVC: UIViewController {
         newLocation.setButton(name: "New Location")
         rowViews.append(RowView(contents: newLocation))
 
-        newLocation.new = {[unowned newLocation] in
+        newLocation.new = {[unowned newLocation, unowned self] in
             let location = Location.newObject()
             self.place.addToLocations(location)
             self.place.save()
@@ -82,7 +101,7 @@ class PlaceVC: UIViewController {
             
             let newLocationIndex =
                 self.rowViews.index(where: {$0.contents == newLocation})!
-            self.insertLocation(location, startingAtRowViewIndex: newLocationIndex+1)
+            self.insertLocation(location, startingAtRowViewIndex: newLocationIndex+1, newLocation: true)
             
             self.tableView.reloadData()
         }
@@ -101,7 +120,7 @@ class PlaceVC: UIViewController {
         newItem.setButton(name: "New Menu Item")
         rowViews.append(RowView(contents: newItem))
         
-        newItem.new = {[unowned newItem] in
+        newItem.new = {[unowned newItem, unowned self] in
             let item = Item.newObject()
             let items = NSMutableOrderedSet(orderedSet: self.place.items!)
             items.insert(item, at: 0)
@@ -162,6 +181,10 @@ class PlaceVC: UIViewController {
         Log.msg("imageNames: \(imageNames)")
     }
     
+    deinit {
+        Log.msg("deinit")
+    }
+    
     @discardableResult
     private func insertComment(_ comment: Comment, ownerItemNameView: ItemNameView, atRowViewIndex index: Int, displayed: Bool = false) -> RowView {
     
@@ -177,7 +200,7 @@ class PlaceVC: UIViewController {
             comment.save()
         }
         
-        commentView.removeComment = {
+        commentView.removeComment = {[unowned self, unowned commentView, unowned ownerItemNameView] in
             DeletionImpact().showWarning(for: .comment(comment), using: self, deletionAction: {
             
                 comment.remove()
@@ -210,8 +233,8 @@ class PlaceVC: UIViewController {
         }
         rowViews.insert(RowView(contents: itemNameView), at: index)
         
-        itemNameView.delete = {[unowned itemNameView] in
-            DeletionImpact().showWarning(for: .item(item), using: self, deletionAction: {
+        itemNameView.delete = {[unowned itemNameView, unowned self] in
+            DeletionImpact().showWarning(for: .item(item), using: self, deletionAction: { [unowned self] in
             
                 item.remove()
                 CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
@@ -223,7 +246,7 @@ class PlaceVC: UIViewController {
             })
         }
         
-        itemNameView.addComment = {[unowned itemNameView] in
+        itemNameView.addComment = {[unowned itemNameView, unowned self] in
             let comment = Comment.newObject()
             let comments = NSMutableOrderedSet(orderedSet: item.comments!)
             comments.insert(comment, at: 0)
