@@ -19,9 +19,16 @@ class RowView {
     }
 }
 
+protocol PlaceVCDelegate {
+    // Reference a location here and not a place because a place can have multiple locations, and if we're sorting by location on the main screen, we can't scroll to both of them.
+    func placeNameChanged(forPlaceLocation: Location)
+}
+
 class PlaceVC: UIViewController {
     // Set this before presenting VC
     var location:Location!
+    
+    var delegate:PlaceVCDelegate?
     
     // If you are creating a new place, set this to true before presenting VC.
     var newPlace = false
@@ -67,6 +74,7 @@ class PlaceVC: UIViewController {
             self.place.name = update
             self.setTitle()
             self.place.save()
+            self.delegate?.placeNameChanged(forPlaceLocation: self.location)
         }
         rowViews.append(RowView(contents: placeNameView))
 

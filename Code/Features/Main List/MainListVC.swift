@@ -84,6 +84,7 @@ class MainListVC: UIViewController {
                 let placeVC = PlaceVC.create()
                 placeVC.location = location
                 placeVC.newPlace = true
+                placeVC.delegate = self
                 self.showDetailsForIndexPath = self.indexPathOfNewPlace
                 self.navigationController!.pushViewController(placeVC, animated: true)
                 self.indexPathOfNewPlace = nil
@@ -163,6 +164,7 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let placeVC = PlaceVC.create()
+        placeVC.delegate = self
         let location = self.coreDataSource.object(at: indexPath) as! Location
         placeVC.location = location
         showDetailsForIndexPath = indexPath
@@ -234,5 +236,22 @@ extension MainListVC : SortFilterDelegate {
         
         // Not quite sure why this is needed-- for change in alphabetic ordering.
         self.tableView.reloadSections([0], with: .automatic)
+    }
+}
+
+extension MainListVC : PlaceVCDelegate {
+    func placeNameChanged(forPlaceLocation placeLocation: Location) {
+        // Not quite sure why both of these are needed.
+        self.coreDataSource.fetchData()
+        self.tableView.reloadSections([0], with: .none)
+        
+        // Need to figure out the row this location is in. And scroll to it. The only way I know how to do this is by iterating over all possible index paths.
+        for row in 0...self.coreDataSource.numberOfRows(inSection: 0) {
+            let indexPath = IndexPath(row: Int(row), section: 0)
+            if let location = self.coreDataSource.object(at: indexPath) as? Location, location == placeLocation {
+                tableView.scrollToRow(at: indexPath, at: .middle, animated: false)
+                break
+            }
+        }
     }
 }
