@@ -17,6 +17,7 @@ class CommentView: UIView, XibBasics {
     private let rating = RatingView.create()!
     private let images = ImagesView.create()!
     @IBOutlet weak var removeButton: UIButton!
+    @IBOutlet weak var separator: UIView!
     var removeComment:(()->())?
     
     override func awakeFromNib() {
@@ -31,6 +32,8 @@ class CommentView: UIView, XibBasics {
         commentImagesContainer.addSubview(images)
         
         images.lowerLeftLabel.text = "Comment pictures"
+        
+        Layout.format(comment: self)
     }
     
     func setup(withComment comment: Comment, andParentVC vc: UIViewController) {

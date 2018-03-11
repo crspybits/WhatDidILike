@@ -93,6 +93,8 @@ class LocationView: UIView, XibBasics {
             location.specificDescription = update
             location.save()
         }
+        
+        Layout.format(location: self)
     }
     
     // Useful if the location is new, and you need to establish Current coordinates.

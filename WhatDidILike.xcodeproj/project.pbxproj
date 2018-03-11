@@ -143,7 +143,7 @@
 		837E125F1F8F2C4C00D8E4E1 /* CommentPromptVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CommentPromptVC.xib; path = Features/Conversion/CommentPromptVC.xib; sourceTree = "<group>"; };
 		837E12661F90827A00D8E4E1 /* Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
 		838520681F8B2A77001D97D3 /* ImagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagesView.swift; path = Features/Place/ImagesView.swift; sourceTree = "<group>"; };
-		838520691F8B2A77001D97D3 /* ImagesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ImagesView.xib; path = Features/Place/ImagesView.xib; sourceTree = "<group>"; };
+		838520691F8B2A77001D97D3 /* ImagesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImagesView.xib; sourceTree = "<group>"; };
 		8396CE2D1F4BCAD500660D73 /* WhatDidILike-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WhatDidILike-Bridging-Header.h"; sourceTree = "<group>"; };
 		8396CE2E1F4BCB8A00660D73 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		8396CE2F1F4BCB8A00660D73 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -306,7 +306,6 @@
 				8317E8F71F876E0D004C53BB /* DeletionImpact.swift */,
 				83DD5FC51F89ADAC00B23331 /* ShowHideState.swift */,
 				838520681F8B2A77001D97D3 /* ImagesView.swift */,
-				838520691F8B2A77001D97D3 /* ImagesView.xib */,
 			);
 			name = Place;
 			sourceTree = "<group>";
@@ -320,6 +319,7 @@
 				837788E91F6607010014B8A2 /* UIViewController+Scrolling.swift */,
 				83401D991F5CEA4E00A96C8D /* XibBasics.swift */,
 				83401DA71F5CFD7400A96C8D /* Layout.swift */,
+				838520691F8B2A77001D97D3 /* ImagesView.xib */,
 				83B496BC1F4BCFB50083610D /* Identifiers.swift */,
 				83401D9B1F5CEAB000A96C8D /* Types.swift */,
 				83401DA11F5CF59F00A96C8D /* UIColor+Extras.swift */,
