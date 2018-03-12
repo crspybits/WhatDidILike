@@ -11,6 +11,7 @@ import SMCoreLib
 
 class CommentView: UIView, XibBasics {
     typealias ViewType = CommentView
+    @IBOutlet weak var bottom: NSLayoutConstraint!
     @IBOutlet weak var commentImagesContainer: UIView!
     @IBOutlet weak var ratingContainer: UIView!
     @IBOutlet weak var comment: TextView!
@@ -42,6 +43,13 @@ class CommentView: UIView, XibBasics {
         images.setup(withParentVC:vc, andImagesObj: comment)
         
         removeButton.isHidden = Parameters.commentStyle == .single
+        
+        // Assumes images are positioned at the bottom of the CommentView.
+        if Parameters.commentStyle == .single {
+            // This removes extra area needed for the removeButton and also makes the corner rounding look better.
+            frameHeight -= bottom.constant
+            bottom.constant = 0
+        }
     }
     
     @IBAction func removeCommentAction(_ sender: Any) {
