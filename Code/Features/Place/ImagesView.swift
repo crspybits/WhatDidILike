@@ -82,7 +82,9 @@ class ImagesView: UIView, XibBasics {
     }
     
     @objc private func didTap() {
-        images.presentFullScreenController(from: vc)
+        if let count = imagesOwnerObj?.images?.count, count > 0 {
+            images.presentFullScreenController(from: vc)
+        }
     }
     
     @IBAction private func addImage(_ sender: Any) {

@@ -153,6 +153,8 @@
     case kCLAuthorizationStatusRestricted:
     case kCLAuthorizationStatusDenied:
     case kCLAuthorizationStatusNotDetermined:
+        [theDelegate userDidNotAuthorizeLocationServices];
+        NSLog(@"User did not authorize location services!");
         break;
     }
 }
@@ -194,6 +196,7 @@
         
         case kCLAuthorizationStatusRestricted:
         case kCLAuthorizationStatusDenied:
+            [theDelegate userDidNotAuthorizeLocationServices];
             return nil;
         
         case kCLAuthorizationStatusNotDetermined:

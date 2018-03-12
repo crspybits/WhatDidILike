@@ -240,7 +240,12 @@ class LocationView: UIView, XibBasics {
     
     private func navigateUsingGoogleMaps(to coords:CLLocation) {
         // URL from https://developers.google.com/maps/documentation/urls/guide#directions-action
-        UIApplication.shared.open(URL(string:"https://www.google.com/maps/dir/?api=1&destination=\(coords.coordinate.latitude),\(coords.coordinate.longitude)")!, options: [:], completionHandler: nil)
+        let googleMapsURL = URL(string:"https://www.google.com/maps/dir/?api=1&destination=\(coords.coordinate.latitude),\(coords.coordinate.longitude)")!
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(googleMapsURL, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(googleMapsURL)
+        }
     }
     
     // Based on https://stackoverflow.com/questions/12504294/programmatically-open-maps-app-in-ios-6/46507696#46507696
@@ -336,6 +341,10 @@ class LocationView: UIView, XibBasics {
 }
 
 extension LocationView : LatLongDelegate {
+    func userDidNotAuthorizeLocationServices() {
+        delegate?.stoppedUsingGPS(self)
+    }
+    
     func haveReasonablyAccurateCoordinates() {
         Log.msg("haveReasonablyAccurateCoordinates")
 
