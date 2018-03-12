@@ -73,11 +73,6 @@ class MainListVC: UIViewController {
         
         // The `objectWasInserted` delegate method gets called before `save` returns-- so we'll have the index path of the new object.
         
-        /* TODO: When we get back from the PlaceVC
-            a) scroll to the newly created place,
-            b) refresh it's name-- this may reposition it.
-            NEED to do this for just regular editing too.
-        */
         tableView.scrollToRow(at: indexPathOfNewPlace!, at: .middle, animated: true)
         TimedCallback.withDuration(0.2) {
             self.tableView.flashRow(UInt(self.indexPathOfNewPlace!.row), withDuration: TimeInterval(0.3)) {
