@@ -174,6 +174,10 @@ class SortFilter: SMModal {
 }
 
 extension SortFilter : LatLongDelegate {
+    func userDidNotAuthorizeLocationServices() {
+        animatingEarthImageView.isHidden = true
+    }
+    
     func haveReasonablyAccurateCoordinates() {
         Log.msg("haveReasonablyAccurateCoordinates")
     }

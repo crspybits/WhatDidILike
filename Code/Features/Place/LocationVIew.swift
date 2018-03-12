@@ -336,6 +336,10 @@ class LocationView: UIView, XibBasics {
 }
 
 extension LocationView : LatLongDelegate {
+    func userDidNotAuthorizeLocationServices() {
+        delegate?.stoppedUsingGPS(self)
+    }
+    
     func haveReasonablyAccurateCoordinates() {
         Log.msg("haveReasonablyAccurateCoordinates")
 

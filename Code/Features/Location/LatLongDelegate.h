@@ -10,6 +10,8 @@
 
 @protocol LatLongDelegate <NSObject>
 
+- (void)userDidNotAuthorizeLocationServices;
+
 // This will be called after gaining a reasonably accurate pair of
 // lat/long coords
 - (void)haveReasonablyAccurateCoordinates;
