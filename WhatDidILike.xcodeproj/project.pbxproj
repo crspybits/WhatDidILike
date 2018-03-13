@@ -53,6 +53,8 @@
 		8396CE3E1F4BCB8A00660D73 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE341F4BCB8A00660D73 /* Location.swift */; };
 		8396CE401F4BCB8A00660D73 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE361F4BCB8A00660D73 /* Comment.swift */; };
 		8396CE411F4BCB8A00660D73 /* Comment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE371F4BCB8A00660D73 /* Comment+CoreDataProperties.swift */; };
+		839DE8AD2057B5A500FD83A5 /* MainListPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839DE8AC2057B5A500FD83A5 /* MainListPlaceView.swift */; };
+		839DE8AF2057B5CD00FD83A5 /* MainListPlaceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839DE8AE2057B5CD00FD83A5 /* MainListPlaceView.xib */; };
 		83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image.swift */; };
 		83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */; };
 		83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */; };
@@ -151,6 +153,8 @@
 		8396CE341F4BCB8A00660D73 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		8396CE361F4BCB8A00660D73 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		8396CE371F4BCB8A00660D73 /* Comment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		839DE8AC2057B5A500FD83A5 /* MainListPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainListPlaceView.swift; path = "Features/Main List/MainListPlaceView.swift"; sourceTree = "<group>"; };
+		839DE8AE2057B5CD00FD83A5 /* MainListPlaceView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainListPlaceView.xib; path = "Features/Main List/MainListPlaceView.xib"; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlaceNameView.swift; path = Features/Place/PlaceNameView.swift; sourceTree = "<group>"; };
@@ -430,6 +434,8 @@
 			children = (
 				83D49CE21F4AC44F00409B0F /* Main.storyboard */,
 				83D49CE31F4AC44F00409B0F /* MainListVC.swift */,
+				839DE8AC2057B5A500FD83A5 /* MainListPlaceView.swift */,
+				839DE8AE2057B5CD00FD83A5 /* MainListPlaceView.xib */,
 			);
 			name = "Main List";
 			sourceTree = "<group>";
@@ -553,6 +559,7 @@
 				835F44011F4AC75200A7748B /* Main.storyboard in Resources */,
 				83B533801F5D0A980028E6B5 /* CommentView.xib in Resources */,
 				83EE7DCE1F5D164B00628CA8 /* ItemNameView.xib in Resources */,
+				839DE8AF2057B5CD00FD83A5 /* MainListPlaceView.xib in Resources */,
 				83401DA01F5CEEB300A96C8D /* PlaceDetailsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -689,6 +696,7 @@
 				83A597C01F67961600736DE2 /* ListManager.swift in Sources */,
 				831B04291F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift in Sources */,
 				835F44021F4AC76C00A7748B /* MainListVC.swift in Sources */,
+				839DE8AD2057B5A500FD83A5 /* MainListPlaceView.swift in Sources */,
 				831B042B1F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift in Sources */,
 				83D752D51F9428BF00EF4E5D /* OrderFilter.swift in Sources */,
 				83401D9A1F5CEA4E00A96C8D /* XibBasics.swift in Sources */,

@@ -24,11 +24,8 @@ class PlaceVCCell: UITableViewCell {
                 view.removeFromSuperview()
             }
         }
-
-        let cellHeight = contentView.frameWidth
         
         contents.frameWidth = contentView.frameWidth
-        contentView.frameHeight = cellHeight
         contentView.addSubview(contents)
         
         // Log.msg("contents.frame: \(contents.frame)")

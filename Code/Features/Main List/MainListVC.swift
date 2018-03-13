@@ -18,7 +18,8 @@ class MainListVC: UIViewController {
     let cellReuseId = "LocationTableViewCell"
     private var showDetailsForIndexPath:IndexPath?
     private var indexPathOfNewPlace:IndexPath?
-
+    private var examplePlaceView = MainListPlaceView.create()!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         coreDataSource = CoreDataSource(delegate: self)
@@ -27,6 +28,8 @@ class MainListVC: UIViewController {
         tableView.dataSource = self
         
         setupBarButtonItems()
+        
+        tableView.register(PlaceVCCell.self, forCellReuseIdentifier: cellReuseId)
     }
     
     private func setupBarButtonItems() {
@@ -136,22 +139,12 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseId, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseId, for: indexPath) as! PlaceVCCell
         let location = self.coreDataSource.object(at: indexPath) as! Location
-        cell.textLabel?.text = location.place?.name
         
-        switch Parameters.orderFilter {
-        case .distance:
-            let distanceInMiles = Location.metersToMiles(meters: location.sortingDistance)
-            var distanceString = String(format: "%.2f miles", distanceInMiles)
-            if location.sortingDistance == Float.greatestFiniteMagnitude {
-                distanceString = "\u{221E}" // infinity.
-            }
-            cell.detailTextLabel?.text = "\(distanceString)"
-            
-        case .name:
-            cell.detailTextLabel?.text = nil
-        }
+        let placeView = MainListPlaceView.create()!
+        placeView.setup(withLocation: location)
+        cell.setup(withContents: placeView)
         
         return cell
     }
@@ -185,6 +178,10 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
         default:
             assert(false)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return examplePlaceView.frameHeight
     }
 }
 
