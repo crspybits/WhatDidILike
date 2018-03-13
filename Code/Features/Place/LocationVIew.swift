@@ -13,6 +13,7 @@ import SMCoreLib
 class LocationView: UIView, XibBasics {
     typealias ViewType = LocationView
     @IBOutlet weak var address: TextView!
+    var addressWasUpdated:(()->())?
     @IBOutlet private weak var map: MKMapView!
     @IBOutlet private weak var gpsLocation: UISegmentedControl!
     @IBOutlet weak var specificDescription: TextView!
@@ -84,9 +85,10 @@ class LocationView: UIView, XibBasics {
         
         images.setup(withParentVC:viewController, andImagesObj: location)
         
-        address.save = { update in
+        address.save = {[unowned self] update in
             location.address = update
             location.save()
+            self.addressWasUpdated?()
         }
         
         specificDescription.save = { update in
