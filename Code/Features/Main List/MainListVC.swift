@@ -35,10 +35,10 @@ class MainListVC: UIViewController {
     private func setupBarButtonItems() {
         var sortImage:UIImage
         if Parameters.orderFilter.isAscending {
-            sortImage = #imageLiteral(resourceName: "sortFilterDown")
+            sortImage = #imageLiteral(resourceName: "sortFilterUp")
         }
         else {
-            sortImage = #imageLiteral(resourceName: "sortFilterUp")
+            sortImage = #imageLiteral(resourceName: "sortFilterDown")
         }
     
         let sortFilter = UIBarButtonItem(image: sortImage, style: .plain, target: self, action: #selector(sortFilterAction))
