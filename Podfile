@@ -9,8 +9,8 @@ target 'WhatDidILike' do
     pod 'Fabric'
     pod 'Crashlytics'
 
-    # pod 'SMCoreLib', '~> 1.0'
-	pod 'SMCoreLib', :path => '../Common/SMCoreLib/'
+    pod 'SMCoreLib', '~> 1.2'
+	# pod 'SMCoreLib', :path => '../Common/SMCoreLib/'
 	
 	# Animated GIF's
 	pod 'FLAnimatedImage', '~> 1.0'
