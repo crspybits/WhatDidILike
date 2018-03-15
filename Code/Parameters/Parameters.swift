@@ -64,4 +64,14 @@ class Parameters {
             }
         }
     }
+    
+    private static let _orderAddress = SMPersistItemString(name: "Parameters.orderAddress", initialStringValue: "", persistType: .userDefaults)
+    static var orderAddress:String {
+        set {
+            _orderAddress.stringValue = newValue
+        }
+        get {
+            return _orderAddress.stringValue
+        }
+    }
 }

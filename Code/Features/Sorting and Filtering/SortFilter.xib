@@ -48,7 +48,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vyt-Ib-w9N" userLabel="Address view">
                             <rect key="frame" x="30" y="89" width="200" height="91"/>
                             <subviews>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="st1-4z-1To">
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="st1-4z-1To" customClass="TextView" customModule="WhatDidILike" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="200" height="60"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="60" id="VSO-zt-mQa"/>

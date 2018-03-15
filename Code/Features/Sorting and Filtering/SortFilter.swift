@@ -24,7 +24,7 @@ class SortFilter: SMModal {
     private let upOrDownSwitch = DGRunkeeperSwitch()
     private var spinner: Spinner!
     private var animatingEarthImageView:FLAnimatedImageView!
-    @IBOutlet private weak var address: UITextView!
+    @IBOutlet private weak var address: TextView!
     @IBOutlet weak var addressContainer: UIView!
     var delegate:SortFilterDelegate?
     @IBOutlet weak var alphabeticContainer: UIView!
@@ -32,7 +32,8 @@ class SortFilter: SMModal {
     @IBOutlet weak var distanceRadioButton: BEMCheckBox!
     @IBOutlet weak var alphabeticRadioButton: BEMCheckBox!
     private var radioButtonGroup:BEMCheckBoxGroup!
-    
+    private var convertAddress: GeocodeAddressToLatLong?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -82,6 +83,13 @@ class SortFilter: SMModal {
         
         address.autocapitalizationType = .sentences
         address.autocorrectionType = .no
+        
+        convertAddress = GeocodeAddressToLatLong(delegate: self, andViewController: self)
+        
+        address.save = { update in
+            Parameters.orderAddress = update
+        }
+        address.text = Parameters.orderAddress
     }
     
     private func formatBox(view: UIView) {
@@ -98,8 +106,22 @@ class SortFilter: SMModal {
     @objc private func upOrDownSwitchAction() {
     }
     
+    enum DistanceFrom {
+        case me
+        case address
+    }
+    var distanceFrom: DistanceFrom {
+        if distanceSwitch.selectedIndex == 0 {
+            return .me
+        }
+        else {
+            return .address
+        }
+    }
+    
+    // Change between sorting by distance from `me` and from the address given in the address field.
     @objc private func distanceSwitchAction() {
-        addressContainer.isHidden = distanceSwitch.selectedIndex == 0
+        addressContainer.isHidden = distanceFrom == .me
         
         if !distanceRadioButton.on {
             distanceRadioButton.setOn(true, animated: true)
@@ -110,6 +132,11 @@ class SortFilter: SMModal {
         close()
     }
     
+    internal override func close() {
+        super.close()
+        convertAddress?.cleanup()
+    }
+    
     @objc private func applyAction() {
         let newAscending = upOrDownSwitch.selectedIndex == 0 ? true : false
 
@@ -117,13 +144,27 @@ class SortFilter: SMModal {
         case distanceRadioButton:
             Parameters.orderFilter = OrderFilter.OrderFilterType.distance(ascending: newAscending)
             
-            spinner.start()
-            
-            // Recompute distances of all locations from our location. First, we need our location.
-            animatingEarthImageView.isHidden = false
-            Parameters.numberOfTimesLocationServicesFailed.intValue = 0
-            ll = LatLong(delegate: self)
-            
+            switch distanceFrom {
+            case .me:
+                spinner.start()
+
+                // Recompute distances of all locations from our location. First, we need our location.
+                animatingEarthImageView.isHidden = false
+                Parameters.numberOfTimesLocationServicesFailed.intValue = 0
+                ll = LatLong(delegate: self)
+                
+            case .address:
+                let spaces = CharacterSet.whitespacesAndNewlines
+                address.text = address.text.trimmingCharacters(in: spaces)
+                if address.text.count > 0 {
+                    spinner.start()
+
+                    // Attempt to geocode the address
+                    convertAddress?.lookupAddress(address.text , withExitMethod: {
+                    })
+                }
+            }
+
         case alphabeticRadioButton:
             Parameters.orderFilter = OrderFilter.OrderFilterType.name(ascending: newAscending)
             delegate?.sortFilter(self)
@@ -196,5 +237,23 @@ extension SortFilter : LatLongDelegate {
             Parameters.sortLocation = coords
             computeDistances(from: coords)
         }
+    }
+}
+
+extension SortFilter : GeocodeAddressToLatLongDelegate {
+    // This will be called if a failure occurs converting an address to
+    // coordinates. An alert view will be given to the user before this is
+    // called.
+    func failureLookingupAddress() {
+        Log.error("failureLookingupAddress")
+        spinner?.stop()
+    }
+
+    // Called when successful; with the latitude and longitude of the successful conversion.
+    func successLookingupAddress(_ latitude: Float, andLongitude longitude: Float) {
+        let addressLocation = CLLocation(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
+        Log.msg("Coords from ll: \(addressLocation)")
+        Parameters.sortLocation = addressLocation
+        computeDistances(from: addressLocation)
     }
 }
