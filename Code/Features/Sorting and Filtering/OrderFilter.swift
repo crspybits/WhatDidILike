@@ -19,6 +19,7 @@ class OrderFilter : NSObject, NSCoding {
     enum OrderFilterType {
         case name(ascending: Bool)
         case distance(ascending: Bool)
+        case rating(ascending: Bool)
         
         init?(orderType: UInt, ascending: Bool) {
             switch orderType {
@@ -26,6 +27,8 @@ class OrderFilter : NSObject, NSCoding {
                 self = .name(ascending: ascending)
             case 1:
                 self = .distance(ascending: ascending)
+            case 2:
+                self = .rating(ascending: ascending)
 
             default:
                 return nil
@@ -39,6 +42,9 @@ class OrderFilter : NSObject, NSCoding {
 
             case .distance(let ascending):
                 return (1, ascending)
+                
+            case .rating(let ascending):
+                return (2, ascending)
             }
         }
         
@@ -48,6 +54,9 @@ class OrderFilter : NSObject, NSCoding {
                 return ascending
 
             case .distance(let ascending):
+                return ascending
+                
+            case .rating(let ascending):
                 return ascending
             }
         }
@@ -59,6 +68,9 @@ class OrderFilter : NSObject, NSCoding {
 
             case .distance:
                 return .distance(ascending: ascending)
+                
+            case .rating:
+                return .rating(ascending: ascending)
             }
         }
     }

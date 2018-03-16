@@ -28,8 +28,10 @@ class SortFilter: SMModal {
     @IBOutlet weak var addressContainer: UIView!
     var delegate:SortFilterDelegate?
     @IBOutlet weak var alphabeticContainer: UIView!
+    @IBOutlet weak var ratingContainer: UIView!
     private var ll:LatLong!
     @IBOutlet weak var distanceRadioButton: BEMCheckBox!
+    @IBOutlet weak var ratingRadioButton: BEMCheckBox!
     @IBOutlet weak var alphabeticRadioButton: BEMCheckBox!
     private var radioButtonGroup:BEMCheckBoxGroup!
     private var convertAddress: GeocodeAddressToLatLong?
@@ -66,10 +68,11 @@ class SortFilter: SMModal {
         
         formatBox(view: distanceFromContainer)
         formatBox(view: alphabeticContainer)
+        formatBox(view: ratingContainer)
         
         distanceSwitchAction()
         
-        radioButtonGroup = BEMCheckBoxGroup(checkBoxes: [distanceRadioButton, alphabeticRadioButton])
+        radioButtonGroup = BEMCheckBoxGroup(checkBoxes: [distanceRadioButton, alphabeticRadioButton, ratingRadioButton])
         
         switch Parameters.orderFilter {
         case .distance:
@@ -77,6 +80,9 @@ class SortFilter: SMModal {
             
         case .name:
             radioButtonGroup.selectedCheckBox = alphabeticRadioButton
+            
+        case .rating:
+            radioButtonGroup.selectedCheckBox = ratingRadioButton
         }
         
         radioButtonGroup.mustHaveSelection = true
@@ -169,10 +175,31 @@ class SortFilter: SMModal {
             Parameters.orderFilter = OrderFilter.OrderFilterType.name(ascending: newAscending)
             delegate?.sortFilter(self)
             close()
+            
+        case ratingRadioButton:
+            Parameters.orderFilter = OrderFilter.OrderFilterType.rating(ascending: newAscending)
+            computeRatings()
 
         default:
             assert(false)
         }
+    }
+    
+    private func computeRatings() {
+        guard let locations = Location.fetchAllObjects() else {
+            return
+        }
+        
+        for location in locations {
+            SortFilter.computeRating(forLocation: location)
+        }
+        
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+        
+        delegate?.sortFilter(self)
+        
+        spinner.stop()
+        close()
     }
     
     private func computeDistances(from: CLLocation) {
@@ -210,6 +237,12 @@ class SortFilter: SMModal {
     @IBAction func alphabeticButtonAction(_ sender: Any) {
         if !alphabeticRadioButton.on {
             alphabeticRadioButton.setOn(true, animated: true)
+        }
+    }
+    
+    @IBAction func ratingButtonAction(_ sender: Any) {
+        if !ratingRadioButton.on {
+            ratingRadioButton.setOn(true, animated: true)
         }
     }
 }

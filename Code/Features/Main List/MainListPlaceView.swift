@@ -41,7 +41,7 @@ class MainListPlaceView: UIView, XibBasics {
             distance?.text = "\(distanceString)"
             distance.isHidden = false
             
-        case .name:
+        case .name, .rating:
             distance?.text = nil
             distance.isHidden = true
         }

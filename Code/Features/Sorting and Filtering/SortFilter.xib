@@ -20,6 +20,8 @@
                 <outlet property="distanceFromContainer" destination="krL-bG-n1Y" id="71d-Ad-8ag"/>
                 <outlet property="distanceRadioButton" destination="PC3-fq-Sin" id="D03-PS-Qj8"/>
                 <outlet property="distanceSwitchContainer" destination="Gyd-01-Lht" id="hOT-Zq-FB9"/>
+                <outlet property="ratingContainer" destination="PFN-LU-Lw3" id="Ymx-Jl-gdD"/>
+                <outlet property="ratingRadioButton" destination="bQN-Rk-kzQ" id="G2U-2I-BIu"/>
                 <outlet property="upOrDownContainer" destination="myI-4m-I6g" id="pj9-Ih-7hX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -162,6 +164,34 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PFN-LU-Lw3" userLabel="Rating">
+                    <rect key="frame" x="44" y="288" width="250" height="41"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7yX-RR-FJu" userLabel="Rating">
+                            <rect key="frame" x="10" y="10" width="49" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eOS-ab-ltL">
+                            <rect key="frame" x="0.0" y="0.0" width="250" height="41"/>
+                            <state key="normal" title="Button"/>
+                            <connections>
+                                <action selector="ratingButtonAction:" destination="-1" eventType="touchUpInside" id="bIY-e5-75x"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="7yX-RR-FJu" firstAttribute="centerY" secondItem="PFN-LU-Lw3" secondAttribute="centerY" id="7wS-OB-Z67"/>
+                        <constraint firstItem="7yX-RR-FJu" firstAttribute="leading" secondItem="PFN-LU-Lw3" secondAttribute="leading" constant="10" id="9ub-kQ-Okp"/>
+                        <constraint firstItem="eOS-ab-ltL" firstAttribute="width" secondItem="PFN-LU-Lw3" secondAttribute="width" id="NDp-KT-6CI"/>
+                        <constraint firstAttribute="height" constant="41" id="X2f-3e-rvN"/>
+                        <constraint firstItem="eOS-ab-ltL" firstAttribute="height" secondItem="PFN-LU-Lw3" secondAttribute="height" id="boM-2g-7pG"/>
+                        <constraint firstItem="eOS-ab-ltL" firstAttribute="top" secondItem="PFN-LU-Lw3" secondAttribute="top" id="qQo-ii-qtI"/>
+                        <constraint firstItem="eOS-ab-ltL" firstAttribute="leading" secondItem="PFN-LU-Lw3" secondAttribute="leading" id="xnr-dA-glZ"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="myI-4m-I6g" userLabel="upOrDownContainer">
                     <rect key="frame" x="62" y="438" width="212" height="40"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -170,10 +200,34 @@
                         <constraint firstAttribute="width" constant="212" id="RbU-q1-4lg"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQN-Rk-kzQ" userLabel="Rating Radio Button" customClass="BEMCheckBox">
+                    <rect key="frame" x="5" y="288" width="30" height="30"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="bQN-Rk-kzQ" secondAttribute="height" multiplier="1:1" id="TF6-UW-aa7"/>
+                        <constraint firstAttribute="width" constant="30" id="tor-gK-icQ"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="onTintColor">
+                            <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="onFillColor">
+                            <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="onCheckColor">
+                            <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="PFN-LU-Lw3" firstAttribute="top" secondItem="UNk-a1-grd" secondAttribute="bottom" constant="15" id="3op-jM-Gai"/>
                 <constraint firstItem="PC3-fq-Sin" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="5" id="5F6-jH-BoH"/>
+                <constraint firstItem="bQN-Rk-kzQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="5" id="7IQ-OJ-V4q"/>
                 <constraint firstItem="eLV-d1-FBH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="5" id="ACV-xs-5MX"/>
                 <constraint firstItem="UNk-a1-grd" firstAttribute="top" secondItem="eLV-d1-FBH" secondAttribute="top" id="Ik5-UL-ptj"/>
                 <constraint firstItem="UNk-a1-grd" firstAttribute="top" secondItem="krL-bG-n1Y" secondAttribute="bottom" constant="10" id="MJc-G1-9se"/>
@@ -183,8 +237,12 @@
                 <constraint firstItem="krL-bG-n1Y" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="QXt-HI-bWD"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="UNk-a1-grd" secondAttribute="trailing" constant="43" id="VpS-8g-f22"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="myI-4m-I6g" secondAttribute="bottom" constant="20" id="ZqL-ct-D0X"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="PFN-LU-Lw3" secondAttribute="trailing" constant="43" id="eoG-bY-WPm"/>
                 <constraint firstItem="krL-bG-n1Y" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="j7F-aL-TEU"/>
+                <constraint firstItem="PFN-LU-Lw3" firstAttribute="top" secondItem="bQN-Rk-kzQ" secondAttribute="top" id="nsp-iF-gWB"/>
                 <constraint firstItem="krL-bG-n1Y" firstAttribute="top" secondItem="PC3-fq-Sin" secondAttribute="top" id="wmw-g1-9mX"/>
+                <constraint firstItem="bQN-Rk-kzQ" firstAttribute="width" secondItem="bQN-Rk-kzQ" secondAttribute="height" multiplier="1:1" id="wwo-nJ-PHe"/>
+                <constraint firstItem="PFN-LU-Lw3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="44" id="yf6-N9-djm"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

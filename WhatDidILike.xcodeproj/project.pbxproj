@@ -33,6 +33,7 @@
 		83401DA81F5CFD7400A96C8D /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83401DA71F5CFD7400A96C8D /* Layout.swift */; };
 		835F44011F4AC75200A7748B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83D49CE21F4AC44F00409B0F /* Main.storyboard */; };
 		835F44021F4AC76C00A7748B /* MainListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D49CE31F4AC44F00409B0F /* MainListVC.swift */; };
+		83642191205A3F52008EB7EC /* SortFilter+Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83642190205A3F52008EB7EC /* SortFilter+Rating.swift */; };
 		8366CD3D1F7CA65F00E9D6FF /* Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 8366CD331F7CA65F00E9D6FF /* Map.m */; };
 		8366CD3E1F7CA65F00E9D6FF /* MapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8366CD341F7CA65F00E9D6FF /* MapAnnotation.m */; };
 		8366CD3F1F7CA65F00E9D6FF /* GeocodeAddressToLatLong.m in Sources */ = {isa = PBXBuildFile; fileRef = 8366CD391F7CA65F00E9D6FF /* GeocodeAddressToLatLong.m */; };
@@ -125,6 +126,7 @@
 		83401DA31F5CFB3D00A96C8D /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationView.swift; path = Features/Place/LocationView.swift; sourceTree = "<group>"; };
 		83401DA51F5CFB5300A96C8D /* LocationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LocationView.xib; path = Features/Place/LocationView.xib; sourceTree = "<group>"; };
 		83401DA71F5CFD7400A96C8D /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
+		83642190205A3F52008EB7EC /* SortFilter+Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SortFilter+Rating.swift"; sourceTree = "<group>"; };
 		8366CD331F7CA65F00E9D6FF /* Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Map.m; path = Features/Location/Map.m; sourceTree = "<group>"; };
 		8366CD341F7CA65F00E9D6FF /* MapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapAnnotation.m; path = Features/Location/MapAnnotation.m; sourceTree = "<group>"; };
 		8366CD351F7CA65F00E9D6FF /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Map.h; path = Features/Location/Map.h; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 		8396CE371F4BCB8A00660D73 /* Comment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		839DE8AC2057B5A500FD83A5 /* MainListPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainListPlaceView.swift; path = "Features/Main List/MainListPlaceView.swift"; sourceTree = "<group>"; };
 		839DE8AE2057B5CD00FD83A5 /* MainListPlaceView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainListPlaceView.xib; path = "Features/Main List/MainListPlaceView.xib"; sourceTree = "<group>"; };
+		83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v2.xcdatamodel; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlaceNameView.swift; path = Features/Place/PlaceNameView.swift; sourceTree = "<group>"; };
@@ -445,6 +448,7 @@
 			children = (
 				83D752D41F9428BF00EF4E5D /* OrderFilter.swift */,
 				83D752CE1F93D9F200EF4E5D /* SortFilter.swift */,
+				83642190205A3F52008EB7EC /* SortFilter+Rating.swift */,
 				83D752CF1F93D9F200EF4E5D /* SortFilter.xib */,
 			);
 			name = "Sorting and Filtering";
@@ -708,6 +712,7 @@
 				83401DA41F5CFB3D00A96C8D /* LocationView.swift in Sources */,
 				83D49CD21F4AC26A00409B0F /* AppDelegate.swift in Sources */,
 				83019F891F80924400E1E117 /* BaseObject.swift in Sources */,
+				83642191205A3F52008EB7EC /* SortFilter+Rating.swift in Sources */,
 				83B496C51F4BE0F40083610D /* Place+CoreDataProperties.swift in Sources */,
 				83D49CD11F4AC26A00409B0F /* WhatDidILike.xcdatamodeld in Sources */,
 				831B04171F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift in Sources */,
@@ -966,9 +971,10 @@
 		83D49CCA1F4AC26900409B0F /* WhatDidILike.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */,
 				83D49CCB1F4AC26900409B0F /* WhatDidILike.xcdatamodel */,
 			);
-			currentVersion = 83D49CCB1F4AC26900409B0F /* WhatDidILike.xcdatamodel */;
+			currentVersion = 83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */;
 			path = WhatDidILike.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

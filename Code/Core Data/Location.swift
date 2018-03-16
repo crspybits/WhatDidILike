@@ -14,7 +14,8 @@ import SMCoreLib
 public class Location: BaseObject, ImagesManagedObject {
     static let NAME_KEY = "place.name"
     static let DISTANCE_KEY = "internalDistance"
-
+    static let RATING_KEY = "internalRating"
+    
     // I'm not using `internalDistance` directly just to emphasize that this is a little different. It's for the UI so we can order locations by distance.
     var sortingDistance:Float {
         set {
@@ -32,6 +33,17 @@ public class Location: BaseObject, ImagesManagedObject {
         }
         else {
             sortingDistance = Float.greatestFiniteMagnitude
+        }
+    }
+    
+    // I'm not using `internalRating` directly just to emphasize that this is a little different. It's for the UI so we can order locations by a measure of rating.
+    var sortingRating:Float {
+        set {
+            internalRating = newValue
+        }
+        
+        get {
+            return internalRating
         }
     }
     
@@ -81,7 +93,10 @@ public class Location: BaseObject, ImagesManagedObject {
         case .name(ascending: let ascend):
             key = NAME_KEY
             ascending = ascend
-        }
+            
+        case .rating(ascending: let ascend):
+            key = RATING_KEY
+            ascending = ascend        }
         
         if fetchRequest != nil {
             let sortDescriptor = NSSortDescriptor(key: key, ascending: ascending)

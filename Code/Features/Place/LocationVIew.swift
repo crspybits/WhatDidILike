@@ -291,6 +291,9 @@ class LocationView: UIView, XibBasics {
                 
             case .name:
                 break
+                
+            case .rating:
+                break
             }
             
             location.save()
