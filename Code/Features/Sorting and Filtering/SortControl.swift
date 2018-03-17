@@ -16,17 +16,17 @@ class SortControl: UIView, XibBasics {
     typealias ViewType = SortControl
 
     enum ControlState {
-        case up
-        case down
+        case ascending
+        case descending
         
         func otherState() -> ControlState {
-            return self == .up ? .down : .up
+            return self == .ascending ? .descending : .ascending
         }
     }
     
     weak var delegate: SortControlDelegate?
     
-    var currState:ControlState = .up {
+    var currState:ControlState = .ascending {
         didSet {
             if oldValue == currState {
                 return
@@ -34,10 +34,10 @@ class SortControl: UIView, XibBasics {
             
             UIView.animate(withDuration: 0.2) {
                 switch self.currState {
-                case .up:
+                case .ascending:
                     self.icon.transform = CGAffineTransform(rotationAngle: CGFloat(2*Double.pi))
 
-                case .down:
+                case .descending:
                     self.icon.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi))
                 }
             }
@@ -72,7 +72,7 @@ class SortControl: UIView, XibBasics {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        currState = .up
+        currState = .ascending
         icon.image = #imageLiteral(resourceName: "up")
     }
         

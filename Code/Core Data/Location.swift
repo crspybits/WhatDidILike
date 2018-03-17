@@ -79,35 +79,31 @@ public class Location: BaseObject, ImagesManagedObject {
         return newLocation
     }
     
-    class func fetchRequestForAllObjects(sortingOrder: OrderFilter.OrderFilterType) -> NSFetchRequest<NSFetchRequestResult>? {
+    class func fetchRequestForAllObjects(sortingOrder: Parameters.SortOrder, isAscending: Bool) -> NSFetchRequest<NSFetchRequestResult>? {
         var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
         fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(
             withEntityName: self.entityName(), modifyingFetchRequestWith: { request in
-            if Parameters.filterDistance == .on {
+            if Parameters.distanceFilter == .use {
                 let amount = NSNumber(value: milesToMeters(miles: Float(Parameters.filterDistanceAmount)))
                 request.predicate = NSPredicate(format: "(%K <= %@)", DISTANCE_KEY, amount)
             }
         })
         
         var key: String
-        var ascending: Bool
         
         switch sortingOrder {
-        case .distance(ascending: let ascend):
+        case .distance:
             key = DISTANCE_KEY
-            ascending = ascend
             
-        case .name(ascending: let ascend):
+        case .name:
             key = NAME_KEY
-            ascending = ascend
             
-        case .rating(ascending: let ascend):
+        case .rating:
             key = RATING_KEY
-            ascending = ascend
         }
         
         if fetchRequest != nil {
-            let sortDescriptor = NSSortDescriptor(key: key, ascending: ascending)
+            let sortDescriptor = NSSortDescriptor(key: key, ascending: isAscending)
             fetchRequest!.sortDescriptors = [sortDescriptor]
         }
         

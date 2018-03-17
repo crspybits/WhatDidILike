@@ -3,6 +3,7 @@ PODS:
   - Crashlytics (3.10.1):
     - Fabric (~> 1.7.5)
   - DGRunkeeperSwitch (1.1.4)
+  - DropDown (2.3.1)
   - Fabric (1.7.5)
   - FLAnimatedImage (1.0.12)
   - HPTextViewTapGestureRecognizer (0.1)
@@ -23,6 +24,7 @@ DEPENDENCIES:
   - BEMCheckBox (~> 1.0)
   - Crashlytics
   - DGRunkeeperSwitch (~> 1.1)
+  - DropDown (~> 2.3)
   - Fabric
   - FLAnimatedImage (~> 1.0)
   - ImageSlideshow (from `../ImageSlideshow`)
@@ -39,6 +41,7 @@ SPEC CHECKSUMS:
   BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
   DGRunkeeperSwitch: cc237936f42237307f5e212e18136a27bf907bf1
+  DropDown: 20499c7b2731b0d21609af924e47c7677a2be50d
   Fabric: ae7146a5f505ea370a1e44820b4b1dc8890e2890
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   HPTextViewTapGestureRecognizer: 6a73fd09f858e49a2743c3a338dc5c0791b0fae0
@@ -50,6 +53,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 4f74563624b2c1e821c522c54142b5dd5ebb0f30
   TTGEmojiRate: 9b295b22e42874acfd717a9ae606e259995b83d0
 
-PODFILE CHECKSUM: 0313a6886e7235bdfbd7857453c75501cbbaa7fa
+PODFILE CHECKSUM: 2a4d51f7452c3cc0e7f929f2cda39f860fc3a459
 
 COCOAPODS: 1.3.1

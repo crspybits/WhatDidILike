@@ -8,6 +8,7 @@
 
 import Foundation
 
+#if false
 extension SortFilter {
     // Also sets that rating.
     static func computeRating(forLocation location: Location) {
@@ -77,3 +78,4 @@ extension SortFilter {
         }
     }
 }
+#endif

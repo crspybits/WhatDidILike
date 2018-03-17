@@ -12,6 +12,8 @@ import DGRunkeeperSwitch
 import FLAnimatedImage
 import BEMCheckBox
 
+#if false
+
 protocol SortFilterDelegate : class {
 func sortFilter(_ sortFilterByParameters: SortFilter)
 }
@@ -337,3 +339,5 @@ extension SortFilter : GeocodeAddressToLatLongDelegate {
         computeDistances(from: addressLocation)
     }
 }
+
+#endif

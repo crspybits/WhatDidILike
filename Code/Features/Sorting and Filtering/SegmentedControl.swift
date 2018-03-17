@@ -9,8 +9,13 @@
 import Foundation
 import SMCoreLib
 
+protocol SegmentedControlDelegate : class {
+    func segmentedControlChanged(_ segmentedControl: SegmentedControl, selectionToIndex index: UInt)
+}
+
 class SegmentedControl: UIView {
     private var components:[SortControl]!
+    weak var delegate:SegmentedControlDelegate!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(frame: CGRect.zero)
@@ -71,8 +76,11 @@ class SegmentedControl: UIView {
 
 extension SegmentedControl : SortControlDelegate {
     func sortControlSelected(_ sortControl: SortControl) {
-        for component in self.components {
-            if component != sortControl {
+        for (index, component) in self.components.enumerated() {
+            if component == sortControl {
+                delegate.segmentedControlChanged(self, selectionToIndex: UInt(index))
+            }
+            else {
                 component.deselect()
             }
         }

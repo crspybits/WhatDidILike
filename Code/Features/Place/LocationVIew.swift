@@ -283,7 +283,7 @@ class LocationView: UIView, XibBasics {
             location.location = newLocation
             
             // If we're currently sorting by distance, update the distance from that location datum.
-            switch Parameters.orderFilter {
+            switch Parameters.sortingOrder {
             case .distance:
                 if let clLocation = Parameters.sortLocation {
                     location.setSortingDistance(from: clLocation)

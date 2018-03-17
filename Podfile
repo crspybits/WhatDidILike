@@ -34,6 +34,9 @@ target 'WhatDidILike' do
 	
     # Improved presentation of smaller modals
     pod 'Presentr', '~> 1.3'
+    
+    # For sorting/filter modal.
+    pod 'DropDown', '~> 2.3'
 	
     # 9/24/17; Dealing with Cocoapods inability to specify Swift versions...
 

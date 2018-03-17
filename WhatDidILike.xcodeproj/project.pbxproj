@@ -88,7 +88,6 @@
 		83D752CC1F93D9BE00EF4E5D /* GPS+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D752CB1F93D9BE00EF4E5D /* GPS+Extras.swift */; };
 		83D752D01F93D9F200EF4E5D /* SortFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D752CE1F93D9F200EF4E5D /* SortFilter.swift */; };
 		83D752D11F93D9F200EF4E5D /* SortFilter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D752CF1F93D9F200EF4E5D /* SortFilter.xib */; };
-		83D752D51F9428BF00EF4E5D /* OrderFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D752D41F9428BF00EF4E5D /* OrderFilter.swift */; };
 		83DD5FC61F89ADAC00B23331 /* ShowHideState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DD5FC51F89ADAC00B23331 /* ShowHideState.swift */; };
 		83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */; };
 		83EE7DCE1F5D164B00628CA8 /* ItemNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B5337A1F5D09E70028E6B5 /* ItemNameView.xib */; };
@@ -202,7 +201,6 @@
 		83D752CB1F93D9BE00EF4E5D /* GPS+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "GPS+Extras.swift"; path = "Features/Place/GPS+Extras.swift"; sourceTree = "<group>"; };
 		83D752CE1F93D9F200EF4E5D /* SortFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortFilter.swift; sourceTree = "<group>"; };
 		83D752CF1F93D9F200EF4E5D /* SortFilter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortFilter.xib; sourceTree = "<group>"; };
-		83D752D41F9428BF00EF4E5D /* OrderFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderFilter.swift; sourceTree = "<group>"; };
 		83DD5FC51F89ADAC00B23331 /* ShowHideState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ShowHideState.swift; path = Features/Place/ShowHideState.swift; sourceTree = "<group>"; };
 		83EE7DD01F5DB9F300628CA8 /* PlaceVCCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlaceVCCell.xib; path = Features/Place/PlaceVCCell.xib; sourceTree = "<group>"; };
 		C19DC61269D8F3C48ED7774F /* Pods-WhatDidILike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatDidILike.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike.debug.xcconfig"; sourceTree = "<group>"; };
@@ -456,7 +454,6 @@
 		83D752CD1F93D9F200EF4E5D /* Sorting and Filtering */ = {
 			isa = PBXGroup;
 			children = (
-				83D752D41F9428BF00EF4E5D /* OrderFilter.swift */,
 				83D752CE1F93D9F200EF4E5D /* SortFilter.swift */,
 				83642190205A3F52008EB7EC /* SortFilter+Rating.swift */,
 				83D752CF1F93D9F200EF4E5D /* SortFilter.xib */,
@@ -618,6 +615,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BEMCheckBox/BEMCheckBox.framework",
 				"${BUILT_PRODUCTS_DIR}/DGRunkeeperSwitch/DGRunkeeperSwitch.framework",
+				"${BUILT_PRODUCTS_DIR}/DropDown/DropDown.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/HPTextViewTapGestureRecognizer/HPTextViewTapGestureRecognizer.framework",
 				"${BUILT_PRODUCTS_DIR}/ImageSlideshow/ImageSlideshow.framework",
@@ -632,6 +630,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BEMCheckBox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DGRunkeeperSwitch.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DropDown.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HPTextViewTapGestureRecognizer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageSlideshow.framework",
@@ -723,7 +722,6 @@
 				835F44021F4AC76C00A7748B /* MainListVC.swift in Sources */,
 				839DE8AD2057B5A500FD83A5 /* MainListPlaceView.swift in Sources */,
 				831B042B1F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift in Sources */,
-				83D752D51F9428BF00EF4E5D /* OrderFilter.swift in Sources */,
 				83401D9A1F5CEA4E00A96C8D /* XibBasics.swift in Sources */,
 				83D752CA1F93D73E00EF4E5D /* Location+CoreDataProperties.swift in Sources */,
 				83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */,

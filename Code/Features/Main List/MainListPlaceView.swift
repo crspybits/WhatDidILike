@@ -31,7 +31,7 @@ class MainListPlaceView: UIView, XibBasics {
             address?.text = location.address
         }
         
-        switch Parameters.orderFilter {
+        switch Parameters.sortingOrder {
         case .distance:
             let distanceInMiles = Location.metersToMiles(meters: location.sortingDistance)
             var distanceString = String(format: "%.2f miles", distanceInMiles)

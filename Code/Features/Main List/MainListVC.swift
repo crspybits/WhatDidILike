@@ -35,7 +35,7 @@ class MainListVC: UIViewController {
     
     private func setupBarButtonItems() {
         var sortImage:UIImage
-        if Parameters.orderFilter.isAscending {
+        if Parameters.sortingOrderIsAscending {
             sortImage = #imageLiteral(resourceName: "sortFilterUp")
         }
         else {
@@ -190,7 +190,7 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
 extension MainListVC : CoreDataSourceDelegate {
     // 10/2/17; I'm fetching locations here -- becuase each place can have more than one location, and I want to get all of these locations represented here. This also means that a Place *must* have a location or I won't be able to show it here. I'm going to change the Core Data model to require each place have at least one location.
     func coreDataSourceFetchRequest(_ cds: CoreDataSource!) -> NSFetchRequest<NSFetchRequestResult>! {
-        return Location.fetchRequestForAllObjects(sortingOrder: Parameters.orderFilter)
+        return Location.fetchRequestForAllObjects(sortingOrder: Parameters.sortingOrder, isAscending: Parameters.sortingOrderIsAscending)
     }
     
     func coreDataSourceContext(_ cds: CoreDataSource!) -> NSManagedObjectContext! {
@@ -221,6 +221,7 @@ extension MainListVC : CoreDataSourceDelegate {
     }
 }
 
+#if false
 extension MainListVC : SortFilterDelegate {
     func sortFilter(_ sortFilterByParameters: SortFilter) {
         // In-case the ascending/descending has changed.
@@ -232,6 +233,7 @@ extension MainListVC : SortFilterDelegate {
         self.tableView.reloadSections([0], with: .automatic)
     }
 }
+#endif
 
 extension MainListVC : PlaceVCDelegate {
     func placeNameChanged(forPlaceLocation placeLocation: Location) {
