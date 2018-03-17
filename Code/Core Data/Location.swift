@@ -17,6 +17,7 @@ public class Location: BaseObject, ImagesManagedObject {
     static let RATING_KEY = "internalRating"
     
     // I'm not using `internalDistance` directly just to emphasize that this is a little different. It's for the UI so we can order locations by distance.
+    // Unit is meters.
     var sortingDistance:Float {
         set {
             internalDistance = newValue
@@ -80,7 +81,13 @@ public class Location: BaseObject, ImagesManagedObject {
     
     class func fetchRequestForAllObjects(sortingOrder: OrderFilter.OrderFilterType) -> NSFetchRequest<NSFetchRequestResult>? {
         var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
-        fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(withEntityName: self.entityName(), modifyingFetchRequestWith: nil)
+        fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(
+            withEntityName: self.entityName(), modifyingFetchRequestWith: { request in
+            if Parameters.filterDistance == .on {
+                let amount = NSNumber(value: milesToMeters(miles: Float(Parameters.filterDistanceAmount)))
+                request.predicate = NSPredicate(format: "(%K <= %@)", DISTANCE_KEY, amount)
+            }
+        })
         
         var key: String
         var ascending: Bool
@@ -96,7 +103,8 @@ public class Location: BaseObject, ImagesManagedObject {
             
         case .rating(ascending: let ascend):
             key = RATING_KEY
-            ascending = ascend        }
+            ascending = ascend
+        }
         
         if fetchRequest != nil {
             let sortDescriptor = NSSortDescriptor(key: key, ascending: ascending)
@@ -134,5 +142,9 @@ public class Location: BaseObject, ImagesManagedObject {
     
     static func metersToMiles(meters:Float) -> Float {
         return (meters/1000.0)*0.621371
+    }
+
+    static func milesToMeters(miles:Float) -> Float {
+        return miles/(0.000621371)
     }
 }

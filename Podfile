@@ -32,6 +32,9 @@ target 'WhatDidILike' do
 	# progress indicator for converting from old format data.
 	pod 'M13ProgressSuite', '~> 1.2'
 	
+    # Improved presentation of smaller modals
+    pod 'Presentr', '~> 1.3'
+	
     # 9/24/17; Dealing with Cocoapods inability to specify Swift versions...
 
 	post_install do |installer|

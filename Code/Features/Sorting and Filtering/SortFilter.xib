@@ -17,11 +17,15 @@
                 <outlet property="addressContainer" destination="vyt-Ib-w9N" id="086-H7-YWa"/>
                 <outlet property="alphabeticContainer" destination="UNk-a1-grd" id="Kre-uY-x5j"/>
                 <outlet property="alphabeticRadioButton" destination="eLV-d1-FBH" id="lLu-7h-znq"/>
+                <outlet property="distanceAmount" destination="1qW-qp-vOG" id="cDI-NY-2H6"/>
+                <outlet property="distanceFilter" destination="phs-QM-w3Y" id="6d8-dD-oBC"/>
                 <outlet property="distanceFromContainer" destination="krL-bG-n1Y" id="71d-Ad-8ag"/>
                 <outlet property="distanceRadioButton" destination="PC3-fq-Sin" id="D03-PS-Qj8"/>
+                <outlet property="distanceSlider" destination="iKa-Dn-StX" id="jOX-VZ-chB"/>
                 <outlet property="distanceSwitchContainer" destination="Gyd-01-Lht" id="hOT-Zq-FB9"/>
                 <outlet property="ratingContainer" destination="PFN-LU-Lw3" id="Ymx-Jl-gdD"/>
                 <outlet property="ratingRadioButton" destination="bQN-Rk-kzQ" id="G2U-2I-BIu"/>
+                <outlet property="tryAgainFilter" destination="csL-Zg-Qox" id="Bzb-Ta-oR9"/>
                 <outlet property="upOrDownContainer" destination="myI-4m-I6g" id="pj9-Ih-7hX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -40,6 +44,15 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5FK-50-GBA">
+                            <rect key="frame" x="0.0" y="0.0" width="250" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="A76-74-Wco"/>
+                            </constraints>
+                            <connections>
+                                <action selector="distanceButtonAction:" destination="-1" eventType="touchUpInside" id="8ql-0H-kD6"/>
+                            </connections>
+                        </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gyd-01-Lht" userLabel="meAddressSwitch">
                             <rect key="frame" x="30" y="41" width="157" height="28"/>
                             <constraints>
@@ -81,6 +94,7 @@
                         </view>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="5FK-50-GBA" firstAttribute="leading" secondItem="krL-bG-n1Y" secondAttribute="leading" id="4aK-Ma-IJY"/>
                         <constraint firstAttribute="width" constant="250" id="Mhe-e0-Slh"/>
                         <constraint firstItem="Gyd-01-Lht" firstAttribute="top" secondItem="Mey-GT-q1W" secondAttribute="bottom" constant="10" id="MnF-7e-m3c"/>
                         <constraint firstAttribute="height" constant="181" id="U6N-yO-4Lz"/>
@@ -89,7 +103,9 @@
                         <constraint firstAttribute="trailing" secondItem="vyt-Ib-w9N" secondAttribute="trailing" constant="20" id="XgB-3r-zAP"/>
                         <constraint firstItem="Mey-GT-q1W" firstAttribute="top" secondItem="krL-bG-n1Y" secondAttribute="top" constant="10" id="eSd-D4-IVN"/>
                         <constraint firstItem="Mey-GT-q1W" firstAttribute="leading" secondItem="krL-bG-n1Y" secondAttribute="leading" constant="10" id="fCW-4r-XEi"/>
+                        <constraint firstItem="5FK-50-GBA" firstAttribute="top" secondItem="krL-bG-n1Y" secondAttribute="top" id="j2O-CT-ae2"/>
                         <constraint firstItem="vyt-Ib-w9N" firstAttribute="top" secondItem="Gyd-01-Lht" secondAttribute="bottom" constant="20" id="k7D-VX-RJN"/>
+                        <constraint firstAttribute="trailing" secondItem="5FK-50-GBA" secondAttribute="trailing" id="wpX-7k-l2f"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PC3-fq-Sin" userLabel="Distance Radio Button" customClass="BEMCheckBox">
@@ -168,7 +184,7 @@
                     <rect key="frame" x="44" y="288" width="250" height="41"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7yX-RR-FJu" userLabel="Rating">
-                            <rect key="frame" x="10" y="10" width="49" height="20.5"/>
+                            <rect key="frame" x="10" y="10" width="49" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -190,14 +206,6 @@
                         <constraint firstItem="eOS-ab-ltL" firstAttribute="height" secondItem="PFN-LU-Lw3" secondAttribute="height" id="boM-2g-7pG"/>
                         <constraint firstItem="eOS-ab-ltL" firstAttribute="top" secondItem="PFN-LU-Lw3" secondAttribute="top" id="qQo-ii-qtI"/>
                         <constraint firstItem="eOS-ab-ltL" firstAttribute="leading" secondItem="PFN-LU-Lw3" secondAttribute="leading" id="xnr-dA-glZ"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="myI-4m-I6g" userLabel="upOrDownContainer">
-                    <rect key="frame" x="62" y="438" width="212" height="40"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="CXU-6Z-oYh"/>
-                        <constraint firstAttribute="width" constant="212" id="RbU-q1-4lg"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQN-Rk-kzQ" userLabel="Rating Radio Button" customClass="BEMCheckBox">
@@ -222,24 +230,104 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jaK-09-rNu" userLabel="Separator">
+                    <rect key="frame" x="5" y="349" width="327" height="1"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="k5q-mK-EpU"/>
+                    </constraints>
+                </view>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="phs-QM-w3Y">
+                    <rect key="frame" x="147" y="396" width="69" height="29"/>
+                    <segments>
+                        <segment title="On"/>
+                        <segment title="Off"/>
+                    </segments>
+                    <connections>
+                        <action selector="distanceFilterAction:" destination="-1" eventType="valueChanged" id="obY-43-nqk"/>
+                    </connections>
+                </segmentedControl>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Try again" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9bM-xC-wts">
+                    <rect key="frame" x="5" y="370" width="70" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lOc-FR-pi3">
+                    <rect key="frame" x="147" y="370" width="67" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="iKa-Dn-StX" userLabel="Distance Slider">
+                    <rect key="frame" x="222" y="399" width="107" height="31"/>
+                    <connections>
+                        <action selector="distanceSliderAction:" destination="-1" eventType="valueChanged" id="QQh-ur-FfF"/>
+                    </connections>
+                </slider>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="csL-Zg-Qox">
+                    <rect key="frame" x="5" y="396" width="110" height="29"/>
+                    <segments>
+                        <segment title="Yes"/>
+                        <segment title="No"/>
+                        <segment title="Off"/>
+                    </segments>
+                    <connections>
+                        <action selector="tryAainAction:" destination="-1" eventType="valueChanged" id="jno-kb-CSh"/>
+                    </connections>
+                </segmentedControl>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="myI-4m-I6g" userLabel="upOrDownContainer">
+                    <rect key="frame" x="62" y="438" width="212" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="CXU-6Z-oYh"/>
+                        <constraint firstAttribute="width" constant="212" id="RbU-q1-4lg"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1qW-qp-vOG" userLabel="Distance Amount">
+                    <rect key="frame" x="235" y="368" width="80" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="Oah-1B-KCl"/>
+                        <constraint firstAttribute="width" constant="80" id="tob-Qf-EHK"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="PFN-LU-Lw3" firstAttribute="top" secondItem="UNk-a1-grd" secondAttribute="bottom" constant="15" id="3op-jM-Gai"/>
                 <constraint firstItem="PC3-fq-Sin" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="5" id="5F6-jH-BoH"/>
+                <constraint firstItem="iKa-Dn-StX" firstAttribute="centerX" secondItem="1qW-qp-vOG" secondAttribute="centerX" id="6GN-lT-eff"/>
                 <constraint firstItem="bQN-Rk-kzQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="5" id="7IQ-OJ-V4q"/>
                 <constraint firstItem="eLV-d1-FBH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="5" id="ACV-xs-5MX"/>
+                <constraint firstItem="phs-QM-w3Y" firstAttribute="top" secondItem="lOc-FR-pi3" secondAttribute="bottom" constant="5" id="Dgw-1v-bDc"/>
+                <constraint firstItem="9bM-xC-wts" firstAttribute="top" secondItem="jaK-09-rNu" secondAttribute="bottom" constant="20" id="EYw-gY-u5g"/>
                 <constraint firstItem="UNk-a1-grd" firstAttribute="top" secondItem="eLV-d1-FBH" secondAttribute="top" id="Ik5-UL-ptj"/>
+                <constraint firstItem="jaK-09-rNu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="5" id="KEE-by-P3A"/>
                 <constraint firstItem="UNk-a1-grd" firstAttribute="top" secondItem="krL-bG-n1Y" secondAttribute="bottom" constant="10" id="MJc-G1-9se"/>
                 <constraint firstItem="wPT-Dt-MVD" firstAttribute="top" secondItem="eLV-d1-FBH" secondAttribute="top" id="N9K-et-ypx"/>
                 <constraint firstItem="UNk-a1-grd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="44" id="OCq-kr-HLj"/>
                 <constraint firstItem="myI-4m-I6g" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Q2p-P9-Itn"/>
                 <constraint firstItem="krL-bG-n1Y" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="QXt-HI-bWD"/>
+                <constraint firstItem="iKa-Dn-StX" firstAttribute="leading" secondItem="phs-QM-w3Y" secondAttribute="trailing" constant="8" id="QfJ-7G-FY3"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="UNk-a1-grd" secondAttribute="trailing" constant="43" id="VpS-8g-f22"/>
+                <constraint firstItem="phs-QM-w3Y" firstAttribute="leading" secondItem="csL-Zg-Qox" secondAttribute="trailing" constant="32" id="WYY-av-odn"/>
+                <constraint firstItem="lOc-FR-pi3" firstAttribute="top" secondItem="jaK-09-rNu" secondAttribute="bottom" constant="20" id="ZXX-bU-w6U"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="myI-4m-I6g" secondAttribute="bottom" constant="20" id="ZqL-ct-D0X"/>
+                <constraint firstItem="jaK-09-rNu" firstAttribute="top" secondItem="PFN-LU-Lw3" secondAttribute="bottom" constant="20" id="cKT-MH-zkK"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="PFN-LU-Lw3" secondAttribute="trailing" constant="43" id="eoG-bY-WPm"/>
+                <constraint firstItem="csL-Zg-Qox" firstAttribute="top" secondItem="9bM-xC-wts" secondAttribute="bottom" constant="5" id="esg-cw-OfA"/>
+                <constraint firstItem="csL-Zg-Qox" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="5" id="esp-YO-dNx"/>
                 <constraint firstItem="krL-bG-n1Y" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="j7F-aL-TEU"/>
+                <constraint firstItem="1qW-qp-vOG" firstAttribute="top" secondItem="jaK-09-rNu" secondAttribute="bottom" constant="18" id="lRZ-mb-3iv"/>
+                <constraint firstItem="1qW-qp-vOG" firstAttribute="leading" secondItem="lOc-FR-pi3" secondAttribute="trailing" constant="21" id="mZb-cu-iu5"/>
+                <constraint firstItem="phs-QM-w3Y" firstAttribute="leading" secondItem="lOc-FR-pi3" secondAttribute="leading" id="n0h-Im-FFB"/>
                 <constraint firstItem="PFN-LU-Lw3" firstAttribute="top" secondItem="bQN-Rk-kzQ" secondAttribute="top" id="nsp-iF-gWB"/>
+                <constraint firstAttribute="trailing" secondItem="jaK-09-rNu" secondAttribute="trailing" constant="5" id="pCS-U0-Ywv"/>
+                <constraint firstItem="9bM-xC-wts" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="5" id="qJd-VJ-8ky"/>
+                <constraint firstItem="iKa-Dn-StX" firstAttribute="top" secondItem="1qW-qp-vOG" secondAttribute="bottom" constant="6" id="uGd-qS-iP3"/>
                 <constraint firstItem="krL-bG-n1Y" firstAttribute="top" secondItem="PC3-fq-Sin" secondAttribute="top" id="wmw-g1-9mX"/>
                 <constraint firstItem="bQN-Rk-kzQ" firstAttribute="width" secondItem="bQN-Rk-kzQ" secondAttribute="height" multiplier="1:1" id="wwo-nJ-PHe"/>
                 <constraint firstItem="PFN-LU-Lw3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="44" id="yf6-N9-djm"/>

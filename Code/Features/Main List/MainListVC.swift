@@ -9,6 +9,7 @@
 import UIKit
 import SMCoreLib
 import M13ProgressSuite
+import Presentr
 
 class MainListVC: UIViewController {
     private static let converted = SMPersistItemBool(name: "MainListVC.converted", initialBoolValue: false, persistType: .userDefaults)
@@ -50,8 +51,9 @@ class MainListVC: UIViewController {
     }
     
     @objc private func sortFilterAction() {
-        let sortFilter = SortFilter.showFrom(parentVC: self)
-        sortFilter.delegate = self
+//        let sortFilter = SortFilter.showFrom(parentVC: self)
+//        sortFilter.delegate = self
+        SortyFilter.show(fromParentVC: self)
     }
     
     @objc private func editAction() {

@@ -48,6 +48,11 @@
 		837E12671F90827A00D8E4E1 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837E12661F90827A00D8E4E1 /* Parameters.swift */; };
 		8385206A1F8B2A77001D97D3 /* ImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838520681F8B2A77001D97D3 /* ImagesView.swift */; };
 		8385206B1F8B2A77001D97D3 /* ImagesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 838520691F8B2A77001D97D3 /* ImagesView.xib */; };
+		8394680A205C8E2B0009C318 /* SortyFilter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83946809205C8E2B0009C318 /* SortyFilter.xib */; };
+		8394680C205C8EF40009C318 /* SortyFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8394680B205C8EF40009C318 /* SortyFilter.swift */; };
+		8394680E205CAD510009C318 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8394680D205CAD510009C318 /* SegmentedControl.swift */; };
+		83946812205CB70D0009C318 /* SortControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83946811205CB70D0009C318 /* SortControl.xib */; };
+		83946814205CB7180009C318 /* SortControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83946813205CB7180009C318 /* SortControl.swift */; };
 		8396CE381F4BCB8A00660D73 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE2E1F4BCB8A00660D73 /* Item.swift */; };
 		8396CE391F4BCB8A00660D73 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE2F1F4BCB8A00660D73 /* Item+CoreDataProperties.swift */; };
 		8396CE3A1F4BCB8A00660D73 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE301F4BCB8A00660D73 /* Place.swift */; };
@@ -148,6 +153,11 @@
 		837E12661F90827A00D8E4E1 /* Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
 		838520681F8B2A77001D97D3 /* ImagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagesView.swift; path = Features/Place/ImagesView.swift; sourceTree = "<group>"; };
 		838520691F8B2A77001D97D3 /* ImagesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImagesView.xib; sourceTree = "<group>"; };
+		83946809205C8E2B0009C318 /* SortyFilter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SortyFilter.xib; sourceTree = "<group>"; };
+		8394680B205C8EF40009C318 /* SortyFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortyFilter.swift; sourceTree = "<group>"; };
+		8394680D205CAD510009C318 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
+		83946811205CB70D0009C318 /* SortControl.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SortControl.xib; sourceTree = "<group>"; };
+		83946813205CB7180009C318 /* SortControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortControl.swift; sourceTree = "<group>"; };
 		8396CE2D1F4BCAD500660D73 /* WhatDidILike-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WhatDidILike-Bridging-Header.h"; sourceTree = "<group>"; };
 		8396CE2E1F4BCB8A00660D73 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		8396CE2F1F4BCB8A00660D73 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -450,6 +460,11 @@
 				83D752CE1F93D9F200EF4E5D /* SortFilter.swift */,
 				83642190205A3F52008EB7EC /* SortFilter+Rating.swift */,
 				83D752CF1F93D9F200EF4E5D /* SortFilter.xib */,
+				83946809205C8E2B0009C318 /* SortyFilter.xib */,
+				8394680B205C8EF40009C318 /* SortyFilter.swift */,
+				8394680D205CAD510009C318 /* SegmentedControl.swift */,
+				83946811205CB70D0009C318 /* SortControl.xib */,
+				83946813205CB7180009C318 /* SortControl.swift */,
 			);
 			name = "Sorting and Filtering";
 			path = "Features/Sorting and Filtering";
@@ -547,8 +562,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8385206B1F8B2A77001D97D3 /* ImagesView.xib in Resources */,
+				83946812205CB70D0009C318 /* SortControl.xib in Resources */,
 				837E12611F8F2C4C00D8E4E1 /* CommentPromptVC.xib in Resources */,
 				830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */,
+				8394680A205C8E2B0009C318 /* SortyFilter.xib in Resources */,
 				83D752D11F93D9F200EF4E5D /* SortFilter.xib in Resources */,
 				83B533841F5D0C670028E6B5 /* RatingView.xib in Resources */,
 				83EE7DD21F5DB9F300628CA8 /* PlaceVCCell.xib in Resources */,
@@ -605,6 +622,7 @@
 				"${BUILT_PRODUCTS_DIR}/HPTextViewTapGestureRecognizer/HPTextViewTapGestureRecognizer.framework",
 				"${BUILT_PRODUCTS_DIR}/ImageSlideshow/ImageSlideshow.framework",
 				"${BUILT_PRODUCTS_DIR}/M13ProgressSuite/M13ProgressSuite.framework",
+				"${BUILT_PRODUCTS_DIR}/Presentr/Presentr.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SMCoreLib/SMCoreLib.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
@@ -618,6 +636,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HPTextViewTapGestureRecognizer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageSlideshow.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/M13ProgressSuite.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Presentr.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SMCoreLib.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
@@ -668,6 +687,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8394680E205CAD510009C318 /* SegmentedControl.swift in Sources */,
+				83946814205CB7180009C318 /* SortControl.swift in Sources */,
 				83B533821F5D0C450028E6B5 /* RatingView.swift in Sources */,
 				8396CE391F4BCB8A00660D73 /* Item+CoreDataProperties.swift in Sources */,
 				837788EA1F6607020014B8A2 /* UIViewController+Scrolling.swift in Sources */,
@@ -719,6 +740,7 @@
 				83B496C11F4BDE300083610D /* CoreDataExtras.swift in Sources */,
 				83B5337E1F5D0A6D0028E6B5 /* CommentView.swift in Sources */,
 				8396CE3E1F4BCB8A00660D73 /* Location.swift in Sources */,
+				8394680C205C8EF40009C318 /* SortyFilter.swift in Sources */,
 				831B04281F5CC7BD000E21C4 /* PlaceList.swift in Sources */,
 				83401D9C1F5CEAB000A96C8D /* Types.swift in Sources */,
 				83B496BD1F4BD0830083610D /* Identifiers.swift in Sources */,

@@ -74,4 +74,52 @@ class Parameters {
             return _orderAddress.stringValue
         }
     }
+    
+    enum FilterTryAgain: Int {
+        case yes = 0
+        case no = 1
+        case off = 2
+    }
+    
+    private static let _filterTryAgain = SMPersistItemInt(name: "Parameters.filterTryAgain", initialIntValue: FilterTryAgain.off.rawValue, persistType: .userDefaults)
+    static var filterTryAgain:FilterTryAgain {
+        set {
+            _filterTryAgain.intValue = newValue.rawValue
+        }
+        get {
+            if let result = FilterTryAgain(rawValue: _filterTryAgain.intValue) {
+                return result
+            }
+            return .off
+        }
+    }
+    
+    enum FilterDistance: Int {
+        case on = 0
+        case off = 1
+    }
+    
+    private static let _filterDistance = SMPersistItemInt(name: "Parameters.filterDistance", initialIntValue: FilterDistance.off.rawValue, persistType: .userDefaults)
+    // Units: Miles
+    static var filterDistance:FilterDistance {
+        set {
+            _filterDistance.intValue = newValue.rawValue
+        }
+        get {
+            if let result = FilterDistance(rawValue: _filterDistance.intValue) {
+                return result
+            }
+            return .off
+        }
+    }
+    
+    private static let _filterDistanceAmount = SMPersistItemInt(name: "Parameters.filterDistanceAmount", initialIntValue: 0, persistType: .userDefaults)
+    static var filterDistanceAmount:Int {
+        set {
+            _filterDistanceAmount.intValue = newValue
+        }
+        get {
+            return _filterDistanceAmount.intValue
+        }
+    }
 }

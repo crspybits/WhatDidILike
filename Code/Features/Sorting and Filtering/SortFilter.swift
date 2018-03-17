@@ -35,7 +35,12 @@ class SortFilter: SMModal {
     @IBOutlet weak var alphabeticRadioButton: BEMCheckBox!
     private var radioButtonGroup:BEMCheckBoxGroup!
     private var convertAddress: GeocodeAddressToLatLong?
-
+    @IBOutlet weak var tryAgainFilter: UISegmentedControl!
+    let maxDistance:Float = 50
+    @IBOutlet weak var distanceFilter: UISegmentedControl!
+    @IBOutlet weak var distanceAmount: UILabel!
+    @IBOutlet weak var distanceSlider: UISlider!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -96,6 +101,11 @@ class SortFilter: SMModal {
             Parameters.orderAddress = update
         }
         address.text = Parameters.orderAddress
+        
+        tryAgainFilter.selectedSegmentIndex = Parameters.filterTryAgain.rawValue
+        distanceFilter.selectedSegmentIndex = Parameters.filterDistance.rawValue
+        distanceAmount.text = "\(Parameters.filterDistanceAmount) miles"
+        distanceSlider.value = Float(Parameters.filterDistanceAmount)/maxDistance
     }
     
     private func formatBox(view: UIView) {
@@ -149,27 +159,7 @@ class SortFilter: SMModal {
         switch radioButtonGroup.selectedCheckBox! {
         case distanceRadioButton:
             Parameters.orderFilter = OrderFilter.OrderFilterType.distance(ascending: newAscending)
-            
-            switch distanceFrom {
-            case .me:
-                spinner.start()
-
-                // Recompute distances of all locations from our location. First, we need our location.
-                animatingEarthImageView.isHidden = false
-                Parameters.numberOfTimesLocationServicesFailed.intValue = 0
-                ll = LatLong(delegate: self)
-                
-            case .address:
-                let spaces = CharacterSet.whitespacesAndNewlines
-                address.text = address.text.trimmingCharacters(in: spaces)
-                if address.text.count > 0 {
-                    spinner.start()
-
-                    // Attempt to geocode the address
-                    convertAddress?.lookupAddress(address.text , withExitMethod: {
-                    })
-                }
-            }
+            computeDistances()
 
         case alphabeticRadioButton:
             Parameters.orderFilter = OrderFilter.OrderFilterType.name(ascending: newAscending)
@@ -179,9 +169,42 @@ class SortFilter: SMModal {
         case ratingRadioButton:
             Parameters.orderFilter = OrderFilter.OrderFilterType.rating(ascending: newAscending)
             computeRatings()
+            
+            if Parameters.filterDistance == .on {
+                // This also applies the sort to the UI.
+                computeDistances()
+            }
+            else {
+                delegate?.sortFilter(self)
+                spinner.stop()
+                close()
+            }
 
         default:
             assert(false)
+        }
+    }
+    
+    private func computeDistances() {
+        switch distanceFrom {
+        case .me:
+            spinner.start()
+
+            // Recompute distances of all locations from our location. First, we need our location.
+            animatingEarthImageView.isHidden = false
+            Parameters.numberOfTimesLocationServicesFailed.intValue = 0
+            ll = LatLong(delegate: self)
+            
+        case .address:
+            let spaces = CharacterSet.whitespacesAndNewlines
+            address.text = address.text.trimmingCharacters(in: spaces)
+            if address.text.count > 0 {
+                spinner.start()
+
+                // Attempt to geocode the address
+                convertAddress?.lookupAddress(address.text , withExitMethod: {
+                })
+            }
         }
     }
     
@@ -195,11 +218,6 @@ class SortFilter: SMModal {
         }
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
-        
-        delegate?.sortFilter(self)
-        
-        spinner.stop()
-        close()
     }
     
     private func computeDistances(from: CLLocation) {
@@ -214,7 +232,6 @@ class SortFilter: SMModal {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
         
         delegate?.sortFilter(self)
-        
         spinner.stop()
         close()
     }
@@ -244,6 +261,36 @@ class SortFilter: SMModal {
         if !ratingRadioButton.on {
             ratingRadioButton.setOn(true, animated: true)
         }
+    }
+    
+    @IBAction func distanceButtonAction(_ sender: Any) {
+        if !distanceRadioButton.on {
+            distanceRadioButton.setOn(true, animated: true)
+        }
+    }
+    
+    @IBAction func tryAainAction(_ sender: Any) {
+        if let result = Parameters.FilterTryAgain(rawValue: tryAgainFilter.selectedSegmentIndex) {
+            Parameters.filterTryAgain = result
+        }
+        else {
+            Parameters.filterTryAgain = .off
+        }
+    }
+    
+    @IBAction func distanceFilterAction(_ sender: Any) {
+        if let result = Parameters.FilterDistance(rawValue: distanceFilter.selectedSegmentIndex) {
+            Parameters.filterDistance = result
+        }
+        else {
+            Parameters.filterDistance = .off
+        }
+    }
+    
+    @IBAction func distanceSliderAction(_ sender: Any) {
+        let distance = Int(distanceSlider.value*maxDistance)
+        Parameters.filterDistanceAmount = distance
+        distanceAmount.text = "\(distance) miles"
     }
 }
 
