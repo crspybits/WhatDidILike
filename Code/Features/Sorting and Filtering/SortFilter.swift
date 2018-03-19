@@ -31,11 +31,11 @@ class SortFilter: SMModal {
     var delegate:SortFilterDelegate?
     @IBOutlet weak var alphabeticContainer: UIView!
     @IBOutlet weak var ratingContainer: UIView!
-    private var ll:LatLong!
     @IBOutlet weak var distanceRadioButton: BEMCheckBox!
     @IBOutlet weak var ratingRadioButton: BEMCheckBox!
     @IBOutlet weak var alphabeticRadioButton: BEMCheckBox!
     private var radioButtonGroup:BEMCheckBoxGroup!
+    private var ll:LatLong!
     private var convertAddress: GeocodeAddressToLatLong?
     @IBOutlet weak var tryAgainFilter: UISegmentedControl!
     let maxDistance:Float = 50

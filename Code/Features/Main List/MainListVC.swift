@@ -190,7 +190,8 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
 extension MainListVC : CoreDataSourceDelegate {
     // 10/2/17; I'm fetching locations here -- becuase each place can have more than one location, and I want to get all of these locations represented here. This also means that a Place *must* have a location or I won't be able to show it here. I'm going to change the Core Data model to require each place have at least one location.
     func coreDataSourceFetchRequest(_ cds: CoreDataSource!) -> NSFetchRequest<NSFetchRequestResult>! {
-        return Location.fetchRequestForAllObjects(sortingOrder: Parameters.sortingOrder, isAscending: Parameters.sortingOrderIsAscending)
+        let params = Location.SortFilterParams(sortingOrder: Parameters.sortingOrder, isAscending: Parameters.sortingOrderIsAscending, tryAgainFilter: Parameters.tryAgainFilter, distanceFilter: Parameters.distanceFilter, distanceInMiles: Parameters.distanceFilterAmount)
+        return Location.fetchRequestForAllObjects(sortFilter: params)
     }
     
     func coreDataSourceContext(_ cds: CoreDataSource!) -> NSManagedObjectContext! {

@@ -21,6 +21,7 @@
 		831B04291F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */; };
 		831B042A1F5CC7BD000E21C4 /* PlaceCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04261F5CC7BD000E21C4 /* PlaceCategory.swift */; };
 		831B042B1F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B04271F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift */; };
+		831F625A205F44E00046DB09 /* ApplySortyFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831F6259205F44E00046DB09 /* ApplySortyFilter.swift */; };
 		8327AEB51F95BE3500E170A2 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8327AEAF1F95BE3500E170A2 /* Rating.swift */; };
 		8327AEB61F95BE3500E170A2 /* Rating+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8327AEB01F95BE3500E170A2 /* Rating+CoreDataProperties.swift */; };
 		83401D9A1F5CEA4E00A96C8D /* XibBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83401D991F5CEA4E00A96C8D /* XibBasics.swift */; };
@@ -120,6 +121,7 @@
 		831B04251F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceList+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		831B04261F5CC7BD000E21C4 /* PlaceCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCategory.swift; sourceTree = "<group>"; };
 		831B04271F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceCategory+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		831F6259205F44E00046DB09 /* ApplySortyFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplySortyFilter.swift; sourceTree = "<group>"; };
 		8327AEAF1F95BE3500E170A2 /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		8327AEB01F95BE3500E170A2 /* Rating+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rating+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83401D991F5CEA4E00A96C8D /* XibBasics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XibBasics.swift; sourceTree = "<group>"; };
@@ -240,6 +242,16 @@
 				6B2F0394E5734A520BA46C48 /* Pods_WhatDidILike.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		831F625B205F66220046DB09 /* SegmentedControl */ = {
+			isa = PBXGroup;
+			children = (
+				8394680D205CAD510009C318 /* SegmentedControl.swift */,
+				83946811205CB70D0009C318 /* SortControl.xib */,
+				83946813205CB7180009C318 /* SortControl.swift */,
+			);
+			path = SegmentedControl;
 			sourceTree = "<group>";
 		};
 		8366CD321F7CA45500E9D6FF /* Location */ = {
@@ -455,13 +467,12 @@
 			isa = PBXGroup;
 			children = (
 				83D752CE1F93D9F200EF4E5D /* SortFilter.swift */,
-				83642190205A3F52008EB7EC /* SortFilter+Rating.swift */,
 				83D752CF1F93D9F200EF4E5D /* SortFilter.xib */,
+				83642190205A3F52008EB7EC /* SortFilter+Rating.swift */,
 				83946809205C8E2B0009C318 /* SortyFilter.xib */,
 				8394680B205C8EF40009C318 /* SortyFilter.swift */,
-				8394680D205CAD510009C318 /* SegmentedControl.swift */,
-				83946811205CB70D0009C318 /* SortControl.xib */,
-				83946813205CB7180009C318 /* SortControl.swift */,
+				831F6259205F44E00046DB09 /* ApplySortyFilter.swift */,
+				831F625B205F66220046DB09 /* SegmentedControl */,
 			);
 			name = "Sorting and Filtering";
 			path = "Features/Sorting and Filtering";
@@ -716,6 +727,7 @@
 				83401DA81F5CFD7400A96C8D /* Layout.swift in Sources */,
 				8366CD3F1F7CA65F00E9D6FF /* GeocodeAddressToLatLong.m in Sources */,
 				8385206A1F8B2A77001D97D3 /* ImagesView.swift in Sources */,
+				831F625A205F44E00046DB09 /* ApplySortyFilter.swift in Sources */,
 				837788F31F6673470014B8A2 /* TextField.swift in Sources */,
 				83A597C01F67961600736DE2 /* ListManager.swift in Sources */,
 				831B04291F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift in Sources */,

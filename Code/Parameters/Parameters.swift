@@ -148,7 +148,6 @@ class Parameters {
     }
     
     private static let _distanceFilter = SMPersistItemString(name: "Parameters.distanceFilter", initialStringValue: DistanceFilter.dontUse.rawValue, persistType: .userDefaults)
-    // Units: Miles
     static var distanceFilter:DistanceFilter {
         set {
             _distanceFilter.stringValue = newValue.rawValue
@@ -161,13 +160,14 @@ class Parameters {
         }
     }
     
-    private static let _filterDistanceAmount = SMPersistItemInt(name: "Parameters.filterDistanceAmount", initialIntValue: 0, persistType: .userDefaults)
-    static var filterDistanceAmount:Int {
+    private static let _distanceFilterAmount = SMPersistItemInt(name: "Parameters.distanceFilterAmount", initialIntValue: 0, persistType: .userDefaults)
+    // Units: Miles
+    static var distanceFilterAmount:Int {
         set {
-            _filterDistanceAmount.intValue = newValue
+            _distanceFilterAmount.intValue = newValue
         }
         get {
-            return _filterDistanceAmount.intValue
+            return _distanceFilterAmount.intValue
         }
     }
     

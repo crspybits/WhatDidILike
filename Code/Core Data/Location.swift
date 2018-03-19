@@ -79,19 +79,28 @@ public class Location: BaseObject, ImagesManagedObject {
         return newLocation
     }
     
-    class func fetchRequestForAllObjects(sortingOrder: Parameters.SortOrder, isAscending: Bool) -> NSFetchRequest<NSFetchRequestResult>? {
+    struct SortFilterParams {
+        let sortingOrder: Parameters.SortOrder
+        let isAscending: Bool
+        let tryAgainFilter: Parameters.TryAgainFilter
+        let distanceFilter: Parameters.DistanceFilter
+        let distanceInMiles: Int
+    }
+    
+    class func fetchRequestForAllObjects(sortFilter: SortFilterParams) -> NSFetchRequest<NSFetchRequestResult>? {
         var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
         fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(
             withEntityName: self.entityName(), modifyingFetchRequestWith: { request in
-            if Parameters.distanceFilter == .use {
-                let amount = NSNumber(value: milesToMeters(miles: Float(Parameters.filterDistanceAmount)))
+            
+            if sortFilter.distanceFilter == .use {
+                let amount = NSNumber(value: milesToMeters(miles: Float(sortFilter.distanceInMiles)))
                 request.predicate = NSPredicate(format: "(%K <= %@)", DISTANCE_KEY, amount)
             }
         })
         
         var key: String
         
-        switch sortingOrder {
+        switch sortFilter.sortingOrder {
         case .distance:
             key = DISTANCE_KEY
             
@@ -103,7 +112,7 @@ public class Location: BaseObject, ImagesManagedObject {
         }
         
         if fetchRequest != nil {
-            let sortDescriptor = NSSortDescriptor(key: key, ascending: isAscending)
+            let sortDescriptor = NSSortDescriptor(key: key, ascending: sortFilter.isAscending)
             fetchRequest!.sortDescriptors = [sortDescriptor]
         }
         
