@@ -15,7 +15,8 @@ public class Location: BaseObject, ImagesManagedObject {
     static let NAME_KEY = "place.name"
     static let DISTANCE_KEY = "internalDistance"
     static let RATING_KEY = "internalRating"
-    
+    static let TRY_AGAIN_KEY = "internalGoBack"
+
     // I'm not using `internalDistance` directly just to emphasize that this is a little different. It's for the UI so we can order locations by distance.
     // Unit is meters.
     var sortingDistance:Float {
@@ -92,9 +93,28 @@ public class Location: BaseObject, ImagesManagedObject {
         fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(
             withEntityName: self.entityName(), modifyingFetchRequestWith: { request in
             
+            var subpredicates = [NSPredicate]()
+            
             if sortFilter.distanceFilter == .use {
                 let amount = NSNumber(value: milesToMeters(miles: Float(sortFilter.distanceInMiles)))
-                request.predicate = NSPredicate(format: "(%K <= %@)", DISTANCE_KEY, amount)
+                subpredicates += [NSPredicate(format: "(%K <= %@)", DISTANCE_KEY, amount)]
+            }
+            
+            switch sortFilter.tryAgainFilter {
+            case .again:
+                subpredicates += [NSPredicate(format: "(%K == %@)", TRY_AGAIN_KEY, NSNumber(booleanLiteral: true))]
+                
+            case .notAgain:
+                subpredicates += [NSPredicate(format: "(%K == %@)", TRY_AGAIN_KEY,
+                    NSNumber(booleanLiteral: false))]
+
+            case .dontUse:
+                break
+            }
+            
+            if subpredicates.count > 0 {
+                let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
+                request.predicate = compoundPredicate
             }
         })
         

@@ -12,7 +12,8 @@ import DropDown
 import FLAnimatedImage
 
 protocol SortyFilterDelegate : class {
-    func sortyFilter(_ sortFilterByParameters: SortyFilter)
+    func sortyFilter(reset: SortyFilter)
+    func sortyFilter(sortFilterByParameters: SortyFilter)
 }
 
 class SortyFilter: UIViewController {
@@ -34,13 +35,17 @@ class SortyFilter: UIViewController {
     private var apply:ApplySortyFilter!
     var delegate:SortyFilterDelegate!
     
+    static let modalHeight = ModalSize.custom(size: 402)
+    static let modalWidth = ModalSize.full
+    
+    static let customTypePortrait: PresentationType = {
+        let center = ModalCenterPosition.customOrigin(origin: CGPoint(x: 0, y: 0))
+        let customType = PresentationType.custom(width: SortyFilter.modalWidth, height: SortyFilter.modalHeight, center: center)
+        return customType
+    }()
+    
     let presenter: Presentr = {
-        let width = ModalSize.full
-        let height = ModalSize.custom(size: 402)
-        let center = ModalCenterPosition.customOrigin(origin: CGPoint(x: 0, y: 70))
-        let customType = PresentationType.custom(width: width, height: height, center: center)
-
-        let customPresenter = Presentr(presentationType: customType)
+        let customPresenter = Presentr(presentationType: SortyFilter.customTypePortrait)
         customPresenter.transitionType = .coverVerticalFromTop
         customPresenter.dismissTransitionType = .crossDissolve
         customPresenter.roundCorners = false
@@ -53,8 +58,9 @@ class SortyFilter: UIViewController {
     
     @IBOutlet weak var sortOrder: UISegmentedControl!
     
-    static func show(fromParentVC parentVC: UIViewController) {
+    static func show(fromParentVC parentVC: UIViewController, usingDelegate delegate: SortyFilterDelegate) {
         let sortyFilter = SortyFilter()
+        sortyFilter.delegate = delegate
         parentVC.customPresentViewController(sortyFilter.presenter, viewController: sortyFilter, animated: true, completion: nil)
     }
     
@@ -210,8 +216,13 @@ extension SortyFilter : SegmentedControlDelegate {
 }
 
 extension SortyFilter : ApplySortyFilterDelegate {
+    func sortyFilter(reset: ApplySortyFilter) {
+        delegate?.sortyFilter(reset: self)
+    }
+
     func sortyFilter(sortFilterByParameters: ApplySortyFilter) {
-        delegate?.sortyFilter(self)
+        delegate?.sortyFilter(sortFilterByParameters: self)
+        dismiss(animated: true, completion: nil)
     }
     
     func sortyFilter(startUsingLocationServices:ApplySortyFilter) {

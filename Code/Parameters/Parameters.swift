@@ -160,6 +160,10 @@ class Parameters {
         }
     }
     
+    static var filterApplied:Bool {
+        return distanceFilter == .use || tryAgainFilter != .dontUse
+    }
+    
     private static let _distanceFilterAmount = SMPersistItemInt(name: "Parameters.distanceFilterAmount", initialIntValue: 0, persistType: .userDefaults)
     // Units: Miles
     static var distanceFilterAmount:Int {

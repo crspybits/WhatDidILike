@@ -10,6 +10,7 @@ import Foundation
 import SMCoreLib
 
 protocol ApplySortyFilterDelegate : class {
+    func sortyFilter(reset: ApplySortyFilter)
     func sortyFilter(sortFilterByParameters: ApplySortyFilter)
     
     func sortyFilter(startUsingLocationServices:ApplySortyFilter)
@@ -31,22 +32,35 @@ class ApplySortyFilter: NSObject {
     }
     
     func apply() {
+        delegate?.sortyFilter(reset: self)
+        
         switch Parameters.sortingOrder {
         case .distance:
+            if Parameters.tryAgainFilter != .dontUse {
+                computeTryAgain()
+            }
+
             asyncComputeDistances()
             
         case .name:
-            delegate?.sortyFilter(sortFilterByParameters: self)
+            computeAllFilters()
             
         case .rating:
             computeRatings()
-            
-            if Parameters.distanceFilter == .use {
-                asyncComputeDistances()
-            }
-            else {
-                delegate?.sortyFilter(sortFilterByParameters: self)
-            }
+            computeAllFilters()
+        }
+    }
+    
+    private func computeAllFilters() {
+        if Parameters.tryAgainFilter != .dontUse {
+            computeTryAgain()
+        }
+    
+        if Parameters.distanceFilter == .use {
+            asyncComputeDistances()
+        }
+        else {
+            delegate?.sortyFilter(sortFilterByParameters: self)
         }
     }
     
@@ -68,6 +82,45 @@ class ApplySortyFilter: NSObject {
                 })
             }
         }
+    }
+    
+    private func computeTryAgain() {
+        guard let locations = Location.fetchAllObjects() else {
+            return
+        }
+        
+        for location in locations {
+            computeTryAgain(forLocation: location)
+        }
+        
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
+    
+    // Also sets `internalGoBack`.
+    private func computeTryAgain(forLocation location: Location) {
+        if let again = location.rating?.again {
+            location.internalGoBack = again.boolValue as NSNumber
+            return
+        }
+        else {
+            if let items = location.place?.items, items.count > 0 {
+                for itemObj in items {
+                    let item = itemObj as! Item
+                    
+                    if let comments = item.comments, comments.count > 0 {
+                        for commentObj in comments {
+                            let comment = commentObj as! Comment
+                            if let again = comment.rating?.again {
+                                location.internalGoBack = again.boolValue as NSNumber
+                                return
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        location.internalGoBack = nil
     }
     
     // Also sets that rating.
@@ -173,12 +226,14 @@ extension ApplySortyFilter : LatLongDelegate {
     func haveReasonablyAccurateCoordinates() {
         delegate?.sortyFilter(stopUsingLocationServices: self)
         
-        Log.msg("finishedAttemptingToObtainCoordinates: ll: \(ll)")
+        Log.msg("haveReasonablyAccurateCoordinates: ll: \(ll)")
         if ll.coords == nil {
+            ll.stop()
             Alert.show(withTitle: "Could not obtain your current location.", message: "Are location services turned off?")
         }
         else {
             let coords = ll.coords!
+            ll.stop()
             Log.msg("Coords from ll: \(coords)")
             Parameters.sortLocation = coords
             computeDistances(from: coords)

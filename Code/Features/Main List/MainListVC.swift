@@ -42,18 +42,25 @@ class MainListVC: UIViewController {
             sortImage = #imageLiteral(resourceName: "sortFilterDown")
         }
     
+        var rightButtons = [UIBarButtonItem]()
         let sortFilter = UIBarButtonItem(image: sortImage, style: .plain, target: self, action: #selector(sortFilterAction))
         let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPlace))
-        navigationItem.rightBarButtonItems = [add, sortFilter]
+        
+        rightButtons = [add, sortFilter]
+        
+        if Parameters.filterApplied {
+            let filterApplied = UIBarButtonItem(image: #imageLiteral(resourceName: "filtering"), style: .plain, target: self, action: #selector(sortFilterAction))
+            rightButtons += [filterApplied]
+        }
+        
+        navigationItem.rightBarButtonItems = rightButtons
     
         let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editAction))
         navigationItem.leftBarButtonItem = editButton
     }
     
     @objc private func sortFilterAction() {
-//        let sortFilter = SortFilter.showFrom(parentVC: self)
-//        sortFilter.delegate = self
-        SortyFilter.show(fromParentVC: self)
+        SortyFilter.show(fromParentVC: self, usingDelegate: self)
     }
     
     @objc private func editAction() {
@@ -137,7 +144,7 @@ class MainListVC: UIViewController {
 
 extension MainListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Int(coreDataSource.numberOfRows(inSection: 0))
+        return Int(coreDataSource?.numberOfRows(inSection: 0) ?? 0)
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -222,19 +229,23 @@ extension MainListVC : CoreDataSourceDelegate {
     }
 }
 
-#if false
-extension MainListVC : SortFilterDelegate {
-    func sortFilter(_ sortFilterByParameters: SortFilter) {
+extension MainListVC : SortyFilterDelegate {
+    func sortyFilter(reset: SortyFilter) {
+        coreDataSource = nil
+    }
+    
+    func sortyFilter(sortFilterByParameters: SortyFilter) {
+        coreDataSource = CoreDataSource(delegate: self)
+
         // In-case the ascending/descending has changed.
-        self.setupBarButtonItems()
+        setupBarButtonItems()
         
-        self.coreDataSource.fetchData()
+        coreDataSource.fetchData()
         
         // Not quite sure why this is needed-- for change in alphabetic ordering.
-        self.tableView.reloadSections([0], with: .automatic)
+        tableView.reloadSections([0], with: .automatic)
     }
 }
-#endif
 
 extension MainListVC : PlaceVCDelegate {
     func placeNameChanged(forPlaceLocation placeLocation: Location) {
