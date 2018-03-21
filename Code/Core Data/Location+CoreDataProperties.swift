@@ -2,8 +2,8 @@
 //  Location+CoreDataProperties.swift
 //  WhatDidILike
 //
-//  Created by Christopher G Prince on 10/16/17.
-//  Copyright © 2017 Spastic Muffin, LLC. All rights reserved.
+//  Created by Christopher G Prince on 3/19/18.
+//  Copyright © 2018 Spastic Muffin, LLC. All rights reserved.
 //
 //
 
@@ -19,7 +19,9 @@ extension Location {
 
     @NSManaged public var address: String?
     @NSManaged public var internalDistance: Float
+    @NSManaged public var internalGoBack: NSNumber?
     @NSManaged public var internalLocation: NSData?
+    @NSManaged public var internalRating: Float
     @NSManaged public var specificDescription: String?
     @NSManaged public var images: NSOrderedSet?
     @NSManaged public var place: Place?

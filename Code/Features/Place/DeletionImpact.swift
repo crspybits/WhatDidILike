@@ -51,9 +51,22 @@ class DeletionImpact {
         case comment(Comment)
     }
     
+    private func details(name: String, instanceText: String?) -> String {
+        var result = ""
+        
+        if let instanceText = instanceText {
+            result = name + " '\(instanceText)'"
+        }
+        else {
+            result = "this " + name
+        }
+        
+        return result
+    }
+    
     func showWarning(`for` type: DeletionImpactType, using vc: UIViewController, deletionAction: @escaping ()->()) {
     
-        let (warning, typeName) = of(type)
+        let (warning, typeName, instanceText) = of(type)
         var message:String?
         var title:String
         
@@ -62,7 +75,8 @@ class DeletionImpact {
             message = impact
         }
         else {
-            title = "Really delete this \(typeName)?"
+            let instanceDetails = details(name: typeName, instanceText: instanceText)
+            title = "Really delete \(instanceDetails)?"
         }
     
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -74,16 +88,16 @@ class DeletionImpact {
         vc.present(alert, animated: true, completion: nil)
     }
 
-    private func of(_ type: DeletionImpactType) -> (warning: String?, typeName: String) {
+    private func of(_ type: DeletionImpactType) -> (warning: String?, typeName: String, instanceText: String?) {
         switch type {
         case .comment(let comment):
-            return (of(comment: comment), "comment")
+            return (of(comment: comment), "comment", instanceText: comment.comment)
             
         case .item(let item):
-            return (of(item: item), "menu item")
+            return (of(item: item), "menu item", instanceText: item.name)
             
         case .location(let location):
-            return (of(location: location), "location")
+            return (of(location: location), "location", instanceText: location.address)
         }
     }
     
@@ -91,8 +105,11 @@ class DeletionImpact {
         let numberImages = comment.images!.count
         
         addToComponents(value: numberImages, name: "image")
+    
+        let instanceDetails = details(name: "comment", instanceText: comment.comment)
         
-        return assembleComponents(initialMessage: "Deleting this comment will also remove: ")
+        return assembleComponents(initialMessage:
+            "Deleting \(instanceDetails) will also remove: ")
     }
     
     private func of(item:Item) -> String? {
@@ -107,11 +124,12 @@ class DeletionImpact {
         addToComponents(value: numberComments, name: "comment")
         addToComponents(value: numberImages, name: "image")
         
-        return assembleComponents(initialMessage: "Deleting this menu item will also remove: ")
+        let instanceDetails = details(name: "menu item", instanceText: item.name)
+        
+        return assembleComponents(initialMessage: "Deleting \(instanceDetails) will also remove: ")
     }
     
     private func of(location:Location) -> String? {
-        var messageComponents = [String]()
         var numberImages = 0
         var numberComments = 0
         var numberMenuItems = 0
@@ -137,7 +155,9 @@ class DeletionImpact {
         addToComponents(value: numberComments, name: "comment")
         addToComponents(value: numberImages, name: "image")
         
-        return assembleComponents(initialMessage: "Deleting this location will also remove: ")
+        let instanceDetails = details(name: "location", instanceText: location.address)
+
+        return assembleComponents(initialMessage: "Deleting \(instanceDetails) will also remove: ")
     }
     
     func imagesAssociatedWith(location:Location) -> [Image] {

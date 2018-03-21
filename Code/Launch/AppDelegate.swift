@@ -11,6 +11,7 @@ import CoreData
 import Fabric
 import Crashlytics
 import SMCoreLib
+import DropDown
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
+        DropDown.startListeningToKeyboard()
         Fabric.with([Crashlytics.self])
         
         Log.minLevel = .verbose

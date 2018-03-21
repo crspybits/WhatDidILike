@@ -9,6 +9,7 @@
 import UIKit
 import SMCoreLib
 import M13ProgressSuite
+import Presentr
 
 class MainListVC: UIViewController {
     private static let converted = SMPersistItemBool(name: "MainListVC.converted", initialBoolValue: false, persistType: .userDefaults)
@@ -18,7 +19,8 @@ class MainListVC: UIViewController {
     let cellReuseId = "LocationTableViewCell"
     private var showDetailsForIndexPath:IndexPath?
     private var indexPathOfNewPlace:IndexPath?
-
+    private var examplePlaceView = MainListPlaceView.create()!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         coreDataSource = CoreDataSource(delegate: self)
@@ -27,28 +29,38 @@ class MainListVC: UIViewController {
         tableView.dataSource = self
         
         setupBarButtonItems()
+        
+        tableView.register(PlaceVCCell.self, forCellReuseIdentifier: cellReuseId)
     }
     
     private func setupBarButtonItems() {
         var sortImage:UIImage
-        if Parameters.orderFilter.isAscending {
-            sortImage = #imageLiteral(resourceName: "sortFilterDown")
-        }
-        else {
+        if Parameters.sortingOrderIsAscending {
             sortImage = #imageLiteral(resourceName: "sortFilterUp")
         }
+        else {
+            sortImage = #imageLiteral(resourceName: "sortFilterDown")
+        }
     
+        var rightButtons = [UIBarButtonItem]()
         let sortFilter = UIBarButtonItem(image: sortImage, style: .plain, target: self, action: #selector(sortFilterAction))
         let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPlace))
-        navigationItem.rightBarButtonItems = [add, sortFilter]
+        
+        rightButtons = [add, sortFilter]
+        
+        if Parameters.filterApplied {
+            let filterApplied = UIBarButtonItem(image: #imageLiteral(resourceName: "filtering"), style: .plain, target: self, action: #selector(sortFilterAction))
+            rightButtons += [filterApplied]
+        }
+        
+        navigationItem.rightBarButtonItems = rightButtons
     
         let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editAction))
         navigationItem.leftBarButtonItem = editButton
     }
     
     @objc private func sortFilterAction() {
-        let sortFilter = SortFilter.showFrom(parentVC: self)
-        sortFilter.delegate = self
+        SortyFilter.show(fromParentVC: self, usingDelegate: self)
     }
     
     @objc private func editAction() {
@@ -132,26 +144,16 @@ class MainListVC: UIViewController {
 
 extension MainListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Int(coreDataSource.numberOfRows(inSection: 0))
+        return Int(coreDataSource?.numberOfRows(inSection: 0) ?? 0)
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseId, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseId, for: indexPath) as! PlaceVCCell
         let location = self.coreDataSource.object(at: indexPath) as! Location
-        cell.textLabel?.text = location.place?.name
         
-        switch Parameters.orderFilter {
-        case .distance:
-            let distanceInMiles = Location.metersToMiles(meters: location.sortingDistance)
-            var distanceString = String(format: "%.2f miles", distanceInMiles)
-            if location.sortingDistance == Float.greatestFiniteMagnitude {
-                distanceString = "\u{221E}" // infinity.
-            }
-            cell.detailTextLabel?.text = "\(distanceString)"
-            
-        case .name:
-            cell.detailTextLabel?.text = nil
-        }
+        let placeView = MainListPlaceView.create()!
+        placeView.setup(withLocation: location)
+        cell.setup(withContents: placeView)
         
         return cell
     }
@@ -186,12 +188,17 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
             assert(false)
         }
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return examplePlaceView.frameHeight
+    }
 }
 
 extension MainListVC : CoreDataSourceDelegate {
     // 10/2/17; I'm fetching locations here -- becuase each place can have more than one location, and I want to get all of these locations represented here. This also means that a Place *must* have a location or I won't be able to show it here. I'm going to change the Core Data model to require each place have at least one location.
     func coreDataSourceFetchRequest(_ cds: CoreDataSource!) -> NSFetchRequest<NSFetchRequestResult>! {
-        return Location.fetchRequestForAllObjects(sortingOrder: Parameters.orderFilter)
+        let params = Location.SortFilterParams(sortingOrder: Parameters.sortingOrder, isAscending: Parameters.sortingOrderIsAscending, tryAgainFilter: Parameters.tryAgainFilter, distanceFilter: Parameters.distanceFilter, distanceInMiles: Parameters.distanceFilterAmount)
+        return Location.fetchRequestForAllObjects(sortFilter: params)
     }
     
     func coreDataSourceContext(_ cds: CoreDataSource!) -> NSManagedObjectContext! {
@@ -222,15 +229,21 @@ extension MainListVC : CoreDataSourceDelegate {
     }
 }
 
-extension MainListVC : SortFilterDelegate {
-    func sortFilter(_ sortFilterByParameters: SortFilter) {
+extension MainListVC : SortyFilterDelegate {
+    func sortyFilter(reset: SortyFilter) {
+        coreDataSource = nil
+    }
+    
+    func sortyFilter(sortFilterByParameters: SortyFilter) {
+        coreDataSource = CoreDataSource(delegate: self)
+
         // In-case the ascending/descending has changed.
-        self.setupBarButtonItems()
+        setupBarButtonItems()
         
-        self.coreDataSource.fetchData()
+        coreDataSource.fetchData()
         
         // Not quite sure why this is needed-- for change in alphabetic ordering.
-        self.tableView.reloadSections([0], with: .automatic)
+        tableView.reloadSections([0], with: .automatic)
     }
 }
 

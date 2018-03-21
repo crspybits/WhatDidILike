@@ -9,8 +9,8 @@ target 'WhatDidILike' do
     pod 'Fabric'
     pod 'Crashlytics'
 
-    # pod 'SMCoreLib', '~> 1.0'
-	pod 'SMCoreLib', :path => '../Common/SMCoreLib/'
+    pod 'SMCoreLib', '~> 1.2'
+	# pod 'SMCoreLib', :path => '../Common/SMCoreLib/'
 	
 	# Animated GIF's
 	pod 'FLAnimatedImage', '~> 1.0'
@@ -23,14 +23,20 @@ target 'WhatDidILike' do
 	# Labeled switch
 	pod 'DGRunkeeperSwitch', '~> 1.1'
 	
-	# pod 'ImageSlideshow', :git => 'https://github.com/crspybits/ImageSlideshow.git'
+	pod 'ImageSlideshow', :git => 'https://github.com/crspybits/ImageSlideshow.git'
 	# pod 'ImageSlideshow', '~> 1.4'
-	pod 'ImageSlideshow', :path => '../ImageSlideshow'
+	# pod 'ImageSlideshow', :path => '../ImageSlideshow'
 
 	pod 'BEMCheckBox', '~> 1.0'
 	
 	# progress indicator for converting from old format data.
 	pod 'M13ProgressSuite', '~> 1.2'
+	
+    # Improved presentation of smaller modals
+    pod 'Presentr', '~> 1.3'
+    
+    # For sorting/filter modal.
+    pod 'DropDown', '~> 2.3'
 	
     # 9/24/17; Dealing with Cocoapods inability to specify Swift versions...
 

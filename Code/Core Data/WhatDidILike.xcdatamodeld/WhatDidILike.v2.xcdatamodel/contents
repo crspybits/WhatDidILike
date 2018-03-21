@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D47" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="BaseObject" representedClassName="BaseObject" isAbstract="YES" syncable="YES">
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="modificationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Comment" representedClassName="Comment" parentEntity="BaseObject" syncable="YES">
+        <attribute name="comment" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Image" inverseName="comment" inverseEntity="Image" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="comments" inverseEntity="Item" syncable="YES"/>
+        <relationship name="rating" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Rating" inverseName="comment" inverseEntity="Rating" syncable="YES"/>
+    </entity>
+    <entity name="Image" representedClassName="Image" syncable="YES">
+        <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="comment" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="Comment" inverseName="images" inverseEntity="Comment" syncable="YES"/>
+        <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="Location" inverseName="images" inverseEntity="Location" syncable="YES"/>
+    </entity>
+    <entity name="Item" representedClassName="Item" parentEntity="BaseObject" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Comment" inverseName="item" inverseEntity="Comment" syncable="YES"/>
+        <relationship name="place" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Place" inverseName="items" inverseEntity="Place" syncable="YES"/>
+    </entity>
+    <entity name="Location" representedClassName="Location" parentEntity="BaseObject" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="internalDistance" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="internalGoBack" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="internalLocation" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="internalRating" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="specificDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Image" inverseName="location" inverseEntity="Image" syncable="YES"/>
+        <relationship name="place" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Place" inverseName="locations" inverseEntity="Place" syncable="YES"/>
+        <relationship name="rating" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Rating" inverseName="location" inverseEntity="Rating" syncable="YES"/>
+    </entity>
+    <entity name="Place" representedClassName="Place" parentEntity="BaseObject" syncable="YES">
+        <attribute name="generalDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlaceCategory" inverseName="places" inverseEntity="PlaceCategory" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Item" inverseName="place" inverseEntity="Item" syncable="YES"/>
+        <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PlaceList" inverseName="places" inverseEntity="PlaceList" syncable="YES"/>
+        <relationship name="locations" optional="YES" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="place" inverseEntity="Location" syncable="YES"/>
+    </entity>
+    <entity name="PlaceCategory" representedClassName="PlaceCategory" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="places" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Place" inverseName="category" inverseEntity="Place" syncable="YES"/>
+    </entity>
+    <entity name="PlaceList" representedClassName="PlaceList" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="places" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Place" inverseName="lists" inverseEntity="Place" syncable="YES"/>
+    </entity>
+    <entity name="Rating" representedClassName="Rating" syncable="YES">
+        <attribute name="again" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="meThem" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="recommendedBy" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="comment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Comment" inverseName="rating" inverseEntity="Comment" syncable="YES"/>
+        <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="rating" inverseEntity="Location" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="BaseObject" positionX="-63" positionY="-18" width="128" height="90"/>
+        <element name="Comment" positionX="-54" positionY="18" width="128" height="105"/>
+        <element name="Image" positionX="-27" positionY="81" width="128" height="90"/>
+        <element name="Item" positionX="-36" positionY="27" width="128" height="90"/>
+        <element name="Location" positionX="-18" positionY="36" width="128" height="180"/>
+        <element name="Place" positionX="0" positionY="45" width="128" height="135"/>
+        <element name="PlaceCategory" positionX="-27" positionY="81" width="128" height="75"/>
+        <element name="PlaceList" positionX="-18" positionY="90" width="128" height="75"/>
+        <element name="Rating" positionX="-27" positionY="81" width="128" height="135"/>
+    </elements>
+</model>

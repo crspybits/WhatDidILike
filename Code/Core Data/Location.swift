@@ -14,8 +14,11 @@ import SMCoreLib
 public class Location: BaseObject, ImagesManagedObject {
     static let NAME_KEY = "place.name"
     static let DISTANCE_KEY = "internalDistance"
+    static let RATING_KEY = "internalRating"
+    static let TRY_AGAIN_KEY = "internalGoBack"
 
     // I'm not using `internalDistance` directly just to emphasize that this is a little different. It's for the UI so we can order locations by distance.
+    // Unit is meters.
     var sortingDistance:Float {
         set {
             internalDistance = newValue
@@ -32,6 +35,17 @@ public class Location: BaseObject, ImagesManagedObject {
         }
         else {
             sortingDistance = Float.greatestFiniteMagnitude
+        }
+    }
+    
+    // I'm not using `internalRating` directly just to emphasize that this is a little different. It's for the UI so we can order locations by a measure of rating.
+    var sortingRating:Float {
+        set {
+            internalRating = newValue
+        }
+        
+        get {
+            return internalRating
         }
     }
     
@@ -66,25 +80,59 @@ public class Location: BaseObject, ImagesManagedObject {
         return newLocation
     }
     
-    class func fetchRequestForAllObjects(sortingOrder: OrderFilter.OrderFilterType) -> NSFetchRequest<NSFetchRequestResult>? {
+    struct SortFilterParams {
+        let sortingOrder: Parameters.SortOrder
+        let isAscending: Bool
+        let tryAgainFilter: Parameters.TryAgainFilter
+        let distanceFilter: Parameters.DistanceFilter
+        let distanceInMiles: Int
+    }
+    
+    class func fetchRequestForAllObjects(sortFilter: SortFilterParams) -> NSFetchRequest<NSFetchRequestResult>? {
         var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
-        fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(withEntityName: self.entityName(), modifyingFetchRequestWith: nil)
+        fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(
+            withEntityName: self.entityName(), modifyingFetchRequestWith: { request in
+            
+            var subpredicates = [NSPredicate]()
+            
+            if sortFilter.distanceFilter == .use {
+                let amount = NSNumber(value: milesToMeters(miles: Float(sortFilter.distanceInMiles)))
+                subpredicates += [NSPredicate(format: "(%K <= %@)", DISTANCE_KEY, amount)]
+            }
+            
+            switch sortFilter.tryAgainFilter {
+            case .again:
+                subpredicates += [NSPredicate(format: "(%K == %@)", TRY_AGAIN_KEY, NSNumber(booleanLiteral: true))]
+                
+            case .notAgain:
+                subpredicates += [NSPredicate(format: "(%K == %@)", TRY_AGAIN_KEY,
+                    NSNumber(booleanLiteral: false))]
+
+            case .dontUse:
+                break
+            }
+            
+            if subpredicates.count > 0 {
+                let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
+                request.predicate = compoundPredicate
+            }
+        })
         
         var key: String
-        var ascending: Bool
         
-        switch sortingOrder {
-        case .distance(ascending: let ascend):
+        switch sortFilter.sortingOrder {
+        case .distance:
             key = DISTANCE_KEY
-            ascending = ascend
             
-        case .name(ascending: let ascend):
+        case .name:
             key = NAME_KEY
-            ascending = ascend
+            
+        case .rating:
+            key = RATING_KEY
         }
         
         if fetchRequest != nil {
-            let sortDescriptor = NSSortDescriptor(key: key, ascending: ascending)
+            let sortDescriptor = NSSortDescriptor(key: key, ascending: sortFilter.isAscending)
             fetchRequest!.sortDescriptors = [sortDescriptor]
         }
         
@@ -119,5 +167,9 @@ public class Location: BaseObject, ImagesManagedObject {
     
     static func metersToMiles(meters:Float) -> Float {
         return (meters/1000.0)*0.621371
+    }
+
+    static func milesToMeters(miles:Float) -> Float {
+        return miles/(0.000621371)
     }
 }
