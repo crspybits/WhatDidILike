@@ -17,7 +17,6 @@ class MainListVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var coreDataSource:CoreDataSource!
     let cellReuseId = "LocationTableViewCell"
-    private var showDetailsForIndexPath:IndexPath?
     private var indexPathOfNewPlace:IndexPath?
     private var examplePlaceView = MainListPlaceView.create()!
     
@@ -92,7 +91,6 @@ class MainListVC: UIViewController {
                 placeVC.location = location
                 placeVC.newPlace = true
                 placeVC.delegate = self
-                self.showDetailsForIndexPath = self.indexPathOfNewPlace
                 self.navigationController!.pushViewController(placeVC, animated: true)
                 self.indexPathOfNewPlace = nil
             }
@@ -103,11 +101,10 @@ class MainListVC: UIViewController {
         super.viewWillAppear(animated)
         coreDataSource.fetchData()
         
-        if let showDetailsForIndexPath = showDetailsForIndexPath {
-            // Just in case the displayed summary info (e.g., name) changed. This doesn't get updated automagically by Core Data since the name is accessed via a relation.
-            tableView.reloadRows(at: [showDetailsForIndexPath], with: .automatic)
-            self.showDetailsForIndexPath = nil
-        }
+        // In case the displayed summary info (e.g., name) changed. This doesn't get updated automagically by Core Data since the name is accessed via a relation.
+        // And in case a new location was added.
+        // It's hard to know which index path to reload, so this method seems best.
+        tableView.reloadSections(IndexSet([0]), with: .automatic)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -164,7 +161,6 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
         placeVC.delegate = self
         let location = self.coreDataSource.object(at: indexPath) as! Location
         placeVC.location = location
-        showDetailsForIndexPath = indexPath
         navigationController!.pushViewController(placeVC, animated: true)
     }
 
