@@ -90,6 +90,7 @@
 		83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5337B1F5D09E70028E6B5 /* ItemNameView.swift */; };
 		83EE7DCE1F5D164B00628CA8 /* ItemNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B5337A1F5D09E70028E6B5 /* ItemNameView.xib */; };
 		83EE7DD21F5DB9F300628CA8 /* PlaceVCCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83EE7DD01F5DB9F300628CA8 /* PlaceVCCell.xib */; };
+		83FC6420206229490070A7FA /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 83FC641F206229490070A7FA /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -199,6 +200,7 @@
 		83D752CB1F93D9BE00EF4E5D /* GPS+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "GPS+Extras.swift"; path = "Features/Place/GPS+Extras.swift"; sourceTree = "<group>"; };
 		83DD5FC51F89ADAC00B23331 /* ShowHideState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ShowHideState.swift; path = Features/Place/ShowHideState.swift; sourceTree = "<group>"; };
 		83EE7DD01F5DB9F300628CA8 /* PlaceVCCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlaceVCCell.xib; path = Features/Place/PlaceVCCell.xib; sourceTree = "<group>"; };
+		83FC641F206229490070A7FA /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		C19DC61269D8F3C48ED7774F /* Pods-WhatDidILike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatDidILike.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WhatDidILike/Pods-WhatDidILike.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -420,6 +422,7 @@
 				83D49CD71F4AC2AA00409B0F /* Assets.xcassets */,
 				83D49CD81F4AC2AA00409B0F /* Info.plist */,
 				830CCC7D1F83276A003668B7 /* rotatingEarth.gif */,
+				83FC641F206229490070A7FA /* Settings.bundle */,
 			);
 			path = Resources;
 			sourceTree = SOURCE_ROOT;
@@ -483,6 +486,7 @@
 				835F44031F4ACB5400A7748B /* ShellScript */,
 				BDB74FE3E4CA6835DE3F50C3 /* [CP] Embed Pods Frameworks */,
 				DD1CBE2C2A3E662BF8309859 /* [CP] Copy Pods Resources */,
+				83FC6421206229820070A7FA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -573,6 +577,7 @@
 				8317E8F41F8731DD004C53BB /* NewObject.xib in Resources */,
 				83A597C61F67A24100736DE2 /* ListManager.xib in Resources */,
 				83D49CD31F4AC26A00409B0F /* LaunchScreen.storyboard in Resources */,
+				83FC6420206229490070A7FA /* Settings.bundle in Resources */,
 				83D49CD91F4AC2AA00409B0F /* Assets.xcassets in Resources */,
 				83A2D5E71F5CE1310003C5F9 /* PlaceNameView.xib in Resources */,
 				835F44011F4AC75200A7748B /* Main.storyboard in Resources */,
@@ -606,6 +611,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" 237a6efa41c3712c4dc41003288df88ae5178ace be4decc6d7607c046cfeb875f6566953c885689481a0b1517f8ebe420708cc08";
+		};
+		83FC6421206229820070A7FA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/Tools/LicenseGenerator-iOS/credits.py\" -s \"$SRCROOT\" -o \"$SRCROOT/Resources/Settings.bundle/Acknowledgements.plist\" -e \"$SRCROOT/Tools/LicenseGenerator-iOS/Example,$SRCROOT/Tools/LicenseGenerator-iOS/Tests,$SRCROOT/Pods/SMCoreLib/LICENSE.txt,$SRCROOT/LICENSE\"";
 		};
 		BDB74FE3E4CA6835DE3F50C3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
