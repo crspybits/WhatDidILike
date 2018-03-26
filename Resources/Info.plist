@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>2.0</string>
 	<key>CFBundleVersion</key>
-	<string>201803111552</string>
+	<string>201803250751</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -50,8 +50,6 @@
 	<string>This app requires access to the photo library to let you add a photo.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app requires access to the photo library.</string>
-	<key>UIFileSharingEnabled</key>
-	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
