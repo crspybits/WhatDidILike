@@ -359,7 +359,7 @@ extension LocationView : LatLongDelegate {
     
     func finishedAttemptingToObtainCoordinates() {
         delegate?.stoppedUsingGPS(self)
-        Log.msg("finishedAttemptingToObtainCoordinates: ll: \(ll)")
+        Log.msg("finishedAttemptingToObtainCoordinates: ll: \(String(describing: ll))")
         if ll.coords == nil {
             // We could not obtain coords; change the gpsLocation to `previous`
             // to indicate to the user that we failed getting coords.

@@ -21,8 +21,11 @@ target 'WhatDidILike' do
 	# pod 'TTGEmojiRate', :path => '../TTGEmojiRate'
 
 	# Labeled switch
-	pod 'DGRunkeeperSwitch', '~> 1.1'
-	
+	# pod 'DGRunkeeperSwitch', '~> 1.1'
+	# 3/6/20: Original repo is Swift 3 and won't build with current Xcode
+	pod 'DGRunkeeperSwitch', :path => '../DGRunkeeperSwitch'
+	# pod 'DGRunkeeperSwitch', :git => 'https://github.com/aakpro/DGRunkeeperSwitch.git'
+
 	pod 'ImageSlideshow', :git => 'https://github.com/crspybits/ImageSlideshow.git'
 	# pod 'ImageSlideshow', '~> 1.4'
 	# pod 'ImageSlideshow', :path => '../ImageSlideshow'
@@ -48,16 +51,7 @@ target 'WhatDidILike' do
 			if swift4Flag.include? target.name
 				target.build_configurations.each do |config|
 					config.build_settings['OTHER_SWIFT_FLAGS'] = '-DSWIFT4'
-				end
-			end
-		end
-		
-		swiftVersion3_2 = ['DGRunkeeperSwitch']
-		
-		installer.pods_project.targets.each do |target|
-			if swiftVersion3_2.include? target.name
-				target.build_configurations.each do |config|
-					config.build_settings['SWIFT_VERSION'] = '3.2'
+					config.build_settings['SWIFT_VERSION'] = '4.0'
 				end
 			end
 		end

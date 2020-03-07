@@ -81,27 +81,22 @@
     // Some of code from http://www.techotopia.com/index.php/Integrating_Maps_into_iPhone_iOS_6_Applications_using_MKMapItem#An_Introduction_to_Forward_and_Reverse_Geocoding
     [mapAddressToCoordinates geocodeAddressString: /* @"855 W Dillon Rd, Louisville, Co" */ address
             completionHandler:^(NSArray *placemarks, NSError *error) {
-                // indicate that this request is done.
-                mapAddressToCoordinates = nil;
-                
-                if (! addressLookupFailed) {
-                    exitMethod();
+                if (! self->addressLookupFailed) {
+                    self->exitMethod();
                 }
                 
                 [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(failAdressLookup:) object:nil];
                 
-                if ((!addressLookupFailed) && (error)) {
+                if ((!self->addressLookupFailed) && (error)) {
                     NSLog(@"Preferences.lookupAddress: Geocode failed with error: %@", error);
                     [self showAlertWithMessage:@"Error looking up address"];
                     
                     [self.delegate failureLookingupAddress];
-                    return;
                 }
-                
-                if (addressLookupFailed) return;
-                
-                if (placemarks && placemarks.count > 0)
-                {
+                else if (self->addressLookupFailed) {
+                    // Just return
+                }
+                else if (placemarks && placemarks.count > 0) {
                     CLPlacemark *placemark = placemarks[0];
                     CLLocation *location = placemark.location;
                     CLLocationCoordinate2D coords = location.coordinate;
@@ -115,6 +110,9 @@
                     [self showAlertWithMessage:@"Error looking up address"];
                     [self.delegate failureLookingupAddress];
                 }
+                
+                // indicate that this request is done.
+                self->mapAddressToCoordinates = nil;
             }
      ];
 }

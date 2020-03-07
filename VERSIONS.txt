@@ -1,0 +1,4 @@
+WhatDidILike v2
+
+Version 2.1
+	* Update DGRunkeeperSwitch for Swift 5

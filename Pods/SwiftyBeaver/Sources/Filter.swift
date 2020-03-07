@@ -16,8 +16,7 @@ import Foundation
 ///
 /// A filter must contain a target, which identifies what it filters against
 /// A filter can be required meaning that all required filters against a specific
-/// target must pass in order for the message to be logged. At least one non-required
-/// filter must pass in order for the message to be logged
+/// target must pass in order for the message to be logged.
 public protocol FilterType : class {
     func apply(_ value: Any) -> Bool
     func getTarget() -> Filter.TargetType
@@ -47,6 +46,7 @@ public class Filter {
         case Excludes([String], Bool)
         case EndsWith([String], Bool)
         case Equals([String], Bool)
+        case Custom((String) -> Bool)
     }
 
     let targetType: Filter.TargetType
@@ -145,6 +145,8 @@ public class CompareFilter: Filter, FilterType {
                 return caseSensitive ? value == string :
                     value.lowercased() == string.lowercased()
                 }.isEmpty
+        case let .Custom(predicate):
+            matches = predicate(value)
         }
 
         return matches
@@ -154,7 +156,7 @@ public class CompareFilter: Filter, FilterType {
         guard let filterComparisonType = self.filterComparisonType else { return false }
 
         switch filterComparisonType {
-        case .Excludes(_, _):
+        case .Excludes:
             return true
         default:
             return false
@@ -188,6 +190,10 @@ public class FunctionFilterFactory {
                               required: Bool = false, minLevel: SwiftyBeaver.Level = .verbose) -> FilterType {
         return CompareFilter(.Function(.Equals(strings, caseSensitive)), required: required, minLevel: minLevel)
     }
+
+    public static func custom(required: Bool = false, minLevel: SwiftyBeaver.Level = .verbose, filterPredicate: @escaping (String) -> Bool) -> FilterType {
+        return CompareFilter(.Function(.Custom(filterPredicate)), required: required, minLevel: minLevel)
+    }
 }
 
 // Syntactic sugar for creating a message comparison filter
@@ -215,6 +221,10 @@ public class MessageFilterFactory {
     public static func equals(_ strings: String..., caseSensitive: Bool = false,
                               required: Bool = false, minLevel: SwiftyBeaver.Level = .verbose) -> FilterType {
         return CompareFilter(.Message(.Equals(strings, caseSensitive)), required: required, minLevel: minLevel)
+    }
+
+    public static func custom(required: Bool = false, minLevel: SwiftyBeaver.Level = .verbose, filterPredicate: @escaping (String) -> Bool) -> FilterType {
+        return CompareFilter(.Message(.Custom(filterPredicate)), required: required, minLevel: minLevel)
     }
 }
 
@@ -244,9 +254,13 @@ public class PathFilterFactory {
                               required: Bool = false, minLevel: SwiftyBeaver.Level = .verbose) -> FilterType {
         return CompareFilter(.Path(.Equals(strings, caseSensitive)), required: required, minLevel: minLevel)
     }
+
+    public static func custom(required: Bool = false, minLevel: SwiftyBeaver.Level = .verbose, filterPredicate: @escaping (String) -> Bool) -> FilterType {
+        return CompareFilter(.Path(.Custom(filterPredicate)), required: required, minLevel: minLevel)
+    }
 }
 
-extension Filter.TargetType : Equatable {
+extension Filter.TargetType: Equatable {
 }
 
 // The == does not compare associated values for each enum. Instead == evaluates to true
@@ -254,13 +268,13 @@ extension Filter.TargetType : Equatable {
 public func == (lhs: Filter.TargetType, rhs: Filter.TargetType) -> Bool {
     switch (lhs, rhs) {
 
-    case (.Path(_), .Path(_)):
+    case (.Path, .Path):
         return true
 
-    case (.Function(_), .Function(_)):
+    case (.Function, .Function):
         return true
 
-    case (.Message(_), .Message(_)):
+    case (.Message, .Message):
         return true
 
     default:

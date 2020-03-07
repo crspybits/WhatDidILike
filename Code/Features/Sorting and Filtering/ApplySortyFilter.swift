@@ -226,7 +226,7 @@ extension ApplySortyFilter : LatLongDelegate {
     func haveReasonablyAccurateCoordinates() {
         delegate?.sortyFilter(stopUsingLocationServices: self)
         
-        Log.msg("haveReasonablyAccurateCoordinates: ll: \(ll)")
+        Log.msg("haveReasonablyAccurateCoordinates: ll: \(String(describing: ll))")
         if ll.coords == nil {
             ll.stop()
             Alert.show(withTitle: "Could not obtain your current location.", message: "Are location services turned off?")
