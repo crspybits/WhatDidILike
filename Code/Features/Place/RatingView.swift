@@ -178,6 +178,8 @@ class RatingView: UIView, XibBasics {
         }
         
         enable(false)
+        
+        lockButton.tintColor = UIColor.locked
     }
     
     @discardableResult

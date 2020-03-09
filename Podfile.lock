@@ -7,9 +7,9 @@ PODS:
   - Fabric (1.10.2)
   - FLAnimatedImage (1.0.12)
   - HPTextViewTapGestureRecognizer (0.2.2)
-  - ImageSlideshow (1.4.1):
-    - ImageSlideshow/Core (= 1.4.1)
-  - ImageSlideshow/Core (1.4.1)
+  - ImageSlideshow (1.8.3):
+    - ImageSlideshow/Core (= 1.8.3)
+  - ImageSlideshow/Core (1.8.3)
   - M13ProgressSuite (1.2.9)
   - Presentr (1.9)
   - Reachability (3.2)
@@ -57,7 +57,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   ImageSlideshow:
-    :commit: 14330a7fa922d10681c3fe12f312f3aed753eba5
+    :commit: 582cdeb928d08656bcfe820906b3315c1f6dbd86
     :git: https://github.com/crspybits/ImageSlideshow.git
 
 SPEC CHECKSUMS:
@@ -68,7 +68,7 @@ SPEC CHECKSUMS:
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   HPTextViewTapGestureRecognizer: 8b0c0edc2b40e619ec644db11c648b7b567e1789
-  ImageSlideshow: 93ea6afb3b040de46057861f30de2387c330dc8d
+  ImageSlideshow: 3c51006b72b23aade1363a71941ea7fea6613b11
   M13ProgressSuite: ea9f7263e73e9215e6849dfa54e29ee0ad6a145c
   Presentr: 7078d7eb5d1661ebeaae60c9e42a1e534de1b993
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96

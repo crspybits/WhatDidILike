@@ -71,7 +71,7 @@ open class ZoomAnimatedTransitioningDelegate: NSObject, UIViewControllerTransiti
             return
         }
 
-        let percent = min(max(fabs(gesture.translation(in: gesture.view!).y) / 200.0, 0.0), 1.0)
+        let percent = min(max(abs(gesture.translation(in: gesture.view!).y) / 200.0, 0.0), 1.0)
 
         if gesture.state == .began {
             interactionController = UIPercentDrivenInteractiveTransition()
@@ -79,10 +79,9 @@ open class ZoomAnimatedTransitioningDelegate: NSObject, UIViewControllerTransiti
         } else if gesture.state == .changed {
             interactionController?.update(percent)
         } else if gesture.state == .ended || gesture.state == .cancelled || gesture.state == .failed {
-
             let velocity = gesture.velocity(in: referenceSlideshowView)
 
-            if fabs(velocity.y) > 500 {
+            if abs(velocity.y) > 500 {
                 if let pageSelected = referenceSlideshowController.pageSelected {
                     pageSelected(referenceSlideshowController.slideshow.currentPage)
                 }
@@ -94,7 +93,6 @@ open class ZoomAnimatedTransitioningDelegate: NSObject, UIViewControllerTransiti
                 }
 
                 interactionController?.finish()
-
             } else {
                 interactionController?.cancel()
             }
@@ -134,7 +132,7 @@ open class ZoomAnimatedTransitioningDelegate: NSObject, UIViewControllerTransiti
 
 extension ZoomAnimatedTransitioningDelegate: UIGestureRecognizerDelegate {
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard let _ = gestureRecognizer as? UIPanGestureRecognizer else {
+        guard let gestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer else {
             return false
         }
 
@@ -144,6 +142,11 @@ extension ZoomAnimatedTransitioningDelegate: UIGestureRecognizerDelegate {
 
         if let currentItem = referenceSlideshowController?.slideshow.currentSlideshowItem, currentItem.isZoomed() {
             return false
+        }
+
+        if let view = gestureRecognizer.view {
+            let velocity = gestureRecognizer.velocity(in: view)
+            return abs(velocity.x) < abs(velocity.y)
         }
 
         return true
@@ -172,9 +175,7 @@ class ZoomAnimator: NSObject {
 }
 
 @objcMembers
-class ZoomInAnimator: ZoomAnimator { }
-
-extension ZoomInAnimator: UIViewControllerAnimatedTransitioning {
+class ZoomInAnimator: ZoomAnimator, UIViewControllerAnimatedTransitioning {
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5
@@ -196,8 +197,14 @@ extension ZoomInAnimator: UIViewControllerAnimatedTransitioning {
         let transitionBackgroundView = UIView(frame: containerView.frame)
         transitionBackgroundView.backgroundColor = toViewController.backgroundColor
         containerView.addSubview(transitionBackgroundView)
-        containerView.sendSubview(toBack: transitionBackgroundView)
 
+        #if swift(>=4.2)
+        containerView.sendSubviewToBack(transitionBackgroundView)
+        #else
+        containerView.sendSubview(toBack: transitionBackgroundView)
+        #endif
+
+        
         let finalFrame = toViewController.view.frame
 
         var transitionView: UIImageView?
@@ -227,9 +234,9 @@ extension ZoomInAnimator: UIViewControllerAnimatedTransitioning {
             fromViewController.view.alpha = 0
             transitionView?.frame = transitionViewFinalFrame
             transitionView?.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
-        }, completion: {(_) in
+        }, completion: {[ref = self.referenceImageView] _ in
             fromViewController.view.alpha = 1
-            self.referenceImageView?.alpha = 1
+            ref?.alpha = 1
             transitionView?.removeFromSuperview()
             transitionBackgroundView.removeFromSuperview()
             containerView.addSubview(toViewController.view)
@@ -238,19 +245,35 @@ extension ZoomInAnimator: UIViewControllerAnimatedTransitioning {
     }
 }
 
-class ZoomOutAnimator: ZoomAnimator { }
+class ZoomOutAnimator: ZoomAnimator, UIViewControllerAnimatedTransitioning {
 
-extension ZoomOutAnimator: UIViewControllerAnimatedTransitioning {
+    private var animatorForCurrentTransition: UIViewImplicitlyAnimating?
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.25
     }
 
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    @available(iOS 10.0, *)
+    func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
+        // as per documentation, the same object should be returned for the ongoing transition
+        if let animatorForCurrentSession = animatorForCurrentTransition {
+            return animatorForCurrentSession
+        }
+        
+        let params = animationParams(using: transitionContext)
+
+        let animator = UIViewPropertyAnimator(duration: params.0, curve: .linear, animations: params.1)
+        animator.addCompletion(params.2)
+        animatorForCurrentTransition = animator
+
+        return animator
+    }
+
+    private func animationParams(using transitionContext: UIViewControllerContextTransitioning) -> (TimeInterval, () -> (), (Any) -> ()) {
         let toViewController: UIViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
 
         guard let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as? FullScreenSlideshowViewController else {
-            return
+            fatalError("Transition not used with FullScreenSlideshowViewController")
         }
 
         let containerView = transitionContext.containerView
@@ -258,8 +281,11 @@ extension ZoomOutAnimator: UIViewControllerAnimatedTransitioning {
         toViewController.view.frame = transitionContext.finalFrame(for: toViewController)
         toViewController.view.alpha = 0
         containerView.addSubview(toViewController.view)
+        #if swift(>=4.2)
+        containerView.sendSubviewToBack(toViewController.view)
+        #else
         containerView.sendSubview(toBack: toViewController.view)
-
+        #endif
         var transitionViewInitialFrame: CGRect
         if let currentSlideshowItem = fromViewController.slideshow.currentSlideshowItem {
             if let image = currentSlideshowItem.imageView.image {
@@ -295,7 +321,11 @@ extension ZoomOutAnimator: UIViewControllerAnimatedTransitioning {
         let transitionBackgroundView = UIView(frame: containerView.frame)
         transitionBackgroundView.backgroundColor = fromViewController.backgroundColor
         containerView.addSubview(transitionBackgroundView)
+        #if swift(>=4.2)
+        containerView.sendSubviewToBack(transitionBackgroundView)
+        #else
         containerView.sendSubview(toBack: transitionBackgroundView)
+        #endif
 
         let transitionView: UIImageView = UIImageView(image: fromViewController.slideshow.currentSlideshowItem?.imageView.image)
         transitionView.contentMode = UIViewContentMode.scaleAspectFill
@@ -325,14 +355,21 @@ extension ZoomOutAnimator: UIViewControllerAnimatedTransitioning {
             transitionView.removeFromSuperview()
             transitionBackgroundView.removeFromSuperview()
 
+            self.animatorForCurrentTransition = nil
+
             transitionContext.completeTransition(completed)
         }
 
-        // Working around iOS 10 bug in UIView.animate causing a glitch in interrupted interactive transition 
+        return (duration, animations, completion)
+    }
+
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        // Working around iOS 10+ breaking change requiring to use UIPropertyAnimator for proper interactive transition instead of UIView.animate
         if #available(iOS 10.0, *) {
-            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: duration, delay: 0, options: UIViewAnimationOptions(), animations: animations, completion: completion)
+            interruptibleAnimator(using: transitionContext).startAnimation()
         } else {
-            UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions(), animations: animations, completion: completion)
+            let params = animationParams(using: transitionContext)
+            UIView.animate(withDuration: params.0, delay: 0, options: UIViewAnimationOptions(), animations: params.1, completion: params.2)
         }
     }
 }

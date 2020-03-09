@@ -283,10 +283,9 @@ class PlaceVC: UIViewController {
         locationHeader.setup(withLocation: location)
         
         if markLocation {
-            let layer = locationHeader.layer
-            layer.borderColor = UIColor.lightGray.cgColor
-            layer.borderWidth = 2.0
-            layer.cornerRadius = 8.0
+            // This is the "active" location for the place. Mark it differently.
+            // Using a textBox format because I want the active location to look like a text box.
+            Layout.format(textBox: locationHeader)
         }
         rowViews.insert(RowView(contents: locationHeader), at: index)
 

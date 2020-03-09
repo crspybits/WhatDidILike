@@ -41,6 +41,10 @@ class LocationHeader : UIView, XibBasics {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        openClosed.image = openClosed.image?.withRenderingMode(.alwaysTemplate)
+        openClosed.tintColor = UIColor.openClosed
+        
+        backgroundColor = .locationHeaderBackground
     }
     
     func setup(withLocation location: Location) {

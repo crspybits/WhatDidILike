@@ -13,26 +13,33 @@ import DGRunkeeperSwitch
 class Layout {
     static func format(textBox: UIView) {
         let layer = textBox.layer
-        layer.borderColor = UIColor.textBoxLightGray.cgColor
+        layer.borderColor = UIColor.textBoxBorder.cgColor
         layer.borderWidth = 1.0
         layer.cornerRadius = 5.0
-        textBox.backgroundColor = UIColor(white: 0.85, alpha: 1.0)
+        textBox.backgroundColor = UIColor.textBoxBackground
     }
     
     static func format(comment: UIView) {
         let layer = comment.layer
         layer.borderColor = UIColor.gray.cgColor
-        layer.borderWidth = 0.5
+        layer.borderWidth = 1
         layer.cornerRadius = 20.0
-        comment.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+        comment.backgroundColor = UIColor.locationBackground
     }
     
     static func format(location: UIView) {
         let layer = location.layer
         layer.borderColor = UIColor.gray.cgColor
-        layer.borderWidth = 0.5
+        layer.borderWidth = 1
         layer.cornerRadius = 20.0
-        location.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+        location.backgroundColor = UIColor.locationBackground
+    }
+    
+    static func format(modal: UIView) {
+        let layer = modal.layer
+        layer.borderColor = UIColor.gray.cgColor
+        layer.borderWidth = 1
+        modal.backgroundColor = UIColor.modalBackground
     }
     
     static func format(`switch`: DGRunkeeperSwitch, usingSize size: CGSize) {

@@ -56,7 +56,7 @@ class SegmentedControl: UIView {
         frameHeight = height
         frameWidth = currX
         
-        layer.borderColor = UIColor.gray.cgColor
+        layer.borderColor = UIColor.segmentedControlBorder.cgColor
         layer.borderWidth = 0.5
         layer.cornerRadius = 5.0
     }

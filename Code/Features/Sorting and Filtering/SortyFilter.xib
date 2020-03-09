@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,10 +14,13 @@
                 <outlet property="distance" destination="06K-Fy-QBQ" id="jWv-GL-FvS"/>
                 <outlet property="distanceButton" destination="E6z-kP-IbI" id="YqJ-lb-XN0"/>
                 <outlet property="distanceSlider" destination="9dM-Vx-Rr6" id="nG9-VR-hIb"/>
+                <outlet property="distanceView" destination="zZE-Ij-67V" id="PFw-HI-YMy"/>
                 <outlet property="locationControl" destination="acs-Gj-KER" id="aOv-bq-tWu"/>
+                <outlet property="navBar" destination="45S-bU-Lf8" id="fJe-MZ-qM6"/>
                 <outlet property="navItem" destination="rE4-LI-YMi" id="9IL-lo-LMr"/>
                 <outlet property="sortingControls" destination="yBH-HM-v2q" id="ogV-4O-er2"/>
                 <outlet property="tryAgainButton" destination="Ykt-mV-gM7" id="aPe-7y-PjE"/>
+                <outlet property="tryAgainView" destination="1Oy-kU-QKf" id="6eT-Ki-Yuf"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ZXk-mb-l0t"/>
             </connections>
         </placeholder>
@@ -44,14 +45,14 @@
                     <rect key="frame" x="20" y="114" width="382" height="90"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mwI-uF-4WB" userLabel="Address" customClass="TextView" customModule="WhatDidILike" customModuleProvider="target">
-                            <rect key="frame" x="232" y="19" width="150" height="71"/>
+                            <rect key="frame" x="232" y="19.5" width="150" height="70.5"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="150" id="lnz-tp-0B5"/>
                             </constraints>
                         </view>
                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="acs-Gj-KER">
-                            <rect key="frame" x="0.0" y="25.5" width="129" height="29"/>
+                            <rect key="frame" x="0.0" y="25.5" width="139" height="32"/>
                             <segments>
                                 <segment title="Me"/>
                                 <segment title="Address"/>
@@ -73,7 +74,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="acs-Gj-KER" firstAttribute="leading" secondItem="gEo-PU-fuc" secondAttribute="leading" id="2Ig-nF-VpG"/>
                         <constraint firstItem="TOe-Cd-Rro" firstAttribute="leading" secondItem="gEo-PU-fuc" secondAttribute="leading" id="Gcp-IQ-otg"/>
@@ -175,7 +176,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="9dM-Vx-Rr6" firstAttribute="top" secondItem="06K-Fy-QBQ" secondAttribute="bottom" id="Amt-v4-3II"/>
                                         <constraint firstItem="9dM-Vx-Rr6" firstAttribute="leading" secondItem="DKK-Dc-p5m" secondAttribute="leading" id="Dk9-zn-yCT"/>
@@ -187,7 +188,7 @@
                                     </constraints>
                                 </view>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="DKK-Dc-p5m" secondAttribute="trailing" constant="15" id="DDd-OV-eO6"/>
                                 <constraint firstItem="DKK-Dc-p5m" firstAttribute="leading" secondItem="zZE-Ij-67V" secondAttribute="trailing" constant="20" id="JbL-vM-exM"/>
@@ -203,7 +204,7 @@
                     </subviews>
                 </stackView>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="yBH-HM-v2q" secondAttribute="trailing" constant="20" id="22Y-wH-Qot"/>
                 <constraint firstItem="o9h-GU-nb3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3Yj-Su-5Kq"/>

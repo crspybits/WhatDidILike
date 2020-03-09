@@ -74,6 +74,9 @@ class SortControl: UIView, XibBasics {
         super.awakeFromNib()
         currState = .ascending
         icon.image = #imageLiteral(resourceName: "up")
+        
+        icon.image = icon.image?.withRenderingMode(.alwaysTemplate)
+        icon.tintColor = UIColor.upDown
     }
         
     func setup(withName name: String) {

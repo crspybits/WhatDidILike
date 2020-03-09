@@ -19,7 +19,7 @@ open class FullScreenSlideshowViewController: UIViewController {
         let slideshow = ImageSlideshow()
         slideshow.zoomEnabled = true
         slideshow.contentScaleMode = UIViewContentMode.scaleAspectFit
-        slideshow.pageControlPosition = PageControlPosition.insideScrollView
+        slideshow.pageIndicatorPosition = PageIndicatorPosition(horizontal: .center, vertical: .bottom)
         // turns off the timer
         slideshow.slideshowInterval = 0
         slideshow.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
@@ -29,6 +29,9 @@ open class FullScreenSlideshowViewController: UIViewController {
 
     /// Close button 
     open var closeButton = UIButton()
+
+    /// Close button frame
+    open var closeButtonFrame: CGRect?
 
     /// Closure called on page selection
     open var pageSelected: ((_ page: Int) -> Void)?
@@ -60,7 +63,17 @@ open class FullScreenSlideshowViewController: UIViewController {
     
     fileprivate let yPadding:CGFloat = 20
     fileprivate let xPadding:CGFloat = 10
-    
+
+    convenience init() {
+        self.init(nibName:nil, bundle:nil)
+
+        if #available(iOS 13.0, *) {
+            self.modalPresentationStyle = .fullScreen
+            // Use KVC to set the value to preserve backwards compatiblity with Xcode < 11
+            self.setValue(true, forKey: "modalInPresentation")
+        }
+    }
+
     override open func viewDidLoad() {
         super.viewDidLoad()
 
@@ -75,7 +88,7 @@ open class FullScreenSlideshowViewController: UIViewController {
 
         // close button configuration
         closeButton.frame = CGRect(x: xPadding, y: yPadding, width: 40, height: 40)
-        closeButton.setImage(UIImage(named: "Frameworks/ImageSlideshow.framework/ImageSlideshow.bundle/ic_cross_white@2x"), for: UIControlState())
+        closeButton.setImage(UIImage(named: "ic_cross_white", in: Bundle(for: type(of: self)), compatibleWith: nil), for: UIControlState())
         closeButton.addTarget(self, action: #selector(FullScreenSlideshowViewController.close), for: UIControlEvents.touchUpInside)
         view.addSubview(closeButton)
         
@@ -163,7 +176,24 @@ open class FullScreenSlideshowViewController: UIViewController {
         }
     }
 
+    override open func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        slideshow.slideshowItems.forEach { $0.cancelPendingLoad() }
+    }
+
     open override func viewDidLayoutSubviews() {
+        if !isBeingDismissed {
+            let safeAreaInsets: UIEdgeInsets
+            if #available(iOS 11.0, *) {
+                safeAreaInsets = view.safeAreaInsets
+            } else {
+                safeAreaInsets = UIEdgeInsets.zero
+            }
+            
+            closeButton.frame = closeButtonFrame ?? CGRect(x: max(10, safeAreaInsets.left), y: max(10, safeAreaInsets.top), width: 40, height: 40)
+        }
+
         slideshow.frame = view.frame
         positionActionButton()
     }

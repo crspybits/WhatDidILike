@@ -33,7 +33,14 @@ class ListManager : SMModal {
     let cellReuseId = "CellReuseId"
     
     override func viewDidLoad() {
-        view.backgroundColor = UIColor.white
+        if let view = navigationController?.view {
+            Layout.format(modal: view)
+        }
+        
+        Layout.format(textBox: newListItem)
+        
+        tableView.backgroundColor = .tableViewBackground
+
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAction))
         navigationItem.leftBarButtonItem = doneButton
         
@@ -72,7 +79,7 @@ class ListManager : SMModal {
         listManager.delegate = delegate
         listManager.title = title
         listManager.show()
-        
+                
         return listManager
     }
     
@@ -139,6 +146,7 @@ extension ListManager : UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.text = delegate.listManager(self, itemForRow: UInt(indexPath.row))
         let selected = delegate.listManager(self, rowItemIsSelected: UInt(indexPath.row))
         cell.accessoryType = selected ? .checkmark : .none
+        cell.backgroundColor = .clear
         return cell
     }
     

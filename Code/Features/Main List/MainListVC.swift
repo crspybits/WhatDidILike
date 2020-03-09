@@ -227,7 +227,8 @@ extension MainListVC : CoreDataSourceDelegate {
 
 extension MainListVC : SortyFilterDelegate {
     func sortyFilter(reset: SortyFilter) {
-        coreDataSource = nil
+        coreDataSource = nil        
+        setupBarButtonItems()
     }
     
     func sortyFilter(sortFilterByParameters: SortyFilter) {

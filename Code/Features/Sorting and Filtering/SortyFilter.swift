@@ -11,9 +11,53 @@ import Presentr
 import DropDown
 import FLAnimatedImage
 
+// An explicit tap of the Cancel button will close the modal and discard any changes in the UI. Tapping "Apply" or dismissing by pressing outside of the window will apply any changes.
+
 protocol SortyFilterDelegate : class {
     func sortyFilter(reset: SortyFilter)
     func sortyFilter(sortFilterByParameters: SortyFilter)
+}
+
+private class SortyFilterState {
+    var sortingOrder: Parameters.SortOrder
+    var distanceAscending:Bool
+    var ratingAscending:Bool
+    var nameAscending:Bool
+    
+    var location: Parameters.Location
+    var address: String
+    
+    var tryAgainFilter:Parameters.TryAgainFilter
+    var distanceFilter:Parameters.DistanceFilter
+    var distance: Int
+    
+    init() {
+        sortingOrder = Parameters.sortingOrder
+        distanceAscending = Parameters.distanceAscending
+        ratingAscending = Parameters.ratingAscending
+        nameAscending = Parameters.nameAscending
+        
+        location = Parameters.location
+        address = Parameters.orderAddress
+        
+        tryAgainFilter = Parameters.tryAgainFilter
+        distanceFilter = Parameters.distanceFilter
+        distance = Parameters.distanceFilterAmount
+    }
+    
+    func save() {
+        Parameters.sortingOrder = sortingOrder
+        Parameters.distanceAscending = distanceAscending
+        Parameters.ratingAscending = ratingAscending
+        Parameters.nameAscending = nameAscending
+    
+        Parameters.location = location
+        Parameters.orderAddress = address
+    
+        Parameters.tryAgainFilter = tryAgainFilter
+        Parameters.distanceFilter = distanceFilter
+        Parameters.distanceFilterAmount = distance
+    }
 }
 
 class SortyFilter: UIViewController {
@@ -26,15 +70,21 @@ class SortyFilter: UIViewController {
     @IBOutlet weak var tryAgainButton: UIButton!
     let tryAgainDropdown = DropDown()
     let distanceDropdown = DropDown()
+    @IBOutlet weak var tryAgainView: UIView!
+    @IBOutlet weak var distanceView: UIView!
     @IBOutlet weak var distanceSlider: UISlider!
     @IBOutlet weak var distance: UILabel!
     let maxDistance:Float = 50
     private var spinner: Spinner!
     private var animatingEarthImageView:FLAnimatedImageView!
     @IBOutlet weak var navItem: UINavigationItem!
+    @IBOutlet weak var navBar: UINavigationBar!
     private var apply:ApplySortyFilter!
     var delegate:SortyFilterDelegate!
     
+    private var needToSave = true
+    private let state = SortyFilterState()
+
     static let modalHeight = ModalSize.custom(size: 402)
     static let modalWidth = ModalSize.full
     
@@ -67,7 +117,11 @@ class SortyFilter: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = .sortyFilterBackground
+        navBar.barTintColor = .sortyFilterBackground
+        
+        tryAgainView.backgroundColor = .dropDownBackground
+        distanceView.backgroundColor = .dropDownBackground
 
         let distance = SortControl.create()!
         distance.setup(withName: "Distance")
@@ -83,21 +137,21 @@ class SortyFilter: UIViewController {
         segmentedControl.delegate = self
         sortingControls.addSubview(segmentedControl)
         
-        address.save = { update in
+        address.save = {[unowned self] update in
             let spaces = CharacterSet.whitespacesAndNewlines
-            Parameters.orderAddress = update.trimmingCharacters(in: spaces)
+            self.state.address = update.trimmingCharacters(in: spaces)
         }
         
-        segmentedControl.select(componentIndex: UInt(Parameters.sortingOrder.rawValue))
-        distance.currState = Parameters.distanceAscending ? .ascending : .descending
-        rating.currState = Parameters.ratingAscending ? .ascending : .descending
-        name.currState = Parameters.nameAscending ? .ascending : .descending
-        address.text = Parameters.orderAddress
-        locationControl.selectedSegmentIndex = Parameters.location.rawValue
-        tryAgainButton.setTitle(Parameters.tryAgainFilter.rawValue, for: .normal)
-        distanceButton.setTitle(Parameters.distanceFilter.rawValue, for: .normal)
-        self.distance.text = formatMiles(Parameters.distanceFilterAmount)
-        distanceSlider.value = Float(Parameters.distanceFilterAmount)/maxDistance
+        segmentedControl.select(componentIndex: UInt(state.sortingOrder.rawValue))
+        distance.currState = state.distanceAscending ? .ascending : .descending
+        rating.currState = state.ratingAscending ? .ascending : .descending
+        name.currState = state.nameAscending ? .ascending : .descending
+        address.text = state.address
+        locationControl.selectedSegmentIndex = state.location.rawValue
+        tryAgainButton.setTitle(state.tryAgainFilter.rawValue, for: .normal)
+        distanceButton.setTitle(state.distanceFilter.rawValue, for: .normal)
+        self.distance.text = formatMiles(state.distance)
+        distanceSlider.value = Float(state.distance)/maxDistance
         
         setupDropdowns()
         
@@ -123,6 +177,15 @@ class SortyFilter: UIViewController {
         spinner = Spinner(superview: view)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if needToSave {
+            state.save()
+            apply.apply()
+        }
+    }
+    
     private func formatMiles(_ miles: Int) -> String {
         return "\(miles) miles"
     }
@@ -135,7 +198,7 @@ class SortyFilter: UIViewController {
         tryAgainDropdown.selectionAction = { [weak self] (index, item) in
             self?.tryAgainButton.setTitle(item, for: .normal)
             if let result = Parameters.TryAgainFilter(rawValue: item) {
-                Parameters.tryAgainFilter = result
+                self?.state.tryAgainFilter = result
             }
             self?.tryAgainDropdown.hide()
         }
@@ -149,7 +212,7 @@ class SortyFilter: UIViewController {
         distanceDropdown.selectionAction = { [weak self] (index, item) in
             self?.distanceButton.setTitle(item, for: .normal)
             if let result = Parameters.DistanceFilter(rawValue: item) {
-                Parameters.distanceFilter = result
+                self?.state.distanceFilter = result
             }
             self?.distanceDropdown.hide()
         }
@@ -167,21 +230,24 @@ class SortyFilter: UIViewController {
     
     @IBAction func locationControlAction(_ sender: Any) {
         if let result = Parameters.Location(rawValue: locationControl.selectedSegmentIndex) {
-            Parameters.location = result
+            state.location = result
         }
     }
     
     @IBAction func distanceSliderAction(_ sender: Any) {
         let d = Int(distanceSlider.value * maxDistance)
-        Parameters.distanceFilterAmount = d
+        state.distance = d
         distance.text = formatMiles(d)
     }
     
     @IBAction func cancelAction(_ sender: Any) {
+        needToSave = false
         dismiss(animated: true, completion: nil)
     }
-
+    
     @IBAction func applyAction(_ sender: Any) {
+        needToSave = false // don't also save in viewWillDisappear
+        state.save()
         apply.apply()
     }
     
@@ -200,27 +266,29 @@ extension SortyFilter : SegmentedControlDelegate {
         
         let ascending = sortControl.currState == .ascending
         
-        Parameters.sortingOrder = sortOrder
+        state.sortingOrder = sortOrder
         
         switch sortOrder {
         case .distance:
-            Parameters.distanceAscending = ascending
+            state.distanceAscending = ascending
 
         case .rating:
-            Parameters.ratingAscending = ascending
+            state.ratingAscending = ascending
 
         case .name:
-            Parameters.nameAscending = ascending
+            state.nameAscending = ascending
         }
     }
 }
 
 extension SortyFilter : ApplySortyFilterDelegate {
     func sortyFilter(reset: ApplySortyFilter) {
+        print("reset: delegate: \(String(describing: delegate))")
         delegate?.sortyFilter(reset: self)
     }
 
     func sortyFilter(sortFilterByParameters: ApplySortyFilter) {
+        print("sortFilterByParameters: delegate: \(String(describing: delegate))")
         delegate?.sortyFilter(sortFilterByParameters: self)
         dismiss(animated: true, completion: nil)
     }

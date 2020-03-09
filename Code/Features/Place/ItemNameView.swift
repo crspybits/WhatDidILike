@@ -53,6 +53,9 @@ class ItemNameView: UIView, XibBasics {
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction))
         gesture.direction = .left
         addGestureRecognizer(gesture)
+        
+        openClosed.image = openClosed.image?.withRenderingMode(.alwaysTemplate)
+        openClosed.tintColor = UIColor.openClosed
     }
     
     @objc private func swipeAction() {

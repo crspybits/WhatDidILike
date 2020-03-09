@@ -42,7 +42,7 @@ class ImagesView: UIView, XibBasics {
         self.imagesOwnerObj = imagesOwnerObj
         
         images.showActions = true
-        images.delegate = self
+        images.fullScreenSlideshowViewControllerDelegate = self
         
         // See also https://stackoverflow.com/questions/37574689/how-to-load-image-from-local-path-ios-swift-by-path
         
@@ -82,7 +82,7 @@ class ImagesView: UIView, XibBasics {
     }
     
     @objc private func didTap() {
-        if let count = imagesOwnerObj?.images?.count, count > 0 {
+        if let count = imagesOwnerObj?.images?.count, count > 0 {            
             images.presentFullScreenController(from: vc)
         }
     }
