@@ -23,8 +23,9 @@ target 'WhatDidILike' do
 	# Labeled switch
 	# pod 'DGRunkeeperSwitch', '~> 1.1'
 	# 3/6/20: Original repo is Swift 3 and won't build with current Xcode
-	pod 'DGRunkeeperSwitch', :path => '../DGRunkeeperSwitch'
+	# pod 'DGRunkeeperSwitch', :path => '../DGRunkeeperSwitch'
 	# pod 'DGRunkeeperSwitch', :git => 'https://github.com/aakpro/DGRunkeeperSwitch.git'
+	pod 'DGRunkeeperSwitch', :git => 'https://github.com/crspybits/DGRunkeeperSwitch.git'
 
 	pod 'ImageSlideshow', :git => 'https://github.com/crspybits/ImageSlideshow.git'
 	# pod 'ImageSlideshow', '~> 1.4'
