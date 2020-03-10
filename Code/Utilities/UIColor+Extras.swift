@@ -94,17 +94,13 @@ extension UIColor {
         return colorMode(light: light, dark: dark)
     }
     
+    static var trash: UIColor {
+        return locked
+    }
+    
     static var locked: UIColor {
         let light = UIColor.black
         let dark = UIColor(white: 0.8, alpha: 1.0)
         return colorMode(light: light, dark: dark)
-    }
-    
-    static var rowColor1: UIColor {
-        return UIColor(white: 0.80, alpha: 1.0)
-    }
-    
-    static var rowColor2: UIColor {
-        return UIColor(red: 135.0/255.0, green:206.0/255.0, blue: 255.0/250.0, alpha: 1.0)
     }
 }

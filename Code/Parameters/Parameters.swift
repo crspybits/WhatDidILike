@@ -11,8 +11,8 @@ import SMCoreLib
 
 class Parameters {
     enum CommentStyle : String {
-    case single
-    case multiple
+        case single
+        case multiple
     }
     
     private static let _commentStyle = SMPersistItemString(name: "Parameters.commentStyle", initialStringValue: CommentStyle.single.rawValue, persistType: .userDefaults)

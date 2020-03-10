@@ -35,6 +35,8 @@ class CommentView: UIView, XibBasics {
         images.lowerLeftLabel.text = "Comment pictures"
         
         Layout.format(comment: self)
+        
+        removeButton.tintColor = .trash
     }
     
     func setup(withComment comment: Comment, andParentVC vc: UIViewController) {
