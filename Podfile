@@ -57,4 +57,8 @@ target 'WhatDidILike' do
 			end
 		end
 	end
+	
+	target 'UnitTests' do
+    	inherit! :search_paths
+  	end
 end

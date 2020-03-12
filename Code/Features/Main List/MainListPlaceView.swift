@@ -31,19 +31,24 @@ class MainListPlaceView: UIView, XibBasics {
             address?.text = location.address
         }
         
-        switch Parameters.sortingOrder {
-        case .distance:
+        var showDistance = false
+        
+        if Parameters.sortingOrder == .distance || Parameters.distanceFilter == .use {
+            showDistance = true
+        }
+        
+        distance.isHidden = !showDistance
+
+        if showDistance {
             let distanceInMiles = Location.metersToMiles(meters: location.sortingDistance)
             var distanceString = String(format: "%.2f miles", distanceInMiles)
             if location.sortingDistance == Float.greatestFiniteMagnitude {
                 distanceString = "\u{221E}" // infinity.
             }
             distance?.text = "\(distanceString)"
-            distance.isHidden = false
-            
-        case .name, .rating:
+        }
+        else {
             distance?.text = nil
-            distance.isHidden = true
         }
     }
 }

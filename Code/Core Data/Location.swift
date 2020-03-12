@@ -14,7 +14,7 @@ import SMCoreLib
 public class Location: BaseObject, ImagesManagedObject {
     static let NAME_KEY = "place.name"
     static let DISTANCE_KEY = "internalDistance"
-    static let RATING_KEY = "internalRating"
+    static let SUGGESTION_KEY = "place.suggestion"
     static let TRY_AGAIN_KEY = "internalGoBack"
 
     // I'm not using `internalDistance` directly just to emphasize that this is a little different. It's for the UI so we can order locations by distance.
@@ -127,8 +127,8 @@ public class Location: BaseObject, ImagesManagedObject {
         case .name:
             key = NAME_KEY
             
-        case .rating:
-            key = RATING_KEY
+        case .suggest:
+            key = SUGGESTION_KEY
         }
         
         if fetchRequest != nil {
@@ -171,5 +171,21 @@ public class Location: BaseObject, ImagesManagedObject {
 
     static func milesToMeters(miles:Float) -> Float {
         return miles/(0.000621371)
+    }
+}
+
+extension Location {
+    override var dates: [Date] {
+        var result = [Date]()
+        
+        if let images = images {
+            for image in images {
+                if let image = image as? Image {
+                    result += image.dates
+                }
+            }
+        }
+        
+        return super.dates + result
     }
 }

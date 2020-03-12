@@ -27,7 +27,7 @@ class Parameters {
     
     enum SortOrder : Int {
         case distance = 0
-        case rating = 1
+        case suggest = 1 // previously, "rating"
         case name = 2
     }
     
@@ -56,14 +56,14 @@ class Parameters {
         }
     }
     
-    private static let _ratingAscending = SMPersistItemBool(name: "Parameters.ratingAscending", initialBoolValue: true, persistType: .userDefaults)
-    static var ratingAscending: Bool {
+    private static let _suggestAscending = SMPersistItemBool(name: "Parameters.ratingAscending", initialBoolValue: true, persistType: .userDefaults)
+    static var suggestAscending: Bool {
         set {
-            _ratingAscending.boolValue = newValue
+            _suggestAscending.boolValue = newValue
         }
         
         get {
-            return _ratingAscending.boolValue
+            return _suggestAscending.boolValue
         }
     }
     
@@ -83,8 +83,8 @@ class Parameters {
         case .distance:
             return Parameters.distanceAscending
             
-        case .rating:
-            return Parameters.ratingAscending
+        case .suggest:
+            return Parameters.suggestAscending
             
         case .name:
             return Parameters.nameAscending

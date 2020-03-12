@@ -99,6 +99,11 @@ class MainListVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        guard let coreDataSource = self.coreDataSource else {
+            return
+        }
+        
         coreDataSource.fetchData()
         
         // In case the displayed summary info (e.g., name) changed. This doesn't get updated automagically by Core Data since the name is accessed via a relation.
@@ -146,20 +151,30 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseId, for: indexPath) as! PlaceVCCell
-        let location = self.coreDataSource.object(at: indexPath) as! Location
+        guard let coreDataSource = self.coreDataSource else {
+            return cell
+        }
+        
+        let location = coreDataSource.object(at: indexPath) as! Location
         
         let placeView = MainListPlaceView.create()!
         placeView.setup(withLocation: location)
         cell.setup(withContents: placeView)
         
+        Log.msg("Location: \(String(describing: location.place?.name)); Suggestion: \(String(describing: location.place?.suggestion)); ")
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let coreDataSource = self.coreDataSource else {
+            return
+        }
+        
         tableView.deselectRow(at: indexPath, animated: true)
         let placeVC = PlaceVC.create()
         placeVC.delegate = self
-        let location = self.coreDataSource.object(at: indexPath) as! Location
+        let location = coreDataSource.object(at: indexPath) as! Location
         placeVC.location = location
         navigationController!.pushViewController(placeVC, animated: true)
     }
@@ -169,9 +184,13 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard let coreDataSource = self.coreDataSource else {
+            return
+        }
+        
         switch editingStyle {
         case .delete:
-            let location = self.coreDataSource.object(at: indexPath) as! Location
+            let location = coreDataSource.object(at: indexPath) as! Location
             
             DeletionImpact().showWarning(for: .location(location), using: self, deletionAction: {
                 location.remove()
@@ -227,7 +246,7 @@ extension MainListVC : CoreDataSourceDelegate {
 
 extension MainListVC : SortyFilterDelegate {
     func sortyFilter(reset: SortyFilter) {
-        coreDataSource = nil        
+        coreDataSource = nil
         setupBarButtonItems()
     }
     
@@ -241,19 +260,25 @@ extension MainListVC : SortyFilterDelegate {
         
         // Not quite sure why this is needed-- for change in alphabetic ordering.
         tableView.reloadSections([0], with: .automatic)
+        
+        Log.msg("sortFilterByParameters")
     }
 }
 
 extension MainListVC : PlaceVCDelegate {
     func placeNameChanged(forPlaceLocation placeLocation: Location) {
+        guard let coreDataSource = self.coreDataSource else {
+            return
+        }
+        
         // Not quite sure why both of these are needed.
-        self.coreDataSource.fetchData()
+        coreDataSource.fetchData()
         self.tableView.reloadSections([0], with: .none)
         
         // Need to figure out the row this location is in. And scroll to it. The only way I know how to do this is by iterating over all possible index paths.
-        for row in 0...self.coreDataSource.numberOfRows(inSection: 0) {
+        for row in 0...coreDataSource.numberOfRows(inSection: 0) {
             let indexPath = IndexPath(row: Int(row), section: 0)
-            if let location = self.coreDataSource.object(at: indexPath) as? Location, location == placeLocation {
+            if let location = coreDataSource.object(at: indexPath) as? Location, location == placeLocation {
                 tableView.scrollToRow(at: indexPath, at: .middle, animated: false)
                 break
             }

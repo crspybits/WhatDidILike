@@ -292,7 +292,7 @@ class LocationView: UIView, XibBasics {
             case .name:
                 break
                 
-            case .rating:
+            case .suggest:
                 break
             }
             
@@ -341,7 +341,7 @@ class LocationView: UIView, XibBasics {
     }
     
     deinit {
-        Log.msg("deinit")
+        // Log.msg("deinit")
     }
 }
 

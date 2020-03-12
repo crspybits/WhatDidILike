@@ -21,6 +21,6 @@ class PlaceNameView: UIView, XibBasics {
     }
     
     deinit {
-        Log.msg("deinit")
+        // Log.msg("deinit")
     }
 }

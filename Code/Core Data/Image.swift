@@ -17,13 +17,16 @@ public class Image: NSManagedObject {
         return "Image"
     }
     
+    var filePath: String {
+        return FileStorage.path(toItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY) + "/" + fileName!
+    }
+    
     class func newObject() -> Image {
         let image = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Image
         return image
     }
     
     func remove() {
-        let filePath = FileStorage.path(toItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY) + "/" + fileName!
         do {
             try FileManager.default.removeItem(atPath: filePath)
         } catch {
@@ -37,5 +40,11 @@ public class Image: NSManagedObject {
     
     func save() {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
+}
+
+extension Image: Recommendations {
+    var dates: [Date] {
+        return [fileCreationDate(filePath: filePath)].compactMap{$0}
     }
 }

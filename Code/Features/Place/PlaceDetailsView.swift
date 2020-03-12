@@ -89,7 +89,7 @@ class PlaceDetailsView: UIView, XibBasics {
     }
     
     deinit {
-        Log.msg("deinit")
+        // Log.msg("deinit")
     }
 }
 

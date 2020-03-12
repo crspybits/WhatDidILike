@@ -36,13 +36,13 @@
                     </items>
                 </navigationBar>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yBH-HM-v2q" userLabel="Sorting controls">
-                    <rect key="frame" x="20" y="64" width="382" height="30"/>
+                    <rect key="frame" x="20" y="64" width="382" height="35"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="na2-F0-cWs"/>
+                        <constraint firstAttribute="height" constant="35" id="na2-F0-cWs"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gEo-PU-fuc" userLabel="Location Container">
-                    <rect key="frame" x="20" y="114" width="382" height="90"/>
+                    <rect key="frame" x="20" y="119" width="382" height="90"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mwI-uF-4WB" userLabel="Address" customClass="TextView" customModule="WhatDidILike" customModuleProvider="target">
                             <rect key="frame" x="232" y="19.5" width="150" height="70.5"/>
@@ -89,13 +89,13 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o9h-GU-nb3">
-                    <rect key="frame" x="179.5" y="234" width="63" height="27.5"/>
+                    <rect key="frame" x="179.5" y="239" width="63" height="27.5"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="23"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="K9v-p4-Iag">
-                    <rect key="frame" x="20" y="271.5" width="395" height="107"/>
+                    <rect key="frame" x="20" y="276.5" width="395" height="107"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Oy-kU-QKf" userLabel="Try Again Container">
                             <rect key="frame" x="0.0" y="0.0" width="180" height="37"/>

@@ -32,6 +32,6 @@ class PlaceVCCell: UITableViewCell {
     }
     
     deinit {
-        Log.msg("deinit")
+        // Log.msg("deinit")
     }
 }

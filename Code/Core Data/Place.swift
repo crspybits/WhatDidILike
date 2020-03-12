@@ -21,6 +21,12 @@ public class Place: BaseObject {
         return super.newObject() as! Place
     }
     
+    class func fetchAllObjects() -> [Place]? {
+        let places = try? CoreData.sessionNamed(CoreDataExtras.sessionName)
+            .fetchAllObjects(withEntityName: entityName())
+        return places as? [Place]
+    }
+    
     func save() {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
@@ -36,5 +42,33 @@ public class Place: BaseObject {
         // Similarly, for lists.
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
+    }
+}
+
+extension Place {
+    override var dates: [Date] {
+        var result = [Date]()
+        
+        if let locations = locations as? Set<Location> {
+            for location in locations {
+                result += location.dates
+            }
+        }
+        
+        if let items = items {
+            for item in items {
+                if let item = item as? Item {
+                    result += item.dates
+                }
+            }
+        }
+        
+        return super.dates + result
+    }
+    
+    // Doesn't save
+    func setSuggestion() {
+        let distinctDates = numberOfDistinctDates(dates)
+        suggestion = Float(distinctDates)
     }
 }

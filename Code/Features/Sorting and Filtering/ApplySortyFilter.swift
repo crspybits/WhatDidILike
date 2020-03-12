@@ -21,6 +21,7 @@ class ApplySortyFilter: NSObject {
     private var ll:LatLong!
     private var convertAddress: GeocodeAddressToLatLong?
     weak var delegate:ApplySortyFilterDelegate?
+    private var completion: (()->())?
     
     init(withViewController viewController: UIViewController) {
         super.init()
@@ -31,7 +32,7 @@ class ApplySortyFilter: NSObject {
         convertAddress?.cleanup()
     }
     
-    func apply() {
+    func apply(completion: ()->()) {
         delegate?.sortyFilter(reset: self)
         
         switch Parameters.sortingOrder {
@@ -44,9 +45,9 @@ class ApplySortyFilter: NSObject {
             
         case .name:
             computeAllFilters()
-            
-        case .rating:
-            computeRatings()
+
+        case .suggest:
+            computeSuggestions()
             computeAllFilters()
         }
     }
@@ -61,6 +62,7 @@ class ApplySortyFilter: NSObject {
         }
         else {
             delegate?.sortyFilter(sortFilterByParameters: self)
+            completion?()
         }
     }
     
@@ -80,6 +82,9 @@ class ApplySortyFilter: NSObject {
                 // Attempt to geocode the address
                 convertAddress?.lookupAddress(Parameters.orderAddress, withExitMethod: {
                 })
+            }
+            else {
+                completion?()
             }
         }
     }
@@ -191,19 +196,21 @@ class ApplySortyFilter: NSObject {
         }
     }
     
-    private func computeRatings() {
-        guard let locations = Location.fetchAllObjects() else {
+    private func computeSuggestions() {
+        guard let places = Place.fetchAllObjects() else {
             return
         }
         
-        for location in locations {
-            computeRating(forLocation: location)
+        for place in places {
+            place.setSuggestion()
         }
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
     private func computeDistances(from: CLLocation) {
+        Log.msg("computeDistances: \(String(describing: delegate))")
+        
         guard let locations = Location.fetchAllObjects() else {
             return
         }
@@ -221,6 +228,7 @@ class ApplySortyFilter: NSObject {
 extension ApplySortyFilter : LatLongDelegate {
     func userDidNotAuthorizeLocationServices() {
         delegate?.sortyFilter(stopUsingLocationServices: self)
+        completion?()
     }
     
     func haveReasonablyAccurateCoordinates() {
@@ -230,6 +238,7 @@ extension ApplySortyFilter : LatLongDelegate {
         if ll.coords == nil {
             ll.stop()
             Alert.show(withTitle: "Could not obtain your current location.", message: "Are location services turned off?")
+            completion?()
         }
         else {
             let coords = ll.coords!
@@ -237,11 +246,13 @@ extension ApplySortyFilter : LatLongDelegate {
             Log.msg("Coords from ll: \(coords)")
             Parameters.sortLocation = coords
             computeDistances(from: coords)
+            completion?()
         }
     }
     
     func finishedAttemptingToObtainCoordinates() {
         delegate?.sortyFilter(stopUsingLocationServices: self)
+        completion?()
     }
 }
 
@@ -252,6 +263,7 @@ extension ApplySortyFilter : GeocodeAddressToLatLongDelegate {
     func failureLookingupAddress() {
         Log.error("failureLookingupAddress")
         delegate?.sortyFilter(stopUsingLocationServices: self)
+        completion?()
     }
 
     // Called when successful; with the latitude and longitude of the successful conversion.
@@ -261,5 +273,6 @@ extension ApplySortyFilter : GeocodeAddressToLatLongDelegate {
         Log.msg("Coords from ll: \(addressLocation)")
         Parameters.sortLocation = addressLocation
         computeDistances(from: addressLocation)
+        completion?()
     }
 }

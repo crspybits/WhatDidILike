@@ -33,3 +33,19 @@ public class Item: BaseObject {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
     }
 }
+
+extension Item {
+    override var dates: [Date] {
+        var result = [Date]()
+        
+        if let comments = comments {
+            for comment in comments {
+                if let comment = comment as? Comment {
+                    result += comment.dates
+                }
+            }
+        }
+        
+        return super.dates + result
+    }
+}

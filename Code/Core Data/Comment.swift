@@ -36,3 +36,19 @@ public class Comment: BaseObject, ImagesManagedObject {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
     }
 }
+
+extension Comment {
+    override var dates: [Date] {
+        var result = [Date]()
+        
+        if let images = images {
+            for image in images {
+                if let image = image as? Image {
+                    result += image.dates
+                }
+            }
+        }
+        
+        return super.dates + result
+    }
+}

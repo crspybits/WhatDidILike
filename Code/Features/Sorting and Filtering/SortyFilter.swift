@@ -21,7 +21,7 @@ protocol SortyFilterDelegate : class {
 private class SortyFilterState {
     var sortingOrder: Parameters.SortOrder
     var distanceAscending:Bool
-    var ratingAscending:Bool
+    var suggestAscending:Bool
     var nameAscending:Bool
     
     var location: Parameters.Location
@@ -34,7 +34,7 @@ private class SortyFilterState {
     init() {
         sortingOrder = Parameters.sortingOrder
         distanceAscending = Parameters.distanceAscending
-        ratingAscending = Parameters.ratingAscending
+        suggestAscending = Parameters.suggestAscending
         nameAscending = Parameters.nameAscending
         
         location = Parameters.location
@@ -48,7 +48,7 @@ private class SortyFilterState {
     func save() {
         Parameters.sortingOrder = sortingOrder
         Parameters.distanceAscending = distanceAscending
-        Parameters.ratingAscending = ratingAscending
+        Parameters.suggestAscending = suggestAscending
         Parameters.nameAscending = nameAscending
     
         Parameters.location = location
@@ -82,7 +82,6 @@ class SortyFilter: UIViewController {
     private var apply:ApplySortyFilter!
     var delegate:SortyFilterDelegate!
     
-    private var needToSave = true
     private let state = SortyFilterState()
 
     static let modalHeight = ModalSize.custom(size: 402)
@@ -100,9 +99,8 @@ class SortyFilter: UIViewController {
         customPresenter.dismissTransitionType = .crossDissolve
         customPresenter.roundCorners = false
         customPresenter.backgroundOpacity = 0.5
-        customPresenter.dismissOnSwipe = true
         customPresenter.dismissOnSwipeDirection = .top
-    
+        customPresenter.dismissOnSwipe = true
         return customPresenter
     }()
     
@@ -125,13 +123,13 @@ class SortyFilter: UIViewController {
 
         let distance = SortControl.create()!
         distance.setup(withName: "Distance")
-        let rating = SortControl.create()!
-        rating.setup(withName: "Rating")
+        let suggest = SortControl.create()!
+        suggest.setup(withName: "Suggest")
         let name = SortControl.create()!
         name.setup(withName: "Name")
         
-        sortControls = [.distance: distance, .rating: rating, .name: name]
-        let components = [distance, rating, name]
+        sortControls = [.distance: distance, .suggest: suggest, .name: name]
+        let components = [distance, suggest, name]
         
         segmentedControl = SegmentedControl(withComponents: components)
         segmentedControl.delegate = self
@@ -144,7 +142,7 @@ class SortyFilter: UIViewController {
         
         segmentedControl.select(componentIndex: UInt(state.sortingOrder.rawValue))
         distance.currState = state.distanceAscending ? .ascending : .descending
-        rating.currState = state.ratingAscending ? .ascending : .descending
+        suggest.currState = state.suggestAscending ? .ascending : .descending
         name.currState = state.nameAscending ? .ascending : .descending
         address.text = state.address
         locationControl.selectedSegmentIndex = state.location.rawValue
@@ -175,15 +173,6 @@ class SortyFilter: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         spinner = Spinner(superview: view)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        if needToSave {
-            state.save()
-            apply.apply()
-        }
     }
     
     private func formatMiles(_ miles: Int) -> String {
@@ -241,18 +230,22 @@ class SortyFilter: UIViewController {
     }
     
     @IBAction func cancelAction(_ sender: Any) {
-        needToSave = false
         dismiss(animated: true, completion: nil)
     }
     
     @IBAction func applyAction(_ sender: Any) {
-        needToSave = false // don't also save in viewWillDisappear
-        state.save()
-        apply.apply()
+        applySortyFilter()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    private func applySortyFilter() {
+        spinner.start()
+        view.layoutIfNeeded()
+        
+        state.save()
+        
+        apply.apply() {[unowned self] in
+            self.spinner.stop()
+        }
     }
 }
 
@@ -272,8 +265,8 @@ extension SortyFilter : SegmentedControlDelegate {
         case .distance:
             state.distanceAscending = ascending
 
-        case .rating:
-            state.ratingAscending = ascending
+        case .suggest:
+            state.suggestAscending = ascending
 
         case .name:
             state.nameAscending = ascending
@@ -294,12 +287,17 @@ extension SortyFilter : ApplySortyFilterDelegate {
     }
     
     func sortyFilter(startUsingLocationServices:ApplySortyFilter) {
-        spinner.start()
         animatingEarthImageView.isHidden = false
     }
     
     func sortyFilter(stopUsingLocationServices:ApplySortyFilter) {
-        spinner.stop()
         animatingEarthImageView.isHidden = true
+    }
+}
+
+extension SortyFilter: PresentrDelegate {
+    func presentrShouldDismiss(keyboardShowing: Bool) -> Bool {
+        applySortyFilter()
+        return false
     }
 }

@@ -34,3 +34,9 @@ public class BaseObject: NSManagedObject {
         }
     }
 }
+
+extension BaseObject: Recommendations {
+    @objc var dates: [Date] {
+        return [creationDate as Date?, modificationDate as Date?].compactMap{$0}
+    }
+}
