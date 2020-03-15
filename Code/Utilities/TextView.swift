@@ -36,11 +36,14 @@ class TextView : UITextView {
         saveIfNeeded()
         endEditing(false)
     }
-    
-    fileprivate func saveIfNeeded() {
-        text = text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        if previousValue != text {
-            save?(text!)
+
+    fileprivate func saveIfNeeded(trim: Bool = true) {
+        if trim {
+            text = text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        }
+        
+        if previousValue != text, let text = text {
+            save?(text)
         }
     }
     
@@ -61,6 +64,7 @@ extension TextView : UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        saveIfNeeded()
+        // Don't trim here because if I do that the user can't enter white space. `textViewDidChange` gets called on every key tapped, including white space.
+        saveIfNeeded(trim: false)
     }
 }

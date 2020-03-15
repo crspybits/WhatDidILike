@@ -51,6 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.msg("\titems: \(String(describing: numberItems))")
         Log.msg("\tcomments: \(String(describing: numberComments))")
         Log.msg("\timages: \(String(describing: numberImages))")
+        
+        Log.msg("Documents: \(String(describing: FileStorage.path(toItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY)))")
 #endif
 
         // TODO: Add a UI instead of assigning a constant.

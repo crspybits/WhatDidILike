@@ -20,15 +20,15 @@ protocol SortyFilterDelegate : class {
 
 private class SortyFilterState {
     var sortingOrder: Parameters.SortOrder
-    var distanceAscending:Bool
-    var suggestAscending:Bool
-    var nameAscending:Bool
+    var distanceAscending: Bool
+    var suggestAscending: Bool
+    var nameAscending: Bool
     
     var location: Parameters.Location
     var address: String
     
-    var tryAgainFilter:Parameters.TryAgainFilter
-    var distanceFilter:Parameters.DistanceFilter
+    var tryAgainFilter: Parameters.TryAgainFilter
+    var distanceFilter: Parameters.DistanceFilter
     var distance: Int
     
     init() {
@@ -52,7 +52,9 @@ private class SortyFilterState {
         Parameters.nameAscending = nameAscending
     
         Parameters.location = location
-        Parameters.orderAddress = address
+        
+        let spaces = CharacterSet.whitespacesAndNewlines
+        Parameters.orderAddress = address.trimmingCharacters(in: spaces)
     
         Parameters.tryAgainFilter = tryAgainFilter
         Parameters.distanceFilter = distanceFilter
@@ -136,8 +138,7 @@ class SortyFilter: UIViewController {
         sortingControls.addSubview(segmentedControl)
         
         address.save = {[unowned self] update in
-            let spaces = CharacterSet.whitespacesAndNewlines
-            self.state.address = update.trimmingCharacters(in: spaces)
+            self.state.address = update
         }
         
         segmentedControl.select(componentIndex: UInt(state.sortingOrder.rawValue))
