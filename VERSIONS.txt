@@ -7,3 +7,5 @@ Version 2.1
 	* Added support for iOS 13/Dark Mode.
 	* Replaced "Rating" sort with "Suggest", with goal of improving recommendations.
 	* Added Check-In for place/locations-- to track more date data, for recommendations.
+	* Fixed bug with address not saving in SortyFilter modal unless you specifically tap "Save".
+	* Fixed bug with height of SortyFilter modal-- not high enough on iPhone 11.
