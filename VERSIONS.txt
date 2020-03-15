@@ -1,5 +1,9 @@
 WhatDidILike v2
 
 Version 2.1
-	* Update DGRunkeeperSwitch for Swift 5
-	* Added support for iOS 13/Dark Mode
+	* Updated DGRunkeeperSwitch for Swift 5.
+	* Updated ImageSlideshow due to iOS 13 issue.
+	* Added FileSharing so I can access files in app for testing.
+	* Added support for iOS 13/Dark Mode.
+	* Replaced "Rating" sort with "Suggest", with goal of improving recommendations.
+	* Added Check-In for place/locations-- to track more date data, for recommendations.

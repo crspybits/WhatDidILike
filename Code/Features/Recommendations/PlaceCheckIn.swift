@@ -60,6 +60,12 @@ class PlaceCheckIn: NSObject {
         
         self.placeLocations = placeLocations
         
+        // Don't check-in if place created recently.
+        guard let creationDate = place.creationDate, place.dissimilarDates(date1:creationDate as Date, date2: Date()) else {
+            completion(.success(nil))
+            return
+        }
+        
         // Only determine our location if there are actual CLLocation's to compare against.
         let clLocations = placeLocations.map{$0.location}.compactMap {$0}
         guard clLocations.count > 0 else {
@@ -76,7 +82,7 @@ class PlaceCheckIn: NSObject {
 
         // Don't check-in if we've checked in recently.
         let recentCheckIns = checkIns
-            .filter { !$0.distinctDates(date1: $0.date!, date2: current)}
+            .filter { !$0.dissimilarDates(date1: $0.date!, date2: current)}
         
         guard recentCheckIns.count == 0 else {
             completion(.success(nil))

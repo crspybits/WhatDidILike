@@ -33,7 +33,7 @@ extension Recommendations {
         TimeInterval(Khours * 60 * 60)
     }
     
-    func distinctDates(date1: Date, date2: Date) -> Bool {
+    func dissimilarDates(date1: Date, date2: Date) -> Bool {
         let diff = abs(date1.timeIntervalSince(date2))
         return diff >= Kseconds
     }
@@ -47,7 +47,7 @@ extension Recommendations {
         var index = 1
         
         while index < dates.count {
-            if distinctDates(date1: dates[index], date2: dates[index-1]) {
+            if dissimilarDates(date1: dates[index], date2: dates[index-1]) {
                 result += 1
             }
             
