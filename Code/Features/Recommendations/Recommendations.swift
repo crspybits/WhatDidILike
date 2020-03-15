@@ -33,6 +33,11 @@ extension Recommendations {
         TimeInterval(Khours * 60 * 60)
     }
     
+    func distinctDates(date1: Date, date2: Date) -> Bool {
+        let diff = abs(date1.timeIntervalSince(date2))
+        return diff >= Kseconds
+    }
+    
     // This does a segmentation of a sorted list of dates. Two neighboring dates are considered to be distinct only if they are separated by at least K hours.
     func numberOfDistinctDates(_ dates: [Date]) -> Int {
         var result = dates.count > 0 ? 1 : 0
@@ -42,8 +47,7 @@ extension Recommendations {
         var index = 1
         
         while index < dates.count {
-            let diff = abs(dates[index].timeIntervalSince(dates[index-1]))
-            if diff >= Kseconds {
+            if distinctDates(date1: dates[index], date2: dates[index-1]) {
                 result += 1
             }
             

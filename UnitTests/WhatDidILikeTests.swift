@@ -11,7 +11,6 @@ import XCTest
 import SMCoreLib
 
 class WhatDidILikeTests: XCTestCase {
-    
     override func setUp() {
         super.setUp()
         
@@ -23,7 +22,7 @@ class WhatDidILikeTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     private class Test: Recommendations {
         var dates: [Date] {
             return []

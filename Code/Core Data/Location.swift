@@ -57,7 +57,7 @@ public class Location: BaseObject, ImagesManagedObject {
                 internalLocation = nil
             }
             else {
-                internalLocation = NSKeyedArchiver.archivedData(withRootObject: newValue!) as NSData
+                internalLocation = NSKeyedArchiver.archivedData(withRootObject: newValue!) as Data
             }
         }
         get {
@@ -183,6 +183,12 @@ extension Location {
                 if let image = image as? Image {
                     result += image.dates
                 }
+            }
+        }
+        
+        if let checkIns = checkin as? Set<Checkin> {
+            for checkIn in checkIns {
+                result += checkIn.dates
             }
         }
         

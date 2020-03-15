@@ -239,12 +239,13 @@ class SortyFilter: UIViewController {
     
     private func applySortyFilter() {
         spinner.start()
-        view.layoutIfNeeded()
-        
         state.save()
         
-        apply.apply() {[unowned self] in
-            self.spinner.stop()
+        // Without the following `DispatchQueue.main.asyncAfter`, the spinner doesn't start spinning for too long (maybe 1 second). And the user gets the sense that their dismiss of the SortyFilter modal hasn't taken effect. The same delay, and UX issue, occurs even if I do a layoutIfNeeded on the superview of the spinner.
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
+            self.apply.apply() {[unowned self] in
+                self.spinner.stop()
+            }
         }
     }
 }

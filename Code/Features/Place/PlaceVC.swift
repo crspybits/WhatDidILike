@@ -40,6 +40,7 @@ class PlaceVC: UIViewController {
     @IBOutlet weak private var tableView: UITableView!
     @IBOutlet weak private var tableViewBottom: NSLayoutConstraint!
     private var animatingEarthImageView:FLAnimatedImageView!
+    private var checkIn: PlaceCheckIn!
 
     fileprivate var rowViews = [RowView]()
     fileprivate var displayedRowViews:[RowView] {
@@ -59,6 +60,9 @@ class PlaceVC: UIViewController {
         super.viewDidLoad()
         
         place = location.place
+        
+        checkIn = PlaceCheckIn(place, parent: self)
+        checkIn.start()
         
         titleLabel.font = UIFont.preferredFont(forTextStyle: .title1)
         navigationItem.titleView = titleLabel

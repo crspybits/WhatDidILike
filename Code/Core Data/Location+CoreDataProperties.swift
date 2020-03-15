@@ -2,8 +2,8 @@
 //  Location+CoreDataProperties.swift
 //  WhatDidILike
 //
-//  Created by Christopher G Prince on 3/19/18.
-//  Copyright © 2018 Spastic Muffin, LLC. All rights reserved.
+//  Created by Christopher G Prince on 3/12/20.
+//  Copyright © 2020 Spastic Muffin, LLC. All rights reserved.
 //
 //
 
@@ -20,12 +20,13 @@ extension Location {
     @NSManaged public var address: String?
     @NSManaged public var internalDistance: Float
     @NSManaged public var internalGoBack: NSNumber?
-    @NSManaged public var internalLocation: NSData?
+    @NSManaged public var internalLocation: Data?
     @NSManaged public var internalRating: Float
     @NSManaged public var specificDescription: String?
     @NSManaged public var images: NSOrderedSet?
     @NSManaged public var place: Place?
     @NSManaged public var rating: Rating?
+    @NSManaged public var checkin: NSSet?
 
 }
 
@@ -61,5 +62,22 @@ extension Location {
 
     @objc(removeImages:)
     @NSManaged public func removeFromImages(_ values: NSOrderedSet)
+
+}
+
+// MARK: Generated accessors for checkin
+extension Location {
+
+    @objc(addCheckinObject:)
+    @NSManaged public func addToCheckin(_ value: Checkin)
+
+    @objc(removeCheckinObject:)
+    @NSManaged public func removeFromCheckin(_ value: Checkin)
+
+    @objc(addCheckin:)
+    @NSManaged public func addToCheckin(_ values: NSSet)
+
+    @objc(removeCheckin:)
+    @NSManaged public func removeFromCheckin(_ values: NSSet)
 
 }
