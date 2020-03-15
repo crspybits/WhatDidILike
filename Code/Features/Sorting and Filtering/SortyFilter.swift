@@ -84,7 +84,7 @@ class SortyFilter: UIViewController {
     
     private let state = SortyFilterState()
 
-    static let modalHeight = ModalSize.custom(size: 402)
+    static let modalHeight = ModalSize.custom(size: 455)
     static let modalWidth = ModalSize.full
     
     static let customTypePortrait: PresentationType = {

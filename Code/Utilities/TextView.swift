@@ -59,4 +59,8 @@ extension TextView : UITextViewDelegate {
         // This will take place even if the user just changes to editing a different field. By default, I'm going to save changes.
         saveIfNeeded()
     }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        saveIfNeeded()
+    }
 }
