@@ -12,11 +12,15 @@ import CoreData
 import SMCoreLib
 
 @objc(PlaceCategory)
-public class PlaceCategory: NSManagedObject {
+public class PlaceCategory: NSManagedObject, Codable {
     static let NAME_KEY = "name"
+    
+    // A hack, but I can't figure out a better way to communicate an error when decoding. Specifically not persisted because if this is non-nil after decoding, I need to delete (and not persist) the object.
+    private var existingCategory: PlaceCategory?
     
     enum PlaceCategoryErrors : Error {
         case moreThanOneCategoryWithName(String)
+        case noNamePresent
     }
     
     class func entityName() -> String {
@@ -34,7 +38,52 @@ public class PlaceCategory: NSManagedObject {
         return placeCategory
     }
     
-    // Looks up the category in a case insensitive manner.
+    enum CodingKeys: String, CodingKey {
+       case name
+    }
+    
+    public required convenience init(from decoder: Decoder) throws {
+        let context = CoreData.sessionNamed(CoreDataExtras.sessionName).context
+        guard let entity = NSEntityDescription.entity(forEntityName: Self.entityName(), in: context) else { fatalError() }
+        self.init(entity: entity, insertInto: context)
+        try decode(using: decoder)
+    }
+    
+    // If existingCategory is non-nil after this call, you need use the existingCategory, and remove the newly decoded PlaceCategory. The decoded PlaceCategory has no name if existingCategory is non-nil.
+    func decode(using decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        guard let name = try container.decodeIfPresent(String.self, forKey: .name) else {
+            throw PlaceCategoryErrors.noNamePresent
+        }
+        
+        if let existingCategory = Self.getCategory(withName: name) {
+            // This is an error! Specifically not setting `name` in this case.
+            self.existingCategory = existingCategory
+        }
+        else {
+            self.name = name
+        }
+    }
+    
+    // Dealing with the error hack in the decode.
+    static func cleanupDecode(category: PlaceCategory, add:(PlaceCategory)->()) {
+        if let existingCategory = category.existingCategory {
+            CoreData.sessionNamed(CoreDataExtras.sessionName).remove(category)
+            add(existingCategory)
+        }
+        else {
+            add(category)
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+    }
+    
+
+    
+    // Looks up the category in a case insensitive manner. Returns nil if no category with name.
     class func getCategory(withName name: String) -> PlaceCategory? {
         var result: PlaceCategory?
         
@@ -43,7 +92,8 @@ public class PlaceCategory: NSManagedObject {
                 .fetchAllObjects(withEntityName: entityName()) as! [PlaceCategory]
             
             let filteredCategories = categories.filter({
-                return $0.name!.caseInsensitiveCompare(name) == ComparisonResult.orderedSame
+                // Using `?` in this because during Decoding a PlaceCategory may not yet have a name.
+                return $0.name?.caseInsensitiveCompare(name) == ComparisonResult.orderedSame
             })
             
             switch filteredCategories.count {

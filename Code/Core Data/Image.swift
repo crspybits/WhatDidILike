@@ -12,7 +12,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Image)
-public class Image: NSManagedObject {
+public class Image: NSManagedObject, Codable {
     class func entityName() -> String {
         return "Image"
     }
@@ -24,6 +24,29 @@ public class Image: NSManagedObject {
     class func newObject() -> Image {
         let image = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! Image
         return image
+    }
+    
+    // MARK: Codable
+    
+    public required convenience init(from decoder: Decoder) throws {
+        let context = CoreData.sessionNamed(CoreDataExtras.sessionName).context
+        guard let entity = NSEntityDescription.entity(forEntityName: Self.entityName(), in: context) else { fatalError() }
+        self.init(entity: entity, insertInto: context)
+        try decode(using: decoder)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case fileName
+    }
+        
+    func decode(using decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        fileName = try container.decodeIfPresent(String.self, forKey: .fileName)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(fileName, forKey: .fileName)
     }
     
     func remove() {

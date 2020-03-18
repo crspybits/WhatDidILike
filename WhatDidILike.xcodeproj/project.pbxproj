@@ -66,6 +66,8 @@
 		8396CE411F4BCB8A00660D73 /* Comment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CE371F4BCB8A00660D73 /* Comment+CoreDataProperties.swift */; };
 		839DE8AD2057B5A500FD83A5 /* MainListPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839DE8AC2057B5A500FD83A5 /* MainListPlaceView.swift */; };
 		839DE8AF2057B5CD00FD83A5 /* MainListPlaceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839DE8AE2057B5CD00FD83A5 /* MainListPlaceView.xib */; };
+		839FC0C224200501001822D2 /* ImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0C124200501001822D2 /* ImportExport.swift */; };
+		839FC0C424201928001822D2 /* CodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0C324201928001822D2 /* CodableTests.swift */; };
 		83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image.swift */; };
 		83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */; };
 		83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */; };
@@ -177,6 +179,8 @@
 		8396CE371F4BCB8A00660D73 /* Comment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		839DE8AC2057B5A500FD83A5 /* MainListPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainListPlaceView.swift; path = "Features/Main List/MainListPlaceView.swift"; sourceTree = "<group>"; };
 		839DE8AE2057B5CD00FD83A5 /* MainListPlaceView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainListPlaceView.xib; path = "Features/Main List/MainListPlaceView.xib"; sourceTree = "<group>"; };
+		839FC0C124200501001822D2 /* ImportExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExport.swift; sourceTree = "<group>"; };
+		839FC0C324201928001822D2 /* CodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableTests.swift; sourceTree = "<group>"; };
 		83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v2.xcdatamodel; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -330,6 +334,15 @@
 			name = "Other files";
 			sourceTree = "<group>";
 		};
+		839FC0C0242004B2001822D2 /* Import Export */ = {
+			isa = PBXGroup;
+			children = (
+				839FC0C124200501001822D2 /* ImportExport.swift */,
+			);
+			name = "Import Export";
+			path = "Features/Import Export";
+			sourceTree = "<group>";
+		};
 		83A2D5E31F5CE0DC0003C5F9 /* Place */ = {
 			isa = PBXGroup;
 			children = (
@@ -459,6 +472,7 @@
 		83D49CDB1F4AC2C700409B0F /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				839FC0C324201928001822D2 /* CodableTests.swift */,
 				83D49CDC1F4AC2C700409B0F /* Info.plist */,
 				83D49CDD1F4AC2C700409B0F /* WhatDidILikeTests.swift */,
 			);
@@ -474,6 +488,7 @@
 				8366CD321F7CA45500E9D6FF /* Location */,
 				83D752CD1F93D9F200EF4E5D /* Sorting and Filtering */,
 				836F784E241960F60006D7CA /* Recommendations */,
+				839FC0C0242004B2001822D2 /* Import Export */,
 				837E12571F8F2B4C00D8E4E1 /* Conversion */,
 			);
 			name = Features;
@@ -742,6 +757,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				839FC0C224200501001822D2 /* ImportExport.swift in Sources */,
 				8394680E205CAD510009C318 /* SegmentedControl.swift in Sources */,
 				83946814205CB7180009C318 /* SortControl.swift in Sources */,
 				83B533821F5D0C450028E6B5 /* RatingView.swift in Sources */,
@@ -813,6 +829,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				839FC0C424201928001822D2 /* CodableTests.swift in Sources */,
 				83D49CDF1F4AC2C700409B0F /* WhatDidILikeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

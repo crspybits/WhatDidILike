@@ -10,6 +10,8 @@ import XCTest
 @testable import WhatDidILike
 import SMCoreLib
 
+// Don't test this with the app running a device. Breaks build. Not sure why.
+
 class WhatDidILikeTests: XCTestCase {
     override func setUp() {
         super.setUp()
@@ -60,10 +62,10 @@ class WhatDidILikeTests: XCTestCase {
         let d1 = t.numberOfDistinctDates([Date()])
         XCTAssert(d1 == 1)
         
-        let d2a = t.numberOfDistinctDates([Date(), Date() + t.Kseconds])
+        let d2a = t.numberOfDistinctDates([Date(), Date() + t.Kseconds + 1])
         XCTAssert(d2a == 2)
         
-        let d2b = t.numberOfDistinctDates([Date() + t.Kseconds, Date()])
+        let d2b = t.numberOfDistinctDates([Date() + t.Kseconds + 1, Date()])
         XCTAssert(d2b == 2)
         
         let d2c = t.numberOfDistinctDates([Date() + (t.Kseconds - 100), Date()])
@@ -72,10 +74,10 @@ class WhatDidILikeTests: XCTestCase {
         let d2d = t.numberOfDistinctDates([Date(), Date()])
         XCTAssert(d2d == 1)
         
-        let d3a = t.numberOfDistinctDates([Date() + t.Kseconds, Date() + t.Kseconds, Date()])
+        let d3a = t.numberOfDistinctDates([Date() + t.Kseconds + 1, Date() + t.Kseconds + 1, Date()])
         XCTAssert(d3a == 2)
         
-        let d3b = t.numberOfDistinctDates([Date() + t.Kseconds*20, Date() + t.Kseconds, Date()])
+        let d3b = t.numberOfDistinctDates([Date() + t.Kseconds*20, Date() + t.Kseconds + 1, Date()])
         XCTAssert(d3b == 3)
     }
     

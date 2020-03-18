@@ -13,10 +13,24 @@ import SMCoreLib
 
 @objc(BaseObject)
 public class BaseObject: NSManagedObject {
-    // Superclass *must* override
+    // Subclass *must* override
     class func entityName() -> String {
         assert(false)
         return ""
+    }
+    
+    public required convenience init(from decoder: Decoder) throws {
+        let context = CoreData.sessionNamed(CoreDataExtras.sessionName).context
+        guard let entity = NSEntityDescription.entity(forEntityName: Self.entityName(), in: context) else { fatalError() }
+        self.init(entity: entity, insertInto: context)
+        try decode(using: decoder)
+    }
+    
+    // Override in subclass
+    func decode(using decoder: Decoder) throws {
+        // E.g.,
+        // let container = decoder.container(keyedBy: CodingKeys.self)
+        // self.property = container.decodeIfPresent(String.self, forKey: .property)
     }
     
     class func newObject() -> NSManagedObject {

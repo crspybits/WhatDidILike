@@ -11,7 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Place)
-public class Place: BaseObject {
+public class Place: BaseObject, Codable {
     override class func entityName() -> String {
         return "Place"
     }
@@ -42,6 +42,65 @@ public class Place: BaseObject {
         // Similarly, for lists.
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
+    }
+    
+    // MARK: Codable
+    
+    enum CodingKeys: String, CodingKey {
+        case generalDescription
+        case name
+        case category
+       
+        // Not coding `suggestion` as this is computed from other properties
+
+        case items
+        case lists
+        case locations
+    }
+        
+    override func decode(using decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        generalDescription = try container.decodeIfPresent(String.self, forKey: .generalDescription)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        
+        if let category = try container.decodeIfPresent(PlaceCategory.self, forKey: .category) {
+            PlaceCategory.cleanupDecode(category: category, add: { category in
+                category.addToPlaces(self)
+            })
+        }
+
+        if let items = try container.decodeIfPresent([Item].self, forKey: .items) {
+            addToItems(NSOrderedSet(array: items))
+        }
+        
+        if let lists = try container.decodeIfPresent(Set<PlaceList>.self, forKey: .lists) {
+            PlaceList.cleanupDecode(lists: lists, add: { list in
+                self.addToLists(list)
+            })
+        }
+        
+        if let locations = try container.decodeIfPresent(Set<Location>.self, forKey: .locations) {
+            addToLocations(locations as NSSet)
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(generalDescription, forKey: .generalDescription)
+        try container.encode(name, forKey: .name)
+        try container.encode(category, forKey: .category)
+
+        if let items = items?.array as? [Item] {
+            try container.encode(items, forKey: .items)
+        }
+        
+        if let lists = lists as? Set<PlaceList> {
+            try container.encode(lists, forKey: .lists)
+        }
+        
+        if let locations = locations as? Set<Location> {
+            try container.encode(locations, forKey: .locations)
+        }
     }
 }
 

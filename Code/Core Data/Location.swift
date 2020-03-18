@@ -11,7 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Location)
-public class Location: BaseObject, ImagesManagedObject {
+public class Location: BaseObject, ImagesManagedObject, Codable {
     static let NAME_KEY = "place.name"
     static let DISTANCE_KEY = "internalDistance"
     static let SUGGESTION_KEY = "place.suggestion"
@@ -78,6 +78,58 @@ public class Location: BaseObject, ImagesManagedObject {
         let newLocation = super.newObject() as! Location
         newLocation.rating = Rating.newObject()
         return newLocation
+    }
+    
+    // MARK: Codable
+    
+    enum CodingKeys: String, CodingKey {
+        case address
+        
+        // Don't need to encode/decode internalDistance as this is computed as a function of the Location's lat/long
+        // Similarly, internalGoBack is computed indirectly so don't need to encode/decode.
+        
+        case internalLocation
+        
+        // Similarly, internalRating is computed indirectly so don't need to encode/decode.
+        
+        case specificDescription
+        case images
+        case rating
+        case checkin
+    }
+        
+    override func decode(using decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        address = try container.decodeIfPresent(String.self, forKey: .address)
+        internalLocation = try container.decodeIfPresent(Data.self, forKey: .internalLocation)
+        specificDescription = try container.decodeIfPresent(String.self, forKey: .specificDescription)
+
+        if let images = try container.decodeIfPresent([Image].self, forKey: .images) {
+            addToImages(NSOrderedSet(array: images))
+        }
+        
+        rating = try container.decodeIfPresent(Rating.self, forKey: .rating)
+        
+        if let checkin = try container.decodeIfPresent(Set<Checkin>.self, forKey: .checkin) {
+            addToCheckin(checkin as NSSet)
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(address, forKey: .address)
+        try container.encode(internalLocation, forKey: .internalLocation)
+        try container.encode(specificDescription, forKey: .specificDescription)
+
+        if let images = images?.array as? [Image] {
+            try container.encode(images, forKey: .images)
+        }
+        
+        try container.encode(rating, forKey: .rating)
+        
+        if let checkin = checkin as? Set<Checkin> {
+            try container.encode(checkin, forKey: .checkin)
+        }
     }
     
     struct SortFilterParams {

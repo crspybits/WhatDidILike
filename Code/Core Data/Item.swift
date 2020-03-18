@@ -11,13 +11,38 @@ import CoreData
 import SMCoreLib
 
 @objc(Item)
-public class Item: BaseObject {
+public class Item: BaseObject, Codable {
     override class func entityName() -> String {
         return "Item"
     }
     
     override class func newObject() -> Item {
         return super.newObject() as! Item
+    }
+    
+    // MARK: Codable
+    
+    enum CodingKeys: String, CodingKey {
+       case name
+       case comments
+    }
+    
+    override func decode(using decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        
+        if let comments = try container.decodeIfPresent([Comment].self, forKey: .comments) {
+            addToComments(NSOrderedSet(array: comments))
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+        
+        if let comments = comments?.array as? [Comment] {
+            try container.encode(comments, forKey: .comments)
+        }
     }
     
     func save() {
