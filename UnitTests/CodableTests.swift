@@ -1124,7 +1124,14 @@ class CodableTests: XCTestCase {
             return
         }
         
-        let checkinArray = Array(checkinsSet)
+        let checkinArray = Array(checkinsSet).sorted(by: {c1, c2 in
+            if let d1 = c1.date, let d2 = c2.date {
+                return d1 < d2
+            }
+            else {
+                return false
+            }
+        })
         
         guard checkinArray.count == 2 else {
             XCTFail()
