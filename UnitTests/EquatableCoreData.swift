@@ -215,12 +215,12 @@ class EquatableCoreData: XCTestCase {
                 XCTFail()
                 return
             }
-            
-            let string = String(data: data, encoding: .utf8)
-            
-            XCTAssert(Place.equal(place, place2), "json: \(String(describing: string))")
+                        
+            XCTAssert(Place.equal(place, place2), "json: \(String(describing: String(data: data, encoding: .utf8)))")
             
             CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
         }
+        
+        Log.msg("Succeeded with \(places.count) places.")
     }
 }
