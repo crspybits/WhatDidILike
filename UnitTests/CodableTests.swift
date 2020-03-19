@@ -26,6 +26,10 @@ class CodableTests: XCTestCase {
         let place1 = Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
+        guard let id = place1.id?.int32Value else {
+            XCTFail()
+            return
+        }
         
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(place1) else {
@@ -39,6 +43,7 @@ class CodableTests: XCTestCase {
             return
         }
         
+        XCTAssert(place2.id?.int32Value == id)
         XCTAssert(place1.generalDescription == place2.generalDescription)
         XCTAssert(place1.name == place2.name)
         XCTAssert(place1.category == nil)

@@ -12,13 +12,22 @@ import SMCoreLib
 
 @objc(Place)
 public class Place: BaseObject, Codable, EquatableObjects {
+    private static let _nextId = SMPersistItemInt(name: "Place.nextId", initialIntValue: 0, persistType: .userDefaults)
+    static var nextId: Int32 {
+        let result = _nextId.intValue
+        _nextId.intValue += 1
+        return Int32(result)
+    }
+
     override class func entityName() -> String {
         return "Place"
     }
     
     // After you create a Place, make sure you give it at least one Location-- this is required by the model.
     override class func newObject() -> Place {
-        return super.newObject() as! Place
+        let result = super.newObject() as! Place
+        result.id = nextId as NSNumber
+        return result
     }
     
     class func fetchAllObjects() -> [Place]? {
@@ -47,6 +56,7 @@ public class Place: BaseObject, Codable, EquatableObjects {
     // MARK: Codable
     
     enum CodingKeys: String, CodingKey {
+        case id
         case generalDescription
         case name
         case category
@@ -60,6 +70,7 @@ public class Place: BaseObject, Codable, EquatableObjects {
         
     override func decode(using decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(Int32.self, forKey: .id) as NSNumber?
         generalDescription = try container.decodeIfPresent(String.self, forKey: .generalDescription)
         name = try container.decodeIfPresent(String.self, forKey: .name)
         
@@ -86,6 +97,7 @@ public class Place: BaseObject, Codable, EquatableObjects {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id?.int32Value, forKey: .id)
         try container.encode(generalDescription, forKey: .generalDescription)
         try container.encode(name, forKey: .name)
         try container.encode(category, forKey: .category)
@@ -104,7 +116,8 @@ public class Place: BaseObject, Codable, EquatableObjects {
     }
     
     static func equal(_ lhs: Place?, _ rhs: Place?) -> Bool {
-        return lhs?.generalDescription == rhs?.generalDescription &&
+        return lhs?.id == rhs?.id &&
+            lhs?.generalDescription == rhs?.generalDescription &&
             lhs?.name == rhs?.name &&
             PlaceCategory.equal(lhs?.category, rhs?.category) &&
             Item.equal(lhs?.items?.array as? [Item], rhs?.items?.array as? [Item]) &&
@@ -115,6 +128,8 @@ public class Place: BaseObject, Codable, EquatableObjects {
 
 extension Place {
     override var dates: [Date] {
+        // Not including `lastExport` here because that date doesn't user date data for Recommendations.
+        
         var result = [Date]()
         
         if let locations = locations as? Set<Location> {
@@ -129,6 +144,16 @@ extension Place {
                     result += item.dates
                 }
             }
+        }
+        
+        if let lists = lists as? Set<PlaceList> {
+            for list in lists {
+                result += list.dates
+            }
+        }
+        
+        if let category = category {
+            result += category.dates
         }
         
         return super.dates + result

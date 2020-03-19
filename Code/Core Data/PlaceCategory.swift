@@ -129,7 +129,21 @@ public class PlaceCategory: NSManagedObject, Codable, EquatableObjects {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
+    // See also https://stackoverflow.com/questions/5813309/get-modification-date-for-nsmanagedobject-in-core-data
+    override public func willSave() {
+        super.willSave()
+        if !isDeleted && changedValues()["modificationDate"] == nil {
+            modificationDate = Date()
+        }
+    }
+    
     static func equal(_ lhs: PlaceCategory?, _ rhs: PlaceCategory?) -> Bool {
         return lhs?.name == rhs?.name
+    }
+}
+
+extension PlaceCategory: Recommendations {
+    var dates: [Date] {
+        return [modificationDate].compactMap{$0}
     }
 }

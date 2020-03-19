@@ -47,6 +47,9 @@ class EquatableCoreData: XCTestCase {
         
         XCTAssert(!PlaceList.equal(placeList1, placeList2))
         XCTAssert(PlaceList.equal(placeList1, placeList1))
+        
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeList1)
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeList2)
     }
     
     func testPlaceCategoryEquality() {
@@ -55,6 +58,9 @@ class EquatableCoreData: XCTestCase {
     
         XCTAssert(!PlaceCategory.equal(placeCategory1, placeCategory2))
         XCTAssert(PlaceCategory.equal(placeCategory1, placeCategory1))
+        
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeCategory1)
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeCategory2)
     }
     
     func testItemEquality() {
@@ -218,17 +224,17 @@ class EquatableCoreData: XCTestCase {
                 return
             }
                        
-            if !Place.equal(place, place2) {
+            if Place.equal(place, place2) {
+                success += 1
+            }
+            else {
                 XCTFail("json1: \(String(describing: String(data: data1, encoding: .utf8)))")
                 
                 if let data2 = try? encoder.encode(place2) {
                     XCTFail("json2: \(String(describing: String(data: data2, encoding: .utf8)))")
                 }
             }
-            else {
-                success += 1
-            }
-                        
+            
             CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
         }
         

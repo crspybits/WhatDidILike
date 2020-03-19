@@ -1,5 +1,12 @@
 WhatDidILike v2
 
+Version 2.2
+	* Support for import/export of data
+		- Added codables to Core Data objects
+		- Added equality tests for Core Data objects
+		- Added id property to Places & migration support.
+		- Added modificationDate properties to PlaceList, PlaceCategory, and Rating managed objects.
+	
 Version 2.1 (3/17/20)
 	* Updated DGRunkeeperSwitch for Swift 5.
 	* Updated ImageSlideshow due to iOS 13 issue.

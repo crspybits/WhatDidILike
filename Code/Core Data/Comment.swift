@@ -88,6 +88,10 @@ extension Comment {
             }
         }
         
+        if let rating = rating {
+            result += rating.dates
+        }
+        
         return super.dates + result
     }
 }

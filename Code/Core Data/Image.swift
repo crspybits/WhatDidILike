@@ -72,7 +72,8 @@ public class Image: NSManagedObject, Codable, EquatableObjects {
 
 extension Image: Recommendations {
     var dates: [Date] {
-        return [fileCreationDate(filePath: filePath)].compactMap{$0}
+        let date = fileCreationDate(filePath: filePath)
+        return [date].compactMap{$0}
     }
 }
 

@@ -118,6 +118,14 @@ public class PlaceList: NSManagedObject, Codable, EquatableObjects {
     func save() {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
+
+    // See also https://stackoverflow.com/questions/5813309/get-modification-date-for-nsmanagedobject-in-core-data
+    override public func willSave() {
+        super.willSave()
+        if !isDeleted && changedValues()["modificationDate"] == nil {
+            modificationDate = Date()
+        }
+    }
     
     class func fetchRequestForAllObjects() -> NSFetchRequest<NSFetchRequestResult>? {
         var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
@@ -133,5 +141,11 @@ public class PlaceList: NSManagedObject, Codable, EquatableObjects {
     
     static func equal(_ lhs: PlaceList?, _ rhs: PlaceList?) -> Bool {
         return lhs?.name == rhs?.name
+    }
+}
+
+extension PlaceList: Recommendations {
+    var dates: [Date] {
+        return [modificationDate].compactMap{$0}
     }
 }

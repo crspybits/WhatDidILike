@@ -58,6 +58,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TODO: Add a UI instead of assigning a constant.
         Parameters.userName.stringValue = "Christopher Prince"
         
+        ConvertFromV2.doIt()
+        
         return true
     }
 

@@ -72,6 +72,8 @@
 		839FC0C82423B005001822D2 /* CLLocation+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0C72423B005001822D2 /* CLLocation+Codable.swift */; };
 		839FC0CA2423B89D001822D2 /* EquatableObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0C92423B89D001822D2 /* EquatableObjects.swift */; };
 		839FC0CC2423BC4C001822D2 /* LargeImageFilesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0CB2423BC4C001822D2 /* LargeImageFilesTests.swift */; };
+		839FC0CE24240897001822D2 /* ConvertFromV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0CD24240897001822D2 /* ConvertFromV2.swift */; };
+		839FC0E5242414F0001822D2 /* PlaceUpdateDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0E4242414F0001822D2 /* PlaceUpdateDateTests.swift */; };
 		83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image.swift */; };
 		83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */; };
 		83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */; };
@@ -189,6 +191,9 @@
 		839FC0C72423B005001822D2 /* CLLocation+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+Codable.swift"; sourceTree = "<group>"; };
 		839FC0C92423B89D001822D2 /* EquatableObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableObjects.swift; sourceTree = "<group>"; };
 		839FC0CB2423BC4C001822D2 /* LargeImageFilesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeImageFilesTests.swift; sourceTree = "<group>"; };
+		839FC0CD24240897001822D2 /* ConvertFromV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertFromV2.swift; sourceTree = "<group>"; };
+		839FC0CF24240A7B001822D2 /* WhatDidILike.v4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v4.xcdatamodel; sourceTree = "<group>"; };
+		839FC0E4242414F0001822D2 /* PlaceUpdateDateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceUpdateDateTests.swift; sourceTree = "<group>"; };
 		83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v2.xcdatamodel; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -348,6 +353,7 @@
 				839FC0C124200501001822D2 /* ImportExport.swift */,
 				839FC0C92423B89D001822D2 /* EquatableObjects.swift */,
 				839FC0C72423B005001822D2 /* CLLocation+Codable.swift */,
+				839FC0CD24240897001822D2 /* ConvertFromV2.swift */,
 			);
 			name = "Import Export";
 			path = "Features/Import Export";
@@ -482,6 +488,7 @@
 		83D49CDB1F4AC2C700409B0F /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				839FC0E4242414F0001822D2 /* PlaceUpdateDateTests.swift */,
 				839FC0CB2423BC4C001822D2 /* LargeImageFilesTests.swift */,
 				839FC0C52422C0E9001822D2 /* EquatableCoreData.swift */,
 				839FC0C324201928001822D2 /* CodableTests.swift */,
@@ -800,6 +807,7 @@
 				83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */,
 				83019F901F81730100E1E117 /* Spinner.swift in Sources */,
 				83401DA81F5CFD7400A96C8D /* Layout.swift in Sources */,
+				839FC0CE24240897001822D2 /* ConvertFromV2.swift in Sources */,
 				839FC0CA2423B89D001822D2 /* EquatableObjects.swift in Sources */,
 				8366CD3F1F7CA65F00E9D6FF /* GeocodeAddressToLatLong.m in Sources */,
 				8385206A1F8B2A77001D97D3 /* ImagesView.swift in Sources */,
@@ -844,6 +852,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				839FC0C424201928001822D2 /* CodableTests.swift in Sources */,
+				839FC0E5242414F0001822D2 /* PlaceUpdateDateTests.swift in Sources */,
 				839FC0CC2423BC4C001822D2 /* LargeImageFilesTests.swift in Sources */,
 				83D49CDF1F4AC2C700409B0F /* WhatDidILikeTests.swift in Sources */,
 				839FC0C62422C0EA001822D2 /* EquatableCoreData.swift in Sources */,
@@ -1095,11 +1104,12 @@
 		83D49CCA1F4AC26900409B0F /* WhatDidILike.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				839FC0CF24240A7B001822D2 /* WhatDidILike.v4.xcdatamodel */,
 				836F7851241ABEA60006D7CA /* WhatDidILike.v3.xcdatamodel */,
 				83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */,
 				83D49CCB1F4AC26900409B0F /* WhatDidILike.xcdatamodel */,
 			);
-			currentVersion = 836F7851241ABEA60006D7CA /* WhatDidILike.v3.xcdatamodel */;
+			currentVersion = 839FC0CF24240A7B001822D2 /* WhatDidILike.v4.xcdatamodel */;
 			path = WhatDidILike.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

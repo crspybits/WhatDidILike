@@ -78,10 +78,24 @@ public class Rating: NSManagedObject, Codable, EquatableObjects {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
+    // See also https://stackoverflow.com/questions/5813309/get-modification-date-for-nsmanagedobject-in-core-data
+    override public func willSave() {
+        super.willSave()
+        if !isDeleted && changedValues()["modificationDate"] == nil {
+            modificationDate = Date()
+        }
+    }
+    
     static func equal(_ lhs: Rating?, _ rhs: Rating?) -> Bool {
         return lhs?.rating == rhs?.rating &&
             lhs?.recommendedBy == rhs?.recommendedBy &&
             lhs?.again?.boolValue == rhs?.again?.boolValue &&
             lhs?.meThem?.boolValue == rhs?.meThem?.boolValue
+    }
+}
+
+extension Rating: Recommendations {
+    var dates: [Date] {
+        return [modificationDate].compactMap{$0}
     }
 }

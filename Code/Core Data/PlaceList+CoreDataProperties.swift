@@ -2,8 +2,8 @@
 //  PlaceList+CoreDataProperties.swift
 //  WhatDidILike
 //
-//  Created by Christopher G Prince on 9/4/17.
-//  Copyright © 2017 Spastic Muffin, LLC. All rights reserved.
+//  Created by Christopher G Prince on 3/19/20.
+//  Copyright © 2020 Spastic Muffin, LLC. All rights reserved.
 //
 //
 
@@ -18,6 +18,7 @@ extension PlaceList {
     }
 
     @NSManaged public var name: String?
+    @NSManaged public var modificationDate: Date?
     @NSManaged public var places: NSSet?
 
 }

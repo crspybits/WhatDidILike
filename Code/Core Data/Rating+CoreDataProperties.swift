@@ -2,8 +2,8 @@
 //  Rating+CoreDataProperties.swift
 //  WhatDidILike
 //
-//  Created by Christopher G Prince on 10/16/17.
-//  Copyright © 2017 Spastic Muffin, LLC. All rights reserved.
+//  Created by Christopher G Prince on 3/19/20.
+//  Copyright © 2020 Spastic Muffin, LLC. All rights reserved.
 //
 //
 
@@ -17,11 +17,12 @@ extension Rating {
         return NSFetchRequest<Rating>(entityName: "Rating")
     }
 
-    @NSManaged public var rating: Float
-    @NSManaged public var recommendedBy: String?
     @NSManaged public var again: NSNumber?
     @NSManaged public var meThem: NSNumber?
-    @NSManaged public var location: Location?
+    @NSManaged public var rating: Float
+    @NSManaged public var recommendedBy: String?
+    @NSManaged public var modificationDate: Date?
     @NSManaged public var comment: Comment?
+    @NSManaged public var location: Location?
 
 }
