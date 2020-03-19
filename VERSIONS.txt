@@ -1,6 +1,6 @@
 WhatDidILike v2
 
-Version 2.1
+Version 2.1 (3/17/20)
 	* Updated DGRunkeeperSwitch for Swift 5.
 	* Updated ImageSlideshow due to iOS 13 issue.
 	* Added FileSharing so I can access files in app for testing.
