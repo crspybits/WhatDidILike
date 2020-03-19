@@ -127,6 +127,7 @@ public class Place: BaseObject, Codable, EquatableObjects {
 }
 
 extension Place {
+    // Recommendation dates.
     override var dates: [Date] {
         // Not including `lastExport` here because that date doesn't user date data for Recommendations.
         
@@ -146,17 +147,24 @@ extension Place {
             }
         }
         
+        return super.dates + result
+    }
+    
+    // I'm providing this because the `dates` property was originally intended for recommendations for places. The date updates provided by PlaceList and PlaceCategory don't really fit this because they are more or less independent of Place's. e.g., if I change a PlaceCategory name that impacts multiple Place's.
+    var lastExportModificationDate: Date {
+        var result = dates
+        
         if let lists = lists as? Set<PlaceList> {
             for list in lists {
-                result += list.dates
+                result += [list.modificationDate].compactMap{$0}
             }
         }
         
         if let category = category {
-            result += category.dates
+            result += [category.modificationDate].compactMap{$0}
         }
         
-        return super.dates + result
+        return result.max()!
     }
     
     // Doesn't save

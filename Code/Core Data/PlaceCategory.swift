@@ -142,8 +142,3 @@ public class PlaceCategory: NSManagedObject, Codable, EquatableObjects {
     }
 }
 
-extension PlaceCategory: Recommendations {
-    var dates: [Date] {
-        return [modificationDate].compactMap{$0}
-    }
-}

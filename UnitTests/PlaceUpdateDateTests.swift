@@ -28,16 +28,16 @@ class PlaceUpdateDateTests: XCTestCase {
         let checkin = Checkin.newObject()
         location1.addToCheckin(checkin)
         
-        let dates = place1.dates.sorted()
+        let lastDate = place1.lastExportModificationDate
         
-        XCTAssert(dates[dates.count-1] == checkin.date)
+        XCTAssert(lastDate == checkin.date)
     }
     
     func testPlaceList() {
         let place1 = Place.newObject()
         
-        let dates1 = place1.dates.sorted()
-        
+        let lastDate1 = place1.lastExportModificationDate
+
         guard let placeList = try? PlaceList.newObject(withName: "foo") else {
             XCTFail()
             return
@@ -48,9 +48,9 @@ class PlaceUpdateDateTests: XCTestCase {
         // Should update modification date of place
         place1.save()
         
-        let dates2 = place1.dates.sorted()
-        
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        let lastDate2 = place1.lastExportModificationDate
+
+        XCTAssert(lastDate1 < lastDate2)
 
         place1.remove()
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeList)
@@ -69,14 +69,14 @@ class PlaceUpdateDateTests: XCTestCase {
         
         place1.save()
         
-        let dates1 = place1.dates.sorted()
+        let lastDate1 = place1.lastExportModificationDate
 
         placeList.name = "foo bar"
         placeList.save()
         
-        let dates2 = place1.dates.sorted()
-        
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        let lastDate2 = place1.lastExportModificationDate
+
+        XCTAssert(lastDate1 < lastDate2)
 
         place1.remove()
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeList)
@@ -86,8 +86,8 @@ class PlaceUpdateDateTests: XCTestCase {
     func testPlaceCategory() {
         let place1 = Place.newObject()
         
-        let dates1 = place1.dates.sorted()
-        
+        let lastDate1 = place1.lastExportModificationDate
+
         guard let placeCategory = try? PlaceCategory.newObject(withName: "foo") else {
             XCTFail()
             return
@@ -98,9 +98,9 @@ class PlaceUpdateDateTests: XCTestCase {
         // Should update modification date of place
         place1.save()
         
-        let dates2 = place1.dates.sorted()
-        
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        let lastDate2 = place1.lastExportModificationDate
+
+        XCTAssert(lastDate1 < lastDate2)
 
         place1.remove()
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeCategory)
@@ -118,14 +118,14 @@ class PlaceUpdateDateTests: XCTestCase {
         place1.category = placeCategory
         
         place1.save()
-        let dates1 = place1.dates.sorted()
-        
+        let lastDate1 = place1.lastExportModificationDate
+
         placeCategory.name = "foo bar"
         placeCategory.save()
 
-        let dates2 = place1.dates.sorted()
-        
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        let lastDate2 = place1.lastExportModificationDate
+
+        XCTAssert(lastDate1 < lastDate2)
 
         place1.remove()
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeCategory)
@@ -135,17 +135,17 @@ class PlaceUpdateDateTests: XCTestCase {
     func testItem() {
         let place1 = Place.newObject()
     
-        let dates1 = place1.dates.sorted()
-        
+        let lastDate1 = place1.lastExportModificationDate
+
         let item = Item.newObject()
         place1.addToItems(item)
         
         // Should update modification date of place
         place1.save()
         
-        let dates2 = place1.dates.sorted()
-        
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        let lastDate2 = place1.lastExportModificationDate
+
+        XCTAssert(lastDate1 < lastDate2)
 
         // Also removes item(s)
         place1.remove()
@@ -161,14 +161,14 @@ class PlaceUpdateDateTests: XCTestCase {
         
         place1.save()
         
-        let dates1 = place1.dates.sorted()
+        let lastDate1 = place1.lastExportModificationDate
 
         item.name = "Foo"
         item.save()
         
-        let dates2 = place1.dates.sorted()
-        
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        let lastDate2 = place1.lastExportModificationDate
+
+        XCTAssert(lastDate1 < lastDate2)
 
         // Also removes item(s)
         place1.remove()
@@ -183,15 +183,15 @@ class PlaceUpdateDateTests: XCTestCase {
         place1.addToItems(item)
         place1.save()
         
-        let dates1 = place1.dates.sorted()
+        let lastDate1 = place1.lastExportModificationDate
 
         let comment = Comment.newObject()
         item.addToComments(comment)
         place1.save()
 
-        let dates2 = place1.dates.sorted()
-        
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        let lastDate2 = place1.lastExportModificationDate
+
+        XCTAssert(lastDate1 < lastDate2)
 
         // Also removes item(s)
         place1.remove()
@@ -210,14 +210,14 @@ class PlaceUpdateDateTests: XCTestCase {
         item.addToComments(comment)
         place1.save()
         
-        let dates1 = place1.dates.sorted()
+        let lastDate1 = place1.lastExportModificationDate
 
         comment.comment = "stuff"
         comment.save()
         
-        let dates2 = place1.dates.sorted()
-        
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        let lastDate2 = place1.lastExportModificationDate
+
+        XCTAssert(lastDate1 < lastDate2)
 
         // Also removes item(s)
         place1.remove()
@@ -229,15 +229,15 @@ class PlaceUpdateDateTests: XCTestCase {
         let place1 = Place.newObject()
         place1.save()
         
-        let dates1 = place1.dates.sorted()
+        let lastDate1 = place1.lastExportModificationDate
 
         let location = Location.newObject()
         place1.addToLocations(location)
         place1.save()
 
-        let dates2 = place1.dates.sorted()
+        let lastDate2 = place1.lastExportModificationDate
 
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        XCTAssert(lastDate1 < lastDate2)
 
         place1.remove()
         
@@ -251,14 +251,14 @@ class PlaceUpdateDateTests: XCTestCase {
         place1.addToLocations(location)
         place1.save()
         
-        let dates1 = place1.dates.sorted()
-        
+        let lastDate1 = place1.lastExportModificationDate
+
         location.address = "123 Easy St."
         location.save()
 
-        let dates2 = place1.dates.sorted()
+        let lastDate2 = place1.lastExportModificationDate
 
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        XCTAssert(lastDate1 < lastDate2)
 
         place1.remove()
         
@@ -272,16 +272,16 @@ class PlaceUpdateDateTests: XCTestCase {
         place1.addToLocations(location)
 
         place1.save()
-        let dates1 = place1.dates.sorted()
+        let lastDate1 = place1.lastExportModificationDate
 
         let image = Image.newObject()
         image.fileName = "path"
         location.addToImages(image)
         
         place1.save()
-        let dates2 = place1.dates.sorted()
+        let lastDate2 = place1.lastExportModificationDate
 
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        XCTAssert(lastDate1 < lastDate2)
 
         place1.remove()
         
@@ -297,14 +297,14 @@ class PlaceUpdateDateTests: XCTestCase {
         place1.addToLocations(location)
         place1.save()
 
-        let dates1 = place1.dates.sorted()
+        let lastDate1 = place1.lastExportModificationDate
 
         location.rating = rating
         place1.save()
         
-        let dates2 = place1.dates.sorted()
-        
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        let lastDate2 = place1.lastExportModificationDate
+
+        XCTAssert(lastDate1 < lastDate2)
 
         place1.remove()
         
@@ -323,14 +323,14 @@ class PlaceUpdateDateTests: XCTestCase {
         location.rating = rating
         place1.save()
         
-        let dates1 = place1.dates.sorted()
+        let lastDate1 = place1.lastExportModificationDate
 
         rating.recommendedBy = "joe"
         place1.save()
         
-        let dates2 = place1.dates.sorted()
-        
-        XCTAssert(dates1[dates1.count-1] < dates2[dates2.count-1] )
+        let lastDate2 = place1.lastExportModificationDate
+
+        XCTAssert(lastDate1 < lastDate2)
 
         place1.remove()
         

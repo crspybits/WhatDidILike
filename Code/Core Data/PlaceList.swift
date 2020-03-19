@@ -144,8 +144,3 @@ public class PlaceList: NSManagedObject, Codable, EquatableObjects {
     }
 }
 
-extension PlaceList: Recommendations {
-    var dates: [Date] {
-        return [modificationDate].compactMap{$0}
-    }
-}

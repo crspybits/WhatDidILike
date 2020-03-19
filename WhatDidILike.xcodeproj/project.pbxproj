@@ -74,6 +74,7 @@
 		839FC0CC2423BC4C001822D2 /* LargeImageFilesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0CB2423BC4C001822D2 /* LargeImageFilesTests.swift */; };
 		839FC0CE24240897001822D2 /* ConvertFromV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0CD24240897001822D2 /* ConvertFromV2.swift */; };
 		839FC0E5242414F0001822D2 /* PlaceUpdateDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0E4242414F0001822D2 /* PlaceUpdateDateTests.swift */; };
+		839FC0F324243193001822D2 /* Place+ImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0F224243193001822D2 /* Place+ImportExport.swift */; };
 		83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image.swift */; };
 		83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */; };
 		83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */; };
@@ -194,6 +195,7 @@
 		839FC0CD24240897001822D2 /* ConvertFromV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertFromV2.swift; sourceTree = "<group>"; };
 		839FC0CF24240A7B001822D2 /* WhatDidILike.v4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v4.xcdatamodel; sourceTree = "<group>"; };
 		839FC0E4242414F0001822D2 /* PlaceUpdateDateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceUpdateDateTests.swift; sourceTree = "<group>"; };
+		839FC0F224243193001822D2 /* Place+ImportExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+ImportExport.swift"; sourceTree = "<group>"; };
 		83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v2.xcdatamodel; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				839FC0C124200501001822D2 /* ImportExport.swift */,
+				839FC0F224243193001822D2 /* Place+ImportExport.swift */,
 				839FC0C92423B89D001822D2 /* EquatableObjects.swift */,
 				839FC0C72423B005001822D2 /* CLLocation+Codable.swift */,
 				839FC0CD24240897001822D2 /* ConvertFromV2.swift */,
@@ -829,6 +832,7 @@
 				83D49CD21F4AC26A00409B0F /* AppDelegate.swift in Sources */,
 				83019F891F80924400E1E117 /* BaseObject.swift in Sources */,
 				83B496C51F4BE0F40083610D /* Place+CoreDataProperties.swift in Sources */,
+				839FC0F324243193001822D2 /* Place+ImportExport.swift in Sources */,
 				83D49CD11F4AC26A00409B0F /* WhatDidILike.xcdatamodeld in Sources */,
 				831B04171F5CC297000E21C4 /* BaseObject+CoreDataProperties.swift in Sources */,
 				83B496C11F4BDE300083610D /* CoreDataExtras.swift in Sources */,
