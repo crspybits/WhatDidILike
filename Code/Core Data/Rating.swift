@@ -12,7 +12,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Rating)
-public class Rating: NSManagedObject, Codable {
+public class Rating: NSManagedObject, Codable, EquatableObjects {
     class func entityName() -> String {
         return "Rating"
     }
@@ -47,18 +47,27 @@ public class Rating: NSManagedObject, Codable {
         rating = try container.decodeIfPresent(Float.self, forKey: .rating) ?? 0
         recommendedBy = try container.decodeIfPresent(String.self, forKey: .recommendedBy)
         
-        let again = try container.decodeIfPresent(Bool.self, forKey: .again)
-        self.again = NSNumber(booleanLiteral: again ?? false)
-        let meThem = try container.decodeIfPresent(Bool.self, forKey: .meThem)
-        self.meThem = NSNumber(booleanLiteral: meThem ?? false)
+        if let again = try container.decodeIfPresent(Bool.self, forKey: .again) {
+            self.again = NSNumber(booleanLiteral: again)
+        }
+        
+        if let meThem = try container.decodeIfPresent(Bool.self, forKey: .meThem) {
+            self.meThem = NSNumber(booleanLiteral: meThem)
+        }
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(rating, forKey: .rating)
         try container.encode(recommendedBy, forKey: .recommendedBy)
-        try container.encode(again?.boolValue, forKey: .again)
-        try container.encode(meThem?.boolValue, forKey: .meThem)
+        
+        if let again = again?.boolValue {
+            try container.encode(again, forKey: .again)
+        }
+        
+        if let meThem = meThem?.boolValue {
+            try container.encode(meThem, forKey: .meThem)
+        }
     }
     
     func remove() {        
@@ -67,5 +76,12 @@ public class Rating: NSManagedObject, Codable {
     
     func save() {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
+    
+    static func equal(_ lhs: Rating?, _ rhs: Rating?) -> Bool {
+        return lhs?.rating == rhs?.rating &&
+            lhs?.recommendedBy == rhs?.recommendedBy &&
+            lhs?.again?.boolValue == rhs?.again?.boolValue &&
+            lhs?.meThem?.boolValue == rhs?.meThem?.boolValue
     }
 }

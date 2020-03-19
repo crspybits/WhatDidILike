@@ -11,7 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Comment)
-public class Comment: BaseObject, ImagesManagedObject, Codable {
+public class Comment: BaseObject, ImagesManagedObject, Codable, EquatableObjects {
     override class func entityName() -> String {
         return "Comment"
     }
@@ -66,6 +66,13 @@ public class Comment: BaseObject, ImagesManagedObject, Codable {
         
         rating!.remove()
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
+    }
+    
+    static func equal(_ lhs: Comment?, _ rhs: Comment?) -> Bool {
+        return lhs?.comment == rhs?.comment &&
+            Image.equal(lhs?.images?.array as? [Image], rhs?.images?.array as? [Image]) &&
+            Item.equal(lhs?.item, rhs?.item) &&
+            Rating.equal(lhs?.rating, rhs?.rating)
     }
 }
 

@@ -12,7 +12,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Checkin)
-public class Checkin: NSManagedObject, Codable {    
+public class Checkin: NSManagedObject, Codable, EquatableObjects {
     class func entityName() -> String {
         return "Checkin"
     }
@@ -44,6 +44,10 @@ public class Checkin: NSManagedObject, Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(date, forKey: .date)
+    }
+
+    static func equal(_ lhs: Checkin?, _ rhs: Checkin?) -> Bool {
+        return lhs?.date == rhs?.date
     }
 }
 

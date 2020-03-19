@@ -11,7 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Item)
-public class Item: BaseObject, Codable {
+public class Item: BaseObject, Codable, EquatableObjects {
     override class func entityName() -> String {
         return "Item"
     }
@@ -56,6 +56,10 @@ public class Item: BaseObject, Codable {
         }
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
+    }
+    
+    static func equal(_ lhs: Item?, _ rhs: Item?) -> Bool {
+        return lhs?.name == rhs?.name
     }
 }
 

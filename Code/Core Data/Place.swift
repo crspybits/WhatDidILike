@@ -11,7 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Place)
-public class Place: BaseObject, Codable {
+public class Place: BaseObject, Codable, EquatableObjects {
     override class func entityName() -> String {
         return "Place"
     }
@@ -101,6 +101,15 @@ public class Place: BaseObject, Codable {
         if let locations = locations as? Set<Location> {
             try container.encode(locations, forKey: .locations)
         }
+    }
+    
+    static func equal(_ lhs: Place?, _ rhs: Place?) -> Bool {
+        return lhs?.generalDescription == rhs?.generalDescription &&
+            lhs?.name == rhs?.name &&
+            PlaceCategory.equal(lhs?.category, rhs?.category) &&
+            Item.equal(lhs?.items?.array as? [Item], rhs?.items?.array as? [Item]) &&
+            PlaceList.equal(lhs?.lists as? Set<PlaceList>, rhs?.lists as? Set<PlaceList>) &&
+            Location.equal(lhs?.locations as? Set<Location>, rhs?.locations as? Set<Location>)
     }
 }
 

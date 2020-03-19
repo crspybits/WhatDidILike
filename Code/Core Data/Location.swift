@@ -11,7 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Location)
-public class Location: BaseObject, ImagesManagedObject, Codable {
+public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObjects {
     static let NAME_KEY = "place.name"
     static let DISTANCE_KEY = "internalDistance"
     static let SUGGESTION_KEY = "place.suggestion"
@@ -223,6 +223,15 @@ public class Location: BaseObject, ImagesManagedObject, Codable {
 
     static func milesToMeters(miles:Float) -> Float {
         return miles/(0.000621371)
+    }
+    
+    static func equal(_ lhs: Location?, _ rhs: Location?) -> Bool {
+        return lhs?.address == rhs?.address &&
+            lhs?.internalLocation == rhs?.internalLocation &&
+            lhs?.specificDescription == rhs?.specificDescription &&
+            Image.equal(lhs?.images?.array as? [Image], rhs?.images?.array as? [Image]) &&
+            Rating.equal(lhs?.rating, rhs?.rating) &&
+            Checkin.equal(lhs?.checkin as? Set<Checkin>, rhs?.checkin as? Set<Checkin>)
     }
 }
 

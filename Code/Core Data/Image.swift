@@ -12,7 +12,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Image)
-public class Image: NSManagedObject, Codable {
+public class Image: NSManagedObject, Codable, EquatableObjects {
     class func entityName() -> String {
         return "Image"
     }
@@ -63,6 +63,10 @@ public class Image: NSManagedObject, Codable {
     
     func save() {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
+    
+    static func equal(_ lhs: Image?, _ rhs: Image?) -> Bool {
+        return lhs?.fileName == rhs?.fileName
     }
 }
 

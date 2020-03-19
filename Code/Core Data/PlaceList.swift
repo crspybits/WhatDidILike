@@ -12,7 +12,7 @@ import CoreData
 import SMCoreLib
 
 @objc(PlaceList)
-public class PlaceList: NSManagedObject, Codable {
+public class PlaceList: NSManagedObject, Codable, EquatableObjects {
     static let NAME_KEY = "name"
     
     // A hack, but I can't figure out a better way to communicate an error when decoding. Specifically not persisted because if this is non-nil after decoding, I need to delete (and not persist) the object.
@@ -129,5 +129,9 @@ public class PlaceList: NSManagedObject, Codable {
         }
         
         return fetchRequest
+    }
+    
+    static func equal(_ lhs: PlaceList?, _ rhs: PlaceList?) -> Bool {
+        return lhs?.name == rhs?.name
     }
 }
