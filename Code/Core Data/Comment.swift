@@ -91,3 +91,14 @@ extension Comment {
         return super.dates + result
     }
 }
+
+extension Comment: ImportExport {
+    var largeImageFiles: [String] {
+        if let images = self.images?.array as? [Image] {
+            return images.map{$0.largeImageFiles}.flatMap{$0}
+        }
+        else {
+            return []
+        }
+    }
+}

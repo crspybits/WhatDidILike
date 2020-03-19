@@ -75,3 +75,9 @@ extension Image: Recommendations {
         return [fileCreationDate(filePath: filePath)].compactMap{$0}
     }
 }
+
+extension Image: ImportExport {
+    var largeImageFiles: [String] {
+        return [fileName].compactMap{$0}
+    }
+}

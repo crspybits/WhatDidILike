@@ -69,7 +69,8 @@
 		839FC0C224200501001822D2 /* ImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0C124200501001822D2 /* ImportExport.swift */; };
 		839FC0C424201928001822D2 /* CodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0C324201928001822D2 /* CodableTests.swift */; };
 		839FC0C62422C0EA001822D2 /* EquatableCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0C52422C0E9001822D2 /* EquatableCoreData.swift */; };
-		839FC0C82423B005001822D2 /* CLLocation+Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0C72423B005001822D2 /* CLLocation+Encodable.swift */; };
+		839FC0C82423B005001822D2 /* CLLocation+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0C72423B005001822D2 /* CLLocation+Codable.swift */; };
+		839FC0CA2423B89D001822D2 /* EquatableObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0C92423B89D001822D2 /* EquatableObjects.swift */; };
 		83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image.swift */; };
 		83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */; };
 		83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */; };
@@ -184,7 +185,8 @@
 		839FC0C124200501001822D2 /* ImportExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExport.swift; sourceTree = "<group>"; };
 		839FC0C324201928001822D2 /* CodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableTests.swift; sourceTree = "<group>"; };
 		839FC0C52422C0E9001822D2 /* EquatableCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableCoreData.swift; sourceTree = "<group>"; };
-		839FC0C72423B005001822D2 /* CLLocation+Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+Encodable.swift"; sourceTree = "<group>"; };
+		839FC0C72423B005001822D2 /* CLLocation+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+Codable.swift"; sourceTree = "<group>"; };
+		839FC0C92423B89D001822D2 /* EquatableObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableObjects.swift; sourceTree = "<group>"; };
 		83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v2.xcdatamodel; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -342,7 +344,8 @@
 			isa = PBXGroup;
 			children = (
 				839FC0C124200501001822D2 /* ImportExport.swift */,
-				839FC0C72423B005001822D2 /* CLLocation+Encodable.swift */,
+				839FC0C92423B89D001822D2 /* EquatableObjects.swift */,
+				839FC0C72423B005001822D2 /* CLLocation+Codable.swift */,
 			);
 			name = "Import Export";
 			path = "Features/Import Export";
@@ -775,7 +778,7 @@
 				8327AEB61F95BE3500E170A2 /* Rating+CoreDataProperties.swift in Sources */,
 				8366CD3D1F7CA65F00E9D6FF /* Map.m in Sources */,
 				8396CE381F4BCB8A00660D73 /* Item.swift in Sources */,
-				839FC0C82423B005001822D2 /* CLLocation+Encodable.swift in Sources */,
+				839FC0C82423B005001822D2 /* CLLocation+Codable.swift in Sources */,
 				8317E8F61F873204004C53BB /* NewObject.swift in Sources */,
 				8396CE3A1F4BCB8A00660D73 /* Place.swift in Sources */,
 				83A597BE1F6788ED00736DE2 /* TextView.swift in Sources */,
@@ -794,6 +797,7 @@
 				83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */,
 				83019F901F81730100E1E117 /* Spinner.swift in Sources */,
 				83401DA81F5CFD7400A96C8D /* Layout.swift in Sources */,
+				839FC0CA2423B89D001822D2 /* EquatableObjects.swift in Sources */,
 				8366CD3F1F7CA65F00E9D6FF /* GeocodeAddressToLatLong.m in Sources */,
 				8385206A1F8B2A77001D97D3 /* ImagesView.swift in Sources */,
 				831F625A205F44E00046DB09 /* ApplySortyFilter.swift in Sources */,

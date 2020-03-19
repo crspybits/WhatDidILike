@@ -1,5 +1,5 @@
 //
-//  CLLocation+Encodable.swift
+//  CLLocation+Codable.swift
 //  WhatDidILike
 //
 //  Created by Christopher G Prince on 3/19/20.

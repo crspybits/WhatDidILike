@@ -78,3 +78,14 @@ extension Item {
         return super.dates + result
     }
 }
+
+extension Item: ImportExport {
+    var largeImageFiles: [String] {
+        if let comments = self.comments?.array as? [Comment] {
+            return comments.map{$0.largeImageFiles}.flatMap{$0}
+        }
+        else {
+            return []
+        }
+    }
+}
