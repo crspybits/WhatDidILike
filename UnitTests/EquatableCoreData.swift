@@ -205,22 +205,33 @@ class EquatableCoreData: XCTestCase {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
         
+        var success = 0
+        
         for place in places {
-            guard let data = try? encoder.encode(place) else {
+            guard let data1 = try? encoder.encode(place) else {
                 XCTFail()
                 return
             }
             
-            guard let place2 = try? decoder.decode(Place.self, from: data) else {
+            guard let place2 = try? decoder.decode(Place.self, from: data1) else {
                 XCTFail()
                 return
+            }
+                       
+            if !Place.equal(place, place2) {
+                XCTFail("json1: \(String(describing: String(data: data1, encoding: .utf8)))")
+                
+                if let data2 = try? encoder.encode(place2) {
+                    XCTFail("json2: \(String(describing: String(data: data2, encoding: .utf8)))")
+                }
+            }
+            else {
+                success += 1
             }
                         
-            XCTAssert(Place.equal(place, place2), "json: \(String(describing: String(data: data, encoding: .utf8)))")
-            
             CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
         }
         
-        Log.msg("Succeeded with \(places.count) places.")
+        Log.msg("Succeeded with \(success) places; failed with \(places.count - success) places.")
     }
 }

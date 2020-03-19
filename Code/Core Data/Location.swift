@@ -88,7 +88,7 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
         // Don't need to encode/decode internalDistance as this is computed as a function of the Location's lat/long
         // Similarly, internalGoBack is computed indirectly so don't need to encode/decode.
         
-        case internalLocation
+        case location
         
         // Similarly, internalRating is computed indirectly so don't need to encode/decode.
         
@@ -97,11 +97,18 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
         case rating
         case checkin
     }
+    
+    // Not using `internalLocation` for coding/decoding so I can get JSON in the coding (and not just Data).
         
     override func decode(using decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         address = try container.decodeIfPresent(String.self, forKey: .address)
-        internalLocation = try container.decodeIfPresent(Data.self, forKey: .internalLocation)
+        
+        
+        if let locationDecoder = try container.decodeIfPresent(LocationDecoder.self, forKey: .location) {
+            location = locationDecoder.location
+        }
+        
         specificDescription = try container.decodeIfPresent(String.self, forKey: .specificDescription)
 
         if let images = try container.decodeIfPresent([Image].self, forKey: .images) {
@@ -118,7 +125,7 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(address, forKey: .address)
-        try container.encode(internalLocation, forKey: .internalLocation)
+        try container.encode(location, forKey: .location)
         try container.encode(specificDescription, forKey: .specificDescription)
 
         if let images = images?.array as? [Image] {
@@ -226,8 +233,13 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
     }
     
     static func equal(_ lhs: Location?, _ rhs: Location?) -> Bool {
+        // For some reason, checking the internalLocations for equality fails, but checking the encoded data succeeds.
+        let encoder = JSONEncoder()
+        let lhsLocationData = try? encoder.encode(lhs?.location)
+        let rhsLocationData = try? encoder.encode(rhs?.location)
+
         return lhs?.address == rhs?.address &&
-            lhs?.internalLocation == rhs?.internalLocation &&
+            lhsLocationData == rhsLocationData &&
             lhs?.specificDescription == rhs?.specificDescription &&
             Image.equal(lhs?.images?.array as? [Image], rhs?.images?.array as? [Image]) &&
             Rating.equal(lhs?.rating, rhs?.rating) &&
