@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SyncSettingsCell" rowHeight="179" id="KGk-i7-Jjw" customClass="SyncSettingsCell" customModule="WhatDidILike" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="403" height="179"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="403" height="179"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backup Folder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cuA-ML-FKC">
+                        <rect key="frame" x="12" y="14" width="110" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9D4-hu-IPl">
+                        <rect key="frame" x="12" y="138" width="86" height="30"/>
+                        <state key="normal" title="Backup Now"/>
+                        <connections>
+                            <action selector="backupNowAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="MoU-Jv-a8L"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cr4-4r-MZv" userLabel="Separator">
+                        <rect key="frame" x="0.0" y="178" width="403" height="1"/>
+                        <color key="backgroundColor" white="0.84811108732876717" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="XYQ-cq-oNl"/>
+                        </constraints>
+                    </view>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="y9m-ml-5VC">
+                        <rect key="frame" x="25" y="43" width="353" height="76"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="76" id="DtC-K7-SpN"/>
+                        </constraints>
+                        <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h9Q-pG-K9q" userLabel="SelectTextView">
+                        <rect key="frame" x="25" y="43" width="353" height="76"/>
+                        <connections>
+                            <action selector="selectAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="5dH-Hk-MDj"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DK6-SR-41p" userLabel="Clear">
+                        <rect key="frame" x="358" y="43" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="g9s-jy-oZB"/>
+                            <constraint firstAttribute="height" constant="20" id="hxM-HZ-y3i"/>
+                        </constraints>
+                        <state key="normal" image="clear"/>
+                        <connections>
+                            <action selector="clearAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="CfA-k0-Ipk"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ntd-Pj-rYq" userLabel="Fat Finger Clear">
+                        <rect key="frame" x="343" y="28" width="50" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="It3-eF-uXn"/>
+                            <constraint firstAttribute="height" constant="50" id="ilt-SQ-aU2"/>
+                        </constraints>
+                        <connections>
+                            <action selector="clearAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Pu8-YH-NWl"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="DK6-SR-41p" firstAttribute="trailing" secondItem="h9Q-pG-K9q" secondAttribute="trailing" id="00L-SX-YXC"/>
+                    <constraint firstItem="9D4-hu-IPl" firstAttribute="leading" secondItem="cuA-ML-FKC" secondAttribute="leading" id="4po-KO-2dX"/>
+                    <constraint firstAttribute="bottom" secondItem="9D4-hu-IPl" secondAttribute="bottom" constant="11" id="6DG-oZ-0bo"/>
+                    <constraint firstItem="y9m-ml-5VC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="C9Z-3b-XB0"/>
+                    <constraint firstItem="cuA-ML-FKC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="EHd-DK-LHh"/>
+                    <constraint firstItem="cuA-ML-FKC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="MtA-x0-loV"/>
+                    <constraint firstItem="h9Q-pG-K9q" firstAttribute="leading" secondItem="y9m-ml-5VC" secondAttribute="leading" id="Oyj-Ui-bMg"/>
+                    <constraint firstAttribute="trailing" secondItem="Cr4-4r-MZv" secondAttribute="trailing" id="QCB-Zw-pj6"/>
+                    <constraint firstItem="h9Q-pG-K9q" firstAttribute="height" secondItem="y9m-ml-5VC" secondAttribute="height" id="QK9-QI-7FU"/>
+                    <constraint firstItem="9D4-hu-IPl" firstAttribute="top" secondItem="y9m-ml-5VC" secondAttribute="bottom" constant="19" id="SHv-ab-zNx"/>
+                    <constraint firstItem="h9Q-pG-K9q" firstAttribute="top" secondItem="y9m-ml-5VC" secondAttribute="top" id="Zt7-w3-Bci"/>
+                    <constraint firstItem="Cr4-4r-MZv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="d8P-eY-Phg"/>
+                    <constraint firstItem="y9m-ml-5VC" firstAttribute="top" secondItem="cuA-ML-FKC" secondAttribute="bottom" constant="8" id="dOe-ob-9TW"/>
+                    <constraint firstAttribute="bottom" secondItem="Cr4-4r-MZv" secondAttribute="bottom" id="hrX-Be-KN8"/>
+                    <constraint firstAttribute="trailing" secondItem="y9m-ml-5VC" secondAttribute="trailing" constant="25" id="i6N-nb-rfN"/>
+                    <constraint firstItem="h9Q-pG-K9q" firstAttribute="width" secondItem="y9m-ml-5VC" secondAttribute="width" id="k7g-ft-0Di"/>
+                    <constraint firstItem="DK6-SR-41p" firstAttribute="centerY" secondItem="ntd-Pj-rYq" secondAttribute="centerY" id="n9f-Kh-KDx"/>
+                    <constraint firstItem="DK6-SR-41p" firstAttribute="centerX" secondItem="ntd-Pj-rYq" secondAttribute="centerX" id="xNU-Sp-RD5"/>
+                    <constraint firstItem="DK6-SR-41p" firstAttribute="top" secondItem="h9Q-pG-K9q" secondAttribute="top" id="zIe-sf-Wzz"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="backupNow" destination="9D4-hu-IPl" id="1hV-Yu-ZeO"/>
+                <outlet property="textView" destination="y9m-ml-5VC" id="38t-eV-gmO"/>
+            </connections>
+            <point key="canvasLocation" x="-184.78260869565219" y="53.236607142857139"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="clear" width="100" height="100"/>
+    </resources>
+</document>

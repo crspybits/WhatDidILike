@@ -78,6 +78,14 @@
 		839FC0F5242561CC001822D2 /* ImportExportPlaceExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0F4242561CC001822D2 /* ImportExportPlaceExtensionTests.swift */; };
 		839FC0F724257A02001822D2 /* example.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 839FC0F624257A02001822D2 /* example.jpeg */; };
 		839FC0F924257E4D001822D2 /* example2.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 839FC0F824257E4D001822D2 /* example2.jpeg */; };
+		839FC0FD2425C27C001822D2 /* Tabs.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 839FC0FB2425C128001822D2 /* Tabs.storyboard */; };
+		839FC0FF2425C2F6001822D2 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0FE2425C2F6001822D2 /* Tabs.swift */; };
+		839FC1052425C6C5001822D2 /* MainListNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC1042425C6C5001822D2 /* MainListNav.swift */; };
+		839FC1082425C8DB001822D2 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 839FC1072425C8DB001822D2 /* Settings.storyboard */; };
+		839FC10A2425C90D001822D2 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC1092425C90D001822D2 /* SettingsVC.swift */; };
+		839FC10D2425CD1D001822D2 /* SyncSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC10B2425CD1D001822D2 /* SyncSettingsCell.swift */; };
+		839FC10E2425CD1D001822D2 /* SyncSettingsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839FC10C2425CD1D001822D2 /* SyncSettingsCell.xib */; };
+		839FC1102425D7F5001822D2 /* SettingsNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC10F2425D7F5001822D2 /* SettingsNav.swift */; };
 		83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image.swift */; };
 		83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */; };
 		83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */; };
@@ -202,6 +210,15 @@
 		839FC0F4242561CC001822D2 /* ImportExportPlaceExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportPlaceExtensionTests.swift; sourceTree = "<group>"; };
 		839FC0F624257A02001822D2 /* example.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = example.jpeg; sourceTree = "<group>"; };
 		839FC0F824257E4D001822D2 /* example2.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = example2.jpeg; sourceTree = "<group>"; };
+		839FC0FB2425C128001822D2 /* Tabs.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tabs.storyboard; sourceTree = "<group>"; };
+		839FC0FE2425C2F6001822D2 /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
+		839FC1042425C6C5001822D2 /* MainListNav.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainListNav.swift; path = "Features/Main List/MainListNav.swift"; sourceTree = "<group>"; };
+		839FC1072425C8DB001822D2 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		839FC1092425C90D001822D2 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
+		839FC10B2425CD1D001822D2 /* SyncSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSettingsCell.swift; sourceTree = "<group>"; };
+		839FC10C2425CD1D001822D2 /* SyncSettingsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SyncSettingsCell.xib; sourceTree = "<group>"; };
+		839FC10F2425D7F5001822D2 /* SettingsNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNav.swift; sourceTree = "<group>"; };
+		839FC1112425ECDA001822D2 /* WhatDidILike.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WhatDidILike.entitlements; sourceTree = "<group>"; };
 		83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v2.xcdatamodel; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -368,6 +385,29 @@
 			path = "Features/Import Export";
 			sourceTree = "<group>";
 		};
+		839FC0FA2425C100001822D2 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				839FC0FB2425C128001822D2 /* Tabs.storyboard */,
+				839FC0FE2425C2F6001822D2 /* Tabs.swift */,
+			);
+			name = Tabs;
+			path = Features/Tabs;
+			sourceTree = "<group>";
+		};
+		839FC1062425C88A001822D2 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				839FC1072425C8DB001822D2 /* Settings.storyboard */,
+				839FC10F2425D7F5001822D2 /* SettingsNav.swift */,
+				839FC1092425C90D001822D2 /* SettingsVC.swift */,
+				839FC10B2425CD1D001822D2 /* SyncSettingsCell.swift */,
+				839FC10C2425CD1D001822D2 /* SyncSettingsCell.xib */,
+			);
+			name = Settings;
+			path = Features/Settings;
+			sourceTree = "<group>";
+		};
 		83A2D5E31F5CE0DC0003C5F9 /* Place */ = {
 			isa = PBXGroup;
 			children = (
@@ -424,6 +464,7 @@
 		83D49C991F4AC16100409B0F = {
 			isa = PBXGroup;
 			children = (
+				839FC1112425ECDA001822D2 /* WhatDidILike.entitlements */,
 				83D49CC81F4AC26900409B0F /* Code */,
 				83D49CDB1F4AC2C700409B0F /* UnitTests */,
 				83D49CD61F4AC2AA00409B0F /* Resources */,
@@ -513,12 +554,14 @@
 		83D49CE01F4AC3D100409B0F /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				839FC0FA2425C100001822D2 /* Tabs */,
 				837E12651F90827A00D8E4E1 /* Parameters */,
 				83D49CE11F4AC3E200409B0F /* Main List */,
 				83A2D5E31F5CE0DC0003C5F9 /* Place */,
 				8366CD321F7CA45500E9D6FF /* Location */,
 				83D752CD1F93D9F200EF4E5D /* Sorting and Filtering */,
 				836F784E241960F60006D7CA /* Recommendations */,
+				839FC1062425C88A001822D2 /* Settings */,
 				839FC0C0242004B2001822D2 /* Import Export */,
 				837E12571F8F2B4C00D8E4E1 /* Conversion */,
 			);
@@ -529,6 +572,7 @@
 			isa = PBXGroup;
 			children = (
 				83D49CE21F4AC44F00409B0F /* Main.storyboard */,
+				839FC1042425C6C5001822D2 /* MainListNav.swift */,
 				83D49CE31F4AC44F00409B0F /* MainListVC.swift */,
 				839DE8AC2057B5A500FD83A5 /* MainListPlaceView.swift */,
 				839DE8AE2057B5CD00FD83A5 /* MainListPlaceView.xib */,
@@ -642,8 +686,10 @@
 			files = (
 				8385206B1F8B2A77001D97D3 /* ImagesView.xib in Resources */,
 				83946812205CB70D0009C318 /* SortControl.xib in Resources */,
+				839FC1082425C8DB001822D2 /* Settings.storyboard in Resources */,
 				837E12611F8F2C4C00D8E4E1 /* CommentPromptVC.xib in Resources */,
 				830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */,
+				839FC0FD2425C27C001822D2 /* Tabs.storyboard in Resources */,
 				8394680A205C8E2B0009C318 /* SortyFilter.xib in Resources */,
 				83B533841F5D0C670028E6B5 /* RatingView.xib in Resources */,
 				83EE7DD21F5DB9F300628CA8 /* PlaceVCCell.xib in Resources */,
@@ -657,6 +703,7 @@
 				83D49CD91F4AC2AA00409B0F /* Assets.xcassets in Resources */,
 				83A2D5E71F5CE1310003C5F9 /* PlaceNameView.xib in Resources */,
 				835F44011F4AC75200A7748B /* Main.storyboard in Resources */,
+				839FC10E2425CD1D001822D2 /* SyncSettingsCell.xib in Resources */,
 				83B533801F5D0A980028E6B5 /* CommentView.xib in Resources */,
 				83EE7DCE1F5D164B00628CA8 /* ItemNameView.xib in Resources */,
 				839DE8AF2057B5CD00FD83A5 /* MainListPlaceView.xib in Resources */,
@@ -832,9 +879,11 @@
 				831B04291F5CC7BD000E21C4 /* PlaceList+CoreDataProperties.swift in Sources */,
 				835F44021F4AC76C00A7748B /* MainListVC.swift in Sources */,
 				839DE8AD2057B5A500FD83A5 /* MainListPlaceView.swift in Sources */,
+				839FC1052425C6C5001822D2 /* MainListNav.swift in Sources */,
 				831B042B1F5CC7BD000E21C4 /* PlaceCategory+CoreDataProperties.swift in Sources */,
 				83401D9A1F5CEA4E00A96C8D /* XibBasics.swift in Sources */,
 				83D752CA1F93D73E00EF4E5D /* Location+CoreDataProperties.swift in Sources */,
+				839FC10D2425CD1D001822D2 /* SyncSettingsCell.swift in Sources */,
 				83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */,
 				837E12591F8F2BBA00D8E4E1 /* ConvertFromV1.swift in Sources */,
 				83DD5FC61F89ADAC00B23331 /* ShowHideState.swift in Sources */,
@@ -842,6 +891,7 @@
 				83401DA41F5CFB3D00A96C8D /* LocationView.swift in Sources */,
 				83D49CD21F4AC26A00409B0F /* AppDelegate.swift in Sources */,
 				83019F891F80924400E1E117 /* BaseObject.swift in Sources */,
+				839FC10A2425C90D001822D2 /* SettingsVC.swift in Sources */,
 				83B496C51F4BE0F40083610D /* Place+CoreDataProperties.swift in Sources */,
 				839FC0F324243193001822D2 /* Place+ImportExport.swift in Sources */,
 				83D49CD11F4AC26A00409B0F /* WhatDidILike.xcdatamodeld in Sources */,
@@ -853,7 +903,9 @@
 				831B04281F5CC7BD000E21C4 /* PlaceList.swift in Sources */,
 				83401D9C1F5CEAB000A96C8D /* Types.swift in Sources */,
 				83B496BD1F4BD0830083610D /* Identifiers.swift in Sources */,
+				839FC0FF2425C2F6001822D2 /* Tabs.swift in Sources */,
 				831B042A1F5CC7BD000E21C4 /* PlaceCategory.swift in Sources */,
+				839FC1102425D7F5001822D2 /* SettingsNav.swift in Sources */,
 				837E12671F90827A00D8E4E1 /* Parameters.swift in Sources */,
 				836F7850241961200006D7CA /* Recommendations.swift in Sources */,
 				8366CD3E1F7CA65F00E9D6FF /* MapAnnotation.m in Sources */,
@@ -1006,6 +1058,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
 				BUNDLE_ID_SUFFIX = .beta;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = WhatDidILike.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202003142239;
@@ -1032,6 +1085,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
 				BUNDLE_ID_SUFFIX = "";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = WhatDidILike.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202003142239;

@@ -53,6 +53,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>Settings icon
+ Copyright by il Capitano from the Noun Project
+
+</string>
+			<key>Title</key>
+			<string>Settings</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>Place icon
+ Copyright by Kiran Shastry from the Noun Project
+
+</string>
+			<key>Title</key>
+			<string>Places</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>Clear icon
+ Copyright Mert Güler from the Noun Project
+
+</string>
+			<key>Title</key>
+			<string>Clear</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>Funnel icon made by http://www.freepik.com from www.flaticon.com</string>
 			<key>Title</key>
 			<string>Funnel</string>
