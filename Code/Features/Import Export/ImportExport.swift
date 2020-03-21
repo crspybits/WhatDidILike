@@ -8,17 +8,21 @@
 
 import Foundation
 
-// Export: For a single place, write to files: (a) the Place (and substructure) JSON, and (b) the image files.
-
-// Import: For a single place, read from files: (a) the Place (and substructure) JSON, and (b) the image files.
-
 // On Place import, need to assign place id to highest value imported.
-
-// On export, need to update lastExport property of a Place.
 
 // Need a UI to enable user to control this import/export.
 
+// When a place managed object is removed, any corresponding directory in the export directory also needs to be removed.
+
+// When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory?
+
+// DONE: Export: For a single place, write to files: (a) the Place (and substructure) JSON, and (b) the image files.
+
+// DONE: Import: For a single place, read from files: (a) the Place (and substructure) JSON, and (b) the image files.
+
 // DONE: Need a mechanism to compare two places for equality-- presumably something like a tree comparison.
+
+// DONE: On export, need to update lastExport property of a Place.
 
 // DONE: Exporting: Per place, need to save JSON of Place and sub-objects. And save files associated with place (i.e., image files).
 

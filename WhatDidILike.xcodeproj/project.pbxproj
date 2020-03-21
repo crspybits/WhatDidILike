@@ -75,6 +75,9 @@
 		839FC0CE24240897001822D2 /* ConvertFromV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0CD24240897001822D2 /* ConvertFromV2.swift */; };
 		839FC0E5242414F0001822D2 /* PlaceUpdateDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0E4242414F0001822D2 /* PlaceUpdateDateTests.swift */; };
 		839FC0F324243193001822D2 /* Place+ImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0F224243193001822D2 /* Place+ImportExport.swift */; };
+		839FC0F5242561CC001822D2 /* ImportExportPlaceExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC0F4242561CC001822D2 /* ImportExportPlaceExtensionTests.swift */; };
+		839FC0F724257A02001822D2 /* example.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 839FC0F624257A02001822D2 /* example.jpeg */; };
+		839FC0F924257E4D001822D2 /* example2.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 839FC0F824257E4D001822D2 /* example2.jpeg */; };
 		83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image.swift */; };
 		83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */; };
 		83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */; };
@@ -196,6 +199,9 @@
 		839FC0CF24240A7B001822D2 /* WhatDidILike.v4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v4.xcdatamodel; sourceTree = "<group>"; };
 		839FC0E4242414F0001822D2 /* PlaceUpdateDateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceUpdateDateTests.swift; sourceTree = "<group>"; };
 		839FC0F224243193001822D2 /* Place+ImportExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+ImportExport.swift"; sourceTree = "<group>"; };
+		839FC0F4242561CC001822D2 /* ImportExportPlaceExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportPlaceExtensionTests.swift; sourceTree = "<group>"; };
+		839FC0F624257A02001822D2 /* example.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = example.jpeg; sourceTree = "<group>"; };
+		839FC0F824257E4D001822D2 /* example2.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = example2.jpeg; sourceTree = "<group>"; };
 		83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v2.xcdatamodel; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -491,6 +497,9 @@
 		83D49CDB1F4AC2C700409B0F /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				839FC0F624257A02001822D2 /* example.jpeg */,
+				839FC0F824257E4D001822D2 /* example2.jpeg */,
+				839FC0F4242561CC001822D2 /* ImportExportPlaceExtensionTests.swift */,
 				839FC0E4242414F0001822D2 /* PlaceUpdateDateTests.swift */,
 				839FC0CB2423BC4C001822D2 /* LargeImageFilesTests.swift */,
 				839FC0C52422C0E9001822D2 /* EquatableCoreData.swift */,
@@ -660,6 +669,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				83D49CE41F4AC44F00409B0F /* Main.storyboard in Resources */,
+				839FC0F924257E4D001822D2 /* example2.jpeg in Resources */,
+				839FC0F724257A02001822D2 /* example.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -859,6 +870,7 @@
 				839FC0E5242414F0001822D2 /* PlaceUpdateDateTests.swift in Sources */,
 				839FC0CC2423BC4C001822D2 /* LargeImageFilesTests.swift in Sources */,
 				83D49CDF1F4AC2C700409B0F /* WhatDidILikeTests.swift in Sources */,
+				839FC0F5242561CC001822D2 /* ImportExportPlaceExtensionTests.swift in Sources */,
 				839FC0C62422C0EA001822D2 /* EquatableCoreData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1001,7 +1013,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.WhatDidILike;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1027,7 +1039,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.WhatDidILike;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

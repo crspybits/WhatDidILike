@@ -9,13 +9,114 @@
 import Foundation
 
 extension Place {
-    // Writes JSON and image files for the place to this parent directory. A child directory is created, in the parent directory, by this call for the place using the form:
-    //  <CleanedPlaceName>_<id>
-    // The JSON and any image files are written to this child directory.
-    func export(to parentDirectory: URL) throws {
-        
+    static let placeJSON = "place.json"
+    
+    enum ImportExportError: Error {
+        case cannotCreateJSONFile
+        case cannotDeserializeToDictionary
+        case noIdInPlaceJSON
     }
     
-//    static func `import`(from parentDirectory: URL) throws -> Place {
-//    }
+    // Attempts to create a child directory, in the parent directory, using the form:
+    //  <CleanedPlaceName>_<id>
+    // where <CleanedPlaceName> has any non-alphabetic/non-numeric characters replaced with underscores.
+    // If this directory already exists, all contents are first removed.
+    // Writes JSON and image files for the place to this directory.
+    // Returns the URL's of the exported files.
+    @discardableResult
+    func export(to parentDirectory: URL) throws -> [URL] {
+        let exportDirectoryName = try createDirectory(in: parentDirectory)
+
+        let encoder = JSONEncoder()
+        let jsonData = try encoder.encode(self)
+        
+        let jsonFileName = URL(fileURLWithPath: exportDirectoryName.path + "/" + Self.placeJSON)
+        
+        guard FileManager.default.createFile(atPath: jsonFileName.path, contents: jsonData, attributes: nil) else {
+            throw ImportExportError.cannotCreateJSONFile
+        }
+        
+        var imageURLs = [URL]()
+        
+        for imageFileName in largeImageFiles {
+            let originalImageURL = URL(fileURLWithPath: Image.filePath(for: imageFileName))
+            let exportImageURL = URL(fileURLWithPath: exportDirectoryName.path + "/" + imageFileName)
+            try FileManager.default.copyItem(at: originalImageURL, to: exportImageURL)
+            
+            imageURLs += [exportImageURL]
+        }
+        
+        lastExport = Date()
+        
+        return [jsonFileName] + imageURLs
+    }
+    
+    func createDirectoryName(in parentDirectory: URL) -> URL {
+        var fileName = ""
+        if let name = name?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), name.count > 0 {
+            for char in name {
+                if char.isLetter || char.isNumber {
+                    fileName += String(char)
+                }
+                else {
+                    fileName += "_"
+                }
+            }
+            
+            fileName += "_"
+        }
+        
+        if let id = id?.int32Value {
+            fileName += String(id)
+        }
+        
+        return URL(fileURLWithPath: fileName, relativeTo: parentDirectory)
+    }
+    
+    // If the directory (see createDirectoryName) doesn't exist, it is created.
+    // If it does exist, with any contents, it is removed and recreated.
+    func createDirectory(in parentDirectory: URL) throws -> URL {
+        let directoryName = createDirectoryName(in: parentDirectory)
+        
+        if FileManager.default.fileExists(atPath: directoryName.path) {
+            try FileManager.default.removeItem(at: directoryName)
+        }
+        
+        try FileManager.default.createDirectory(at: directoryName, withIntermediateDirectories: false, attributes: nil)
+        
+        return directoryName
+    }
+    
+    // Returns the full URL's of all of the exported place directories in the export parentDirectory.
+    static func exportDirectories(in parentDirectory: URL) throws -> [URL] {
+        let fileManager = FileManager.default
+        let urls = try fileManager.contentsOfDirectory(at: parentDirectory, includingPropertiesForKeys: nil)
+        return urls
+    }
+    
+    // Decodes a place from the given place export directory, creating the needed managed objects.
+    // If not present already, images are copied into the large images directory in the Documents directory from the place export directory.
+    // Returns nil if a Place with the exported id already exists in Core Data. Returns non-nil otherwise.
+    static func `import`(from placeExportDirectory: URL) throws -> Place? {
+        let jsonFileName = URL(fileURLWithPath: placeExportDirectory.path + "/" + placeJSON)
+        
+        let jsonData = try Data(contentsOf: jsonFileName)
+        
+        // Before decoding, make sure id we are decoding isn't in an existing place.
+        guard let dict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
+            throw ImportExportError.cannotDeserializeToDictionary
+        }
+        
+        guard let id = dict[Place.CodingKeys.id.rawValue] as? Place.IdType else {
+            throw ImportExportError.noIdInPlaceJSON
+        }
+        
+        guard try Place.fetchObject(withId: id) == nil else {
+            return nil
+        }
+
+        let decoder = JSONDecoder()
+        let place = try decoder.decode(Place.self, from: jsonData)
+        return place
+    }
 }

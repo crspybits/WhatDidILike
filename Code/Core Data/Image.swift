@@ -17,8 +17,12 @@ public class Image: NSManagedObject, Codable, EquatableObjects {
         return "Image"
     }
     
+    static func filePath(for fileName: String) -> String {
+        return FileStorage.path(toItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY) + "/" + fileName
+    }
+    
     var filePath: String {
-        return FileStorage.path(toItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY) + "/" + fileName!
+        return Self.filePath(for: fileName!)
     }
     
     class func newObject() -> Image {

@@ -12,11 +12,14 @@ import SMCoreLib
 
 @objc(Place)
 public class Place: BaseObject, Codable, EquatableObjects {
+    typealias IdType = Int32
+    static let ID_KEY = "id"
+    
     private static let _nextId = SMPersistItemInt(name: "Place.nextId", initialIntValue: 0, persistType: .userDefaults)
-    static var nextId: Int32 {
+    static var nextId: IdType {
         let result = _nextId.intValue
         _nextId.intValue += 1
-        return Int32(result)
+        return IdType(result)
     }
 
     override class func entityName() -> String {
@@ -34,6 +37,40 @@ public class Place: BaseObject, Codable, EquatableObjects {
         let places = try? CoreData.sessionNamed(CoreDataExtras.sessionName)
             .fetchAllObjects(withEntityName: entityName())
         return places as? [Place]
+    }
+    
+    class func fetchObject(withId id: IdType) throws -> Place? {
+        guard let fetchRequest = fetchRequestForObjects(withId: id) else {
+            return nil
+        }
+                
+        let moc = CoreData.sessionNamed(CoreDataExtras.sessionName).context
+        guard let results = try moc.fetch(fetchRequest) as? [Place] else {
+            return nil
+        }
+        
+        if results.count == 0 {
+            return nil
+        }
+        
+        return results[0]
+    }
+    
+    private class func fetchRequestForObjects(withId id: IdType) -> NSFetchRequest<NSFetchRequestResult>? {
+        var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
+        fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(
+            withEntityName: self.entityName(), modifyingFetchRequestWith: { request in
+            let id = NSNumber(integerLiteral: Int(id))
+            let predicate = NSPredicate(format: "(%K == %@)", ID_KEY, id)
+            request.predicate = predicate
+        })
+
+        if fetchRequest != nil {
+            let sortDescriptor = NSSortDescriptor(key: ID_KEY, ascending: true)
+            fetchRequest!.sortDescriptors = [sortDescriptor]
+        }
+        
+        return fetchRequest
     }
     
     func save() {
@@ -70,7 +107,7 @@ public class Place: BaseObject, Codable, EquatableObjects {
         
     override func decode(using decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decodeIfPresent(Int32.self, forKey: .id) as NSNumber?
+        id = try container.decodeIfPresent(IdType.self, forKey: .id) as NSNumber?
         generalDescription = try container.decodeIfPresent(String.self, forKey: .generalDescription)
         name = try container.decodeIfPresent(String.self, forKey: .name)
         
