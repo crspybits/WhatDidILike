@@ -26,6 +26,9 @@ class CodableTests: XCTestCase {
         let place1 = Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
+        place1.creationDate = NSDate()
+        place1.modificationDate = NSDate()
+        
         guard let id = place1.id?.int32Value else {
             XCTFail()
             return
@@ -42,6 +45,9 @@ class CodableTests: XCTestCase {
             XCTFail()
             return
         }
+        
+        XCTAssert(place2.creationDate == place1.creationDate)
+        XCTAssert(place2.modificationDate == place1.modificationDate)
         
         XCTAssert(place2.id?.int32Value == id)
         XCTAssert(place1.generalDescription == place2.generalDescription)
@@ -553,6 +559,7 @@ class CodableTests: XCTestCase {
         rating.meThem = true
         rating.rating = 0.4
         rating.recommendedBy = "Foo Bar"
+        rating.modificationDate = Date()
         
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(rating) else {
@@ -566,6 +573,8 @@ class CodableTests: XCTestCase {
             return
         }
         
+        XCTAssert(rating.modificationDate == rating2.modificationDate)
+
         XCTAssert(rating.again?.boolValue == rating2.again?.boolValue)
         XCTAssert(rating.meThem?.boolValue == rating2.meThem?.boolValue)
         XCTAssert(rating.rating == rating2.rating)
@@ -578,6 +587,8 @@ class CodableTests: XCTestCase {
     func testCommentWithNoImages() {
         let comment = Comment.newObject()
         comment.comment = "Some stuff"
+        comment.creationDate = NSDate()
+        comment.modificationDate = NSDate()
         
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(comment) else {
@@ -591,6 +602,8 @@ class CodableTests: XCTestCase {
             return
         }
         
+        XCTAssert(comment.creationDate == comment2.creationDate)
+        XCTAssert(comment.modificationDate == comment2.modificationDate)
         XCTAssert(comment.comment == comment2.comment)
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(comment)
@@ -747,6 +760,8 @@ class CodableTests: XCTestCase {
         let item = Item.newObject()
         let name = "foo"
         item.name = name
+        item.creationDate = NSDate()
+        item.modificationDate = NSDate()
         
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(item) else {
@@ -761,7 +776,9 @@ class CodableTests: XCTestCase {
         }
         
         XCTAssert(item2.name == name)
-        
+        XCTAssert(item2.creationDate == item.creationDate)
+        XCTAssert(item2.modificationDate == item.modificationDate)
+
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(item)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(item2)
     }
@@ -918,6 +935,8 @@ class CodableTests: XCTestCase {
         location1.location = clLocation
         let specificDescription = "stuff"
         location1.specificDescription = specificDescription
+        location1.creationDate = NSDate()
+        location1.modificationDate = NSDate()
         
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(location1) else {
@@ -930,6 +949,9 @@ class CodableTests: XCTestCase {
             XCTFail()
             return
         }
+        
+        XCTAssert(location1.creationDate == location2.creationDate)
+        XCTAssert(location1.modificationDate == location2.modificationDate)
         
         XCTAssert(location2.address == address)
         XCTAssert(location2.location?.coordinate.latitude == clLocation.coordinate.latitude)

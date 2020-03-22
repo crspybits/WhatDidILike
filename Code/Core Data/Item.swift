@@ -23,12 +23,16 @@ public class Item: BaseObject, Codable, EquatableObjects {
     // MARK: Codable
     
     enum CodingKeys: String, CodingKey {
-       case name
-       case comments
+        case creationDate
+        case modificationDate
+        case name
+        case comments
     }
     
     override func decode(using decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        creationDate = try container.decodeIfPresent(Date.self, forKey: .creationDate) as NSDate?
+        modificationDate = try container.decodeIfPresent(Date.self, forKey: .modificationDate) as NSDate?
         name = try container.decodeIfPresent(String.self, forKey: .name)
         
         if let comments = try container.decodeIfPresent([Comment].self, forKey: .comments) {
@@ -38,6 +42,15 @@ public class Item: BaseObject, Codable, EquatableObjects {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        if let creationDate = creationDate as Date? {
+            try container.encode(creationDate, forKey: .creationDate)
+        }
+        
+        if let modificationDate = modificationDate as Date? {
+            try container.encode(modificationDate, forKey: .modificationDate)
+        }
+        
         try container.encode(name, forKey: .name)
         
         if let comments = comments?.array as? [Comment] {

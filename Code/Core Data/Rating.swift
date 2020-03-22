@@ -36,6 +36,7 @@ public class Rating: NSManagedObject, Codable, EquatableObjects {
     }
     
     enum CodingKeys: String, CodingKey {
+        case modificationDate
         case rating
         case recommendedBy
         case again
@@ -44,6 +45,7 @@ public class Rating: NSManagedObject, Codable, EquatableObjects {
         
     func decode(using decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        modificationDate = try container.decodeIfPresent(Date.self, forKey: .modificationDate)
         rating = try container.decodeIfPresent(Float.self, forKey: .rating) ?? 0
         recommendedBy = try container.decodeIfPresent(String.self, forKey: .recommendedBy)
         
@@ -58,6 +60,7 @@ public class Rating: NSManagedObject, Codable, EquatableObjects {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(modificationDate, forKey: .modificationDate)
         try container.encode(rating, forKey: .rating)
         try container.encode(recommendedBy, forKey: .recommendedBy)
         

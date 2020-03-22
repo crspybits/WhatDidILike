@@ -8,6 +8,7 @@ Version 2.2
 		- Added modificationDate properties to PlaceList, PlaceCategory, and Rating managed objects.
 		- Now using UIDocumentPickerViewController to allow the user to select a backup folder
 		- Using security scoped URL's with the resulting folder.
+		- Added tab bar controller and Setting screen to allow for import/export.
 	
 Version 2.1 (3/17/20)
 	* Updated DGRunkeeperSwitch for Swift 5.

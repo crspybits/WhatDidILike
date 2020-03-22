@@ -58,7 +58,7 @@ class SyncSettingsCell: UITableViewCell {
         guard let parentVC = parentVC else {
             return
         }
-        
+                
         let exportFolder: URL
         do {
             exportFolder = try URL.securityScopedResourceFromBookmark(data: Parameters.backupFolderBookmark.dataValue)
@@ -69,10 +69,14 @@ class SyncSettingsCell: UITableViewCell {
             return
         }
 
+        // So that while the backup is occuring, the user can't navigate to the places list and make changes to the places.
+        parentVC.tabBarController?.tabBar.isUserInteractionEnabled = false
+
         backup = BackupWithAlert(parentVC: parentVC)
         backup!.start(usingSecurityScopedFolder: exportFolder) { [weak self] in
             self?.updatePlacesNeedingBackup()
             self?.backup = nil
+            parentVC.tabBarController?.tabBar.isUserInteractionEnabled = true
         }
     }
     

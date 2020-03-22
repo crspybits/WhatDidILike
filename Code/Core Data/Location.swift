@@ -83,6 +83,8 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
     // MARK: Codable
     
     enum CodingKeys: String, CodingKey {
+        case creationDate
+        case modificationDate
         case address
         
         // Don't need to encode/decode internalDistance as this is computed as a function of the Location's lat/long
@@ -102,8 +104,9 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
         
     override func decode(using decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        creationDate = try container.decodeIfPresent(Date.self, forKey: .creationDate) as NSDate?
+        modificationDate = try container.decodeIfPresent(Date.self, forKey: .modificationDate) as NSDate?
         address = try container.decodeIfPresent(String.self, forKey: .address)
-        
         
         if let locationDecoder = try container.decodeIfPresent(LocationDecoder.self, forKey: .location) {
             location = locationDecoder.location
@@ -124,6 +127,15 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+
+        if let creationDate = creationDate as Date? {
+            try container.encode(creationDate, forKey: .creationDate)
+        }
+        
+        if let modificationDate = modificationDate as Date? {
+            try container.encode(modificationDate, forKey: .modificationDate)
+        }
+        
         try container.encode(address, forKey: .address)
         try container.encode(location, forKey: .location)
         try container.encode(specificDescription, forKey: .specificDescription)

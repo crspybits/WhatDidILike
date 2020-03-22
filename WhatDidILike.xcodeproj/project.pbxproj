@@ -225,6 +225,7 @@
 		839FC112242660FE001822D2 /* BackupWithAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWithAlert.swift; sourceTree = "<group>"; };
 		839FC1142426B9C7001822D2 /* CoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		839FC1162426CF66001822D2 /* SecurityScopedURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityScopedURL.swift; sourceTree = "<group>"; };
+		839FC1182427EF5E001822D2 /* TODO.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v2.xcdatamodel; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -472,6 +473,7 @@
 		83D49C991F4AC16100409B0F = {
 			isa = PBXGroup;
 			children = (
+				839FC1182427EF5E001822D2 /* TODO.txt */,
 				839FC1112425ECDA001822D2 /* WhatDidILike.entitlements */,
 				83D49CC81F4AC26900409B0F /* Code */,
 				83D49CDB1F4AC2C700409B0F /* UnitTests */,
