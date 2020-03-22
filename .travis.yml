@@ -1,7 +1,7 @@
 language: swift 
 xcode_workspace: WhatDidILike.xcworkspace 
 xcode_scheme: Beta
-xcode_destination: platform=iOS Simulator,OS=13.3,name=iPhone X
+xcode_destination: platform=iOS Simulator,OS=13.3,name=iPhone 11
 osx_image: xcode11.3
 
 # See https://docs.travis-ci.com/user/reference/osx/ for available simulators
