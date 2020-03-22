@@ -21,6 +21,13 @@ class SettingsVC: UIViewController {
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // To update numbers of places in SyncSettingsCell if they have changed.
+        tableView.reloadData()
+    }
 }
 
 extension SettingsVC: UITableViewDataSource, UITableViewDelegate {
@@ -35,6 +42,7 @@ extension SettingsVC: UITableViewDataSource, UITableViewDelegate {
         }
         
         cell.parentVC = self
+        cell.updatePlacesNeedingBackup()
 
         return cell
     }

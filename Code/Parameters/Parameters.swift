@@ -10,6 +10,9 @@ import Foundation
 import SMCoreLib
 
 class Parameters {
+    // This is for the security scoped folder bookmark.
+    static let backupFolderBookmark = SMPersistItemData(name: "Parameters.backupFolderBookmark", initialDataValue: nil, persistType: .userDefaults)
+
     enum CommentStyle : String {
         case single
         case multiple

@@ -36,6 +36,12 @@ extension UIColor {
         return colorMode(light: light, dark: dark)
     }
     
+    static var separatorBackground: UIColor {
+        return colorMode(
+            light: UIColor(white: 0.85, alpha: 1.0),
+            dark: UIColor(white: 0.20, alpha: 1.0))
+    }
+    
     static var textBoxBackground: UIColor {
         let light = UIColor(white: 0.85, alpha: 1.0)
         let dark = UIColor(white: 0.40, alpha: 1.0)

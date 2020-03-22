@@ -11,16 +11,40 @@ import SMCoreLib
 import CoreServices
 
 class SyncSettingsCell: UITableViewCell {
-    private static let backupFolder = SMPersistItemString(name: "SyncSettingsCell.backupFolder", initialStringValue: "", persistType: .userDefaults)
+    // This is just to indicate to the user that they have selected a folder and is for display purposes. The real info is in the *bookmark*.
+    private static let displayBackupFolder = SMPersistItemString(name: "Parameters.displayBackupFolder", initialStringValue: "", persistType: .userDefaults)
+    
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var backupNow: UIButton!
+    @IBOutlet weak var separator: UIView!
+    @IBOutlet weak var placesNeedingBackup: UILabel!
     weak var parentVC: UIViewController?
+    private var backup: BackupWithAlert?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         Layout.format(textBox: textView)
-        setFolderTextInUI(Self.backupFolder.stringValue)
+        separator.backgroundColor = .separatorBackground
+        setFolderTextInUI(Self.displayBackupFolder.stringValue)
+    }
+    
+    func updatePlacesNeedingBackup() {
+        if let (placesToExport, total) = Place.needExport(), placesToExport.count > 0 {
+            let terms: String
+            if total == 1 {
+                terms = "place needs"
+            }
+            else {
+                terms = "places need"
+            }
+            
+            placesNeedingBackup.text = "(\(placesToExport.count) of \(total) \(terms) backup)"
+            placesNeedingBackup.isHidden = false
+        }
+        else {
+            placesNeedingBackup.isHidden = true
+        }
     }
     
     @IBAction func selectAction(_ sender: Any) {
@@ -31,11 +55,31 @@ class SyncSettingsCell: UITableViewCell {
     }
     
     @IBAction func backupNowAction(_ sender: Any) {
+        guard let parentVC = parentVC else {
+            return
+        }
+        
+        let exportFolder: URL
+        do {
+            exportFolder = try URL.securityScopedResourceFromBookmark(data: Parameters.backupFolderBookmark.dataValue)
+        } catch {
+            let alert = UIAlertController(title: "Alert!", message: "Could not securely access the backup folder.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            parentVC.present(alert, animated: true, completion: nil)
+            return
+        }
+
+        backup = BackupWithAlert(parentVC: parentVC)
+        backup!.start(usingSecurityScopedFolder: exportFolder) { [weak self] in
+            self?.updatePlacesNeedingBackup()
+            self?.backup = nil
+        }
     }
     
     @IBAction func clearAction(_ sender: Any) {
-        Self.backupFolder.stringValue = ""
-        setFolderTextInUI(Self.backupFolder.stringValue)
+        Parameters.backupFolderBookmark.reset()
+        Self.displayBackupFolder.stringValue = ""
+        setFolderTextInUI(Self.displayBackupFolder.stringValue)
     }
     
     private func setFolderTextInUI(_ text: String) {
@@ -50,8 +94,17 @@ extension SyncSettingsCell: UIDocumentPickerDelegate {
             return
         }
         
-        Self.backupFolder.stringValue = urls[0].path
-        setFolderTextInUI(Self.backupFolder.stringValue)
+        guard let bookmarkData = try? urls[0].bookmarkForSecurityScopedResource() else {
+            let alert = UIAlertController(title: "Alert!", message: "Failed creating bookmark for folder.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            parentVC?.present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        Parameters.backupFolderBookmark.dataValue = bookmarkData
+        
+        Self.displayBackupFolder.stringValue = urls[0].path
+        setFolderTextInUI(Self.displayBackupFolder.stringValue)
     }
 
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {

@@ -13,6 +13,8 @@ import SMCoreLib
 
 @objc(BaseObject)
 public class BaseObject: NSManagedObject {
+    static let modificationDateField = "modificationDate"
+    
     // Subclass *must* override
     class func entityName() -> String {
         assert(false)
@@ -43,9 +45,24 @@ public class BaseObject: NSManagedObject {
     // See also https://stackoverflow.com/questions/5813309/get-modification-date-for-nsmanagedobject-in-core-data
     override public func willSave() {
         super.willSave()
-        if !isDeleted && changedValues()["modificationDate"] == nil {
-            modificationDate = NSDate()
+        
+        guard !isDeleted else {
+            return
         }
+        
+        let changes = changedValues()
+        
+        // Don't repeatedly (recursively) change the modificationDate
+        guard changes[Self.modificationDateField] == nil else {
+            return
+        }
+        
+        // If only the lastExport field was changed, don't change the modificationDate. Because this is not a user-driven change.
+        guard changes[Place.lastExportField] == nil || changes.count > 1 else {
+            return
+        }
+        
+        modificationDate = NSDate()
     }
 }
 

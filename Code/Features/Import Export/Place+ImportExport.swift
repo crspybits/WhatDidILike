@@ -23,27 +23,34 @@ extension Place {
     // If this directory already exists, all contents are first removed.
     // Writes JSON and image files for the place to this directory.
     // Returns the URL's of the exported files.
+    // Doesn't do a save for Core Data, but this ought to be done by caller since the lastExport field was changed.
     @discardableResult
-    func export(to parentDirectory: URL) throws -> [URL] {
-        let exportDirectoryName = try createDirectory(in: parentDirectory)
-
-        let encoder = JSONEncoder()
-        let jsonData = try encoder.encode(self)
-        
-        let jsonFileName = URL(fileURLWithPath: exportDirectoryName.path + "/" + Self.placeJSON)
-        
-        guard FileManager.default.createFile(atPath: jsonFileName.path, contents: jsonData, attributes: nil) else {
-            throw ImportExportError.cannotCreateJSONFile
-        }
+    func export(to parentDirectory: URL, accessor: URL.Accessor = .none) throws -> [URL] {
         
         var imageURLs = [URL]()
+        var jsonFileName:URL!
         
-        for imageFileName in largeImageFiles {
-            let originalImageURL = URL(fileURLWithPath: Image.filePath(for: imageFileName))
-            let exportImageURL = URL(fileURLWithPath: exportDirectoryName.path + "/" + imageFileName)
-            try FileManager.default.copyItem(at: originalImageURL, to: exportImageURL)
+        // Access to the security scoped URL appears only necessary at the top-level directory. I don't need to do the access step for the sub-directories or files within those sub-directories.
+        
+        try parentDirectory.accessor(accessor) { url in
+            let exportDirectoryName = try createDirectory(in: parentDirectory)
+
+            let encoder = JSONEncoder()
+            let jsonData = try encoder.encode(self)
             
-            imageURLs += [exportImageURL]
+            jsonFileName = URL(fileURLWithPath: exportDirectoryName.path + "/" + Self.placeJSON)
+            
+            guard FileManager.default.createFile(atPath: jsonFileName.path, contents: jsonData, attributes: nil) else {
+                throw ImportExportError.cannotCreateJSONFile
+            }
+
+            for imageFileName in largeImageFiles {
+                let originalImageURL = URL(fileURLWithPath: Image.filePath(for: imageFileName))
+                let exportImageURL = URL(fileURLWithPath: exportDirectoryName.path + "/" + imageFileName)
+                try FileManager.default.copyItem(at: originalImageURL, to: exportImageURL)
+                
+                imageURLs += [exportImageURL]
+            }
         }
         
         lastExport = Date()
@@ -88,9 +95,14 @@ extension Place {
     }
     
     // Returns the full URL's of all of the exported place directories in the export parentDirectory.
-    static func exportDirectories(in parentDirectory: URL) throws -> [URL] {
+    static func exportDirectories(in parentDirectory: URL, accessor:URL.Accessor = .none) throws -> [URL] {
         let fileManager = FileManager.default
-        let urls = try fileManager.contentsOfDirectory(at: parentDirectory, includingPropertiesForKeys: nil)
+       
+        var urls:[URL]!
+        try parentDirectory.accessor(accessor) { url in
+            urls = try fileManager.contentsOfDirectory(at: parentDirectory, includingPropertiesForKeys: nil)
+        }
+        
         return urls
     }
     
@@ -118,5 +130,29 @@ extension Place {
         let decoder = JSONDecoder()
         let place = try decoder.decode(Place.self, from: jsonData)
         return place
+    }
+    
+    // Return the collection of places that are "dirty"-- that have been changed since their last export (or that have never been exported).
+    static func needExport() -> ([Place], totalNumber: Int)? {
+        guard let allPlaces = Place.fetchAllObjects() else {
+            return nil
+        }
+        
+        var result = [Place]()
+        
+        for place in allPlaces {
+            if let lastExport = place.lastExport {
+                if place.lastExportModificationDate > lastExport {
+                    // There was a change to the place after the last export. Need to re-export the place.
+                    result += [place]
+                }
+            }
+            else {
+                // No lastExport date -- it needs exporting for the first time.
+                result += [place]
+            }
+        }
+        
+        return (result, allPlaces.count)
     }
 }

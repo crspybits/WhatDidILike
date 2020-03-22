@@ -86,6 +86,9 @@
 		839FC10D2425CD1D001822D2 /* SyncSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC10B2425CD1D001822D2 /* SyncSettingsCell.swift */; };
 		839FC10E2425CD1D001822D2 /* SyncSettingsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839FC10C2425CD1D001822D2 /* SyncSettingsCell.xib */; };
 		839FC1102425D7F5001822D2 /* SettingsNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC10F2425D7F5001822D2 /* SettingsNav.swift */; };
+		839FC113242660FE001822D2 /* BackupWithAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC112242660FE001822D2 /* BackupWithAlert.swift */; };
+		839FC1152426B9C7001822D2 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC1142426B9C7001822D2 /* CoreDataTests.swift */; };
+		839FC1172426CF67001822D2 /* SecurityScopedURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC1162426CF66001822D2 /* SecurityScopedURL.swift */; };
 		83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image.swift */; };
 		83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */; };
 		83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */; };
@@ -219,6 +222,9 @@
 		839FC10C2425CD1D001822D2 /* SyncSettingsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SyncSettingsCell.xib; sourceTree = "<group>"; };
 		839FC10F2425D7F5001822D2 /* SettingsNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNav.swift; sourceTree = "<group>"; };
 		839FC1112425ECDA001822D2 /* WhatDidILike.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WhatDidILike.entitlements; sourceTree = "<group>"; };
+		839FC112242660FE001822D2 /* BackupWithAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWithAlert.swift; sourceTree = "<group>"; };
+		839FC1142426B9C7001822D2 /* CoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
+		839FC1162426CF66001822D2 /* SecurityScopedURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityScopedURL.swift; sourceTree = "<group>"; };
 		83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v2.xcdatamodel; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -403,6 +409,7 @@
 				839FC1092425C90D001822D2 /* SettingsVC.swift */,
 				839FC10B2425CD1D001822D2 /* SyncSettingsCell.swift */,
 				839FC10C2425CD1D001822D2 /* SyncSettingsCell.xib */,
+				839FC112242660FE001822D2 /* BackupWithAlert.swift */,
 			);
 			name = Settings;
 			path = Features/Settings;
@@ -442,6 +449,7 @@
 		83B496BB1F4BCFB50083610D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				839FC1162426CF66001822D2 /* SecurityScopedURL.swift */,
 				83019F8F1F81730100E1E117 /* Spinner.swift */,
 				837788EC1F6608670014B8A2 /* UIResponder+FirstResponder.h */,
 				837788EB1F6608670014B8A2 /* UIResponder+FirstResponder.m */,
@@ -538,6 +546,7 @@
 		83D49CDB1F4AC2C700409B0F /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				839FC1142426B9C7001822D2 /* CoreDataTests.swift */,
 				839FC0F624257A02001822D2 /* example.jpeg */,
 				839FC0F824257E4D001822D2 /* example2.jpeg */,
 				839FC0F4242561CC001822D2 /* ImportExportPlaceExtensionTests.swift */,
@@ -848,6 +857,7 @@
 				83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */,
 				8327AEB61F95BE3500E170A2 /* Rating+CoreDataProperties.swift in Sources */,
 				8366CD3D1F7CA65F00E9D6FF /* Map.m in Sources */,
+				839FC1172426CF67001822D2 /* SecurityScopedURL.swift in Sources */,
 				8396CE381F4BCB8A00660D73 /* Item.swift in Sources */,
 				839FC0C82423B005001822D2 /* CLLocation+Codable.swift in Sources */,
 				8317E8F61F873204004C53BB /* NewObject.swift in Sources */,
@@ -888,6 +898,7 @@
 				837E12591F8F2BBA00D8E4E1 /* ConvertFromV1.swift in Sources */,
 				83DD5FC61F89ADAC00B23331 /* ShowHideState.swift in Sources */,
 				8396CE411F4BCB8A00660D73 /* Comment+CoreDataProperties.swift in Sources */,
+				839FC113242660FE001822D2 /* BackupWithAlert.swift in Sources */,
 				83401DA41F5CFB3D00A96C8D /* LocationView.swift in Sources */,
 				83D49CD21F4AC26A00409B0F /* AppDelegate.swift in Sources */,
 				83019F891F80924400E1E117 /* BaseObject.swift in Sources */,
@@ -919,6 +930,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				839FC0C424201928001822D2 /* CodableTests.swift in Sources */,
+				839FC1152426B9C7001822D2 /* CoreDataTests.swift in Sources */,
 				839FC0E5242414F0001822D2 /* PlaceUpdateDateTests.swift in Sources */,
 				839FC0CC2423BC4C001822D2 /* LargeImageFilesTests.swift in Sources */,
 				83D49CDF1F4AC2C700409B0F /* WhatDidILikeTests.swift in Sources */,
@@ -1064,7 +1076,7 @@
 				CURRENT_PROJECT_VERSION = 202003142239;
 				DEVELOPMENT_TEAM = BH68R29JBE;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.WhatDidILike;
@@ -1091,7 +1103,7 @@
 				CURRENT_PROJECT_VERSION = 202003142239;
 				DEVELOPMENT_TEAM = BH68R29JBE;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.WhatDidILike;

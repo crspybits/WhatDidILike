@@ -178,6 +178,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         let documentsImageURL = URL(fileURLWithPath: Image.filePath(for: imageInTestBundle))
         
         if !FileManager.default.fileExists(atPath: documentsImageURL.path) {
+            try? FileManager.default.createDirectory(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY), withIntermediateDirectories: false, attributes: nil)
             do {
                 try FileManager.default.copyItem(at: bundleURL, to: documentsImageURL)
             } catch {
@@ -244,6 +245,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         let documentsImageURL2 = URL(fileURLWithPath: Image.filePath(for: imageInTestBundle2))
 
         if !FileManager.default.fileExists(atPath: documentsImageURL.path) {
+            try? FileManager.default.createDirectory(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY), withIntermediateDirectories: false, attributes: nil)
             do {
                 try FileManager.default.copyItem(at: bundleURL, to: documentsImageURL)
             } catch {
@@ -253,6 +255,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         }
         
         if !FileManager.default.fileExists(atPath: documentsImageURL2.path) {
+            try? FileManager.default.createDirectory(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY), withIntermediateDirectories: false, attributes: nil)
             do {
                 try FileManager.default.copyItem(at: bundleURL2, to: documentsImageURL2)
             } catch {
@@ -384,5 +387,107 @@ class ImportExportPlaceExtensionTests: XCTestCase {
                 XCTAssert(FileManager.default.fileExists(atPath: image.filePath))
             }
         }
+    }
+    
+    func removePlaces() {
+        if var places = Place.fetchAllObjects() {
+            while !places.isEmpty {
+                let place = places.remove(at: 0)
+                CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
+            }
+        }
+    }
+    
+    func testNeedExportWithNoPlaces() {
+        removePlaces()
+        
+        guard let (exportPlaces, totalNumber) = Place.needExport() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssert(exportPlaces.count == 0)
+        XCTAssert(totalNumber == 0)
+    }
+    
+    func testNeedExportWithPlacesButNoneNeedingExport() {
+        removePlaces()
+
+        let place = Place.newObject()
+        place.save()
+        
+        place.lastExport = Date()
+                
+        // Make sure `willSave` doesn't update the modification date by just changing lastExport.
+        place.save()
+        
+        guard let (exportPlaces, totalNumber) = Place.needExport() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssert(exportPlaces.count == 0)
+        XCTAssert(totalNumber == 1)
+        
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
+    }
+    
+    func testNeedExportWithPlacesWithOneWithNilLastExport() {
+        removePlaces()
+
+        let place = Place.newObject()
+        // place.lastExport will be nil
+        
+        guard let (exportPlaces, totalNumber) = Place.needExport() else {
+            XCTFail()
+            return
+        }
+
+        guard exportPlaces.count == 1 else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssert(totalNumber == 1)
+        XCTAssert(exportPlaces[0].id?.int32Value == place.id?.int32Value)
+    }
+    
+    func testNeedExportWithPlacesWithOneMoreRecentlyChanged() {
+        removePlaces()
+
+        let place = Place.newObject()
+        
+        // Simulate an export
+        place.lastExport = Date()
+        
+        guard let (exportPlaces, _) = Place.needExport() else {
+            XCTFail()
+            return
+        }
+        
+        guard exportPlaces.count == 0 else {
+            XCTFail()
+            return
+        }
+        
+        // Wait for some time to go by, so the modification date is different from the lastExport date.
+        usleep(200)
+        
+        // This should make the place `dirty`-- needing export
+        place.name = "foo"
+        place.save() // Needed to get the modification date updated.
+        
+        guard let (exportPlaces2, _) = Place.needExport() else {
+            XCTFail()
+            return
+        }
+        
+        guard exportPlaces2.count == 1 else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssert(exportPlaces2[0].id?.int32Value == place.id?.int32Value)
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
     }
 }

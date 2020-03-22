@@ -14,6 +14,7 @@ import SMCoreLib
 public class Place: BaseObject, Codable, EquatableObjects {
     typealias IdType = Int32
     static let ID_KEY = "id"
+    static let lastExportField = "lastExport"
     
     private static let _nextId = SMPersistItemInt(name: "Place.nextId", initialIntValue: 0, persistType: .userDefaults)
     static var nextId: IdType {

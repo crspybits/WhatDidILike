@@ -74,14 +74,22 @@
                             <action selector="clearAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Pu8-YH-NWl"/>
                         </connections>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(N of M places need backup)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5sB-1Q-ti5">
+                        <rect key="frame" x="203" y="147" width="175" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="DK6-SR-41p" firstAttribute="trailing" secondItem="h9Q-pG-K9q" secondAttribute="trailing" id="00L-SX-YXC"/>
+                    <constraint firstItem="5sB-1Q-ti5" firstAttribute="trailing" secondItem="y9m-ml-5VC" secondAttribute="trailing" id="4ft-Ed-77p"/>
                     <constraint firstItem="9D4-hu-IPl" firstAttribute="leading" secondItem="cuA-ML-FKC" secondAttribute="leading" id="4po-KO-2dX"/>
                     <constraint firstAttribute="bottom" secondItem="9D4-hu-IPl" secondAttribute="bottom" constant="11" id="6DG-oZ-0bo"/>
                     <constraint firstItem="y9m-ml-5VC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="C9Z-3b-XB0"/>
                     <constraint firstItem="cuA-ML-FKC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="EHd-DK-LHh"/>
                     <constraint firstItem="cuA-ML-FKC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="MtA-x0-loV"/>
+                    <constraint firstItem="Cr4-4r-MZv" firstAttribute="top" secondItem="5sB-1Q-ti5" secondAttribute="bottom" constant="15" id="Ng4-Sl-MbO"/>
                     <constraint firstItem="h9Q-pG-K9q" firstAttribute="leading" secondItem="y9m-ml-5VC" secondAttribute="leading" id="Oyj-Ui-bMg"/>
                     <constraint firstAttribute="trailing" secondItem="Cr4-4r-MZv" secondAttribute="trailing" id="QCB-Zw-pj6"/>
                     <constraint firstItem="h9Q-pG-K9q" firstAttribute="height" secondItem="y9m-ml-5VC" secondAttribute="height" id="QK9-QI-7FU"/>
@@ -100,6 +108,8 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="backupNow" destination="9D4-hu-IPl" id="1hV-Yu-ZeO"/>
+                <outlet property="placesNeedingBackup" destination="5sB-1Q-ti5" id="a2O-VC-vy4"/>
+                <outlet property="separator" destination="Cr4-4r-MZv" id="aVF-Cx-dot"/>
                 <outlet property="textView" destination="y9m-ml-5VC" id="38t-eV-gmO"/>
             </connections>
             <point key="canvasLocation" x="-184.78260869565219" y="53.236607142857139"/>
