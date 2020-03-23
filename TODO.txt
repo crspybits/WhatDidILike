@@ -1,8 +1,6 @@
 WhatDidILike
 
 IMPORT/EXPORT
-    * If I import all places, the text to the right of "Backup Now" reads "(415 of 415 places need backup)" which is completely mis-leading. No places need backup. For a place that is imported, I should set the "lastExport" date as now to disable this.
-    
     * exportDirectories(in... needs to be smarter. In order for this to work incrementally, it ought to return the place folders that actually need restoring-- not all of them. So filter the full set by the places that have already been imported.
         
     * I'd like to be able to use iCloud Drive to sync data across devices. As part of this, I'd want to observe/watch for conflicts. I haven't found notifications to allow for this. See https://stackoverflow.com/questions/47640039/nsnotification-nsmetadataquerydidupdate-getting-non-stop-notification-messages
@@ -16,7 +14,7 @@ IMPORT/EXPORT
                 print("NSMetadataQueryDidUpdate.userInfo: \(String(describing: notification.userInfo))")
             }
     
-    * An alternative to the background export method would be to trigger a place save when a place or one of its child objects gets updated. Would require an initial manual save/backup step to start. Would require being able to access the root Place object from any child.
+    * An alternative to the background export method would be to trigger a place save when a place or one of its child objects gets updated. Would require an initial manual save/backup step to start. Would require being able to access the root Place object from any child. Would likely want to defer this until some seconds after a change was made to avoid multiple writes in a short interval.
     
     * Backgound (automatic) export: Looks like this is going to require an extensive overhaul of the way I'm dealing with Managed Object Context's for Core Data-- because a background thread requires its own MOC.
     
@@ -24,18 +22,23 @@ IMPORT/EXPORT
 
     * Add a README.txt to the exported data-- to inform user they ought not change these files if they ever want to do a recovery/restore.
 
-    * Consider using UUID's instead of id's for Place's. id's have the problem that: (1) if the app is removed, (2) some places created, and (3) a restore occurs we may have overlapping id's but different places.
 
     * If the backup folder is changed, need to reset the lastExport field of all places-- to force export to the new backup location.
 
-    * On Place import, need to assign place id to highest value imported.
-
-    * Need a UI to enable user to control this import/export.
-
     * When a place managed object is removed, any corresponding directory in the export directory also needs to be removed.
 
-    * When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory?
+    * When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory? Suppose the following occurs: (1) The app is removed, (2) some places created, and (3) a restore occurs. During (2), images created will have names assigned which are not necessarily different than those in the backup. When a restore occurs in (3), if the names of images are the same as the new ones, there will be a conflict.
+    
+    * Consider using UUID's instead of id's for Place's. id's have the problem that: (1) if the app is removed, (2) some places created, and (3) a restore occurs we may have overlapping id's but different places.
+    
+    * DONE: Message after "Sync"-- Need an Alert: if there are files that need downloading-- it may take a while after you do this. I.e., don't do a Restore yet.
 
+    * DONE: Some of the code in the Place+ImportExport.swift is more generic. e.g., folderInICloud, forceSync(for... Move it out.
+
+    * DONE: Need a UI to enable user to control this import/export.
+
+    * DONE: If I import all places, the text to the right of "Backup Now" reads "(415 of 415 places need backup)" which is completely mis-leading. No places need backup. For a place that is imported, I should set the "lastExport" date as now to disable this.
+    
     * DONE: When I start using iCloud Drive on a simulator, I notice all of the WhatDidILike folders download, but none of their contents. If I use the Files app, contents are downloaded on demand. See also https://discussions.apple.com/thread/7102088
         https://stackoverflow.com/questions/60615931/
         https://stackoverflow.com/questions/33462352

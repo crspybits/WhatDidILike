@@ -209,29 +209,12 @@ extension Place {
         
         try cloudDriveDirectory.accessor(.securityScoped) { url in
             for url in urls {
-                try forceSync(for: url)
+                try url.forceSync()
             }
         }
     }
         
-    static func forceSync(for folderURL: URL) throws {
-        let fileManager = FileManager.default
 
-        guard fileManager.isUbiquitousItem(at: folderURL) else {
-            Log.msg("Folder \(folderURL) was not in iCloud Drive")
-            return
-        }
-
-        try fileManager.startDownloadingUbiquitousItem(at: folderURL)
-    }
     
-    // Determine whether a folder is iCloud Drive or not.
-    static func folderInICloud(_ folder: URL) throws -> Bool {
-        let result = try folder.resourceValues(forKeys: [.isUbiquitousItemKey])
-        guard let inICloud = result.allValues[.isUbiquitousItemKey] as? Bool else {
-            throw ImportExportError.wrongTypeForIsUbiquitousItem
-        }
-        
-        return inICloud
-    }
+
 }

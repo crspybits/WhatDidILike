@@ -31,21 +31,30 @@ class SyncSettingsCell: UITableViewCell {
         separator.backgroundColor = .separatorBackground
         setFolderTextInUI(Self.displayBackupFolder.stringValue)
 
-        syncICloudIfNeeded()
+        syncICloudIfNeeded(showAlert: false)
     }
     
-    private func syncICloudIfNeeded() {
+    private func syncICloudIfNeeded(showAlert: Bool) {
         guard let exportFolder = self.getExportFolder() else {
             return
         }
     
-        guard let inICloud = try? Place.folderInICloud(exportFolder), inICloud else {
+        guard let inICloud = try? exportFolder.inICloud(), inICloud else {
             return
         }
         
         DispatchQueue.global(qos: .background).async {
             do {
                 try Place.forceSync(foldersIn: exportFolder)
+                
+                if showAlert {
+                    let message = "If there are files that need downloading from the cloud -- downloading may take a while after you do this. e.g., don't do a Restore yet."
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "Sync Successful!", message: message, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                        self.parentVC?.present(alert, animated: true, completion: nil)
+                    }
+                }
             } catch let error {
                 Log.error("Failed to forceSync: \(error)")
             }
@@ -119,10 +128,16 @@ class SyncSettingsCell: UITableViewCell {
     }
     
     private func setFolderTextInUI(_ text: String) {
+        var iCloudFolder = false
+        if let exportFolder = getExportFolder(),
+            let iCloud = try? exportFolder.inICloud() {
+            iCloudFolder = iCloud
+        }
+    
         let enableButtons = text != ""
         backupNow.isEnabled = enableButtons
         restoreNow.isEnabled = enableButtons
-        sync.isEnabled = enableButtons
+        sync.isEnabled = enableButtons && iCloudFolder
         textView.text = text
     }
     
@@ -144,7 +159,7 @@ class SyncSettingsCell: UITableViewCell {
     }
     
     @IBAction func syncAction(_ sender: Any) {
-        syncICloudIfNeeded()
+        syncICloudIfNeeded(showAlert: true)
     }
 }
 
