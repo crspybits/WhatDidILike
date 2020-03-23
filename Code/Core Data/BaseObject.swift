@@ -42,6 +42,7 @@ public class BaseObject: NSManagedObject {
         return newObj
     }
     
+    // If lastExport and other fields are set, then the modificationDate field is not updated. This is to accomodate a use case where I import a place (hence changing fields), and set the lastExport field at the same time. In this case, I don't want the place needing export.
     // See also https://stackoverflow.com/questions/5813309/get-modification-date-for-nsmanagedobject-in-core-data
     override public func willSave() {
         super.willSave()
@@ -57,8 +58,8 @@ public class BaseObject: NSManagedObject {
             return
         }
         
-        // If only the lastExport field was changed, don't change the modificationDate. Because this is not a user-driven change.
-        guard changes[Place.lastExportField] == nil || changes.count > 1 else {
+        // See my comment at the start of this method.
+        guard changes[Place.lastExportField] == nil else {
             return
         }
         

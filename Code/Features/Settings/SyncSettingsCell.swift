@@ -14,12 +14,15 @@ class SyncSettingsCell: UITableViewCell {
     // This is just to indicate to the user that they have selected a folder and is for display purposes. The real info is in the *bookmark*.
     private static let displayBackupFolder = SMPersistItemString(name: "Parameters.displayBackupFolder", initialStringValue: "", persistType: .userDefaults)
     
+    @IBOutlet weak var sync: UIButton!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var backupNow: UIButton!
     @IBOutlet weak var separator: UIView!
     @IBOutlet weak var placesNeedingBackup: UILabel!
+    @IBOutlet weak var restoreNow: UIButton!
     weak var parentVC: UIViewController?
     private var backup: BackupWithAlert?
+    private var restore: RestoreWithAlert?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,6 +30,26 @@ class SyncSettingsCell: UITableViewCell {
         Layout.format(textBox: textView)
         separator.backgroundColor = .separatorBackground
         setFolderTextInUI(Self.displayBackupFolder.stringValue)
+
+        syncICloudIfNeeded()
+    }
+    
+    private func syncICloudIfNeeded() {
+        guard let exportFolder = self.getExportFolder() else {
+            return
+        }
+    
+        guard let inICloud = try? Place.folderInICloud(exportFolder), inICloud else {
+            return
+        }
+        
+        DispatchQueue.global(qos: .background).async {
+            do {
+                try Place.forceSync(foldersIn: exportFolder)
+            } catch let error {
+                Log.error("Failed to forceSync: \(error)")
+            }
+        }
     }
     
     func updatePlacesNeedingBackup() {
@@ -54,18 +77,27 @@ class SyncSettingsCell: UITableViewCell {
         parentVC?.present(documentPicker, animated: true, completion: nil)
     }
     
-    @IBAction func backupNowAction(_ sender: Any) {
-        guard let parentVC = parentVC else {
-            return
+    private func getExportFolder() -> URL? {
+        guard Self.displayBackupFolder.stringValue != "" else {
+            return nil
         }
-                
+        
         let exportFolder: URL
         do {
             exportFolder = try URL.securityScopedResourceFromBookmark(data: Parameters.backupFolderBookmark.dataValue)
         } catch {
             let alert = UIAlertController(title: "Alert!", message: "Could not securely access the backup folder.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            parentVC.present(alert, animated: true, completion: nil)
+            parentVC?.present(alert, animated: true, completion: nil)
+            return nil
+        }
+        
+        return exportFolder
+    }
+    
+    @IBAction func backupNowAction(_ sender: Any) {
+        guard let parentVC = parentVC,
+            let exportFolder = getExportFolder() else {
             return
         }
 
@@ -87,8 +119,32 @@ class SyncSettingsCell: UITableViewCell {
     }
     
     private func setFolderTextInUI(_ text: String) {
-        backupNow.isEnabled = text != ""
+        let enableButtons = text != ""
+        backupNow.isEnabled = enableButtons
+        restoreNow.isEnabled = enableButtons
+        sync.isEnabled = enableButtons
         textView.text = text
+    }
+    
+    @IBAction func restoreAction(_ sender: Any) {
+        guard let parentVC = parentVC,
+            let exportFolder = getExportFolder() else {
+            return
+        }
+        
+        // So that while the restore is occuring, the user can't navigate to the places list and make changes to the places.
+        parentVC.tabBarController?.tabBar.isUserInteractionEnabled = false
+
+        restore = RestoreWithAlert(parentVC: parentVC)
+        restore!.start(usingSecurityScopedFolder: exportFolder) { [weak self] in
+            self?.restore = nil
+            self?.updatePlacesNeedingBackup()
+            parentVC.tabBarController?.tabBar.isUserInteractionEnabled = true
+        }
+    }
+    
+    @IBAction func syncAction(_ sender: Any) {
+        syncICloudIfNeeded()
     }
 }
 

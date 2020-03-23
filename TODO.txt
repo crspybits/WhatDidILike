@@ -1,13 +1,28 @@
 WhatDidILike
 
 IMPORT/EXPORT
+    * If I import all places, the text to the right of "Backup Now" reads "(415 of 415 places need backup)" which is completely mis-leading. No places need backup. For a place that is imported, I should set the "lastExport" date as now to disable this.
+    
+    * exportDirectories(in... needs to be smarter. In order for this to work incrementally, it ought to return the place folders that actually need restoring-- not all of them. So filter the full set by the places that have already been imported.
+        
+    * I'd like to be able to use iCloud Drive to sync data across devices. As part of this, I'd want to observe/watch for conflicts. I haven't found notifications to allow for this. See https://stackoverflow.com/questions/47640039/nsnotification-nsmetadataquerydidupdate-getting-non-stop-notification-messages
+        i.e., the following observers are not triggered on conflict situation:
+
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.UIDocumentStateChanged, object: nil, queue: nil) { notification in
+                print("UIDocumentStateChanged.userInfo: \(String(describing: notification.userInfo))")
+            }
+
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.NSMetadataQueryDidUpdate, object: nil, queue: nil) { notification in
+                print("NSMetadataQueryDidUpdate.userInfo: \(String(describing: notification.userInfo))")
+            }
+    
+    * An alternative to the background export method would be to trigger a place save when a place or one of its child objects gets updated. Would require an initial manual save/backup step to start. Would require being able to access the root Place object from any child.
+    
     * Backgound (automatic) export: Looks like this is going to require an extensive overhaul of the way I'm dealing with Managed Object Context's for Core Data-- because a background thread requires its own MOC.
     
     * What if someone (a) does a backup of their data, (b) changes the name of a place, and (c) backs up again. The place will currently save to a different folder. Need to change this-- find the previous place. Perhaps search for <Name>_id in the folder?
 
     * Add a README.txt to the exported data-- to inform user they ought not change these files if they ever want to do a recovery/restore.
-
-    * Should add "creationDate" to core data Codable export/imports-- because otherwise losing some date data, which impacts suggestions.
 
     * Consider using UUID's instead of id's for Place's. id's have the problem that: (1) if the app is removed, (2) some places created, and (3) a restore occurs we may have overlapping id's but different places.
 
@@ -20,6 +35,15 @@ IMPORT/EXPORT
     * When a place managed object is removed, any corresponding directory in the export directory also needs to be removed.
 
     * When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory?
+
+    * DONE: When I start using iCloud Drive on a simulator, I notice all of the WhatDidILike folders download, but none of their contents. If I use the Files app, contents are downloaded on demand. See also https://discussions.apple.com/thread/7102088
+        https://stackoverflow.com/questions/60615931/
+        https://stackoverflow.com/questions/33462352
+        https://stackoverflow.com/questions/28672098
+        
+        More generally, see: https://developer.apple.com/library/archive/documentation/General/Conceptual/iCloudDesignGuide/Chapters/Introduction.html
+    
+    * DONE: Should add "creationDate" to core data Codable export/imports-- because otherwise losing some date data, which impacts suggestions.
 
     * DONE: Need to add in use of secure URL's for URL's from the URL picker-- I think it has to be used for all of those URL's.
 

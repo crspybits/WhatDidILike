@@ -119,12 +119,24 @@ public class PlaceList: NSManagedObject, Codable, EquatableObjects {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
 
+    // Only updates modificationDate for a name field change. The logic is that if the place relation changes that's not a cause for a backup as this isn't coded in the backup.
     // See also https://stackoverflow.com/questions/5813309/get-modification-date-for-nsmanagedobject-in-core-data
     override public func willSave() {
         super.willSave()
-        if !isDeleted && changedValues()["modificationDate"] == nil {
-            modificationDate = Date()
+        
+        guard !isDeleted else {
+            return
         }
+        
+        guard changedValues()["modificationDate"] == nil else {
+            return
+        }
+        
+        guard changedValues()["places"] == nil else {
+            return
+        }
+            
+        modificationDate = Date()
     }
     
     class func fetchRequestForAllObjects() -> NSFetchRequest<NSFetchRequestResult>? {

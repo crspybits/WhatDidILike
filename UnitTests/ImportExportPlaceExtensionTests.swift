@@ -345,10 +345,8 @@ class ImportExportPlaceExtensionTests: XCTestCase {
             return
         }
         
-        let importedPlace = try Place.import(from: placeExportDirectory)
-        
-        XCTAssert(importedPlace != nil)
-        
+        _ = try Place.import(from: placeExportDirectory, in: exportURL)
+                
         guard try Place.fetchObject(withId: id) != nil else {
             XCTFail()
             return
@@ -356,19 +354,33 @@ class ImportExportPlaceExtensionTests: XCTestCase {
     }
         
     func testImportWithImages() throws {
+        removePlaces()
+        try FileManager.default.removeItem(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY))
+        try? FileManager.default.createDirectory(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY), withIntermediateDirectories: false, attributes: nil)
+        
         guard let place = exportWithTwoImages() else {
             XCTFail()
             return
         }
         
+        guard place.largeImageFiles.count == 2 else {
+            XCTFail()
+            return
+        }
+        
+        // Need to remove files in the device's largeImages folder-- which are there because of exportWithTwoImages
+        
+        let documentsImageURL = URL(fileURLWithPath: Image.filePath(for: place.largeImageFiles[0]))
+        let documentsImageURL2 = URL(fileURLWithPath: Image.filePath(for: place.largeImageFiles[1]))
+        try FileManager.default.removeItem(at: documentsImageURL)
+        try FileManager.default.removeItem(at: documentsImageURL2)
+
         let placeExportDirectory = place.createDirectoryName(in: exportURL)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
 
-        let importedPlace = try Place.import(from: placeExportDirectory)
-        
-        XCTAssert(importedPlace != nil)
-        
-        guard let locations = importedPlace?.locations as? Set<Location>,
+        let importedPlace = try Place.import(from: placeExportDirectory, in: exportURL)
+                
+        guard let locations = importedPlace.locations as? Set<Location>,
             locations.count == 1 else {
             XCTFail()
             return
@@ -385,15 +397,6 @@ class ImportExportPlaceExtensionTests: XCTestCase {
             for image in images {
                 XCTAssert(image.fileName != nil)
                 XCTAssert(FileManager.default.fileExists(atPath: image.filePath))
-            }
-        }
-    }
-    
-    func removePlaces() {
-        if var places = Place.fetchAllObjects() {
-            while !places.isEmpty {
-                let place = places.remove(at: 0)
-                CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
             }
         }
     }
@@ -473,6 +476,9 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         // Wait for some time to go by, so the modification date is different from the lastExport date.
         usleep(200)
         
+        // Because if the lastExport and another field (e.g., name, below) are changed together, the modificationDate doesn't get updated.
+        place.save()
+        
         // This should make the place `dirty`-- needing export
         place.name = "foo"
         place.save() // Needed to get the modification date updated.
@@ -489,5 +495,41 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         
         XCTAssert(exportPlaces2[0].id?.int32Value == place.id?.int32Value)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
+    }
+    
+    func testCreateLargeImagesDirectoryIfNeededWithFolderAbsent() throws {
+        try? FileManager.default.removeItem(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY))
+        
+        try Place.createLargeImagesDirectoryIfNeeded()
+        
+        if !FileManager.default.fileExists(atPath: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY)!.path) {
+            XCTFail()
+            return
+        }
+    }
+    
+    func testCreateLargeImagesDirectoryIfNeededWithFolderPresent() throws {
+        try? FileManager.default.removeItem(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY))
+        
+        try Place.createLargeImagesDirectoryIfNeeded()
+        
+        if !FileManager.default.fileExists(atPath: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY)!.path) {
+            XCTFail()
+            return
+        }
+        
+        // The actual test call-- folder present already.
+        try Place.createLargeImagesDirectoryIfNeeded()
+    }
+}
+
+extension XCTestCase {
+    func removePlaces() {
+        if var places = Place.fetchAllObjects() {
+            while !places.isEmpty {
+                let place = places.remove(at: 0)
+                CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
+            }
+        }
     }
 }

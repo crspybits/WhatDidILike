@@ -180,7 +180,7 @@ public class Place: BaseObject, Codable, EquatableObjects {
 extension Place {
     // Recommendation dates.
     override var dates: [Date] {
-        // Not including `lastExport` here because that date doesn't user date data for Recommendations.
+        // Not including `lastExport` here because that date isn't user date data for Recommendations.
         
         var result = [Date]()
         

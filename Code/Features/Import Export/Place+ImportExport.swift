@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SMCoreLib
 
 extension Place {
     static let placeJSON = "place.json"
@@ -15,6 +16,10 @@ extension Place {
         case cannotCreateJSONFile
         case cannotDeserializeToDictionary
         case noIdInPlaceJSON
+        case exportedIdAlreadyExistsInCoreData
+        case errorCopyingFile(Error)
+        case couldNotGetLargeImagesFolder
+        case wrongTypeForIsUbiquitousItem
     }
     
     // Attempts to create a child directory, in the parent directory, using the form:
@@ -106,29 +111,69 @@ extension Place {
         return urls
     }
     
-    // Decodes a place from the given place export directory, creating the needed managed objects.
-    // If not present already, images are copied into the large images directory in the Documents directory from the place export directory.
-    // Returns nil if a Place with the exported id already exists in Core Data. Returns non-nil otherwise.
-    static func `import`(from placeExportDirectory: URL) throws -> Place? {
+    // Creates folder in the Documents folder if it's not there.
+    static func createLargeImagesDirectoryIfNeeded() throws {
+        guard let largeImagesDirectory = FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY) else {
+            throw ImportExportError.couldNotGetLargeImagesFolder
+        }
+        
+        if !FileManager.default.fileExists(atPath: largeImagesDirectory.path) {
+            try? FileManager.default.createDirectory(at: largeImagesDirectory, withIntermediateDirectories: false, attributes: nil)
+        }
+    }
+    
+    // Decodes a single place from the given place export directory, creating the needed managed objects.
+    // Images are copied into the large images directory in the Documents directory from the place export directory.
+    // Saves the placed returned before returning.
+    @discardableResult
+    static func `import`(from placeExportDirectory: URL, in parentDirectory: URL, accessor:URL.Accessor = .none) throws -> Place {
         let jsonFileName = URL(fileURLWithPath: placeExportDirectory.path + "/" + placeJSON)
+        var place:Place!
         
-        let jsonData = try Data(contentsOf: jsonFileName)
+        // I initially though that I needed to access the jsonFileName as security scoped, but nope. That fails. Need to use the parentDirectory.
         
-        // Before decoding, make sure id we are decoding isn't in an existing place.
-        guard let dict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
-            throw ImportExportError.cannotDeserializeToDictionary
-        }
-        
-        guard let id = dict[Place.CodingKeys.id.rawValue] as? Place.IdType else {
-            throw ImportExportError.noIdInPlaceJSON
-        }
-        
-        guard try Place.fetchObject(withId: id) == nil else {
-            return nil
-        }
+        try parentDirectory.accessor(accessor) { url in
+            let jsonData = try Data(contentsOf: jsonFileName)
 
-        let decoder = JSONDecoder()
-        let place = try decoder.decode(Place.self, from: jsonData)
+            // Before decoding, make sure id we are decoding isn't in an existing place.
+            guard let dict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
+                throw ImportExportError.cannotDeserializeToDictionary
+            }
+            
+            guard let id = dict[Place.CodingKeys.id.rawValue] as? Place.IdType else {
+                throw ImportExportError.noIdInPlaceJSON
+            }
+            
+            guard try Place.fetchObject(withId: id) == nil else {
+                throw ImportExportError.exportedIdAlreadyExistsInCoreData
+            }
+
+            let decoder = JSONDecoder()
+            place = try decoder.decode(Place.self, from: jsonData)
+            
+            if place.largeImageFiles.count > 0 {
+                for imageFileName in place.largeImageFiles {
+                    let deviceImageURL = URL(fileURLWithPath: Image.filePath(for: imageFileName))
+                    let exportedImageURL = URL(fileURLWithPath: placeExportDirectory.path + "/" + imageFileName)
+                    do {
+                        try FileManager.default.copyItem(at: exportedImageURL, to: deviceImageURL)
+                    } catch let error {
+                        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
+                        throw ImportExportError.errorCopyingFile(error)
+                    }
+                }
+            }
+        }
+        
+        // This sequence is a little hard to understand. i.e., it was hard to get right when developing. First, do an initial save so that all the modification dates of the place and sub-objects (e.g., Location's) get updated via their `willSave` calls.
+        place.save()
+        
+        // This seems a little odd, but is suitable. Immediately after an import, we don't want to have place needing export.
+        place.lastExport = Date()
+        
+        // Then do another save, to save the lastExport change.
+        place.lastExport = Date()
+        
         return place
     }
     
@@ -154,5 +199,39 @@ extension Place {
         }
         
         return (result, allPlaces.count)
+    }
+    
+    // Attempts to force a download sync of iCloud Drive. I've been having problems with this in two ways so far. First, on the simulator, only the place folders in iCloud Drive download, not their contents. (Going into the Files app into a place folder does cause contents to download). Second, for a specific place.json file for one place I modified manually on the iCloud Drive web UI, this is now showing up as missing on my iPhone.
+    // Always uses security scoped accessor-- this can't easily be tested in unit tests.
+    // This is adapted from https://stackoverflow.com/questions/33462352
+    static func forceSync(foldersIn cloudDriveDirectory: URL) throws {
+        let urls = try Place.exportDirectories(in: cloudDriveDirectory, accessor: .securityScoped)
+        
+        try cloudDriveDirectory.accessor(.securityScoped) { url in
+            for url in urls {
+                try forceSync(for: url)
+            }
+        }
+    }
+        
+    static func forceSync(for folderURL: URL) throws {
+        let fileManager = FileManager.default
+
+        guard fileManager.isUbiquitousItem(at: folderURL) else {
+            Log.msg("Folder \(folderURL) was not in iCloud Drive")
+            return
+        }
+
+        try fileManager.startDownloadingUbiquitousItem(at: folderURL)
+    }
+    
+    // Determine whether a folder is iCloud Drive or not.
+    static func folderInICloud(_ folder: URL) throws -> Bool {
+        let result = try folder.resourceValues(forKeys: [.isUbiquitousItemKey])
+        guard let inICloud = result.allValues[.isUbiquitousItemKey] as? Bool else {
+            throw ImportExportError.wrongTypeForIsUbiquitousItem
+        }
+        
+        return inICloud
     }
 }

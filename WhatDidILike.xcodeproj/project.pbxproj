@@ -89,6 +89,7 @@
 		839FC113242660FE001822D2 /* BackupWithAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC112242660FE001822D2 /* BackupWithAlert.swift */; };
 		839FC1152426B9C7001822D2 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC1142426B9C7001822D2 /* CoreDataTests.swift */; };
 		839FC1172426CF67001822D2 /* SecurityScopedURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC1162426CF66001822D2 /* SecurityScopedURL.swift */; };
+		839FC11A24285CC9001822D2 /* RestoreWithAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC11924285CC8001822D2 /* RestoreWithAlert.swift */; };
 		83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image.swift */; };
 		83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */; };
 		83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */; };
@@ -226,6 +227,7 @@
 		839FC1142426B9C7001822D2 /* CoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		839FC1162426CF66001822D2 /* SecurityScopedURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityScopedURL.swift; sourceTree = "<group>"; };
 		839FC1182427EF5E001822D2 /* TODO.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
+		839FC11924285CC8001822D2 /* RestoreWithAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWithAlert.swift; sourceTree = "<group>"; };
 		83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v2.xcdatamodel; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 				839FC10B2425CD1D001822D2 /* SyncSettingsCell.swift */,
 				839FC10C2425CD1D001822D2 /* SyncSettingsCell.xib */,
 				839FC112242660FE001822D2 /* BackupWithAlert.swift */,
+				839FC11924285CC8001822D2 /* RestoreWithAlert.swift */,
 			);
 			name = Settings;
 			path = Features/Settings;
@@ -871,6 +874,7 @@
 				8396CE401F4BCB8A00660D73 /* Comment.swift in Sources */,
 				83401D9E1F5CEE8900A96C8D /* PlaceDetailsView.swift in Sources */,
 				83D752CC1F93D9BE00EF4E5D /* GPS+Extras.swift in Sources */,
+				839FC11A24285CC9001822D2 /* RestoreWithAlert.swift in Sources */,
 				837E12601F8F2C4C00D8E4E1 /* CommentPromptVC.swift in Sources */,
 				83A2D5EB1F5CE3670003C5F9 /* PlaceVC.swift in Sources */,
 				836F7863241B14E30006D7CA /* Checkin+CoreDataProperties.swift in Sources */,

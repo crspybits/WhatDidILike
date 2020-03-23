@@ -93,6 +93,7 @@ class CodableTests: XCTestCase {
 
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place1)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
     func testPlaceCategoryDeletingFirst() {
