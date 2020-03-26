@@ -27,8 +27,8 @@ class LargeImageFilesTests: XCTestCase {
         XCTAssert(image1.largeImageFiles == [fileName])
     }
     
-    func testComments() {
-        let comment = Comment.newObject()
+    func testComments() throws {
+        let comment = try Comment.newObject()
         
         let fileName = "Foo"
         let image = Image.newObject()
@@ -45,8 +45,8 @@ class LargeImageFilesTests: XCTestCase {
         XCTAssert(comment.largeImageFiles == [fileName, fileName2])
     }
     
-    func testLocations() {
-        let location1 = Location.newObject()
+    func testLocations() throws {
+        let location1 = try Location.newObject()
         
         let fileName = "Foo"
         let image = Image.newObject()
@@ -63,10 +63,10 @@ class LargeImageFilesTests: XCTestCase {
         XCTAssert(location1.largeImageFiles == [fileName, fileName2])
     }
     
-    func testItems() {
-        let item = Item.newObject()
+    func testItems() throws {
+        let item = try Item.newObject()
         
-        let comment = Comment.newObject()
+        let comment = try Comment.newObject()
     
         let fileName = "Foo"
         let image = Image.newObject()
@@ -77,7 +77,7 @@ class LargeImageFilesTests: XCTestCase {
         
         XCTAssert(item.largeImageFiles == [fileName])
         
-        let comment2 = Comment.newObject()
+        let comment2 = try Comment.newObject()
     
         let fileName2 = "Foo"
         let image2 = Image.newObject()
@@ -89,12 +89,12 @@ class LargeImageFilesTests: XCTestCase {
         XCTAssert(item.largeImageFiles == [fileName, fileName2])
     }
     
-    func testPlaces() {
-        let place = Place.newObject()
+    func testPlaces() throws {
+        let place = try Place.newObject()
         
-        let item = Item.newObject()
+        let item = try Item.newObject()
         
-        let comment = Comment.newObject()
+        let comment = try Comment.newObject()
     
         let fileName = "Foo"
         let image = Image.newObject()
@@ -105,7 +105,7 @@ class LargeImageFilesTests: XCTestCase {
         
         XCTAssert(item.largeImageFiles == [fileName])
         
-        let comment2 = Comment.newObject()
+        let comment2 = try Comment.newObject()
     
         let fileName2 = "Foo"
         let image2 = Image.newObject()
@@ -118,7 +118,7 @@ class LargeImageFilesTests: XCTestCase {
         
         XCTAssert(place.largeImageFiles == [fileName, fileName2])
         
-        let location1 = Location.newObject()
+        let location1 = try Location.newObject()
         
         let fileName3 = "Foo"
         let image3 = Image.newObject()

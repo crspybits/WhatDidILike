@@ -12,25 +12,32 @@ import SMCoreLib
 
 @objc(Place)
 public class Place: BaseObject, Codable, EquatableObjects {
-    typealias IdType = Int32
-    static let ID_KEY = "id"
-    static let lastExportField = "lastExport"
-    
-    private static let _nextId = SMPersistItemInt(name: "Place.nextId", initialIntValue: 0, persistType: .userDefaults)
-    static var nextId: IdType {
-        let result = _nextId.intValue
-        _nextId.intValue += 1
-        return IdType(result)
+    enum PlaceError : Error {
+        case uuidAlreadyExists
     }
+    
+    static let UUID_KEY = "uuid"
+    static let lastExportField = "lastExport"
 
     override class func entityName() -> String {
         return "Place"
     }
     
+    static func nextUUID() throws -> String {
+        let nextUUID = UUID().uuidString
+        
+        guard try fetchObject(withUUID: nextUUID) == nil else {
+            throw PlaceError.uuidAlreadyExists
+        }
+        
+        return nextUUID
+    }
+    
     // After you create a Place, make sure you give it at least one Location-- this is required by the model.
-    override class func newObject() -> Place {
-        let result = super.newObject() as! Place
-        result.id = nextId as NSNumber
+    override class func newObject() throws -> Place {
+        let uuid = try nextUUID()
+        let result = try super.newObject() as! Place
+        result.uuid = uuid
         return result
     }
     
@@ -40,8 +47,8 @@ public class Place: BaseObject, Codable, EquatableObjects {
         return places as? [Place]
     }
     
-    class func fetchObject(withId id: IdType) throws -> Place? {
-        guard let fetchRequest = fetchRequestForObjects(withId: id) else {
+    class func fetchObject(withUUID uuid: String) throws -> Place? {
+        guard let fetchRequest = fetchRequestForObjects(withUUID: uuid) else {
             return nil
         }
                 
@@ -57,17 +64,17 @@ public class Place: BaseObject, Codable, EquatableObjects {
         return results[0]
     }
     
-    private class func fetchRequestForObjects(withId id: IdType) -> NSFetchRequest<NSFetchRequestResult>? {
+    private class func fetchRequestForObjects(withUUID uuid: String) -> NSFetchRequest<NSFetchRequestResult>? {
         var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
+        
         fetchRequest = CoreData.sessionNamed(CoreDataExtras.sessionName).fetchRequest(
             withEntityName: self.entityName(), modifyingFetchRequestWith: { request in
-            let id = NSNumber(integerLiteral: Int(id))
-            let predicate = NSPredicate(format: "(%K == %@)", ID_KEY, id)
+            let predicate = NSPredicate(format: "(%K == %@)", UUID_KEY, uuid)
             request.predicate = predicate
         })
 
         if fetchRequest != nil {
-            let sortDescriptor = NSSortDescriptor(key: ID_KEY, ascending: true)
+            let sortDescriptor = NSSortDescriptor(key: UUID_KEY, ascending: true)
             fetchRequest!.sortDescriptors = [sortDescriptor]
         }
         
@@ -96,7 +103,7 @@ public class Place: BaseObject, Codable, EquatableObjects {
     enum CodingKeys: String, CodingKey {
         case creationDate
         case modificationDate
-        case id
+        case uuid
         case generalDescription
         case name
         case category
@@ -112,7 +119,7 @@ public class Place: BaseObject, Codable, EquatableObjects {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         creationDate = try container.decodeIfPresent(Date.self, forKey: .creationDate) as NSDate?
         modificationDate = try container.decodeIfPresent(Date.self, forKey: .modificationDate) as NSDate?
-        id = try container.decodeIfPresent(IdType.self, forKey: .id) as NSNumber?
+        uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
         generalDescription = try container.decodeIfPresent(String.self, forKey: .generalDescription)
         name = try container.decodeIfPresent(String.self, forKey: .name)
         
@@ -148,7 +155,7 @@ public class Place: BaseObject, Codable, EquatableObjects {
             try container.encode(modificationDate, forKey: .modificationDate)
         }
         
-        try container.encode(id?.int32Value, forKey: .id)
+        try container.encode(uuid, forKey: .uuid)
         try container.encode(generalDescription, forKey: .generalDescription)
         try container.encode(name, forKey: .name)
         try container.encode(category, forKey: .category)
@@ -167,7 +174,7 @@ public class Place: BaseObject, Codable, EquatableObjects {
     }
     
     static func equal(_ lhs: Place?, _ rhs: Place?) -> Bool {
-        return lhs?.id == rhs?.id &&
+        return lhs?.uuid == rhs?.uuid &&
             lhs?.generalDescription == rhs?.generalDescription &&
             lhs?.name == rhs?.name &&
             PlaceCategory.equal(lhs?.category, rhs?.category) &&

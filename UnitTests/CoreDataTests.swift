@@ -20,24 +20,24 @@ class CoreDataTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testToEnsureLastExportFieldNameIsCorrect() {
-        let place = Place.newObject()
+    func testToEnsureLastExportFieldNameIsCorrect() throws {
+        let place = try Place.newObject()
         place.lastExport = Date()
         XCTAssert(place.value(forKey: Place.lastExportField) != nil)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
     }
     
-    func testToEnsureModificationDateFieldNameIsCorrect() {
-        let place = Place.newObject()
+    func testToEnsureModificationDateFieldNameIsCorrect() throws {
+        let place = try Place.newObject()
         place.save()
         XCTAssert(place.value(forKey: BaseObject.modificationDateField) != nil)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
     }
     
-    func testToEnsureLastExportFieldChangeWithOtherChangesIsNotExportable() {
+    func testToEnsureLastExportFieldChangeWithOtherChangesIsNotExportable() throws {
         removePlaces()
         
-        let place = Place.newObject()
+        let place = try Place.newObject()
         place.name = "Foo"
         place.lastExport = Date()
         place.save()
@@ -50,7 +50,7 @@ class CoreDataTests: XCTestCase {
         XCTAssert(places.count == 0)
     }
     
-    func testToEnsureAddingPlaceToPlaceListDoesNotUpdateModificationDate() {
+    func testToEnsureAddingPlaceToPlaceListDoesNotUpdateModificationDate() throws {
         removePlaces()
         
         let placeCategoryName = "Foo Biz"
@@ -59,7 +59,7 @@ class CoreDataTests: XCTestCase {
             return
         }
         
-        let place1 = Place.newObject()
+        let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
         place1.category = placeCategory1
@@ -74,7 +74,7 @@ class CoreDataTests: XCTestCase {
             return
         }
         
-        let place2 = Place.newObject()
+        let place2 = try Place.newObject()
         
         // This the line of interest. This actually updates the `places` relation of the place category. And we're testing to ensure the modificationDate of the place category doesn't change as a result.
         place2.category = placeCategory1
@@ -93,7 +93,7 @@ class CoreDataTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testToEnsureAddingPlaceToPlaceCategoryDoesNotUpdateModificationDate() {
+    func testToEnsureAddingPlaceToPlaceCategoryDoesNotUpdateModificationDate() throws {
         removePlaces()
         
         let placeListName = "Foo Biz"
@@ -102,7 +102,7 @@ class CoreDataTests: XCTestCase {
             return
         }
         
-        let place1 = Place.newObject()
+        let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
         place1.addToLists(placeList1)
@@ -117,7 +117,7 @@ class CoreDataTests: XCTestCase {
             return
         }
         
-        let place2 = Place.newObject()
+        let place2 = try Place.newObject()
         
         // This the line of interest. This actually updates the `places` relation of the place list. And we're testing to ensure the modificationDate of the place list doesn't change as a result.
         place2.addToLists(placeList1)
@@ -133,6 +133,25 @@ class CoreDataTests: XCTestCase {
         }
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeList1)
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
+    
+    func testLastExportReset() throws {
+        let place1 = try Place.newObject()
+        place1.lastExport = Date()
+        
+        let place2 = try Place.newObject()
+        place2.lastExport = Date()
+        
+        place1.save()
+        
+        Place.resetLastExports()
+        
+        XCTAssert(place1.lastExport == nil)
+        XCTAssert(place2.lastExport == nil)
+
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place1)
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
 }

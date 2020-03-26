@@ -152,90 +152,92 @@ class ConvertFromV1 {
         func doNextRestaurant() {
             let restaurant = places[currentPlaceIndex]
             
-            let coreDataPlace = Place.newObject()
-            coreDataPlace.creationDate = restaurant[KEY_DATE] as? NSDate
-            coreDataPlace.modificationDate = restaurant[KEY_MODIFICATION_DATE] as? NSDate
-            coreDataPlace.generalDescription = restaurant[PLACE_KEY_GENERAL_DESCRIPTION] as? String
-            coreDataPlace.name = restaurant[PLACE_KEY_NAME] as? String
-            
-            if let categoryName = restaurant[KEY_CATEGORY] as? String {
-                var placeCategory:PlaceCategory?
-                if let existingCategory = PlaceCategory.getCategory(withName: categoryName) {
-                    placeCategory = existingCategory
-                }
-                else {
-                    if let newPlaceCategory = try? PlaceCategory.newObject(withName: categoryName) {
-                        numberCategoriesCreated += 1
-                        placeCategory = newPlaceCategory
+            if let coreDataPlace = try? Place.newObject() {
+                coreDataPlace.creationDate = restaurant[KEY_DATE] as? NSDate
+                coreDataPlace.modificationDate = restaurant[KEY_MODIFICATION_DATE] as? NSDate
+                coreDataPlace.generalDescription = restaurant[PLACE_KEY_GENERAL_DESCRIPTION] as? String
+                coreDataPlace.name = restaurant[PLACE_KEY_NAME] as? String
+                
+                if let categoryName = restaurant[KEY_CATEGORY] as? String {
+                    var placeCategory:PlaceCategory?
+                    if let existingCategory = PlaceCategory.getCategory(withName: categoryName) {
+                        placeCategory = existingCategory
                     }
                     else {
-                        numberCategoryCreationErrors += 1
+                        if let newPlaceCategory = try? PlaceCategory.newObject(withName: categoryName) {
+                            numberCategoriesCreated += 1
+                            placeCategory = newPlaceCategory
+                        }
+                        else {
+                            numberCategoryCreationErrors += 1
+                        }
+                    }
+                    
+                    coreDataPlace.category = placeCategory
+                }
+                
+                coreDataPlace.userName = restaurant[KEY_USER_NAME] as? String
+                
+                if let listNames = restaurant[PLACE_KEY_LISTS] as? [String], listNames.count > 0 {
+                    for listName in listNames {
+                        if let existingListName = PlaceList.getPlaceList(withName: listName) {
+                            coreDataPlace.addToLists(existingListName)
+                        }
+                        else {
+                            if let newListName = try? PlaceList.newObject(withName: listName) {
+                                coreDataPlace.addToLists(newListName)
+                                numberListNamesCreated += 1
+                            }
+                            else {
+                                numberListNameCreationErrors += 1
+                            }
+                        }
                     }
                 }
                 
-                coreDataPlace.category = placeCategory
-            }
-            
-            coreDataPlace.userName = restaurant[KEY_USER_NAME] as? String
-            
-            if let listNames = restaurant[PLACE_KEY_LISTS] as? [String], listNames.count > 0 {
-                for listName in listNames {
-                    if let existingListName = PlaceList.getPlaceList(withName: listName) {
-                        coreDataPlace.addToLists(existingListName)
+                if let coreDataLocation = try? Location.newObject() {
+                    coreDataPlace.addToLocations(coreDataLocation)
+                    
+                    let iAte = restaurant[KEY_IATE] as? NSNumber
+                    coreDataLocation.rating!.meThem = iAte
+                    
+                    coreDataLocation.address = restaurant[PLACE_KEY_LOCATION] as? String
+                    
+                    if let rating = restaurant[KEY_RATING] as? Float {
+                        coreDataLocation.rating!.rating = rating
                     }
-                    else {
-                        if let newListName = try? PlaceList.newObject(withName: listName) {
-                            coreDataPlace.addToLists(newListName)
-                            numberListNamesCreated += 1
+                    
+                    // Since the location info was all previously part of the place info, it makes sense to also use the creation date and modification date here.
+                    coreDataLocation.creationDate = coreDataPlace.creationDate
+                    coreDataLocation.modificationDate = coreDataPlace.modificationDate
+                    coreDataLocation.userName = coreDataPlace.userName
+                    
+                    if let imageNames = restaurant[PLACE_KEY_IMAGES] as? [String], imageNames.count > 0 {
+                        for imageName in imageNames {
+                            if let newImageName = moveLargeImage(largeImageFileName: imageName) {
+                                let newImage = Image.newObject()
+                                newImage.fileName = newImageName
+                                coreDataLocation.addToImages(newImage)
+                            }
+                            else {
+                                if let name = coreDataPlace.name {
+                                    imageErrorDescriptions.append("Place Image error for: \(name)")
+                                }
+                            }
                         }
-                        else {
-                            numberListNameCreationErrors += 1
-                        }
+                    }
+                    
+                    if let location = restaurant[PLACE_KEY_COORDS] as? CLLocation {
+                        coreDataLocation.location = location
                     }
                 }
-            }
-            
-            let coreDataLocation = Location.newObject()
-            coreDataPlace.addToLocations(coreDataLocation)
-            
-            let iAte = restaurant[KEY_IATE] as? NSNumber
-            coreDataLocation.rating!.meThem = iAte
-            
-            coreDataLocation.address = restaurant[PLACE_KEY_LOCATION] as? String
-            
-            if let rating = restaurant[KEY_RATING] as? Float {
-                coreDataLocation.rating!.rating = rating
-            }
-            
-            // Since the location info was all previously part of the place info, it makes sense to also use the creation date and modification date here.
-            coreDataLocation.creationDate = coreDataPlace.creationDate
-            coreDataLocation.modificationDate = coreDataPlace.modificationDate
-            coreDataLocation.userName = coreDataPlace.userName
-            
-            if let imageNames = restaurant[PLACE_KEY_IMAGES] as? [String], imageNames.count > 0 {
-                for imageName in imageNames {
-                    if let newImageName = moveLargeImage(largeImageFileName: imageName) {
-                        let newImage = Image.newObject()
-                        newImage.fileName = newImageName
-                        coreDataLocation.addToImages(newImage)
-                    }
-                    else {
-                        if let name = coreDataPlace.name {
-                            imageErrorDescriptions.append("Place Image error for: \(name)")
-                        }
-                    }
+                
+                if let menuItems = restaurant[PLACE_KEY_MENU] as? [[String:Any]], menuItems.count > 0 {
+                    add(items: menuItems, to: coreDataPlace)
                 }
+                
+                CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
             }
-            
-            if let location = restaurant[PLACE_KEY_COORDS] as? CLLocation {
-                coreDataLocation.location = location
-            }
-            
-            if let menuItems = restaurant[PLACE_KEY_MENU] as? [[String:Any]], menuItems.count > 0 {
-                add(items: menuItems, to: coreDataPlace)
-            }
-            
-            CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
             
             currentPlaceIndex += 1
             
@@ -273,7 +275,11 @@ class ConvertFromV1 {
         numberItems += items.count
 
         for menuItem in items {
-            let coreDataItem = Item.newObject()
+            guard let coreDataItem = try? Item.newObject() else {
+                Log.msg("Failed creating item!")
+                continue
+            }
+            
             place.addToItems(coreDataItem)
             
             coreDataItem.userName = menuItem[KEY_USER_NAME] as? String
@@ -294,11 +300,11 @@ class ConvertFromV1 {
                 // No comments.
                 if let iAte = menuItem[KEY_IATE] as? NSNumber {
                     // Add the dummy comment for the me/them.
-                    let coreDataComment = Comment.newObject()
-                    coreDataItem.addToComments(coreDataComment)
-                    
-                    coreDataComment.rating!.meThem = iAte
-                    coreDataComment.comment = "Only me/them has meaning."
+                    if let coreDataComment = try? Comment.newObject() {
+                        coreDataItem.addToComments(coreDataComment)
+                        coreDataComment.rating!.meThem = iAte
+                        coreDataComment.comment = "Only me/them has meaning."
+                    }
                 }
                 
                 coreDataItem.modificationDate = coreDataItem.creationDate
@@ -327,84 +333,86 @@ class ConvertFromV1 {
             }
         }
         
-        let coreDataComment = Comment.newObject()
-        item.addToComments(coreDataComment)
-        coreDataComment.rating!.meThem = false
-        
-        var numberRatings = 0
-        
-        // We'll average the ratings if there is > 1 existing comment.
-        var totalRating:Float = 0
-        
-        var oldestDate:Date?
         var mostRecentDate:Date?
-        
-        var extendedComment = ""
-        
-        numberComments += comments.count
-        
-        for comment in sortedComments {
-            // Just take the first userName.
-            if coreDataComment.userName == nil {
-                coreDataComment.userName = comment[KEY_USER_NAME] as? String
-            }
+
+        if let coreDataComment = try? Comment.newObject() {
+            item.addToComments(coreDataComment)
+            coreDataComment.rating!.meThem = false
             
-            if let currentDate = comment[KEY_DATE] as? NSDate as Date? {
-                if oldestDate == nil {
-                    oldestDate = currentDate
-                }
-                else if currentDate < oldestDate! {
-                    oldestDate = currentDate
+            var numberRatings = 0
+            
+            // We'll average the ratings if there is > 1 existing comment.
+            var totalRating:Float = 0
+            
+            var oldestDate:Date?
+            
+            var extendedComment = ""
+            
+            numberComments += comments.count
+            
+            for comment in sortedComments {
+                // Just take the first userName.
+                if coreDataComment.userName == nil {
+                    coreDataComment.userName = comment[KEY_USER_NAME] as? String
                 }
                 
-                if mostRecentDate == nil {
-                    mostRecentDate = currentDate
-                }
-                else if currentDate > mostRecentDate! {
-                    mostRecentDate = currentDate
-                }
-            }
-            
-            // If iAte is true on one, keep it that way.
-            if let iAte = comment[KEY_IATE] as? Bool {
-                let current = coreDataComment.rating!.meThem as! Bool
-                coreDataComment.rating!.meThem = (current || iAte) as NSNumber
-            }
-            
-            if let rating = comment[KEY_RATING] as? Float {
-                totalRating += rating
-                numberRatings += 1
-            }
-            
-            if let comment = comment[COMMENT_KEY_COMMENT] as? String, comment.count > 0 {
-                if extendedComment.count > 0 {
-                    extendedComment += "\n"
+                if let currentDate = comment[KEY_DATE] as? NSDate as Date? {
+                    if oldestDate == nil {
+                        oldestDate = currentDate
+                    }
+                    else if currentDate < oldestDate! {
+                        oldestDate = currentDate
+                    }
+                    
+                    if mostRecentDate == nil {
+                        mostRecentDate = currentDate
+                    }
+                    else if currentDate > mostRecentDate! {
+                        mostRecentDate = currentDate
+                    }
                 }
                 
-                extendedComment += comment
-            }
-            
-            if let commentImageName = comment[COMMENT_KEY_IMAGE_FILENAME] as? String {
-                // This image, if any, needs to be moved to the largeImages folder
-                if let newImageName = moveLargeImage(largeImageFileName: commentImageName) {
-                    let newImage = Image.newObject()
-                    newImage.fileName = newImageName
-                    coreDataComment.addToImages(newImage)
+                // If iAte is true on one, keep it that way.
+                if let iAte = comment[KEY_IATE] as? Bool {
+                    let current = coreDataComment.rating!.meThem as! Bool
+                    coreDataComment.rating!.meThem = (current || iAte) as NSNumber
                 }
-                else {
-                    if let name = item.place?.name {
-                        imageErrorDescriptions.append("Comment Image error for: \(name)")
+                
+                if let rating = comment[KEY_RATING] as? Float {
+                    totalRating += rating
+                    numberRatings += 1
+                }
+                
+                if let comment = comment[COMMENT_KEY_COMMENT] as? String, comment.count > 0 {
+                    if extendedComment.count > 0 {
+                        extendedComment += "\n"
+                    }
+                    
+                    extendedComment += comment
+                }
+                
+                if let commentImageName = comment[COMMENT_KEY_IMAGE_FILENAME] as? String {
+                    // This image, if any, needs to be moved to the largeImages folder
+                    if let newImageName = moveLargeImage(largeImageFileName: commentImageName) {
+                        let newImage = Image.newObject()
+                        newImage.fileName = newImageName
+                        coreDataComment.addToImages(newImage)
+                    }
+                    else {
+                        if let name = item.place?.name {
+                            imageErrorDescriptions.append("Comment Image error for: \(name)")
+                        }
                     }
                 }
             }
-        }
-        
-        coreDataComment.creationDate = oldestDate as NSDate?
-        coreDataComment.modificationDate = mostRecentDate as NSDate?
-        coreDataComment.comment = extendedComment
-        
-        if numberRatings > 0 {
-            coreDataComment.rating!.rating = totalRating / Float(numberRatings)
+            
+            coreDataComment.creationDate = oldestDate as NSDate?
+            coreDataComment.modificationDate = mostRecentDate as NSDate?
+            coreDataComment.comment = extendedComment
+            
+            if numberRatings > 0 {
+                coreDataComment.rating!.rating = totalRating / Float(numberRatings)
+            }
         }
         
         item.modificationDate = mostRecentDate as NSDate?
@@ -417,7 +425,10 @@ class ConvertFromV1 {
         numberComments += comments.count
         
         for comment in comments {
-            let coreDataComment = Comment.newObject()
+            guard let coreDataComment = try? Comment.newObject() else {
+                continue
+            }
+            
             item.addToComments(coreDataComment)
             
             coreDataComment.userName = comment[KEY_USER_NAME] as? String
@@ -457,7 +468,7 @@ class ConvertFromV1 {
                     lastModDateEstimate = coreDataComment.creationDate
                 }
             }
-        }
+        } // end-for
         
         item.modificationDate = lastModDateEstimate
     }

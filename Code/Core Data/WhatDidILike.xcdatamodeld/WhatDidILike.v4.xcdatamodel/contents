@@ -39,10 +39,10 @@
     </entity>
     <entity name="Place" representedClassName="Place" parentEntity="BaseObject" syncable="YES">
         <attribute name="generalDescription" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" usesScalarValueType="NO"/>
         <attribute name="lastExport" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="suggestion" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlaceCategory" inverseName="places" inverseEntity="PlaceCategory"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Item" inverseName="place" inverseEntity="Item"/>
         <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PlaceList" inverseName="places" inverseEntity="PlaceList"/>

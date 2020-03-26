@@ -2,7 +2,7 @@
 //  Place+CoreDataProperties.swift
 //  WhatDidILike
 //
-//  Created by Christopher G Prince on 3/19/20.
+//  Created by Christopher G Prince on 3/23/20.
 //  Copyright © 2020 Spastic Muffin, LLC. All rights reserved.
 //
 //
@@ -18,10 +18,10 @@ extension Place {
     }
 
     @NSManaged public var generalDescription: String?
+    @NSManaged public var uuid: String?
+    @NSManaged public var lastExport: Date?
     @NSManaged public var name: String?
     @NSManaged public var suggestion: Float
-    @NSManaged public var id: NSNumber?
-    @NSManaged public var lastExport: Date?
     @NSManaged public var category: PlaceCategory?
     @NSManaged public var items: NSOrderedSet?
     @NSManaged public var lists: NSSet?

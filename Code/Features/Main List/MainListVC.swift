@@ -67,11 +67,19 @@ class MainListVC: UIViewController {
     }
     
     @objc private func addNewPlace() {
-        let newPlace = Place.newObject()
+        guard let newPlace = try? Place.newObject() else {
+            Log.msg("Error adding new place.")
+            return
+        }
+        
         newPlace.name = "New Place"
         
         // Each place must have at least one location.
-        let location = Location.newObject()
+        guard let location = try? Location.newObject() else {
+            newPlace.remove()
+            return
+        }
+        
         newPlace.addToLocations(location)
         
         newPlace.save()

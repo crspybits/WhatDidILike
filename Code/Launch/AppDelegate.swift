@@ -58,7 +58,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TODO: Add a UI instead of assigning a constant.
         Parameters.userName.stringValue = "Christopher Prince"
         
-        ConvertFromV2.doIt()
+        do {
+            try ConvertFromV2.doIt()
+        } catch let error {
+            Log.msg("Failed converting from V2")
+        }
         
         return true
     }

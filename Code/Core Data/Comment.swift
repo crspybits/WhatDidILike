@@ -16,8 +16,8 @@ public class Comment: BaseObject, ImagesManagedObject, Codable, EquatableObjects
         return "Comment"
     }
     
-    override class func newObject() -> Comment {
-        let newComment = super.newObject() as! Comment
+    override class func newObject() throws -> Comment {
+        let newComment = try super.newObject() as! Comment
         newComment.rating = Rating.newObject()
         return newComment
     }

@@ -35,7 +35,7 @@ public class BaseObject: NSManagedObject {
         // self.property = container.decodeIfPresent(String.self, forKey: .property)
     }
     
-    class func newObject() -> NSManagedObject {
+    class func newObject() throws -> NSManagedObject {
         let newObj = CoreData.sessionNamed(CoreDataExtras.sessionName).newObject(withEntityName: entityName()) as! BaseObject
         newObj.creationDate = NSDate()
         newObj.userName = Parameters.userName.stringValue

@@ -22,14 +22,14 @@ class CodableTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testPlace() {
-        let place1 = Place.newObject()
+    func testPlace() throws {
+        let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
         place1.creationDate = NSDate()
         place1.modificationDate = NSDate()
         
-        guard let id = place1.id?.int32Value else {
+        guard let uuid = place1.uuid else {
             XCTFail()
             return
         }
@@ -49,7 +49,7 @@ class CodableTests: XCTestCase {
         XCTAssert(place2.creationDate == place1.creationDate)
         XCTAssert(place2.modificationDate == place1.modificationDate)
         
-        XCTAssert(place2.id?.int32Value == id)
+        XCTAssert(place2.uuid == uuid)
         XCTAssert(place1.generalDescription == place2.generalDescription)
         XCTAssert(place1.name == place2.name)
         XCTAssert(place1.category == nil)
@@ -58,8 +58,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
     }
     
-    func testPlaceWithOnePlaceCategory() {
-        let place1 = Place.newObject()
+    func testPlaceWithOnePlaceCategory() throws {
+        let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
         
@@ -146,8 +146,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeCategory2)
     }
     
-    func testDecodeFirstInstanceOfLocationInPlace() {
-        let place1 = Place.newObject()
+    func testDecodeFirstInstanceOfLocationInPlace() throws {
+        let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
         place1.category = try? PlaceCategory.newObject(withName: "Baz")
@@ -178,8 +178,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
     }
     
-    func testDecodeSecondInstanceOfLocationInPlace() {
-        let place1 = Place.newObject()
+    func testDecodeSecondInstanceOfLocationInPlace() throws {
+        let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
         place1.category = try? PlaceCategory.newObject(withName: "Baz")
@@ -195,7 +195,7 @@ class CodableTests: XCTestCase {
             return
         }
         
-        let place2 = Place.newObject()
+        let place2 = try Place.newObject()
         place2.generalDescription = "Foo2"
         place2.name = "Bar2"
         place2.category = place1.category
@@ -233,12 +233,12 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2b)
     }
     
-    func testPlaceWithOneItem() {
-        let place1 = Place.newObject()
+    func testPlaceWithOneItem() throws {
+        let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
         
-        let item1 = Item.newObject()
+        let item1 = try Item.newObject()
         let name1 = "foo"
         item1.name = name1
         place1.addToItems(item1)
@@ -274,17 +274,17 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
     }
     
-    func testPlaceWithTwoItems() {
-        let place1 = Place.newObject()
+    func testPlaceWithTwoItems() throws {
+        let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
         
-        let item1 = Item.newObject()
+        let item1 = try Item.newObject()
         let name1 = "foo"
         item1.name = name1
         place1.addToItems(item1)
         
-        let item2 = Item.newObject()
+        let item2 = try Item.newObject()
         let name2 = "foo barr"
         item2.name = name2
         place1.addToItems(item2)
@@ -324,8 +324,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
     }
     
-    func testPlaceWithOnePlaceList() {
-        let place1 = Place.newObject()
+    func testPlaceWithOnePlaceList() throws {
+        let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
         
@@ -384,8 +384,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
     }
     
-    func testPlaceWithTwoPlaceLists() {
-        let place1 = Place.newObject()
+    func testPlaceWithTwoPlaceLists() throws {
+        let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
         
@@ -453,12 +453,12 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
     }
     
-    func testTwoPlacesWithPlaceListDuplicatedAcrossPlaces() {
-        let place1 = Place.newObject()
+    func testTwoPlacesWithPlaceListDuplicatedAcrossPlaces() throws {
+        let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
         
-        let place2 = Place.newObject()
+        let place2 = try Place.newObject()
         place2.generalDescription = "Foo2"
         place2.name = "Bar2"
         
@@ -585,8 +585,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(rating2)
     }
     
-    func testCommentWithNoImages() {
-        let comment = Comment.newObject()
+    func testCommentWithNoImages() throws {
+        let comment = try Comment.newObject()
         comment.comment = "Some stuff"
         comment.creationDate = NSDate()
         comment.modificationDate = NSDate()
@@ -611,8 +611,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(comment2)
     }
     
-    func testCommentWithOneImage() {
-        let comment = Comment.newObject()
+    func testCommentWithOneImage() throws {
+        let comment = try Comment.newObject()
         comment.comment = "Some stuff"
         
         let fileName = "Foo"
@@ -657,8 +657,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(comment2)
     }
     
-    func testCommentWithTwoImages() {
-        let comment = Comment.newObject()
+    func testCommentWithTwoImages() throws {
+        let comment = try Comment.newObject()
         let commentText = "Some stuff"
         comment.comment = commentText
         
@@ -714,8 +714,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(comment2)
     }
     
-    func testCommentWithRating() {
-        let comment = Comment.newObject()
+    func testCommentWithRating() throws {
+        let comment = try Comment.newObject()
         comment.comment = "Some stuff"
         
         let rating = Rating.newObject()
@@ -757,8 +757,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(comment2)
     }
     
-    func testItemWithNoComment() {
-        let item = Item.newObject()
+    func testItemWithNoComment() throws {
+        let item = try Item.newObject()
         let name = "foo"
         item.name = name
         item.creationDate = NSDate()
@@ -784,12 +784,12 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(item2)
     }
     
-    func testItemWithOneComment() {
-        let item = Item.newObject()
+    func testItemWithOneComment() throws {
+        let item = try Item.newObject()
         let name = "foo"
         item.name = name
         
-        let comment = Comment.newObject()
+        let comment = try Comment.newObject()
         let commentText = "Some stuff"
         comment.comment = commentText
         item.addToComments(comment)
@@ -822,17 +822,17 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(item2)
     }
     
-    func testItemWithTwoComments() {
-        let item = Item.newObject()
+    func testItemWithTwoComments() throws {
+        let item = try Item.newObject()
         let name = "foo"
         item.name = name
 
-        let comment = Comment.newObject()
+        let comment = try Comment.newObject()
         let commentText = "Some stuff"
         comment.comment = commentText
         item.addToComments(comment)
         
-        let comment2 = Comment.newObject()
+        let comment2 = try Comment.newObject()
         let commentText2 = "Some more stuff"
         comment2.comment = commentText2
         item.addToComments(comment2)
@@ -868,12 +868,12 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(item2)
     }
     
-    func testItemWithCommentAndImage() {
-        let item = Item.newObject()
+    func testItemWithCommentAndImage() throws {
+        let item = try Item.newObject()
         let name = "foo"
         item.name = name
 
-        let comment = Comment.newObject()
+        let comment = try Comment.newObject()
         let commentText = "Some stuff"
         comment.comment = commentText
         item.addToComments(comment)
@@ -928,8 +928,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(item2)
     }
     
-    func testLocation() {
-        let location1 = Location.newObject()
+    func testLocation() throws {
+        let location1 = try Location.newObject()
         let address = "123 Easy St."
         location1.address = address
         let clLocation = CLLocation(latitude: 1.12, longitude: 2.23)
@@ -963,8 +963,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(location2)
     }
     
-    func testLocationWithOneImage() {
-        let location1 = Location.newObject()
+    func testLocationWithOneImage() throws {
+        let location1 = try Location.newObject()
         
         let fileName = "Foo"
         let image = Image.newObject()
@@ -1001,8 +1001,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(location2)
     }
     
-    func testLocationWithTwoImages() {
-        let location = Location.newObject()
+    func testLocationWithTwoImages() throws {
+        let location = try Location.newObject()
         
         let fileName = "Foo"
         let image = Image.newObject()
@@ -1047,8 +1047,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(location2)
     }
     
-    func testLocationWithRating() {
-        let location = Location.newObject()
+    func testLocationWithRating() throws {
+        let location = try Location.newObject()
         
         let rating = Rating.newObject()
         rating.again = true
@@ -1087,8 +1087,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(location2)
     }
     
-    func testLocationWithOneCheckin() {
-        let location1 = Location.newObject()
+    func testLocationWithOneCheckin() throws {
+        let location1 = try Location.newObject()
         
         let checkin = Checkin.newObject()
         XCTAssert(checkin.date != nil)
@@ -1124,8 +1124,8 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(location2)
     }
     
-    func testLocationWithTwoCheckins() {
-        let location1 = Location.newObject()
+    func testLocationWithTwoCheckins() throws {
+        let location1 = try Location.newObject()
         
         let checkin = Checkin.newObject()
         XCTAssert(checkin.date != nil)
@@ -1194,10 +1194,10 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(checkin2)
     }
     
-    func testPlaceWithOneLocation() {
-        let place1 = Place.newObject()
+    func testPlaceWithOneLocation() throws {
+        let place1 = try Place.newObject()
         
-        let location1 = Location.newObject()
+        let location1 = try Location.newObject()
         place1.addToLocations(location1)
         
         let encoder = JSONEncoder()
@@ -1225,13 +1225,13 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
     }
     
-    func testPlaceWithTwoLocations() {
-        let place1 = Place.newObject()
+    func testPlaceWithTwoLocations() throws {
+        let place1 = try Place.newObject()
         
-        let location1 = Location.newObject()
+        let location1 = try Location.newObject()
         place1.addToLocations(location1)
 
-        let location2 = Location.newObject()
+        let location2 = try Location.newObject()
         place1.addToLocations(location2)
         
         let encoder = JSONEncoder()

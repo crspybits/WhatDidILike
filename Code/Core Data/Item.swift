@@ -16,8 +16,8 @@ public class Item: BaseObject, Codable, EquatableObjects {
         return "Item"
     }
     
-    override class func newObject() -> Item {
-        return super.newObject() as! Item
+    override class func newObject() throws -> Item {
+        return try super.newObject() as! Item
     }
     
     // MARK: Codable

@@ -19,10 +19,10 @@ class PlaceUpdateDateTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testCheckin() {
-        let place1 = Place.newObject()
+    func testCheckin() throws {
+        let place1 = try Place.newObject()
         
-        let location1 = Location.newObject()
+        let location1 = try Location.newObject()
         place1.addToLocations(location1)
         
         let checkin = Checkin.newObject()
@@ -33,8 +33,8 @@ class PlaceUpdateDateTests: XCTestCase {
         XCTAssert(lastDate == checkin.date)
     }
     
-    func testPlaceList() {
-        let place1 = Place.newObject()
+    func testPlaceList() throws {
+        let place1 = try Place.newObject()
         
         let lastDate1 = place1.lastExportModificationDate
 
@@ -57,8 +57,8 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testPlaceListChange() {
-        let place1 = Place.newObject()
+    func testPlaceListChange() throws {
+        let place1 = try Place.newObject()
                 
         guard let placeList = try? PlaceList.newObject(withName: "foo") else {
             XCTFail()
@@ -83,8 +83,8 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testPlaceCategory() {
-        let place1 = Place.newObject()
+    func testPlaceCategory() throws {
+        let place1 = try Place.newObject()
         
         let lastDate1 = place1.lastExportModificationDate
 
@@ -107,8 +107,8 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testPlaceCategoryChange() {
-        let place1 = Place.newObject()
+    func testPlaceCategoryChange() throws {
+        let place1 = try Place.newObject()
                 
         guard let placeCategory = try? PlaceCategory.newObject(withName: "foo") else {
             XCTFail()
@@ -132,12 +132,12 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testItem() {
-        let place1 = Place.newObject()
+    func testItem() throws {
+        let place1 = try Place.newObject()
     
         let lastDate1 = place1.lastExportModificationDate
 
-        let item = Item.newObject()
+        let item = try Item.newObject()
         place1.addToItems(item)
         
         // Should update modification date of place
@@ -153,10 +153,10 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testItemChange() {
-        let place1 = Place.newObject()
+    func testItemChange() throws {
+        let place1 = try Place.newObject()
     
-        let item = Item.newObject()
+        let item = try Item.newObject()
         place1.addToItems(item)
         
         place1.save()
@@ -176,16 +176,16 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testComment() {
-        let place1 = Place.newObject()
+    func testComment() throws {
+        let place1 = try Place.newObject()
     
-        let item = Item.newObject()
+        let item = try Item.newObject()
         place1.addToItems(item)
         place1.save()
         
         let lastDate1 = place1.lastExportModificationDate
 
-        let comment = Comment.newObject()
+        let comment = try Comment.newObject()
         item.addToComments(comment)
         place1.save()
 
@@ -199,14 +199,14 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testCommentChange() {
-        let place1 = Place.newObject()
+    func testCommentChange() throws {
+        let place1 = try Place.newObject()
     
-        let item = Item.newObject()
+        let item = try Item.newObject()
         place1.addToItems(item)
         place1.save()
 
-        let comment = Comment.newObject()
+        let comment = try Comment.newObject()
         item.addToComments(comment)
         place1.save()
         
@@ -225,13 +225,13 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testLocation() {
-        let place1 = Place.newObject()
+    func testLocation() throws {
+        let place1 = try Place.newObject()
         place1.save()
         
         let lastDate1 = place1.lastExportModificationDate
 
-        let location = Location.newObject()
+        let location = try Location.newObject()
         place1.addToLocations(location)
         place1.save()
 
@@ -244,10 +244,10 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testLocationChange() {
-        let place1 = Place.newObject()
+    func testLocationChange() throws {
+        let place1 = try Place.newObject()
         
-        let location = Location.newObject()
+        let location = try Location.newObject()
         place1.addToLocations(location)
         place1.save()
         
@@ -265,10 +265,10 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testImage() {
-        let place1 = Place.newObject()
+    func testImage() throws {
+        let place1 = try Place.newObject()
         
-        let location = Location.newObject()
+        let location = try Location.newObject()
         place1.addToLocations(location)
 
         place1.save()
@@ -288,12 +288,12 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testRating() {
-        let place1 = Place.newObject()
+    func testRating() throws {
+        let place1 = try Place.newObject()
     
         let rating = Rating.newObject()
 
-        let location = Location.newObject()
+        let location = try Location.newObject()
         place1.addToLocations(location)
         place1.save()
 
@@ -311,12 +311,12 @@ class PlaceUpdateDateTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func testRatingChange() {
-        let place1 = Place.newObject()
+    func testRatingChange() throws {
+        let place1 = try Place.newObject()
     
         let rating = Rating.newObject()
 
-        let location = Location.newObject()
+        let location = try Location.newObject()
         place1.addToLocations(location)
         place1.save()
 

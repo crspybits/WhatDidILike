@@ -15,15 +15,15 @@ extension Place {
     enum ImportExportError: Error {
         case cannotCreateJSONFile
         case cannotDeserializeToDictionary
-        case noIdInPlaceJSON
-        case exportedIdAlreadyExistsInCoreData
+        case noUUIDInPlaceJSON
+        case exportedUUIDAlreadyExistsInCoreData
         case errorCopyingFile(Error)
         case couldNotGetLargeImagesFolder
         case wrongTypeForIsUbiquitousItem
     }
     
     // Attempts to create a child directory, in the parent directory, using the form:
-    //  <CleanedPlaceName>_<id>
+    //  <CleanedPlaceName>_<uuid>
     // where <CleanedPlaceName> has any non-alphabetic/non-numeric characters replaced with underscores.
     // If this directory already exists, all contents are first removed.
     // Writes JSON and image files for the place to this directory.
@@ -78,8 +78,8 @@ extension Place {
             fileName += "_"
         }
         
-        if let id = id?.int32Value {
-            fileName += String(id)
+        if let uuid = uuid {
+            fileName += uuid
         }
         
         return URL(fileURLWithPath: fileName, relativeTo: parentDirectory)
@@ -124,13 +124,13 @@ extension Place {
     
     // Decodes a single place from the given place export directory, creating the needed managed objects.
     // Images are copied into the large images directory in the Documents directory from the place export directory.
-    // Saves the placed returned before returning.
+    // Saves the place returned before returning.
     @discardableResult
     static func `import`(from placeExportDirectory: URL, in parentDirectory: URL, accessor:URL.Accessor = .none) throws -> Place {
         let jsonFileName = URL(fileURLWithPath: placeExportDirectory.path + "/" + placeJSON)
         var place:Place!
         
-        // I initially though that I needed to access the jsonFileName as security scoped, but nope. That fails. Need to use the parentDirectory.
+        // I initially thought that I needed to access the jsonFileName as security scoped, but nope. That fails. Need to do security scoped access on the parentDirectory.
         
         try parentDirectory.accessor(accessor) { url in
             let jsonData = try Data(contentsOf: jsonFileName)
@@ -140,12 +140,12 @@ extension Place {
                 throw ImportExportError.cannotDeserializeToDictionary
             }
             
-            guard let id = dict[Place.CodingKeys.id.rawValue] as? Place.IdType else {
-                throw ImportExportError.noIdInPlaceJSON
+            guard let uuid = dict[Place.CodingKeys.uuid.rawValue] as? String else {
+                throw ImportExportError.noUUIDInPlaceJSON
             }
             
-            guard try Place.fetchObject(withId: id) == nil else {
-                throw ImportExportError.exportedIdAlreadyExistsInCoreData
+            guard try Place.fetchObject(withUUID: uuid) == nil else {
+                throw ImportExportError.exportedUUIDAlreadyExistsInCoreData
             }
 
             let decoder = JSONDecoder()
@@ -165,14 +165,16 @@ extension Place {
             }
         }
         
-        // This sequence is a little hard to understand. i.e., it was hard to get right when developing. First, do an initial save so that all the modification dates of the place and sub-objects (e.g., Location's) get updated via their `willSave` calls.
+        // The following code sequence is a little hard to understand. i.e., it was hard to get right when developing.
+        
+        // First, do an initial save so that all the modification dates of the place and sub-objects (e.g., Location's) get updated via their `willSave` calls. Without this, the lastExport date will not fall *after* those modification dates.
         place.save()
         
         // This seems a little odd, but is suitable. Immediately after an import, we don't want to have place needing export.
         place.lastExport = Date()
         
         // Then do another save, to save the lastExport change.
-        place.lastExport = Date()
+        place.save()
         
         return place
     }
@@ -214,7 +216,15 @@ extension Place {
         }
     }
         
-
-    
-
+    // If the backup folder is changed, need to reset the lastExport field of all places-- to force export to the new backup location.
+    static func resetLastExports() {
+        guard let places = Place.fetchAllObjects() else {
+            return
+        }
+        
+        for place in places {
+            place.lastExport = nil
+            place.save()
+        }
+    }
 }

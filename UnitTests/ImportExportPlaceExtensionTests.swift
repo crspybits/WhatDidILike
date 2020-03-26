@@ -35,8 +35,8 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testCreateDirectoryNameWithNoPlaceName() {
-        let place = Place.newObject()
+    func testCreateDirectoryNameWithNoPlaceName() throws {
+        let place = try Place.newObject()
         
         let directoryName = place.createDirectoryName(in: exportURL)
                 
@@ -52,8 +52,8 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         }
     }
     
-    func testCreateDirectoryNameWithPlaceName() {
-        let place = Place.newObject()
+    func testCreateDirectoryNameWithPlaceName() throws {
+        let place = try Place.newObject()
         place.name = "My Favorite Restaurant"
         
         let directoryName = place.createDirectoryName(in: exportURL)
@@ -70,8 +70,8 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         }
     }
     
-    func testCreateDirectoryWithNoPlaceName() {
-        let place = Place.newObject()
+    func testCreateDirectoryWithNoPlaceName() throws {
+        let place = try Place.newObject()
         
         do {
             let _ = try place.createDirectory(in: exportURL)
@@ -80,8 +80,8 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         }
     }
     
-    func testCreateDirectoryWithPlaceName() {
-        let place = Place.newObject()
+    func testCreateDirectoryWithPlaceName() throws {
+        let place = try Place.newObject()
         place.name = "My Favorite Restaurant"
 
         do {
@@ -91,8 +91,8 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         }
     }
     
-    func testReCreateDirectoryWithContents() {
-        let place = Place.newObject()
+    func testReCreateDirectoryWithContents() throws {
+        let place = try Place.newObject()
         place.name = "My Favorite Restaurant"
 
         let newDirectory: URL
@@ -121,8 +121,8 @@ class ImportExportPlaceExtensionTests: XCTestCase {
     }
     
     @discardableResult
-    func exportWithNoImages() -> Place? {
-        let place = Place.newObject()
+    func exportWithNoImages() throws -> Place? {
+        let place = try Place.newObject()
         place.name = "My Favorite Restaurant"
         
         let time1 = Date()
@@ -157,12 +157,12 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         return place
     }
     
-    func testExportWithNoImages() {
-        exportWithNoImages()
+    func testExportWithNoImages() throws {
+        try exportWithNoImages()
     }
     
-    func exportWithOneImage() {
-        let place = Place.newObject()
+    func exportWithOneImage() throws {
+        let place = try Place.newObject()
         place.name = "My Favorite Restaurant"
         
         let name = "example"
@@ -190,7 +190,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         let image = Image.newObject()
         image.fileName = imageInTestBundle
         
-        let location = Location.newObject()
+        let location = try Location.newObject()
         location.addToImages(image)
         place.addToLocations(location)
         
@@ -215,13 +215,13 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         }
     }
     
-    func testExportWithOneImage() {
-        exportWithOneImage()
+    func testExportWithOneImage() throws {
+        try exportWithOneImage()
     }
     
     @discardableResult
-    func exportWithTwoImages() -> Place? {
-        let place = Place.newObject()
+    func exportWithTwoImages() throws -> Place? {
+        let place = try Place.newObject()
         place.name = "My Favorite Restaurant"
         
         let name = "example"
@@ -264,7 +264,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
             }
         }
         
-        let location = Location.newObject()
+        let location = try Location.newObject()
         place.addToLocations(location)
         
         let image = Image.newObject()
@@ -298,12 +298,12 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         return place
     }
     
-    func testExportWithTwoImages() {
-        exportWithTwoImages()
+    func testExportWithTwoImages() throws {
+        try exportWithTwoImages()
     }
     
-    func testExportDirectories() {
-        exportWithNoImages()
+    func testExportDirectories() throws {
+        try exportWithNoImages()
         
         let urls: [URL]
         do {
@@ -327,12 +327,12 @@ class ImportExportPlaceExtensionTests: XCTestCase {
     }
     
     func testImportWithNoImages() throws {
-        guard let place = exportWithNoImages() else {
+        guard let place = try exportWithNoImages() else {
             XCTFail()
             return
         }
         
-        guard let id = place.id as? Place.IdType else {
+        guard let uuid = place.uuid else {
             XCTFail()
             return
         }
@@ -340,14 +340,18 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         let placeExportDirectory = place.createDirectoryName(in: exportURL)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
         
-        guard try Place.fetchObject(withId: id) == nil else {
+        guard try Place.fetchObject(withUUID: uuid) == nil else {
             XCTFail()
             return
         }
         
-        _ = try Place.import(from: placeExportDirectory, in: exportURL)
-                
-        guard try Place.fetchObject(withId: id) != nil else {
+        let place2 = try Place.import(from: placeExportDirectory, in: exportURL)
+        XCTAssert(place2.uuid == uuid)
+        
+        // Make sure the place was saved as part of the import.
+        XCTAssert(place2.changedValues().count == 0)
+        
+        guard try Place.fetchObject(withUUID: uuid) != nil else {
             XCTFail()
             return
         }
@@ -358,7 +362,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         try FileManager.default.removeItem(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY))
         try? FileManager.default.createDirectory(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY), withIntermediateDirectories: false, attributes: nil)
         
-        guard let place = exportWithTwoImages() else {
+        guard let place = try exportWithTwoImages() else {
             XCTFail()
             return
         }
@@ -413,10 +417,10 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         XCTAssert(totalNumber == 0)
     }
     
-    func testNeedExportWithPlacesButNoneNeedingExport() {
+    func testNeedExportWithPlacesButNoneNeedingExport() throws {
         removePlaces()
 
-        let place = Place.newObject()
+        let place = try Place.newObject()
         place.save()
         
         place.lastExport = Date()
@@ -435,10 +439,10 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
     }
     
-    func testNeedExportWithPlacesWithOneWithNilLastExport() {
+    func testNeedExportWithPlacesWithOneWithNilLastExport() throws {
         removePlaces()
 
-        let place = Place.newObject()
+        let place = try Place.newObject()
         // place.lastExport will be nil
         
         guard let (exportPlaces, totalNumber) = Place.needExport() else {
@@ -452,13 +456,13 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         }
         
         XCTAssert(totalNumber == 1)
-        XCTAssert(exportPlaces[0].id?.int32Value == place.id?.int32Value)
+        XCTAssert(exportPlaces[0].uuid == place.uuid)
     }
     
-    func testNeedExportWithPlacesWithOneMoreRecentlyChanged() {
+    func testNeedExportWithPlacesWithOneMoreRecentlyChanged() throws {
         removePlaces()
 
-        let place = Place.newObject()
+        let place = try Place.newObject()
         
         // Simulate an export
         place.lastExport = Date()
@@ -493,7 +497,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
             return
         }
         
-        XCTAssert(exportPlaces2[0].id?.int32Value == place.id?.int32Value)
+        XCTAssert(exportPlaces2[0].uuid == place.uuid)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
     }
     

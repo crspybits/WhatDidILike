@@ -74,8 +74,8 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
         return "Location"
     }
     
-    override class func newObject() -> Location {
-        let newLocation = super.newObject() as! Location
+    override class func newObject() throws -> Location {
+        let newLocation = try super.newObject() as! Location
         newLocation.rating = Rating.newObject()
         return newLocation
     }

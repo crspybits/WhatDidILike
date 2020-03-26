@@ -95,7 +95,10 @@ class PlaceVC: UIViewController {
         rowViews.append(RowView(contents: newLocation))
 
         newLocation.new = {[unowned newLocation, unowned self] in
-            let location = Location.newObject()
+            guard let location = try? Location.newObject() else {
+                return
+            }
+            
             self.place.addToLocations(location)
             self.place.save()
             
@@ -125,15 +128,25 @@ class PlaceVC: UIViewController {
         rowViews.append(RowView(contents: newItem))
         
         newItem.new = {[unowned newItem, unowned self] in
-            let item = Item.newObject()
+            guard let item = try? Item.newObject() else {
+                return
+            }
+
+            var singleComment:Comment!
+            if Parameters.commentStyle == .single {
+                singleComment = try? Comment.newObject()
+                guard singleComment != nil else {
+                    item.remove()
+                    return
+                }
+            }
+            
             let items = NSMutableOrderedSet(orderedSet: self.place.items!)
             items.insert(item, at: 0)
             self.place.items = items
             
             // Creating a new item. If our comment style is single, then we'll also create the single comment for that item.
-            var singleComment:Comment!
             if Parameters.commentStyle == .single {
-                singleComment = Comment.newObject()
                 item.addToComments(singleComment)
             }
             
@@ -251,7 +264,10 @@ class PlaceVC: UIViewController {
         }
         
         itemNameView.addComment = {[unowned itemNameView, unowned self] in
-            let comment = Comment.newObject()
+            guard let comment = try? Comment.newObject() else {
+                return
+            }
+            
             let comments = NSMutableOrderedSet(orderedSet: item.comments!)
             comments.insert(comment, at: 0)
             item.comments = comments

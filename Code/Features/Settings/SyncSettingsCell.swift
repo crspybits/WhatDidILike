@@ -177,7 +177,9 @@ extension SyncSettingsCell: UIDocumentPickerDelegate {
         }
         
         Parameters.backupFolderBookmark.dataValue = bookmarkData
+        Place.resetLastExports()
         
+        updatePlacesNeedingBackup()
         Self.displayBackupFolder.stringValue = urls[0].path
         setFolderTextInUI(Self.displayBackupFolder.stringValue)
     }

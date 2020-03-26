@@ -63,15 +63,15 @@ class EquatableCoreData: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeCategory2)
     }
     
-    func testItemEquality() {
-        let item1 = Item.newObject()
+    func testItemEquality() throws {
+        let item1 = try Item.newObject()
         item1.name = "item1"
-        let item2 = Item.newObject()
+        let item2 = try Item.newObject()
         item2.name = "item2"
         
         XCTAssert(!(Item.equal(item1, item2)))
         
-        let item3 = Item.newObject()
+        let item3 = try Item.newObject()
         item3.name = "item1"
         
         XCTAssert(Item.equal(item1, item3))
@@ -134,7 +134,7 @@ class EquatableCoreData: XCTestCase {
         XCTAssert(!Image.equal([image2, image3], [image1]))
     }
     
-    func testCommentEquality() {
+    func testCommentEquality() throws {
         let image1 = Image.newObject()
         image1.fileName = "foo"
  
@@ -147,16 +147,16 @@ class EquatableCoreData: XCTestCase {
         rating1.again = false
         rating1.recommendedBy = "foo"
         
-        let item1 = Item.newObject()
+        let item1 = try Item.newObject()
         item1.name = "item1"
     
-        let comment1 = Comment.newObject()
+        let comment1 = try Comment.newObject()
         comment1.comment = "margba"
         comment1.addToImages(image1)
         comment1.rating = rating1
         comment1.item = item1
         
-        let comment2 = Comment.newObject()
+        let comment2 = try Comment.newObject()
         comment2.comment = "margba"
         comment2.addToImages(image1)
         comment2.addToImages(image2)
@@ -167,8 +167,8 @@ class EquatableCoreData: XCTestCase {
         XCTAssert(!Comment.equal(comment1, comment2))
     }
     
-    func testLocation() {
-        let location1 = Location.newObject()
+    func testLocation() throws {
+        let location1 = try Location.newObject()
         location1.address = "123 XWay St."
         location1.location = CLLocation(latitude: 1.23, longitude: 30.4)
         location1.specificDescription = "foo"
@@ -189,7 +189,7 @@ class EquatableCoreData: XCTestCase {
         let checkin1 = Checkin.newObject()
         location1.addToCheckin(checkin1)
         
-        let location2 = Location.newObject()
+        let location2 = try Location.newObject()
         let checkin2 = Checkin.newObject()
         location2.addToCheckin(checkin2)
 

@@ -105,22 +105,22 @@ class WhatDidILikeTests: XCTestCase {
         return imageObj
     }
     
-    func testDatesInCoreDataObjects() {
+    func testDatesInCoreDataObjects() throws {
         guard let image1 = makeImageObject(fileName: file1) else {
             XCTFail()
             return
         }
         
-        let location1 = Location.newObject()
+        let location1 = try Location.newObject()
         XCTAssert(location1.dates.count == 1)
         
         location1.addToImages(image1)
         XCTAssert(location1.dates.count == 2)
         
-        let item1 = Item.newObject()
+        let item1 = try Item.newObject()
         XCTAssert(item1.dates.count == 1)
 
-        let comment1 = Comment.newObject()
+        let comment1 = try Comment.newObject()
         XCTAssert(comment1.dates.count == 1)
         
         guard let image2 = makeImageObject(fileName: file2) else {
@@ -134,7 +134,7 @@ class WhatDidILikeTests: XCTestCase {
         item1.addToComments(comment1)
         XCTAssert(item1.dates.count == 3)
 
-        let place1 = Place.newObject()
+        let place1 = try Place.newObject()
         XCTAssert(place1.dates.count == 1)
 
         place1.addToLocations(location1)

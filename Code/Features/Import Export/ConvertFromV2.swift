@@ -14,7 +14,7 @@ import SMCoreLib
 class ConvertFromV2 {
     private static let migrated = SMPersistItemBool(name: "ConvertFromV2.migrated", initialBoolValue: false, persistType: .userDefaults)
 
-    static func doIt() {
+    static func doIt() throws {
         guard !migrated.boolValue else {
             return
         }
@@ -26,7 +26,8 @@ class ConvertFromV2 {
         }
         
         for place in places {
-            place.id = Place.nextId as NSNumber
+            let nextUUID = try Place.nextUUID()
+            place.uuid = nextUUID
             place.save()
         }
     }
