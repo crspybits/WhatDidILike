@@ -20,6 +20,7 @@ extension Place {
         case errorCopyingFile(Error)
         case couldNotGetLargeImagesFolder
         case wrongTypeForIsUbiquitousItem
+        case couldNotConvertREADMEToData
     }
     
     // Attempts to create a child directory, in the parent directory, using the form:
@@ -28,7 +29,7 @@ extension Place {
     // If this directory already exists, all contents are first removed.
     // Writes JSON and image files for the place to this directory.
     // Returns the URL's of the exported files.
-    // Doesn't do a save for Core Data, but this ought to be done by caller since the lastExport field was changed.
+    // Doesn't do a save for Core Data, but this ought to be done by caller since the lastExport field (of self) was changed.
     @discardableResult
     func export(to parentDirectory: URL, accessor: URL.Accessor = .none) throws -> [URL] {
         
@@ -99,6 +100,36 @@ extension Place {
         return directoryName
     }
     
+    static let readMe = "README.txt"
+    static var readMeContents: String {
+        return """
+            You should not change any files or folders in this folder if you want to later do a restore using this data into the WhatDidILike app. Or if you want to later export the WhatDidILike data again.
+            You should also not add any files or folders to this folder, for the same reason.
+        """
+    }
+    
+    static func readMe(in directory: URL) -> URL {
+        let readMePath = directory.path + "/" + readMe
+        return URL(fileURLWithPath: readMePath)
+    }
+    
+    // Copies a README.txt file to the export directory. Replaces the current one if there is already one there.
+    static func initializeExport(directory: URL, accessor: URL.Accessor = .none) throws {
+        try directory.accessor(accessor) { url in
+            // Remove existing one first. In case we've updated the README text in the app.
+            let readMeURL = readMe(in: directory)
+            if FileManager.default.fileExists(atPath: readMeURL.path) {
+                try FileManager.default.removeItem(at: readMeURL)
+            }
+            
+            guard let data = readMeContents.data(using: .utf8) else {
+                throw ImportExportError.couldNotConvertREADMEToData
+            }
+            
+            try data.write(to: readMeURL)
+        }
+    }
+    
     // Returns the full URL's of all of the exported place directories in the export parentDirectory.
     static func exportDirectories(in parentDirectory: URL, accessor:URL.Accessor = .none) throws -> [URL] {
         let fileManager = FileManager.default
@@ -108,7 +139,8 @@ extension Place {
             urls = try fileManager.contentsOfDirectory(at: parentDirectory, includingPropertiesForKeys: nil)
         }
         
-        return urls
+        let result = urls.filter {$0.lastPathComponent != Self.readMe}
+        return result
     }
     
     // Creates folder in the Documents folder if it's not there.

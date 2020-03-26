@@ -525,6 +525,70 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         // The actual test call-- folder present already.
         try Place.createLargeImagesDirectoryIfNeeded()
     }
+    
+    private func getREADME() throws -> String? {
+        let readMePath = exportURL.path + "/" + Place.readMe
+        let readMeURL = URL(fileURLWithPath: readMePath)
+        
+        let data = try Data(contentsOf: readMeURL)
+        return String(data: data, encoding: .utf8)
+    }
+    
+    func testThatREADMEIsCreated() throws {
+        let readMeURL = Place.readMe(in: exportURL)
+        try? FileManager.default.removeItem(at: readMeURL)
+
+        try Place.initializeExport(directory: exportURL)
+        
+        guard let contents = try getREADME() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssert(contents == Place.readMeContents)
+    }
+    
+    func testThatREADMEIsReplacedOnSecondExport() throws {
+        let readMeURL = Place.readMe(in: exportURL)
+        try? FileManager.default.removeItem(at: readMeURL)
+
+        try Place.initializeExport(directory: exportURL)
+        
+        // Make sure this second export doesn't fail.
+        try Place.initializeExport(directory: exportURL)
+
+        guard let contents = try getREADME() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssert(contents == Place.readMeContents)
+    }
+    
+    func testThatREADMEFileNameIsNotReturnedInFolderList() throws {
+        // 1) Create the README
+        try Place.initializeExport(directory: exportURL)
+        
+        // 2) Export a place.
+        let place = try Place.newObject()
+        place.name = "My Favorite Restaurant"
+                
+        do {
+            try place.export(to: exportURL)
+        } catch {
+            XCTFail()
+            return
+        }
+        
+        let urls = try Place.exportDirectories(in: exportURL)
+        let filtered = urls.filter {$0.lastPathComponent == Place.readMe}
+        
+        XCTAssert(urls.count > 0)
+        XCTAssert(filtered.count == 0)
+        
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+    }
 }
 
 extension XCTestCase {

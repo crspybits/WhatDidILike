@@ -35,6 +35,16 @@ class BackupWithAlert {
             return
         }
         
+        do {
+            try Place.initializeExport(directory: securityScopedFolder, accessor: .securityScoped)
+        } catch let error {
+            let alert = UIAlertController(title: "Alert!", message: "There was an error initializing the export: \(error)", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            parentVC?.present(alert, animated: true, completion: nil)
+            completion?()
+            return
+        }
+        
         activity = UIAlertController(title: "Exporting...", message: nil, preferredStyle: .alert)
         activity.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
             self.placesToExport = nil

@@ -4,8 +4,6 @@ IMPORT/EXPORT
     * The sync message wording is vague. How can a user know if it's done?
     
     * Test restarting a backup after cancelling it midway through.
-    
-    * exportDirectories(in... needs to be smarter. In order for this to work incrementally, it ought to return the place folders that actually need restoring-- not all of them. So filter the full set by the places that have already been imported.
         
     * I'd like to be able to use iCloud Drive to sync data across devices. As part of this, I'd want to observe/watch for conflicts. I haven't found notifications to allow for this. See https://stackoverflow.com/questions/47640039/nsnotification-nsmetadataquerydidupdate-getting-non-stop-notification-messages
         i.e., the following observers are not triggered on conflict situation:
@@ -22,17 +20,24 @@ IMPORT/EXPORT
     
     * Backgound (automatic) export: Looks like this is going to require an extensive overhaul of the way I'm dealing with Managed Object Context's for Core Data-- because a background thread requires its own MOC.
     
+    * I just did a "simple" import: Imported a test of a single exported place. The import worked, but afterwards on the Setting screen, it says "1 of 1 place needs backup". No places should need exporting immed. after an import.
+    
+    * exportDirectories(in... needs to be smarter. In order for this to work incrementally, it ought to return the place folders that actually need restoring-- not all of them. So filter the full set by the places that have already been imported.
+
+    * When a place managed object is removed from the app data, any corresponding directory in the export directory also needs to be removed.
+
+    * When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory? Suppose the following occurs: (1) The app is removed, (2) some places are created, and (3) a restore occurs. During (2), the images created will have new names assigned which are not necessarily different than those in the backup -- because the names are constructed to be different only from those in the largeImages directory. When a restore occurs in (3), if the names of images are the same as the new ones from (2), there will be a conflict.
+    
+        One way to handle the problem above would be to change the structure of the image folders from the simple largeImages folder to using sub-folders, similar to what I'm doing for the backup now. (This seems easier than having to do some kind of migration conversion).
+        I'd need to then handle two different folder structure structure's for images as stored local to the app. I could handle this via a flag in the Place managed object. Any newly imported place could have its image stored local to the app in this manner, thus avoiding the name conflict issue.
+
     * What if someone (a) does a backup of their data, (b) changes the name of a place, and (c) backs up again. The place will currently save to a different folder. Need to change this-- find the previous place. Perhaps search for <Name>_id in the folder?
-
-    * Add a README.txt to the exported data-- to inform user they ought not manually change these files (contents or names) if they ever want to do a recovery/restore. When restoring, need to exclude this file from from processing.
-
-    * When a place managed object is removed, any corresponding directory in the export directory also needs to be removed.
-
-    * When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory? Suppose the following occurs: (1) The app is removed, (2) some places created, and (3) a restore occurs. During (2), images created will have names assigned which are not necessarily different than those in the backup. When a restore occurs in (3), if the names of images are the same as the new ones, there will be a conflict.
     
-    * If the backup folder is changed, need to reset the lastExport field of all places-- to force export to the new backup location.
+    * DONE: Add a README.txt to the exported data-- to inform user they ought not manually change these files (contents or names) if they ever want to do a recovery/restore. When restoring, need to exclude this file from from processing.
     
-    * Consider using UUID's instead of id's for Place's. id's have the problem that: (1) if the app is removed, (2) some places created, and (3) a restore occurs we may have overlapping id's but different places.
+    * DONE: If the backup folder is changed, need to reset the lastExport field of all places-- to force export to the new backup location.
+    
+    * DONE: Consider using UUID's instead of id's for Place's. id's have the problem that: (1) if the app is removed, (2) some places created, and (3) a restore occurs we may have overlapping id's but different places.
     
     * DONE: Message after "Sync"-- Need an Alert: if there are files that need downloading-- it may take a while after you do this. I.e., don't do a Restore yet.
 
