@@ -15,6 +15,7 @@ class BackupWithAlert {
     private var current = 1
     private var securityScopedFolder: URL!
     private var completion:(()->())?
+    private var placeExporter:PlaceExporter!
     
     init(parentVC: UIViewController) {
         self.parentVC = parentVC
@@ -36,7 +37,7 @@ class BackupWithAlert {
         }
         
         do {
-            try Place.initializeExport(directory: securityScopedFolder, accessor: .securityScoped)
+            placeExporter = try PlaceExporter(parentDirectory: securityScopedFolder, accessor: .securityScoped)
         } catch let error {
             let alert = UIAlertController(title: "Alert!", message: "There was an error initializing the export: \(error)", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
@@ -69,7 +70,7 @@ class BackupWithAlert {
         let nextPlace = self.placesToExport.remove(at: placesToExport.endIndex-1)
         
         do {
-            try nextPlace.export(to: securityScopedFolder, accessor: .securityScoped)
+            try placeExporter.export(place: nextPlace, accessor: .securityScoped)
             nextPlace.save()
         } catch let error {
             activity.dismiss(animated: true) {[unowned self] in

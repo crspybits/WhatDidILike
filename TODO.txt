@@ -23,15 +23,16 @@ IMPORT/EXPORT
     * I just did a "simple" import: Imported a test of a single exported place. The import worked, but afterwards on the Setting screen, it says "1 of 1 place needs backup". No places should need exporting immed. after an import.
     
     * exportDirectories(in... needs to be smarter. In order for this to work incrementally, it ought to return the place folders that actually need restoring-- not all of them. So filter the full set by the places that have already been imported.
-
-    * When a place managed object is removed from the app data, any corresponding directory in the export directory also needs to be removed.
+        This method has now been updated to: exportedPlaces(in...
 
     * When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory? Suppose the following occurs: (1) The app is removed, (2) some places are created, and (3) a restore occurs. During (2), the images created will have new names assigned which are not necessarily different than those in the backup -- because the names are constructed to be different only from those in the largeImages directory. When a restore occurs in (3), if the names of images are the same as the new ones from (2), there will be a conflict.
     
         One way to handle the problem above would be to change the structure of the image folders from the simple largeImages folder to using sub-folders, similar to what I'm doing for the backup now. (This seems easier than having to do some kind of migration conversion).
         I'd need to then handle two different folder structure structure's for images as stored local to the app. I could handle this via a flag in the Place managed object. Any newly imported place could have its image stored local to the app in this manner, thus avoiding the name conflict issue.
 
-    * What if someone (a) does a backup of their data, (b) changes the name of a place, and (c) backs up again. The place will currently save to a different folder. Need to change this-- find the previous place. Perhaps search for <Name>_id in the folder?
+    * When a place managed object is removed from the app data, any corresponding directory in the export directory also needs to be removed. Hmmm. I wonder if I ought to have an option in Settings that controls this in case of a "whoops".
+
+    * DONE: What if someone (a) does a backup of their data, (b) changes the name of a place, and (c) backs up again. The place will currently save to a different folder. Need to change this-- find the previous place. Perhaps search for <Name>_id in the folder?
     
     * DONE: Add a README.txt to the exported data-- to inform user they ought not manually change these files (contents or names) if they ever want to do a recovery/restore. When restoring, need to exclude this file from from processing.
     

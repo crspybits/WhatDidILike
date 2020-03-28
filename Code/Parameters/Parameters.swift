@@ -10,6 +10,8 @@ import Foundation
 import SMCoreLib
 
 class Parameters {
+    static let removeBackupPlace = SMPersistItemBool(name: "Parameters.removeBackupPlace", initialBoolValue: false, persistType: .userDefaults)
+    
     // This is for the security scoped folder bookmark.
     static let backupFolderBookmark = SMPersistItemData(name: "Parameters.backupFolderBookmark", initialDataValue: nil, persistType: .userDefaults)
 

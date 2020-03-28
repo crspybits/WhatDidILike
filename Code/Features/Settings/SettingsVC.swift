@@ -8,15 +8,55 @@
 
 import UIKit
 
+private struct CellDescription {
+    let cellName: String
+    let handler:(_ id: String, IndexPath, SettingsVC)->(UITableViewCell?)
+    
+    func register(tableView: UITableView) {
+        tableView.register(UINib(nibName: cellName, bundle: nil), forCellReuseIdentifier: cellName)
+    }
+}
+
 class SettingsVC: UIViewController {
-    let syncCellName = "SyncSettingsCell"
     @IBOutlet weak var tableView: UITableView!
+
+    private let syncCell = CellDescription(cellName: "SyncSettingsCell") { id, indexPath, settingsVC in
+
+        guard let cell = settingsVC.tableView.dequeueReusableCell(withIdentifier: id, for: indexPath) as? SyncSettingsCell else {
+            return nil
+        }
+        
+        cell.parentVC = settingsVC
+        cell.updatePlacesNeedingBackup()
+        return cell
+    }
+    
+    private let placeDeletionCell = CellDescription(cellName: "PlaceDeletionOptionsCell") { id, indexPath, settingsVC in
+
+        guard let cell = settingsVC.tableView.dequeueReusableCell(withIdentifier: id, for: indexPath) as? PlaceDeletionOptionsCell else {
+            return nil
+        }
+        
+        return cell
+    }
+    
+    // Map from row number to description.
+    private var cellDescriptions: [Int: CellDescription] {
+        return [
+            0: syncCell,
+            1:placeDeletionCell
+        ]
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.dataSource = self
-        tableView.register(UINib(nibName: syncCellName, bundle: nil), forCellReuseIdentifier: syncCellName)
+        
+        for (_, cellDescription) in cellDescriptions {
+            cellDescription.register(tableView: tableView)
+        }
+        
         navigationItem.title = "Settings"
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
@@ -32,17 +72,15 @@ class SettingsVC: UIViewController {
 
 extension SettingsVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return cellDescriptions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: syncCellName, for: indexPath) as? SyncSettingsCell else {
+        guard let cellDescription = cellDescriptions[indexPath.row],
+            let cell = cellDescription.handler(cellDescription.cellName, indexPath, self) else {
             return UITableViewCell()
         }
-        
-        cell.parentVC = self
-        cell.updatePlacesNeedingBackup()
 
         return cell
     }

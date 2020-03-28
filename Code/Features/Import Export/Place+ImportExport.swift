@@ -12,57 +12,7 @@ import SMCoreLib
 extension Place {
     static let placeJSON = "place.json"
     
-    enum ImportExportError: Error {
-        case cannotCreateJSONFile
-        case cannotDeserializeToDictionary
-        case noUUIDInPlaceJSON
-        case exportedUUIDAlreadyExistsInCoreData
-        case errorCopyingFile(Error)
-        case couldNotGetLargeImagesFolder
-        case wrongTypeForIsUbiquitousItem
-        case couldNotConvertREADMEToData
-    }
-    
-    // Attempts to create a child directory, in the parent directory, using the form:
-    //  <CleanedPlaceName>_<uuid>
-    // where <CleanedPlaceName> has any non-alphabetic/non-numeric characters replaced with underscores.
-    // If this directory already exists, all contents are first removed.
-    // Writes JSON and image files for the place to this directory.
-    // Returns the URL's of the exported files.
-    // Doesn't do a save for Core Data, but this ought to be done by caller since the lastExport field (of self) was changed.
-    @discardableResult
-    func export(to parentDirectory: URL, accessor: URL.Accessor = .none) throws -> [URL] {
-        
-        var imageURLs = [URL]()
-        var jsonFileName:URL!
-        
-        // Access to the security scoped URL appears only necessary at the top-level directory. I don't need to do the access step for the sub-directories or files within those sub-directories.
-        
-        try parentDirectory.accessor(accessor) { url in
-            let exportDirectoryName = try createDirectory(in: parentDirectory)
-
-            let encoder = JSONEncoder()
-            let jsonData = try encoder.encode(self)
-            
-            jsonFileName = URL(fileURLWithPath: exportDirectoryName.path + "/" + Self.placeJSON)
-            
-            guard FileManager.default.createFile(atPath: jsonFileName.path, contents: jsonData, attributes: nil) else {
-                throw ImportExportError.cannotCreateJSONFile
-            }
-
-            for imageFileName in largeImageFiles {
-                let originalImageURL = URL(fileURLWithPath: Image.filePath(for: imageFileName))
-                let exportImageURL = URL(fileURLWithPath: exportDirectoryName.path + "/" + imageFileName)
-                try FileManager.default.copyItem(at: originalImageURL, to: exportImageURL)
-                
-                imageURLs += [exportImageURL]
-            }
-        }
-        
-        lastExport = Date()
-        
-        return [jsonFileName] + imageURLs
-    }
+    static let separator = "_"
     
     func createDirectoryName(in parentDirectory: URL) -> URL {
         var fileName = ""
@@ -72,11 +22,11 @@ extension Place {
                     fileName += String(char)
                 }
                 else {
-                    fileName += "_"
+                    fileName += Self.separator
                 }
             }
             
-            fileName += "_"
+            fileName += Self.separator
         }
         
         if let uuid = uuid {
@@ -86,61 +36,39 @@ extension Place {
         return URL(fileURLWithPath: fileName, relativeTo: parentDirectory)
     }
     
-    // If the directory (see createDirectoryName) doesn't exist, it is created.
-    // If it does exist, with any contents, it is removed and recreated.
-    func createDirectory(in parentDirectory: URL) throws -> URL {
+    // Pull the uuid out of the last component of the URL
+    static func getUUIDFrom(url: URL) throws -> String {
+        let lastComponentParts = url.lastPathComponent.split(separator: Character(separator))
+        guard lastComponentParts.count > 0,
+            let uuidString = lastComponentParts.last else {
+            throw ImportExportError.tooFewPartsInExportedPlaceURL
+        }
+        
+        // Convert to a UUID so we know if we have valid UUID.
+        guard let result = UUID(uuidString: String(uuidString))?.uuidString else {
+            throw ImportExportError.invalidUUIDInExportedPlaceURL
+        }
+        
+        return result
+    }
+    
+    // Assumes the place has already been exported. Removes it and recreates it.
+    func reCreateDirectory(placeExportDirectory: URL) throws {
+        try FileManager.default.removeItem(at: placeExportDirectory)
+        try FileManager.default.createDirectory(at: placeExportDirectory, withIntermediateDirectories: false, attributes: nil)
+    }
+    
+    // Assumes the place has not already been exported.
+    func createNewDirectory(in parentDirectory: URL) throws -> URL {
         let directoryName = createDirectoryName(in: parentDirectory)
         
-        if FileManager.default.fileExists(atPath: directoryName.path) {
-            try FileManager.default.removeItem(at: directoryName)
+        guard !FileManager.default.fileExists(atPath: directoryName.path) else {
+            throw ImportExportError.placeExportDirectoryAlreadyExists
         }
         
         try FileManager.default.createDirectory(at: directoryName, withIntermediateDirectories: false, attributes: nil)
         
         return directoryName
-    }
-    
-    static let readMe = "README.txt"
-    static var readMeContents: String {
-        return """
-            You should not change any files or folders in this folder if you want to later do a restore using this data into the WhatDidILike app. Or if you want to later export the WhatDidILike data again.
-            You should also not add any files or folders to this folder, for the same reason.
-        """
-    }
-    
-    static func readMe(in directory: URL) -> URL {
-        let readMePath = directory.path + "/" + readMe
-        return URL(fileURLWithPath: readMePath)
-    }
-    
-    // Copies a README.txt file to the export directory. Replaces the current one if there is already one there.
-    static func initializeExport(directory: URL, accessor: URL.Accessor = .none) throws {
-        try directory.accessor(accessor) { url in
-            // Remove existing one first. In case we've updated the README text in the app.
-            let readMeURL = readMe(in: directory)
-            if FileManager.default.fileExists(atPath: readMeURL.path) {
-                try FileManager.default.removeItem(at: readMeURL)
-            }
-            
-            guard let data = readMeContents.data(using: .utf8) else {
-                throw ImportExportError.couldNotConvertREADMEToData
-            }
-            
-            try data.write(to: readMeURL)
-        }
-    }
-    
-    // Returns the full URL's of all of the exported place directories in the export parentDirectory.
-    static func exportDirectories(in parentDirectory: URL, accessor:URL.Accessor = .none) throws -> [URL] {
-        let fileManager = FileManager.default
-       
-        var urls:[URL]!
-        try parentDirectory.accessor(accessor) { url in
-            urls = try fileManager.contentsOfDirectory(at: parentDirectory, includingPropertiesForKeys: nil)
-        }
-        
-        let result = urls.filter {$0.lastPathComponent != Self.readMe}
-        return result
     }
     
     // Creates folder in the Documents folder if it's not there.
@@ -233,19 +161,6 @@ extension Place {
         }
         
         return (result, allPlaces.count)
-    }
-    
-    // Attempts to force a download sync of iCloud Drive. I've been having problems with this in two ways so far. First, on the simulator, only the place folders in iCloud Drive download, not their contents. (Going into the Files app into a place folder does cause contents to download). Second, for a specific place.json file for one place I modified manually on the iCloud Drive web UI, this is now showing up as missing on my iPhone.
-    // Always uses security scoped accessor-- this can't easily be tested in unit tests.
-    // This is adapted from https://stackoverflow.com/questions/33462352
-    static func forceSync(foldersIn cloudDriveDirectory: URL) throws {
-        let urls = try Place.exportDirectories(in: cloudDriveDirectory, accessor: .securityScoped)
-        
-        try cloudDriveDirectory.accessor(.securityScoped) { url in
-            for url in urls {
-                try url.forceSync()
-            }
-        }
     }
         
     // If the backup folder is changed, need to reset the lastExport field of all places-- to force export to the new backup location.

@@ -12,7 +12,7 @@ import CoreServices
 
 class SyncSettingsCell: UITableViewCell {
     // This is just to indicate to the user that they have selected a folder and is for display purposes. The real info is in the *bookmark*.
-    private static let displayBackupFolder = SMPersistItemString(name: "Parameters.displayBackupFolder", initialStringValue: "", persistType: .userDefaults)
+    private static let displayBackupFolder = SMPersistItemString(name: "SyncSettingsCell.displayBackupFolder", initialStringValue: "", persistType: .userDefaults)
     
     @IBOutlet weak var sync: UIButton!
     @IBOutlet weak var textView: UITextView!
@@ -45,7 +45,7 @@ class SyncSettingsCell: UITableViewCell {
         
         DispatchQueue.global(qos: .background).async {
             do {
-                try Place.forceSync(foldersIn: exportFolder)
+                try PlaceExporter.forceSync(foldersIn: exportFolder)
                 
                 if showAlert {
                     let message = "If there are files that need downloading from the cloud -- downloading may take a while after you do this. e.g., don't do a Restore yet."

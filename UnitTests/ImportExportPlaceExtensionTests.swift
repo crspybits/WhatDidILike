@@ -10,17 +10,17 @@ import XCTest
 @testable import WhatDidILike
 import SMCoreLib
 
-class ImportExportPlaceExtensionTests: XCTestCase {
-    let exportFolder = "Export" // within Documents
-    var exportURL: URL!
+extension XCTestCase {
+    static let exportFolder = "Export" // within Documents
+    static var exportURL: URL!
     
-    override func setUp() {
-        guard let url = FileStorage.url(ofItem: exportFolder) else {
+    func setupExportFolder() {
+        guard let url = FileStorage.url(ofItem: Self.exportFolder) else {
             XCTFail()
             return
         }
         
-        exportURL = url
+        Self.exportURL = url
         
         if !FileManager.default.fileExists(atPath: url.path) {
             do {
@@ -30,6 +30,12 @@ class ImportExportPlaceExtensionTests: XCTestCase {
             }
         }
     }
+}
+
+class ImportExportPlaceExtensionTests: XCTestCase {
+    override func setUp() {
+        setupExportFolder()
+    }
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -38,7 +44,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
     func testCreateDirectoryNameWithNoPlaceName() throws {
         let place = try Place.newObject()
         
-        let directoryName = place.createDirectoryName(in: exportURL)
+        let directoryName = place.createDirectoryName(in: Self.exportURL)
                 
         guard !FileManager.default.fileExists(atPath: directoryName.path) else {
             XCTFail()
@@ -56,7 +62,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         let place = try Place.newObject()
         place.name = "My Favorite Restaurant"
         
-        let directoryName = place.createDirectoryName(in: exportURL)
+        let directoryName = place.createDirectoryName(in: Self.exportURL)
                 
         guard !FileManager.default.fileExists(atPath: directoryName.path) else {
             XCTFail()
@@ -74,7 +80,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         let place = try Place.newObject()
         
         do {
-            let _ = try place.createDirectory(in: exportURL)
+            let _ = try place.createNewDirectory(in: Self.exportURL)
         } catch {
             XCTFail()
         }
@@ -85,7 +91,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         place.name = "My Favorite Restaurant"
 
         do {
-            let _ = try place.createDirectory(in: exportURL)
+            let _ = try place.createNewDirectory(in: Self.exportURL)
         } catch {
             XCTFail()
         }
@@ -97,7 +103,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
 
         let newDirectory: URL
         do {
-            newDirectory = try place.createDirectory(in: exportURL)
+            newDirectory = try place.createNewDirectory(in: Self.exportURL)
         } catch {
             XCTFail()
             return
@@ -112,297 +118,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         
         FileManager.default.createFile(atPath: newFile.path, contents: contents, attributes: nil)
         
-        do {
-            _ = try place.createDirectory(in: exportURL)
-        } catch {
-            XCTFail()
-            return
-        }
-    }
-    
-    @discardableResult
-    func exportWithNoImages() throws -> Place? {
-        let place = try Place.newObject()
-        place.name = "My Favorite Restaurant"
-        
-        let time1 = Date()
-        
-        let urls:[URL]
-        do {
-            urls = try place.export(to: exportURL)
-        } catch {
-            XCTFail()
-            return nil
-        }
-        
-        let time2 = Date()
-
-        guard let lastExportDate = place.lastExport else {
-            XCTFail()
-            return nil
-        }
-        
-        XCTAssert(lastExportDate >= time1 && lastExportDate <= time2)
-        
-        guard urls.count == 1 else {
-            XCTFail()
-            return nil
-        }
-        
-        guard FileManager.default.fileExists(atPath: urls[0].path) else {
-            XCTFail()
-            return nil
-        }
-        
-        return place
-    }
-    
-    func testExportWithNoImages() throws {
-        try exportWithNoImages()
-    }
-    
-    func exportWithOneImage() throws {
-        let place = try Place.newObject()
-        place.name = "My Favorite Restaurant"
-        
-        let name = "example"
-        let ext = "jpeg"
-        let imageInTestBundle = "\(name).\(ext)"
-
-        let bundle = Bundle(for: ImportExportPlaceExtensionTests.self)
-        guard let bundleURL = bundle.url(forResource: name, withExtension: ext) else {
-            XCTFail()
-            return
-        }
-        
-        let documentsImageURL = URL(fileURLWithPath: Image.filePath(for: imageInTestBundle))
-        
-        if !FileManager.default.fileExists(atPath: documentsImageURL.path) {
-            try? FileManager.default.createDirectory(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY), withIntermediateDirectories: false, attributes: nil)
-            do {
-                try FileManager.default.copyItem(at: bundleURL, to: documentsImageURL)
-            } catch {
-                XCTFail()
-                return
-            }
-        }
-        
-        let image = Image.newObject()
-        image.fileName = imageInTestBundle
-        
-        let location = try Location.newObject()
-        location.addToImages(image)
-        place.addToLocations(location)
-        
-        let urls:[URL]
-        do {
-            urls = try place.export(to: exportURL)
-        } catch {
-            XCTFail()
-            return
-        }
-        
-        guard urls.count == 2 else {
-            XCTFail()
-            return
-        }
-        
-        for url in urls {
-            guard FileManager.default.fileExists(atPath: url.path) else {
-                XCTFail()
-                return
-            }
-        }
-    }
-    
-    func testExportWithOneImage() throws {
-        try exportWithOneImage()
-    }
-    
-    @discardableResult
-    func exportWithTwoImages() throws -> Place? {
-        let place = try Place.newObject()
-        place.name = "My Favorite Restaurant"
-        
-        let name = "example"
-        let name2 = "example2"
-        let ext = "jpeg"
-        let imageInTestBundle = "\(name).\(ext)"
-        let imageInTestBundle2 = "\(name2).\(ext)"
-
-        let bundle = Bundle(for: ImportExportPlaceExtensionTests.self)
-        guard let bundleURL = bundle.url(forResource: name, withExtension: ext) else {
-            XCTFail()
-            return nil
-        }
-        
-        guard let bundleURL2 = bundle.url(forResource: name2, withExtension: ext) else {
-            XCTFail()
-            return nil
-        }
-        
-        let documentsImageURL = URL(fileURLWithPath: Image.filePath(for: imageInTestBundle))
-        let documentsImageURL2 = URL(fileURLWithPath: Image.filePath(for: imageInTestBundle2))
-
-        if !FileManager.default.fileExists(atPath: documentsImageURL.path) {
-            try? FileManager.default.createDirectory(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY), withIntermediateDirectories: false, attributes: nil)
-            do {
-                try FileManager.default.copyItem(at: bundleURL, to: documentsImageURL)
-            } catch {
-                XCTFail()
-                return nil
-            }
-        }
-        
-        if !FileManager.default.fileExists(atPath: documentsImageURL2.path) {
-            try? FileManager.default.createDirectory(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY), withIntermediateDirectories: false, attributes: nil)
-            do {
-                try FileManager.default.copyItem(at: bundleURL2, to: documentsImageURL2)
-            } catch {
-                XCTFail()
-                return nil
-            }
-        }
-        
-        let location = try Location.newObject()
-        place.addToLocations(location)
-        
-        let image = Image.newObject()
-        image.fileName = imageInTestBundle
-        location.addToImages(image)
-
-        let image2 = Image.newObject()
-        image2.fileName = imageInTestBundle2
-        location.addToImages(image2)
-        
-        let urls:[URL]
-        do {
-            urls = try place.export(to: exportURL)
-        } catch {
-            XCTFail()
-            return nil
-        }
-        
-        guard urls.count == 3 else {
-            XCTFail()
-            return nil
-        }
-        
-        for url in urls {
-            guard FileManager.default.fileExists(atPath: url.path) else {
-                XCTFail()
-                return nil
-            }
-        }
-        
-        return place
-    }
-    
-    func testExportWithTwoImages() throws {
-        try exportWithTwoImages()
-    }
-    
-    func testExportDirectories() throws {
-        try exportWithNoImages()
-        
-        let urls: [URL]
-        do {
-            urls = try Place.exportDirectories(in: exportURL)
-        } catch {
-            XCTFail()
-            return
-        }
-        
-        XCTAssert(urls.count > 0)
-        
-        for url in urls {
-            var isDirectory: ObjCBool = false
-            guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) else {
-                XCTFail()
-                return
-            }
-            
-            XCTAssert(isDirectory.boolValue)
-        }
-    }
-    
-    func testImportWithNoImages() throws {
-        guard let place = try exportWithNoImages() else {
-            XCTFail()
-            return
-        }
-        
-        guard let uuid = place.uuid else {
-            XCTFail()
-            return
-        }
-        
-        let placeExportDirectory = place.createDirectoryName(in: exportURL)
-        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
-        
-        guard try Place.fetchObject(withUUID: uuid) == nil else {
-            XCTFail()
-            return
-        }
-        
-        let place2 = try Place.import(from: placeExportDirectory, in: exportURL)
-        XCTAssert(place2.uuid == uuid)
-        
-        // Make sure the place was saved as part of the import.
-        XCTAssert(place2.changedValues().count == 0)
-        
-        guard try Place.fetchObject(withUUID: uuid) != nil else {
-            XCTFail()
-            return
-        }
-    }
-        
-    func testImportWithImages() throws {
-        removePlaces()
-        try FileManager.default.removeItem(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY))
-        try? FileManager.default.createDirectory(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY), withIntermediateDirectories: false, attributes: nil)
-        
-        guard let place = try exportWithTwoImages() else {
-            XCTFail()
-            return
-        }
-        
-        guard place.largeImageFiles.count == 2 else {
-            XCTFail()
-            return
-        }
-        
-        // Need to remove files in the device's largeImages folder-- which are there because of exportWithTwoImages
-        
-        let documentsImageURL = URL(fileURLWithPath: Image.filePath(for: place.largeImageFiles[0]))
-        let documentsImageURL2 = URL(fileURLWithPath: Image.filePath(for: place.largeImageFiles[1]))
-        try FileManager.default.removeItem(at: documentsImageURL)
-        try FileManager.default.removeItem(at: documentsImageURL2)
-
-        let placeExportDirectory = place.createDirectoryName(in: exportURL)
-        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
-
-        let importedPlace = try Place.import(from: placeExportDirectory, in: exportURL)
-                
-        guard let locations = importedPlace.locations as? Set<Location>,
-            locations.count == 1 else {
-            XCTFail()
-            return
-        }
-        
-        for location in locations {
-            guard let images = location.images?.array as? [Image] else {
-                XCTFail()
-                return
-            }
-            
-            XCTAssert(images.count == 2)
-            
-            for image in images {
-                XCTAssert(image.fileName != nil)
-                XCTAssert(FileManager.default.fileExists(atPath: image.filePath))
-            }
-        }
+        try place.reCreateDirectory(placeExportDirectory: Self.exportURL)
     }
     
     func testNeedExportWithNoPlaces() {
@@ -526,68 +242,19 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         try Place.createLargeImagesDirectoryIfNeeded()
     }
     
-    private func getREADME() throws -> String? {
-        let readMePath = exportURL.path + "/" + Place.readMe
-        let readMeURL = URL(fileURLWithPath: readMePath)
+    func testGetUUIDFrom() throws {
+        let goodURL = URL(fileURLWithPath: "/Foobar/Afra_C8F8D06D-A45F-4431-94B2-FE6C34D91118")
+        let uuid = try Place.getUUIDFrom(url: goodURL)
+        XCTAssert(uuid == "C8F8D06D-A45F-4431-94B2-FE6C34D91118")
         
-        let data = try Data(contentsOf: readMeURL)
-        return String(data: data, encoding: .utf8)
-    }
-    
-    func testThatREADMEIsCreated() throws {
-        let readMeURL = Place.readMe(in: exportURL)
-        try? FileManager.default.removeItem(at: readMeURL)
-
-        try Place.initializeExport(directory: exportURL)
-        
-        guard let contents = try getREADME() else {
-            XCTFail()
-            return
-        }
-        
-        XCTAssert(contents == Place.readMeContents)
-    }
-    
-    func testThatREADMEIsReplacedOnSecondExport() throws {
-        let readMeURL = Place.readMe(in: exportURL)
-        try? FileManager.default.removeItem(at: readMeURL)
-
-        try Place.initializeExport(directory: exportURL)
-        
-        // Make sure this second export doesn't fail.
-        try Place.initializeExport(directory: exportURL)
-
-        guard let contents = try getREADME() else {
-            XCTFail()
-            return
-        }
-        
-        XCTAssert(contents == Place.readMeContents)
-    }
-    
-    func testThatREADMEFileNameIsNotReturnedInFolderList() throws {
-        // 1) Create the README
-        try Place.initializeExport(directory: exportURL)
-        
-        // 2) Export a place.
-        let place = try Place.newObject()
-        place.name = "My Favorite Restaurant"
-                
+        let badURL = URL(fileURLWithPath: "/Foobar/Afra_C8F8D06D-A45F-4431-94B2-")
         do {
-            try place.export(to: exportURL)
+            _ = try Place.getUUIDFrom(url: badURL)
         } catch {
-            XCTFail()
             return
         }
         
-        let urls = try Place.exportDirectories(in: exportURL)
-        let filtered = urls.filter {$0.lastPathComponent == Place.readMe}
-        
-        XCTAssert(urls.count > 0)
-        XCTAssert(filtered.count == 0)
-        
-        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
-        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+        XCTFail()
     }
 }
 

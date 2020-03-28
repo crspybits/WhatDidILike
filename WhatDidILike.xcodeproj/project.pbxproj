@@ -91,6 +91,10 @@
 		839FC1172426CF67001822D2 /* SecurityScopedURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC1162426CF66001822D2 /* SecurityScopedURL.swift */; };
 		839FC11A24285CC9001822D2 /* RestoreWithAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC11924285CC8001822D2 /* RestoreWithAlert.swift */; };
 		839FC11C24296DD0001822D2 /* iCloud+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC11B24296DD0001822D2 /* iCloud+Extras.swift */; };
+		839FC129242D7CFD001822D2 /* PlaceDeletionOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC127242D7CFD001822D2 /* PlaceDeletionOptionsCell.swift */; };
+		839FC12A242D7CFD001822D2 /* PlaceDeletionOptionsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839FC128242D7CFD001822D2 /* PlaceDeletionOptionsCell.xib */; };
+		839FC12C242FC6E6001822D2 /* PlaceExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC12B242FC6E6001822D2 /* PlaceExporter.swift */; };
+		839FC12E242FC86A001822D2 /* PlaceExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839FC12D242FC86A001822D2 /* PlaceExporterTests.swift */; };
 		83A2D5E01F5CD6B60003C5F9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DC1F5CD6B60003C5F9 /* Image.swift */; };
 		83A2D5E11F5CD6B60003C5F9 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */; };
 		83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2D5E41F5CE1160003C5F9 /* PlaceNameView.swift */; };
@@ -230,6 +234,10 @@
 		839FC1182427EF5E001822D2 /* TODO.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		839FC11924285CC8001822D2 /* RestoreWithAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWithAlert.swift; sourceTree = "<group>"; };
 		839FC11B24296DD0001822D2 /* iCloud+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "iCloud+Extras.swift"; sourceTree = "<group>"; };
+		839FC127242D7CFD001822D2 /* PlaceDeletionOptionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDeletionOptionsCell.swift; sourceTree = "<group>"; };
+		839FC128242D7CFD001822D2 /* PlaceDeletionOptionsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceDeletionOptionsCell.xib; sourceTree = "<group>"; };
+		839FC12B242FC6E6001822D2 /* PlaceExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceExporter.swift; sourceTree = "<group>"; };
+		839FC12D242FC86A001822D2 /* PlaceExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceExporterTests.swift; sourceTree = "<group>"; };
 		83A0C331205A3CF4009C3AC9 /* WhatDidILike.v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatDidILike.v2.xcdatamodel; sourceTree = "<group>"; };
 		83A2D5DC1F5CD6B60003C5F9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		83A2D5DD1F5CD6B60003C5F9 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -387,6 +395,7 @@
 			isa = PBXGroup;
 			children = (
 				839FC0C124200501001822D2 /* ImportExport.swift */,
+				839FC12B242FC6E6001822D2 /* PlaceExporter.swift */,
 				839FC0F224243193001822D2 /* Place+ImportExport.swift */,
 				839FC0C92423B89D001822D2 /* EquatableObjects.swift */,
 				839FC0C72423B005001822D2 /* CLLocation+Codable.swift */,
@@ -414,6 +423,8 @@
 				839FC1092425C90D001822D2 /* SettingsVC.swift */,
 				839FC10B2425CD1D001822D2 /* SyncSettingsCell.swift */,
 				839FC10C2425CD1D001822D2 /* SyncSettingsCell.xib */,
+				839FC127242D7CFD001822D2 /* PlaceDeletionOptionsCell.swift */,
+				839FC128242D7CFD001822D2 /* PlaceDeletionOptionsCell.xib */,
 				839FC112242660FE001822D2 /* BackupWithAlert.swift */,
 				839FC11924285CC8001822D2 /* RestoreWithAlert.swift */,
 			);
@@ -554,6 +565,7 @@
 		83D49CDB1F4AC2C700409B0F /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				839FC12D242FC86A001822D2 /* PlaceExporterTests.swift */,
 				839FC1142426B9C7001822D2 /* CoreDataTests.swift */,
 				839FC0F624257A02001822D2 /* example.jpeg */,
 				839FC0F824257E4D001822D2 /* example2.jpeg */,
@@ -718,6 +730,7 @@
 				83D49CD31F4AC26A00409B0F /* LaunchScreen.storyboard in Resources */,
 				83FC6420206229490070A7FA /* Settings.bundle in Resources */,
 				83D49CD91F4AC2AA00409B0F /* Assets.xcassets in Resources */,
+				839FC12A242D7CFD001822D2 /* PlaceDeletionOptionsCell.xib in Resources */,
 				83A2D5E71F5CE1310003C5F9 /* PlaceNameView.xib in Resources */,
 				835F44011F4AC75200A7748B /* Main.storyboard in Resources */,
 				839FC10E2425CD1D001822D2 /* SyncSettingsCell.xib in Resources */,
@@ -866,6 +879,8 @@
 				8327AEB61F95BE3500E170A2 /* Rating+CoreDataProperties.swift in Sources */,
 				8366CD3D1F7CA65F00E9D6FF /* Map.m in Sources */,
 				839FC1172426CF67001822D2 /* SecurityScopedURL.swift in Sources */,
+				839FC12C242FC6E6001822D2 /* PlaceExporter.swift in Sources */,
+				839FC129242D7CFD001822D2 /* PlaceDeletionOptionsCell.swift in Sources */,
 				8396CE381F4BCB8A00660D73 /* Item.swift in Sources */,
 				839FC0C82423B005001822D2 /* CLLocation+Codable.swift in Sources */,
 				8317E8F61F873204004C53BB /* NewObject.swift in Sources */,
@@ -943,6 +958,7 @@
 				839FC1152426B9C7001822D2 /* CoreDataTests.swift in Sources */,
 				839FC0E5242414F0001822D2 /* PlaceUpdateDateTests.swift in Sources */,
 				839FC0CC2423BC4C001822D2 /* LargeImageFilesTests.swift in Sources */,
+				839FC12E242FC86A001822D2 /* PlaceExporterTests.swift in Sources */,
 				83D49CDF1F4AC2C700409B0F /* WhatDidILikeTests.swift in Sources */,
 				839FC0F5242561CC001822D2 /* ImportExportPlaceExtensionTests.swift in Sources */,
 				839FC0C62422C0EA001822D2 /* EquatableCoreData.swift in Sources */,
