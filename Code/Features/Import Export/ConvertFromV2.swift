@@ -19,16 +19,21 @@ class ConvertFromV2 {
             return
         }
         
-        migrated.boolValue = true
-
         guard let places = Place.fetchAllObjects() else {
             return
         }
         
         for place in places {
+            // In case the migration failed mid-way last time.
+            guard place.uuid == nil else {
+                continue
+            }
+            
             let nextUUID = try Place.nextUUID()
             place.uuid = nextUUID
             place.save()
         }
+        
+        migrated.boolValue = true
     }
 }
