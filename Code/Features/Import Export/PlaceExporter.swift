@@ -70,6 +70,11 @@ class PlaceExporter {
     }
     
     // Returns the ExportedPlace of all of the exported place directories in the export parentDirectory.
+    /* Example use cases:
+        1) In order to do a restore, need a list of all previously exported places.
+        2) In order to do a forceSync of folders not yet downloaded from iCloud.
+        3) To get the export folder of a place, e.g., to delete it when a place is deleted or when re-exporting a previously exported place.
+    */
     static func exportedPlaces(in parentDirectory: URL, accessor:URL.Accessor = .none) throws -> [ExportedPlace] {
         let fileManager = FileManager.default
        

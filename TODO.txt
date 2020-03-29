@@ -2,8 +2,15 @@ WhatDidILike
 
 IMPORT/EXPORT
     * The sync message wording is vague. How can a user know if it's done?
+        Getting updates from iCloud download:
+            https://stackoverflow.com/questions/26622062
+            https://pinkstone.co.uk/how-to-detect-file-changes-in-your-ubiquitous-icloud-folder/
     
     * Test restarting a backup after cancelling it midway through.
+    
+    * If I release WhatDidILike without the capability to use iCloud Drive to sync data across devices I may need to at least alert users to the fact that this is not supported. e.g., to give some help text in Settings.
+    
+    * Currently, my plan is to skip place restores when the place is already present in core data. However, to give a minimal level of support to syncing data across devices, I should check the dates of (a) the Core Data place versus (b) the place in the iCloud backup. If the iCloud backup has a more recent change, a restore seems needed.
         
     * I'd like to be able to use iCloud Drive to sync data across devices. As part of this, I'd want to observe/watch for conflicts. I haven't found notifications to allow for this. See https://stackoverflow.com/questions/47640039/nsnotification-nsmetadataquerydidupdate-getting-non-stop-notification-messages
         i.e., the following observers are not triggered on conflict situation:
@@ -15,10 +22,11 @@ IMPORT/EXPORT
             NotificationCenter.default.addObserver(forName: NSNotification.Name.NSMetadataQueryDidUpdate, object: nil, queue: nil) { notification in
                 print("NSMetadataQueryDidUpdate.userInfo: \(String(describing: notification.userInfo))")
             }
-    
+                
     * An alternative to the background export method would be to trigger a place save when a place or one of its child objects gets updated. Would require an initial manual save/backup step to start. Would require being able to access the root Place object from any child. Would likely want to defer this until some seconds after a change was made to avoid multiple writes in a short interval.
-    
+        
     * Backgound (automatic) export: Looks like this is going to require an extensive overhaul of the way I'm dealing with Managed Object Context's for Core Data-- because a background thread requires its own MOC.
+        HOWEVER: If this operation was done on the main thread, while the entire app is in the background, this could resolve the issue. I.e., I'd not have to overhaul the way I'm dealing with Core Data. I'd have to enable some kind of background task operation.
 
     * When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory? Suppose the following occurs: (1) The app is removed, (2) some places are created, and (3) a restore occurs. During (2), the images created will have new names assigned which are not necessarily different than those in the backup -- because the names are constructed to be different only from those in the largeImages directory. When a restore occurs in (3), if the names of images are the same as the new ones from (2), there will be a conflict.
     
@@ -27,8 +35,10 @@ IMPORT/EXPORT
 
     * I just did a "simple" import: Imported a test of a single exported place. The import worked, but afterwards on the Setting screen, it says "1 of 1 place needs backup". No places should need exporting immed. after an import.
 
-    * exportDirectories(in... needs to be smarter. In order for this to work incrementally, it ought to return the place folders that actually need restoring-- not all of them. So filter the full set by the places that have already been imported.
+    * exportDirectories(in... needs to be smarter. In order for this to work incrementally, in the case of restoring, it ought to return the place folders that actually need restoring-- not all of them. So filter the full set by the places that have already been imported.
         This method has now been updated to: exportedPlaces(in...
+        
+        Hmmm... May not want to actually change the exportedPlaces(... method but rather, in the start(usingSecurityScopedFolder... method that uses it for import/restore purposes, may want to just filter the results returned from exportedPlaces(in... so as to eliminate any that have already been imported.
     
     * DONE: Disable the "remove backup place control" in Settings UI if there is no backup folder. This switch has no meaning unless there is a backup folder.
 
