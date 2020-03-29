@@ -201,8 +201,21 @@ extension MainListVC: UITableViewDelegate, UITableViewDataSource {
             let location = coreDataSource.object(at: indexPath) as! Location
             
             DeletionImpact().showWarning(for: .location(location), using: self, deletionAction: {
-                location.remove()
+                var uuidOfPlaceRemoved: String?
+                location.remove(uuidOfPlaceRemoved: &uuidOfPlaceRemoved)
                 CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+                
+                if let uuidOfPlaceRemoved = uuidOfPlaceRemoved, Parameters.removeBackupPlace.boolValue {
+                
+                    // The place was removed *and* the user wants backup places removed when a place is removed.
+                    do {
+                        let exportFolder = try Parameters.securityScopedExportFolder()
+                        let placeExporter = try PlaceExporter(parentDirectory: exportFolder, accessor: .securityScoped, initializeREADME: false)
+                        try placeExporter.removeExported(withUUID: uuidOfPlaceRemoved)
+                    } catch let error {
+                        Log.error("Could not remove backup place: \(error)")
+                    }
+                }
             })
             
             tableView.setEditing(false, animated: true)

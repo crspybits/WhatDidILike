@@ -220,11 +220,16 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func remove() {
+    // After the call, uuidOfPlaceRemoved will be set to the uuid of the place iff the associated place was removed as part of this removal.
+    func remove(uuidOfPlaceRemoved: inout String?) {
         // Does the place associated with this location have more than one location?
         if place!.locations!.count == 1 {
             // No: the associated place needs to be removed too.
+            uuidOfPlaceRemoved = place!.uuid
             place!.remove()
+        }
+        else {
+            uuidOfPlaceRemoved = nil
         }
         
         for imageObj in images! {

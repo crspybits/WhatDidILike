@@ -197,4 +197,8 @@ class Parameters {
             return .me
         }
     }
+    
+    static func securityScopedExportFolder() throws -> URL {
+        return try URL.securityScopedResourceFromBookmark(data: Parameters.backupFolderBookmark.dataValue)
+    }
 }

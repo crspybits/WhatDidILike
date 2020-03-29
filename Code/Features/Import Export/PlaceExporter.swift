@@ -13,11 +13,16 @@ class PlaceExporter {
     let accessor:URL.Accessor
     private(set) var alreadyExported: [ExportedPlace]!
 
-    init(parentDirectory: URL, accessor:URL.Accessor = .none) throws {
+    init(parentDirectory: URL, accessor:URL.Accessor = .none,
+        initializeREADME: Bool = true) throws {
+        
         self.parentDirectory = parentDirectory
         self.accessor = accessor
         
-        try Self.initializeExport(directory: parentDirectory, accessor: accessor)
+        if initializeREADME {
+            try Self.initializeExport(directory: parentDirectory, accessor: accessor)
+        }
+        
         alreadyExported = try Self.exportedPlaces(in: parentDirectory, accessor: accessor)
     }
     
@@ -109,7 +114,7 @@ class PlaceExporter {
     // Returns the URL's of the exported files.
     // Doesn't do a save for Core Data, but this ought to be done by caller since the lastExport field (of self) was changed.
     @discardableResult
-    func export(place: Place, accessor: URL.Accessor = .none) throws -> [URL] {
+    func export(place: Place) throws -> [URL] {
         
         var imageURLs = [URL]()
         var jsonFileName:URL!

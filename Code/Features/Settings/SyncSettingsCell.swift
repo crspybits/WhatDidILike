@@ -93,7 +93,7 @@ class SyncSettingsCell: UITableViewCell {
         
         let exportFolder: URL
         do {
-            exportFolder = try URL.securityScopedResourceFromBookmark(data: Parameters.backupFolderBookmark.dataValue)
+            exportFolder = try Parameters.securityScopedExportFolder()
         } catch {
             let alert = UIAlertController(title: "Alert!", message: "Could not securely access the backup folder.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))

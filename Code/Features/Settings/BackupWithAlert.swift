@@ -70,7 +70,7 @@ class BackupWithAlert {
         let nextPlace = self.placesToExport.remove(at: placesToExport.endIndex-1)
         
         do {
-            try placeExporter.export(place: nextPlace, accessor: .securityScoped)
+            try placeExporter.export(place: nextPlace)
             nextPlace.save()
         } catch let error {
             activity.dismiss(animated: true) {[unowned self] in
