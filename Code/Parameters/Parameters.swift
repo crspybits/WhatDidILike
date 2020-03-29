@@ -11,9 +11,12 @@ import SMCoreLib
 
 class Parameters {
     static let removeBackupPlace = SMPersistItemBool(name: "Parameters.removeBackupPlace", initialBoolValue: false, persistType: .userDefaults)
+
+    // To indicate to the user that they have selected a folder and is for display purposes. The real info is in the *bookmark*.
+    static let displayBackupFolder = SMPersistItemString(name: "Parameters.displayBackupFolder", initialStringValue: "", persistType: .userDefaults)
     
     // This is for the security scoped folder bookmark.
-    static let backupFolderBookmark = SMPersistItemData(name: "Parameters.backupFolderBookmark", initialDataValue: nil, persistType: .userDefaults)
+    static let backupFolderBookmark = SMPersistItemData(name: "Parameters.backupFolderBookmark", initialDataValue: Data(), persistType: .userDefaults)
 
     enum CommentStyle : String {
         case single

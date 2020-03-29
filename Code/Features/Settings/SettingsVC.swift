@@ -19,6 +19,7 @@ private struct CellDescription {
 
 class SettingsVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    weak var syncCellDelegate: SyncSettingsCellDelegate!
 
     private let syncCell = CellDescription(cellName: "SyncSettingsCell") { id, indexPath, settingsVC in
 
@@ -28,6 +29,7 @@ class SettingsVC: UIViewController {
         
         cell.parentVC = settingsVC
         cell.updatePlacesNeedingBackup()
+        cell.delegate = settingsVC
         return cell
     }
     
@@ -37,6 +39,8 @@ class SettingsVC: UIViewController {
             return nil
         }
         
+        settingsVC.syncCellDelegate = cell
+        
         return cell
     }
     
@@ -44,7 +48,7 @@ class SettingsVC: UIViewController {
     private var cellDescriptions: [Int: CellDescription] {
         return [
             0: syncCell,
-            1:placeDeletionCell
+            1: placeDeletionCell
         ]
     }
 
@@ -86,3 +90,8 @@ extension SettingsVC: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+extension SettingsVC: SyncSettingsCellDelegate {
+    func backupFolder(isAvailable: Bool) {
+        syncCellDelegate?.backupFolder(isAvailable: isAvailable)
+    }
+}

@@ -15,9 +15,16 @@ class PlaceDeletionOptionsCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         yesNo.selectedSegmentIndex = Parameters.removeBackupPlace.boolValue ? 0 : 1
+        yesNo.isEnabled = (try? Parameters.securityScopedExportFolder()) != nil
     }
     
     @IBAction func yesNoAction(_ sender: Any) {
         Parameters.removeBackupPlace.boolValue = yesNo.selectedSegmentIndex == 0
+    }
+}
+
+extension PlaceDeletionOptionsCell: SyncSettingsCellDelegate {
+    func backupFolder(isAvailable: Bool) {
+        yesNo.isEnabled = (try? Parameters.securityScopedExportFolder()) != nil
     }
 }

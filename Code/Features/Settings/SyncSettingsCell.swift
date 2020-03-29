@@ -10,9 +10,12 @@ import UIKit
 import SMCoreLib
 import CoreServices
 
+protocol SyncSettingsCellDelegate: AnyObject {
+    func backupFolder(isAvailable: Bool)
+}
+
 class SyncSettingsCell: UITableViewCell {
-    // This is just to indicate to the user that they have selected a folder and is for display purposes. The real info is in the *bookmark*.
-    private static let displayBackupFolder = SMPersistItemString(name: "SyncSettingsCell.displayBackupFolder", initialStringValue: "", persistType: .userDefaults)
+    weak var delegate: SyncSettingsCellDelegate!
     
     @IBOutlet weak var sync: UIButton!
     @IBOutlet weak var textView: UITextView!
@@ -29,7 +32,7 @@ class SyncSettingsCell: UITableViewCell {
         
         Layout.format(textBox: textView)
         separator.backgroundColor = .separatorBackground
-        setFolderTextInUI(Self.displayBackupFolder.stringValue)
+        setFolderTextInUI(Parameters.displayBackupFolder.stringValue)
 
         syncICloudIfNeeded(showAlert: false)
     }
@@ -87,7 +90,7 @@ class SyncSettingsCell: UITableViewCell {
     }
     
     private func getExportFolder() -> URL? {
-        guard Self.displayBackupFolder.stringValue != "" else {
+        guard Parameters.displayBackupFolder.stringValue != "" else {
             return nil
         }
         
@@ -123,8 +126,10 @@ class SyncSettingsCell: UITableViewCell {
     
     @IBAction func clearAction(_ sender: Any) {
         Parameters.backupFolderBookmark.reset()
-        Self.displayBackupFolder.stringValue = ""
-        setFolderTextInUI(Self.displayBackupFolder.stringValue)
+        Parameters.displayBackupFolder.stringValue = ""
+        setFolderTextInUI(Parameters.displayBackupFolder.stringValue)
+        
+        delegate?.backupFolder(isAvailable: false)
     }
     
     private func setFolderTextInUI(_ text: String) {
@@ -180,8 +185,10 @@ extension SyncSettingsCell: UIDocumentPickerDelegate {
         Place.resetLastExports()
         
         updatePlacesNeedingBackup()
-        Self.displayBackupFolder.stringValue = urls[0].path
-        setFolderTextInUI(Self.displayBackupFolder.stringValue)
+        Parameters.displayBackupFolder.stringValue = urls[0].path
+        setFolderTextInUI(Parameters.displayBackupFolder.stringValue)
+        
+        delegate?.backupFolder(isAvailable: true)
     }
 
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
