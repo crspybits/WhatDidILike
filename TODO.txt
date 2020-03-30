@@ -1,8 +1,12 @@
 WhatDidILike
 
-IMPORT/EXPORT
+BUGS
     * When typing into the Place Name field, after each character is typed, the cursor moves to the end of the field. It ought not to.
     
+FILTERS
+    * Select some number of (a) place categories, or (b) place lists to filter by. E.g., I want only Chinese restaurants.
+
+IMPORT/EXPORT
     * The sync message wording is vague. How can a user know if it's done?
         Getting updates from iCloud download:
             https://stackoverflow.com/questions/26622062

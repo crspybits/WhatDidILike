@@ -76,18 +76,14 @@ class PlaceExporter {
         3) To get the export folder of a place, e.g., to delete it when a place is deleted or when re-exporting a previously exported place.
     */
     static func exportedPlaces(in parentDirectory: URL, accessor:URL.Accessor = .none) throws -> [ExportedPlace] {
-        let fileManager = FileManager.default
        
         var urls:[URL]!
         try parentDirectory.accessor(accessor) { url in
-            urls = try fileManager.contentsOfDirectory(at: parentDirectory, includingPropertiesForKeys: nil)
+            // Getting only subdirectories to avoid the README.txt file, and because only directories can contain exported places.
+            urls = try parentDirectory.subDirectories()
         }
         
-        // The file names get transformed in iCloud, at least on simulator: file:///Users/chris/Library/Developer/CoreSimulator/Devices/0D068464-53F9-4334-86DA-366FBA6ED4E3/data/Library/Mobile%20Documents/com~apple~CloudDocs/WhatDidILike.test/.README.txt.icloud
-        // Thus, I'm not using a test for equality here.
-        let filteredURLs = urls.filter {!$0.lastPathComponent.contains(readMe)}
-        
-        return try filteredURLs.map { url -> ExportedPlace in
+        return try urls.map { url -> ExportedPlace in
             let uuid = try Place.getUUIDFrom(url: url)
             return ExportedPlace(location: url, uuid: uuid)
         }
@@ -193,18 +189,20 @@ class PlaceExporter {
         
         return alreadyExported.location
     }
+}
+
+// Adapted from https://stackoverflow.com/questions/34388582/get-subdirectories-using-swift
+private extension URL {
+    func isDirectory() throws -> Bool {
+        return (try resourceValues(forKeys: [.isDirectoryKey])).isDirectory == true
+    }
     
-    // Due to the manner in which I check for it, I can't have "README.txt" showing up in a place name.
-    static func cleanPlaceName(_ placeName: String) -> String {
-        var placeName = placeName
-
-        var currentLength: Int!
-
-        repeat {
-            currentLength = placeName.count
-            placeName = placeName.replacingOccurrences(of: Self.readMe, with: "")
-        } while currentLength != placeName.count
+    func subDirectories() throws -> [URL] {
+        guard try isDirectory() else {
+            return []
+        }
         
-        return placeName
+        return try FileManager.default
+            .contentsOfDirectory(at: self, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]).filter{ try $0.isDirectory() }
     }
 }
