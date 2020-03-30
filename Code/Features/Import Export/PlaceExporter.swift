@@ -83,7 +83,9 @@ class PlaceExporter {
             urls = try fileManager.contentsOfDirectory(at: parentDirectory, includingPropertiesForKeys: nil)
         }
         
-        let filteredURLs = urls.filter {$0.lastPathComponent != readMe}
+        // The file names get transformed in iCloud, at least on simulator: file:///Users/chris/Library/Developer/CoreSimulator/Devices/0D068464-53F9-4334-86DA-366FBA6ED4E3/data/Library/Mobile%20Documents/com~apple~CloudDocs/WhatDidILike.test/.README.txt.icloud
+        // Thus, I'm not using a test for equality here.
+        let filteredURLs = urls.filter {!$0.lastPathComponent.contains(readMe)}
         
         return try filteredURLs.map { url -> ExportedPlace in
             let uuid = try Place.getUUIDFrom(url: url)
@@ -190,5 +192,19 @@ class PlaceExporter {
         }
         
         return alreadyExported.location
+    }
+    
+    // Due to the manner in which I check for it, I can't have "README.txt" showing up in a place name.
+    static func cleanPlaceName(_ placeName: String) -> String {
+        var placeName = placeName
+
+        var currentLength: Int!
+
+        repeat {
+            currentLength = placeName.count
+            placeName = placeName.replacingOccurrences(of: Self.readMe, with: "")
+        } while currentLength != placeName.count
+        
+        return placeName
     }
 }

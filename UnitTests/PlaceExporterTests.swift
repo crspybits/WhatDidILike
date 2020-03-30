@@ -475,4 +475,20 @@ class PlaceExporterTests: XCTestCase {
         
         XCTAssert(exportDirectoryURLs0.count + 1 == exportDirectoryURLs2.count)
     }
+    
+    func testCleanPlaceName() {
+        let testData:[(input: String, output: String)] = [
+            (PlaceExporter.readMe, ""),
+            ("Foo\(PlaceExporter.readMe)bar", "Foobar"),
+            ("\(PlaceExporter.readMe)\(PlaceExporter.readMe)", ""),
+            ("REA\(PlaceExporter.readMe)DME.txt", ""),
+            ("\(PlaceExporter.readMe)bar", "bar"),
+            ("Foo\(PlaceExporter.readMe)", "Foo")
+        ]
+        
+        for (input, output) in testData {
+            let result = PlaceExporter.cleanPlaceName(input)
+            XCTAssert(result == output)
+        }
+    }
 }

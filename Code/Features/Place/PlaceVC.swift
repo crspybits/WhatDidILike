@@ -74,8 +74,9 @@ class PlaceVC: UIViewController {
         
         let placeNameView = PlaceNameView.create()!
         placeNameView.placeName.text = place.name
-        placeNameView.placeName.save = {[unowned self] update in
-            self.place.name = update
+        placeNameView.placeName.save = {[unowned self, placeNameView] update in
+            self.place.name = PlaceExporter.cleanPlaceName(update)
+            placeNameView.placeName.text = self.place.name
             self.setTitle()
             self.place.save()
             self.delegate?.placeNameChanged(forPlaceLocation: self.location)

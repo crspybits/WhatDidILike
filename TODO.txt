@@ -1,6 +1,8 @@
 WhatDidILike
 
 IMPORT/EXPORT
+    * When typing into the Place Name field, after each character is typed, the cursor moves to the end of the field. It ought not to.
+    
     * The sync message wording is vague. How can a user know if it's done?
         Getting updates from iCloud download:
             https://stackoverflow.com/questions/26622062
@@ -35,10 +37,11 @@ IMPORT/EXPORT
 
     * I just did a "simple" import: Imported a test of a single exported place. The import worked, but afterwards on the Setting screen, it says "1 of 1 place needs backup". No places should need exporting immed. after an import.
 
-    * exportDirectories(in... needs to be smarter. In order for this to work incrementally, in the case of restoring, it ought to return the place folders that actually need restoring-- not all of them. So filter the full set by the places that have already been imported.
+    * DONE: exportDirectories(in... needs to be smarter. In order for this to work incrementally, in the case of restoring, it ought to return the place folders that actually need restoring-- not all of them. So filter the full set by the places that have already been imported.
         This method has now been updated to: exportedPlaces(in...
         
         Hmmm... May not want to actually change the exportedPlaces(... method but rather, in the start(usingSecurityScopedFolder... method that uses it for import/restore purposes, may want to just filter the results returned from exportedPlaces(in... so as to eliminate any that have already been imported.
+        Perhaps in this case, inform the user of the number of places that will not be re-imported. i.e., the number of places with export data from exportedPlaces(... that will not be imported.
     
     * DONE: Disable the "remove backup place control" in Settings UI if there is no backup folder. This switch has no meaning unless there is a backup folder.
 
