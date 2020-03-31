@@ -11,7 +11,7 @@ import SMCoreLib
 
 extension URL {
     enum ICloudError: Error {
-        case wrongTypeForIsUbiquitousItem
+        case wrongTypeForResourceKey
     }
     
     func forceSync() throws {
@@ -30,8 +30,24 @@ extension URL {
         /*
         let result = try resourceValues(forKeys: [.isUbiquitousItemKey])
         guard let inICloud = result.allValues[.isUbiquitousItemKey] as? Bool else {
-            throw ICloudError.wrongTypeForIsUbiquitousItem
+            throw ICloudError.wrongTypeForResourceKey
         }
         */
+    }
+    
+    func isDownloading() throws -> Bool {
+        let result = try resourceValues(forKeys: [.ubiquitousItemIsDownloadingKey])
+        guard let isDownloading = result.allValues[.ubiquitousItemIsDownloadingKey] as? Bool else {
+            throw ICloudError.wrongTypeForResourceKey
+        }
+        return isDownloading
+    }
+    
+    func isUploading() throws -> Bool {
+        let result = try resourceValues(forKeys: [.ubiquitousItemIsUploadingKey])
+        guard let isUploading = result.allValues[.ubiquitousItemIsUploadingKey] as? Bool else {
+            throw ICloudError.wrongTypeForResourceKey
+        }
+        return isUploading
     }
 }

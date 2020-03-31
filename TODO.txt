@@ -1,22 +1,40 @@
 WhatDidILike
 
 BUGS
-    * When typing into the Place Name field, after each character is typed, the cursor moves to the end of the field. It ought not to.
+    * On iOS 10.3.1, iPhone 7, when the sort/filter modal is presented it is too high-- too near the status bar.
+    
+    * DONE: When typing into the Place Name field, after each character is typed, the cursor moves to the end of the field. It ought not to.
     
 FILTERS
     * Select some number of (a) place categories, or (b) place lists to filter by. E.g., I want only Chinese restaurants.
+    
+    
+OTHER
+    * Add item sorting order to UI in Settings. When there are many items within a place, need some way to manage them. Sorting by name seems the most obvious, but might also want sorting by last modification date. Need increasing/decreasing sort orders too.
+    
+    * We need to sort the lists of a place before presenting. So that the order is consistent.
+    
+    * We should sort the locations of a place before presenting-- in some, say, user defined order. This is needed because otherwise with table views we run into problems with unordered sets.
+
 
 IMPORT/EXPORT
-    * The sync message wording is vague. How can a user know if it's done?
-        Getting updates from iCloud download:
-            https://stackoverflow.com/questions/26622062
-            https://pinkstone.co.uk/how-to-detect-file-changes-in-your-ubiquitous-icloud-folder/
-    
     * Test restarting a backup after cancelling it midway through.
     
     * If I release WhatDidILike without the capability to use iCloud Drive to sync data across devices I may need to at least alert users to the fact that this is not supported. e.g., to give some help text in Settings.
     
-    * Currently, my plan is to skip place restores when the place is already present in core data. However, to give a minimal level of support to syncing data across devices, I should check the dates of (a) the Core Data place versus (b) the place in the iCloud backup. If the iCloud backup has a more recent change, a restore seems needed.
+    * Currently, my plan is to skip place restores when the place is already present in core data. However, I may want to give a minimal level of support to syncing data across devices, I should check the dates of (a) the Core Data place versus (b) the place in the iCloud backup. If the iCloud backup has a more recent change, a restore seems needed.
+
+    * The sync message wording is vague. How can a user know if it's done?
+        Getting updates from iCloud download:
+        https://stackoverflow.com/questions/26622062
+        https://pinkstone.co.uk/how-to-detect-file-changes-in-your-ubiquitous-icloud-folder/
+        https://stackoverflow.com/questions/28672575
+        It looks like we can't monitor changes to iCloud Drive. See https://stackoverflow.com/questions/28672575/icloud-drive-documents-not-included-in-nsmetadataquery-results
+        One strategy here may be to periodically (say, once every second or two) determine the size of the files in the export directory. If this size doesn't change for a while we might assume that the sync is done (though, no change would be observed if there was no network connection too). See https://stackoverflow.com/questions/2188469/how-can-i-calculate-the-size-of-a-folder
+        
+    * We may be able to monitor changes in the file system, even if we can't monitor changes in iCloud Drive directly:
+        https://developer.apple.com/library/archive/technotes/tn2336/_index.html
+    https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileCoordinators/FileCoordinators.html#//apple_ref/doc/uid/TP40010672-CH11-SW1
         
     * I'd like to be able to use iCloud Drive to sync data across devices. As part of this, I'd want to observe/watch for conflicts. I haven't found notifications to allow for this. See https://stackoverflow.com/questions/47640039/nsnotification-nsmetadataquerydidupdate-getting-non-stop-notification-messages
         i.e., the following observers are not triggered on conflict situation:
@@ -29,17 +47,21 @@ IMPORT/EXPORT
                 print("NSMetadataQueryDidUpdate.userInfo: \(String(describing: notification.userInfo))")
             }
                 
-    * An alternative to the background export method would be to trigger a place save when a place or one of its child objects gets updated. Would require an initial manual save/backup step to start. Would require being able to access the root Place object from any child. Would likely want to defer this until some seconds after a change was made to avoid multiple writes in a short interval.
+    * An alternative to the background export method would be to trigger a place save when a place or one of its child objects gets updated. Would require an initial manual save/backup step to start. Would require being able to access the root Place object from any child. ALSO: Would likely want to defer this until some seconds after a change was made to avoid multiple writes in a short interval.
         
     * Backgound (automatic) export: Looks like this is going to require an extensive overhaul of the way I'm dealing with Managed Object Context's for Core Data-- because a background thread requires its own MOC.
         HOWEVER: If this operation was done on the main thread, while the entire app is in the background, this could resolve the issue. I.e., I'd not have to overhaul the way I'm dealing with Core Data. I'd have to enable some kind of background task operation.
 
-    * When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory? Suppose the following occurs: (1) The app is removed, (2) some places are created, and (3) a restore occurs. During (2), the images created will have new names assigned which are not necessarily different than those in the backup -- because the names are constructed to be different only from those in the largeImages directory. When a restore occurs in (3), if the names of images are the same as the new ones from (2), there will be a conflict.
+    * When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory? Suppose the following occurs: (1) The app is removed and re-installed, (2) some places are created, and (3) a restore occurs. During (2), the images created will have new names assigned which are not necessarily different than those in the backup -- because the names are constructed to be different only from those in the largeImages directory. When a restore occurs in (3), if the names of images are the same as the new ones from (2), there will be a conflict.
     
         One way to handle the problem above would be to change the structure of the image folders from the simple largeImages folder to using sub-folders, similar to what I'm doing for the backup now. (This seems easier than having to do some kind of migration conversion).
-        I'd need to then handle two different folder structure structure's for images as stored local to the app. I could handle this via a flag in the Place managed object. Any newly imported place could have its image stored local to the app in this manner, thus avoiding the name conflict issue.
+        I'd need to then handle two different folder structure structure's for images as stored local to the app. I could handle this via a flag in the Place managed object. Any newly imported place could have its images stored local to the app in this manner, thus avoiding the name conflict issue.
+        A different strategy for resolving this is to use UUID's to form the unique part of the image filenames. To make doubly sure of a lack of collisions I could use the same kind of strategy I'm using for UUID's for places when creating a new place. I.e., to check to make sure the UUID for the image doesn't already exist in Core Data. An advantage of this change is that it is more localized. In the other strategy, I'd need to put multiple handling cases in multiple places in the code. E.g., Instead of names like:
+                WhatDidILike.qQ18P.jpg
+            we'd have names like:
+                WhatDidILike.EA698671-D62D-46BA-94A1-C40C3DCFC7E1.jpg
 
-    * I just did a "simple" import: Imported a test of a single exported place. The import worked, but afterwards on the Setting screen, it says "1 of 1 place needs backup". No places should need exporting immed. after an import.
+    * [Cannot reproduce] I just did a "simple" import: Imported a test of a single exported place. The import worked, but afterwards on the Setting screen, it says "1 of 1 place needs backup". No places should need exporting immed. after an import.
 
     * DONE: exportDirectories(in... needs to be smarter. In order for this to work incrementally, in the case of restoring, it ought to return the place folders that actually need restoring-- not all of them. So filter the full set by the places that have already been imported.
         This method has now been updated to: exportedPlaces(in...
@@ -97,6 +119,3 @@ IMPORT/EXPORT
     * DONE: Need to have modification date on a Place updated when ever any of its children change. Or have a way to compute this. That modification date is to enable backing up of changed places to storage.
 
 
-GENERAL
-    * We need to sort the lists of a place before presenting. So that the order is consistent.
-    * We should sort the locations of a place before presenting-- in some, say, user defined order. This is needed because otherwise with table views we run into problems with unordered sets.
