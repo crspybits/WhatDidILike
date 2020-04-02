@@ -1,16 +1,18 @@
 WhatDidILike v2
 
 Version 2.2
+	* Migrating to v4 of Core Data model
 	* Support for import/export of data
 		- Added codables to Core Data objects
 		- Added equality tests for Core Data objects
-		- Added id property to Places & migration support.
+		- Added uuid property to Places & migration support.
 		- Added modificationDate properties to PlaceList, PlaceCategory, and Rating managed objects.
 		- Now using UIDocumentPickerViewController to allow the user to select a backup folder
 		- Using security scoped URL's with the resulting folder.
 		- Added tab bar controller and Setting screen to allow for import/export.
 		- Sync button to allow for forcing download iCloud docs.
 		- Added toggle to select whether place backups are deleted when a place is deleted.
+		- Added collision detection for Place UUID's.
 	* Fixed bug: When typing into the Place Name field, after each character is typed, the cursor moves to the end of the field. It ought not to.
 	
 Version 2.1 (3/17/20)

@@ -18,6 +18,16 @@ OTHER
 
 
 IMPORT/EXPORT
+    * Need collision avoidance on UUID's for images.
+        Now using uuid's to form image file names -- to avoid naming conflicts on a restore
+    
+    * Currently on a Place UUID collision when creating a new place, I cause the code to fail. I don't have to do this. I could keep attempting generating new UUIDs until I get a distinct one.
+    
+    * What is happening currently with an export when I run across a UUID that is in the export folder, but that is not in Core Data? (Note that this can currently occur because of the "Remove backup place when place removed?" setting, and could also occur due to UUID collision issues.). Does the export fail?
+    
+    * What about "export garbage collection"? 1) Get a list of all folders in the export directory and their corresponding Place UUID's. 2) Do an export, keeping track of the UUID's of the Places thus exported. 3) Garbage collection then consists of a) determining the places from 1) that were not overwritten, and b) removing those from the export folder.
+        The purpose of this garbage collection is to deal with the consequences of a UUID collision prevention technique. It would also have the effect (wanted or unwanted?) of removing Places from a backup that had not been removed before, but had been remmoved before from Core Data.
+    
     * Test restarting a backup after cancelling it midway through.
     
     * If I release WhatDidILike without the capability to use iCloud Drive to sync data across devices I may need to at least alert users to the fact that this is not supported. e.g., to give some help text in Settings.
@@ -60,6 +70,8 @@ IMPORT/EXPORT
                 WhatDidILike.qQ18P.jpg
             we'd have names like:
                 WhatDidILike.EA698671-D62D-46BA-94A1-C40C3DCFC7E1.jpg
+                
+    * iOS uses RFC 4122 v4 UUID's-- these are purely random numbers. So, there is some small chance of having a collision. This applies to both the Place UUID's I have and the image UUID's, in terms of the backup/restore process. This is for the same reasoning as used above: (1) The app is installed, used, and a backup is made. (2) The app is removed and re-installed, (3) some new places are created, and (4) a restore occurs. During (3), the images and/or places created will have id's/names assigned based on UUID's. There is a non-zero chance of a collision with UUID's that are in the backup from (1). When a restore occurs in (4), if the names of images/id's for places are the same as the new ones from (1), there will be a conflict. While this is not a high-risk (e.g., medical) application it would be good if there was some simple code for resolving conflicts.
 
     * [Cannot reproduce] I just did a "simple" import: Imported a test of a single exported place. The import worked, but afterwards on the Setting screen, it says "1 of 1 place needs backup". No places should need exporting immed. after an import.
 

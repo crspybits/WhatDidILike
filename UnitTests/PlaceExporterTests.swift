@@ -273,7 +273,10 @@ class PlaceExporterTests: XCTestCase {
             return
         }
         
-        let place2 = try Place.import(from: placeExportDirectory, in: Self.exportURL)
+        guard let place2 = try Place.import(from: placeExportDirectory, in: Self.exportURL) else {
+            XCTFail()
+            return
+        }
         XCTAssert(place2.uuid == uuid)
         
         // Make sure the place was saved as part of the import.
@@ -310,7 +313,10 @@ class PlaceExporterTests: XCTestCase {
         let placeExportDirectory = place.createDirectoryName(in: Self.exportURL)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
 
-        let importedPlace = try Place.import(from: placeExportDirectory, in: Self.exportURL)
+        guard let importedPlace = try Place.import(from: placeExportDirectory, in: Self.exportURL) else {
+            XCTFail()
+            return
+        }
                 
         guard let locations = importedPlace.locations as? Set<Location>,
             locations.count == 1 else {

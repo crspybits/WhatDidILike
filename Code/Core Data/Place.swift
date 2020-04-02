@@ -11,11 +11,7 @@ import CoreData
 import SMCoreLib
 
 @objc(Place)
-public class Place: BaseObject, Codable, EquatableObjects {
-    enum PlaceError : Error {
-        case uuidAlreadyExists
-    }
-    
+public class Place: BaseObject, Codable, EquatableObjects, UUIDCollisionAvoidance {    
     static let UUID_KEY = "uuid"
     static let lastExportField = "lastExport"
 
@@ -23,19 +19,18 @@ public class Place: BaseObject, Codable, EquatableObjects {
         return "Place"
     }
     
-    static func nextUUID() throws -> String {
-        let nextUUID = UUID().uuidString
-        
-        guard try fetchObject(withUUID: nextUUID) == nil else {
-            throw PlaceError.uuidAlreadyExists
+    static func alreadyExists(uuid: Foundation.UUID) throws -> UUIDCollisionResult<Place> {
+        if let place = try Self.fetchObject(withUUID: uuid.uuidString) {
+            return .existsWithObject(place)
         }
-        
-        return nextUUID
+        else {
+            return .doesNotExist
+        }
     }
     
     // After you create a Place, make sure you give it at least one Location-- this is required by the model.
     override class func newObject() throws -> Place {
-        let uuid = try nextUUID()
+        let uuid: String = try realUUID()
         let result = try super.newObject() as! Place
         result.uuid = uuid
         return result
@@ -114,7 +109,8 @@ public class Place: BaseObject, Codable, EquatableObjects {
         case lists
         case locations
     }
-        
+    
+    // Doesn't look for UUID collisions with existing Place uuid's.
     override func decode(using decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         creationDate = try container.decodeIfPresent(Date.self, forKey: .creationDate) as NSDate?
@@ -142,6 +138,23 @@ public class Place: BaseObject, Codable, EquatableObjects {
         if let locations = try container.decodeIfPresent(Set<Location>.self, forKey: .locations) {
             addToLocations(locations as NSSet)
         }
+    }
+    
+    // Because in some use cases I need to be able to peek at the encoded Place data first before committing to actually decoding the place.
+    struct PartialPlace: Decodable {
+        let uuid: String?
+        let creationDate: NSDate?
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
+            creationDate = try container.decodeIfPresent(Date.self, forKey: .creationDate) as NSDate?
+        }
+    }
+    
+    static func partialDecode(data: Data) throws -> PartialPlace {
+        let decoder = JSONDecoder()
+        return try decoder.decode(PartialPlace.self, from: data)
     }
     
     public func encode(to encoder: Encoder) throws {

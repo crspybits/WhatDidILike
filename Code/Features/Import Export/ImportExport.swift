@@ -12,7 +12,6 @@ enum ImportExportError: Error {
     case cannotCreateJSONFile
     case cannotDeserializeToDictionary
     case noUUIDInPlaceJSON
-    case exportedUUIDAlreadyExistsInCoreData
     case errorCopyingFile(Error)
     case couldNotGetLargeImagesFolder
     case wrongTypeForIsUbiquitousItem
@@ -21,6 +20,7 @@ enum ImportExportError: Error {
     case invalidUUIDInExportedPlaceURL
     case uuidOfPlaceNotFound
     case placeExportDirectoryAlreadyExists
+    case wrongInternalCollisionResult
 }
 
 protocol ImportExport {

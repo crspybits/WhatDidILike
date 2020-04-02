@@ -105,6 +105,8 @@
 		83A597BE1F6788ED00736DE2 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A597BD1F6788ED00736DE2 /* TextView.swift */; };
 		83A597C01F67961600736DE2 /* ListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A597BF1F67961600736DE2 /* ListManager.swift */; };
 		83A597C61F67A24100736DE2 /* ListManager.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A597C41F67A24100736DE2 /* ListManager.xib */; };
+		83A6D56F2434D8D6000F9727 /* UUIDCollisionAvoidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6D56E2434D8D6000F9727 /* UUIDCollisionAvoidance.swift */; };
+		83A6D5712434DBCC000F9727 /* UUIDCollisionAvoidanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6D5702434DBCC000F9727 /* UUIDCollisionAvoidanceTests.swift */; };
 		83B496BD1F4BD0830083610D /* Identifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496BC1F4BCFB50083610D /* Identifiers.swift */; };
 		83B496C11F4BDE300083610D /* CoreDataExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496C01F4BDE300083610D /* CoreDataExtras.swift */; };
 		83B496C51F4BE0F40083610D /* Place+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */; };
@@ -249,6 +251,8 @@
 		83A597BD1F6788ED00736DE2 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		83A597BF1F67961600736DE2 /* ListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListManager.swift; sourceTree = "<group>"; };
 		83A597C41F67A24100736DE2 /* ListManager.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListManager.xib; sourceTree = "<group>"; };
+		83A6D56E2434D8D6000F9727 /* UUIDCollisionAvoidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDCollisionAvoidance.swift; sourceTree = "<group>"; };
+		83A6D5702434DBCC000F9727 /* UUIDCollisionAvoidanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDCollisionAvoidanceTests.swift; sourceTree = "<group>"; };
 		83B496BC1F4BCFB50083610D /* Identifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiers.swift; sourceTree = "<group>"; };
 		83B496C01F4BDE300083610D /* CoreDataExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataExtras.swift; sourceTree = "<group>"; };
 		83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -466,6 +470,7 @@
 		83B496BB1F4BCFB50083610D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				83A6D56E2434D8D6000F9727 /* UUIDCollisionAvoidance.swift */,
 				839FC11B24296DD0001822D2 /* iCloud+Extras.swift */,
 				839FC1162426CF66001822D2 /* SecurityScopedURL.swift */,
 				83019F8F1F81730100E1E117 /* Spinner.swift */,
@@ -565,6 +570,7 @@
 		83D49CDB1F4AC2C700409B0F /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				83A6D5702434DBCC000F9727 /* UUIDCollisionAvoidanceTests.swift */,
 				839FC12D242FC86A001822D2 /* PlaceExporterTests.swift */,
 				839FC1142426B9C7001822D2 /* CoreDataTests.swift */,
 				839FC0F624257A02001822D2 /* example.jpeg */,
@@ -904,6 +910,7 @@
 				83019F901F81730100E1E117 /* Spinner.swift in Sources */,
 				83401DA81F5CFD7400A96C8D /* Layout.swift in Sources */,
 				839FC0CE24240897001822D2 /* ConvertFromV2.swift in Sources */,
+				83A6D56F2434D8D6000F9727 /* UUIDCollisionAvoidance.swift in Sources */,
 				839FC0CA2423B89D001822D2 /* EquatableObjects.swift in Sources */,
 				8366CD3F1F7CA65F00E9D6FF /* GeocodeAddressToLatLong.m in Sources */,
 				8385206A1F8B2A77001D97D3 /* ImagesView.swift in Sources */,
@@ -959,6 +966,7 @@
 				839FC0E5242414F0001822D2 /* PlaceUpdateDateTests.swift in Sources */,
 				839FC0CC2423BC4C001822D2 /* LargeImageFilesTests.swift in Sources */,
 				839FC12E242FC86A001822D2 /* PlaceExporterTests.swift in Sources */,
+				83A6D5712434DBCC000F9727 /* UUIDCollisionAvoidanceTests.swift in Sources */,
 				83D49CDF1F4AC2C700409B0F /* WhatDidILikeTests.swift in Sources */,
 				839FC0F5242561CC001822D2 /* ImportExportPlaceExtensionTests.swift in Sources */,
 				839FC0C62422C0EA001822D2 /* EquatableCoreData.swift in Sources */,

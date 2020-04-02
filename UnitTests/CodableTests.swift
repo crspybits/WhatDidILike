@@ -15,7 +15,7 @@ import SMCoreLib
 class CodableTests: XCTestCase {
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        setupExportFolder()
     }
 
     override func tearDown() {
@@ -1257,5 +1257,22 @@ class CodableTests: XCTestCase {
 
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place1)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
+    }
+    
+    func testPartialPlaceDecode() throws {
+         let place1 = try Place.newObject()
+         
+         let encoder = JSONEncoder()
+         guard let data = try? encoder.encode(place1) else {
+             XCTFail()
+             return
+         }
+         
+         let partialPlace = try Place.partialDecode(data: data)
+         
+         XCTAssert(partialPlace.creationDate != nil)
+         XCTAssert(partialPlace.uuid != nil)
+
+         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place1)
     }
 }

@@ -29,7 +29,7 @@ class ConvertFromV2 {
                 continue
             }
             
-            let nextUUID = try Place.nextUUID()
+            let nextUUID: String = try Place.realUUID()
             place.uuid = nextUUID
             place.save()
         }
