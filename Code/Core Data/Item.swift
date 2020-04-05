@@ -93,9 +93,9 @@ extension Item {
 }
 
 extension Item: ImportExport {
-    var largeImageFiles: [String] {
+    var largeImages: [Image] {
         if let comments = self.comments?.array as? [Comment] {
-            return comments.map{$0.largeImageFiles}.flatMap{$0}
+            return comments.map{$0.largeImages}.flatMap{$0}
         }
         else {
             return []

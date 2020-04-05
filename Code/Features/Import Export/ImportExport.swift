@@ -10,7 +10,6 @@ import Foundation
 
 enum ImportExportError: Error {
     case cannotCreateJSONFile
-    case cannotDeserializeToDictionary
     case noUUIDInPlaceJSON
     case errorCopyingFile(Error)
     case couldNotGetLargeImagesFolder
@@ -21,9 +20,11 @@ enum ImportExportError: Error {
     case uuidOfPlaceNotFound
     case placeExportDirectoryAlreadyExists
     case wrongInternalCollisionResult
+    case imageHasNoFileName
+    case noImagesFoundForExistingUUID
 }
 
 protocol ImportExport {
-    // The names of the large image files, within the relevant directory. The names don't contain the directory path.
-    var largeImageFiles: [String] {get}
+    // The Image's for the large image files, within the relevant directory.
+    var largeImages: [Image] {get}
 }

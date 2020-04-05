@@ -298,15 +298,21 @@ class PlaceExporterTests: XCTestCase {
             return
         }
         
-        guard place.largeImageFiles.count == 2 else {
+        guard place.largeImages.count == 2 else {
             XCTFail()
             return
         }
         
         // Need to remove files in the device's largeImages folder-- which are there because of exportWithTwoImages
         
-        let documentsImageURL = URL(fileURLWithPath: Image.filePath(for: place.largeImageFiles[0]))
-        let documentsImageURL2 = URL(fileURLWithPath: Image.filePath(for: place.largeImageFiles[1]))
+        guard let fileName = place.largeImages[0].fileName,
+            let fileName2 = place.largeImages[1].fileName else {
+            XCTFail()
+            return
+        }
+        
+        let documentsImageURL = URL(fileURLWithPath: Image.filePath(for: fileName))
+        let documentsImageURL2 = URL(fileURLWithPath: Image.filePath(for: fileName2))
         try FileManager.default.removeItem(at: documentsImageURL)
         try FileManager.default.removeItem(at: documentsImageURL2)
 

@@ -146,7 +146,11 @@ class PlaceExporter {
                 throw ImportExportError.cannotCreateJSONFile
             }
 
-            for imageFileName in place.largeImageFiles {
+            for image in place.largeImages {
+                guard let imageFileName = image.fileName else {
+                    throw ImportExportError.imageHasNoFileName
+                }
+                
                 let originalImageURL = URL(fileURLWithPath: Image.filePath(for: imageFileName))
                 let exportImageURL = URL(fileURLWithPath: exportDirectory.path + "/" + imageFileName)
                 try FileManager.default.copyItem(at: originalImageURL, to: exportImageURL)

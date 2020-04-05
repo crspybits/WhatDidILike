@@ -154,4 +154,34 @@ class CoreDataTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
+    
+    func testFetchAllImageObjectsWithOneResultingImage() throws {
+        let image = Image.newObject()
+        let uuid: String = try Image.realUUID()
+        image.uuid = uuid
+        
+        guard let images = try Image.fetchAllObjects(withUUID: uuid) else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssert(images.count == 1)
+    }
+    
+    func testFetchAllImageObjectsWithTwoResultingImages() throws {
+        let image1 = Image.newObject()
+        let uuid1: String = try Image.realUUID()
+        image1.uuid = uuid1
+        
+        // Simulate a UUID collision-- manually give a second image the same uuid
+        let image2 = Image.newObject()
+        image2.uuid = uuid1
+        
+        guard let images = try Image.fetchAllObjects(withUUID: uuid1) else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssert(images.count == 2)
+    }
 }

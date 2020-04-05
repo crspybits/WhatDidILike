@@ -104,7 +104,7 @@ extension Place {
                 throw ImportExportError.noUUIDInPlaceJSON
             }
 
-            let haveUuidCollision: Bool
+            let havePlaceUuidCollision: Bool
             switch try Place.alreadyExists(uuid: importUUID) {
             case .exists:
                 // This is not the type of collision being reported by Place. Something is seriously wrong!
@@ -113,16 +113,16 @@ extension Place {
             case .existsWithObject(let collidingPlace):
                 if collidingPlace.creationDate == importPlacePeek.creationDate {
                     // The place we are importing has the same creation date as the UUID collision. I'm taking this to mean: The place we are importing is really the same place, and we're not just having a UUID collision.
-                    // It is important to note that this isn't really a UUID collision. It's more of a possible conflict where we might want to try to integrate changes from a backup (if, say, it's stored in iCloud) with local changes. For now, not going to worry about this.
-                    Log.msg("Import attempt of place with same UUID and creationDate: Skipping")
+                    // It seems important to emphasize that this isn't really a UUID collision. It's more of a possible conflict where we might want to try to integrate changes from a backup (if, say, it's stored in iCloud) with local changes. For now, not going to worry about this.
+                    Log.msg("Import attempt of place with same UUID and same creationDate: Skipping")
                     return // to get out of `parentDirectory.accessor`
                 }
                 else {
                     // The place we are importing has a different creation date than the UUID collision. Presumably, this is the rare real collision-- where places are being imported into a set of meaningfully different other places.
-                    haveUuidCollision = true
+                    havePlaceUuidCollision = true
                 }
             case .doesNotExist:
-                haveUuidCollision = false
+                havePlaceUuidCollision = false
             }
             
             let decoder = JSONDecoder()
@@ -135,20 +135,47 @@ extension Place {
                 2) Rely on some other method/process to clean up later. E.g., garbage collection to remove the now duplicated place in the export folders.
             */
             
-            if haveUuidCollision {
+            if havePlaceUuidCollision {
                 place.uuid = try Place.realUUID()
             }
             
-            if place.largeImageFiles.count > 0 {
-                for imageFileName in place.largeImageFiles {
-                    let deviceImageURL = URL(fileURLWithPath: Image.filePath(for: imageFileName))
-                    let exportedImageURL = URL(fileURLWithPath: placeExportDirectory.path + "/" + imageFileName)
-                    do {
-                        try FileManager.default.copyItem(at: exportedImageURL, to: deviceImageURL)
-                    } catch let error {
-                        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
-                        throw ImportExportError.errorCopyingFile(error)
+            for image in place.largeImages {
+                // Use existing names or do we have a UUID collision? Since we've already dealt with Place UUID collisions we know we're importing a new Place.
+                // NOTE: This is a rather different use case than for Place's. The Image managed objects *already* exist. This means that if we have a UUID collision for an Image, then two Image's, with the same UUID, will exist in Core Data.
+                
+                guard let originalFileName = image.fileName else {
+                    throw ImportExportError.imageHasNoFileName
+                }
+
+                // The file name for the exported image needs no change. It's just present in the backup.
+                let exportedImageURL = URL(fileURLWithPath: placeExportDirectory.path + "/" + originalFileName)
+                
+                var imageFileName = originalFileName
+                
+                if let imageUUID = image.uuid {
+                    // This is a post-v2.2 image-- Do we have a UUID collision?
+                    guard let images = try Image.fetchAllObjects(withUUID: imageUUID) else {
+                        throw ImportExportError.noImagesFoundForExistingUUID
                     }
+                    
+                    if images.count > 1 {
+                        // Collision. Need to rename the `image` with a different UUID. Upon the next backup, this image will be duplicated in the backup. It will be present at it's prior name. And it will be present at the new name.
+                        let newUUID: String = try Image.realUUID()
+                        image.uuid = newUUID
+                        imageFileName = Image.createFileName(usingNewImageFileUUID: newUUID)
+                        image.fileName = imageFileName
+                    }
+                    // Else: No collision-- use the original file name.
+                }
+                // Else: The image.uuid is nil. This must be a pre-v2.2 image-- it's not named with the UUID. Just use the original file name.
+                                    
+                let appImageURL = URL(fileURLWithPath: Image.filePath(for: imageFileName))
+
+                do {
+                    try FileManager.default.copyItem(at: exportedImageURL, to: appImageURL)
+                } catch let error {
+                    CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
+                    throw ImportExportError.errorCopyingFile(error)
                 }
             }
         }

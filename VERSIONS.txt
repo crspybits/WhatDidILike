@@ -13,6 +13,8 @@ Version 2.2
 		- Sync button to allow for forcing download iCloud docs.
 		- Added toggle to select whether place backups are deleted when a place is deleted.
 		- Added collision detection for Place UUID's.
+		- Added UUID's to Image Core Data objects, for forming file names.
+		- Added UUID collision detection for image files.
 	* Fixed bug: When typing into the Place Name field, after each character is typed, the cursor moves to the end of the field. It ought not to.
 	
 Version 2.1 (3/17/20)

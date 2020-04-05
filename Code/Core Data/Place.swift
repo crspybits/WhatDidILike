@@ -246,15 +246,15 @@ extension Place {
 }
 
 extension Place: ImportExport {
-    var largeImageFiles: [String] {
-        var result = [String]()
+    var largeImages: [Image] {
+        var result = [Image]()
         
         if let items = self.items?.array as? [Item] {
-            result += items.map{$0.largeImageFiles}.flatMap{$0}
+            result += items.map{$0.largeImages}.flatMap{$0}
         }
         
         if let locations = self.locations as? Set<Location> {
-            result += locations.map{$0.largeImageFiles}.flatMap{$0}
+            result += locations.map{$0.largeImages}.flatMap{$0}
         }
         
         return result

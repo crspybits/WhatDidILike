@@ -2,8 +2,8 @@
 //  Image+CoreDataProperties.swift
 //  WhatDidILike
 //
-//  Created by Christopher G Prince on 10/2/17.
-//  Copyright © 2017 Spastic Muffin, LLC. All rights reserved.
+//  Created by Christopher G Prince on 4/1/20.
+//  Copyright © 2020 Spastic Muffin, LLC. All rights reserved.
 //
 //
 
@@ -18,6 +18,7 @@ extension Image {
     }
 
     @NSManaged public var fileName: String?
+    @NSManaged public var uuid: String?
     @NSManaged public var comment: Comment?
     @NSManaged public var location: Location?
 

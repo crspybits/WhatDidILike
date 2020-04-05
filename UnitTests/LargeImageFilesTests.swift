@@ -18,14 +18,6 @@ class LargeImageFilesTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testImages() {
-        let image1 = Image.newObject()
-        let fileName = "Foo"
-        image1.fileName = fileName
-        
-        XCTAssert(image1.largeImageFiles == [fileName])
-    }
     
     func testComments() throws {
         let comment = try Comment.newObject()
@@ -35,14 +27,14 @@ class LargeImageFilesTests: XCTestCase {
         image.fileName = fileName
         comment.addToImages(image)
         
-        XCTAssert(comment.largeImageFiles == [fileName])
+        XCTAssert(comment.largeImages.map{$0.fileName} == [fileName])
         
         let fileName2 = "Foo Bar"
         let image2 = Image.newObject()
         image2.fileName = fileName2
         comment.addToImages(image2)
         
-        XCTAssert(comment.largeImageFiles == [fileName, fileName2])
+        XCTAssert(comment.largeImages.map{$0.fileName} == [fileName, fileName2])
     }
     
     func testLocations() throws {
@@ -53,14 +45,14 @@ class LargeImageFilesTests: XCTestCase {
         image.fileName = fileName
         location1.addToImages(image)
         
-        XCTAssert(location1.largeImageFiles == [fileName])
+        XCTAssert(location1.largeImages.map{$0.fileName} == [fileName])
 
         let fileName2 = "Fooby"
         let image2 = Image.newObject()
         image2.fileName = fileName2
         location1.addToImages(image2)
         
-        XCTAssert(location1.largeImageFiles == [fileName, fileName2])
+        XCTAssert(location1.largeImages.map{$0.fileName} == [fileName, fileName2])
     }
     
     func testItems() throws {
@@ -75,7 +67,7 @@ class LargeImageFilesTests: XCTestCase {
         
         item.addToComments(comment)
         
-        XCTAssert(item.largeImageFiles == [fileName])
+        XCTAssert(item.largeImages.map{$0.fileName} == [fileName])
         
         let comment2 = try Comment.newObject()
     
@@ -86,7 +78,7 @@ class LargeImageFilesTests: XCTestCase {
         
         item.addToComments(comment2)
         
-        XCTAssert(item.largeImageFiles == [fileName, fileName2])
+        XCTAssert(item.largeImages.map{$0.fileName} == [fileName, fileName2])
     }
     
     func testPlaces() throws {
@@ -103,7 +95,7 @@ class LargeImageFilesTests: XCTestCase {
         
         item.addToComments(comment)
         
-        XCTAssert(item.largeImageFiles == [fileName])
+        XCTAssert(item.largeImages.map{$0.fileName} == [fileName])
         
         let comment2 = try Comment.newObject()
     
@@ -116,7 +108,7 @@ class LargeImageFilesTests: XCTestCase {
         
         place.addToItems(item)
         
-        XCTAssert(place.largeImageFiles == [fileName, fileName2])
+        XCTAssert(place.largeImages.map{$0.fileName} == [fileName, fileName2])
         
         let location1 = try Location.newObject()
         
@@ -132,6 +124,6 @@ class LargeImageFilesTests: XCTestCase {
         
         place.addToLocations(location1)
         
-        XCTAssert(place.largeImageFiles == [fileName, fileName2, fileName3, fileName4])
+        XCTAssert(place.largeImages.map{$0.fileName} == [fileName, fileName2, fileName3, fileName4])
     }
 }

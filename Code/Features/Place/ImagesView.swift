@@ -36,6 +36,7 @@ class ImagesView: UIView, XibBasics {
     private var imagesOwnerObj: ImagesManagedObject!
     private var localSource = [WDILImageSource]()
     private var smAcquireImage:SMAcquireImage!
+    private var newImageUUID: String!
     
     func setup(withParentVC vc: UIViewController, andImagesObj imagesOwnerObj: ImagesManagedObject) {
         self.vc = vc
@@ -88,6 +89,15 @@ class ImagesView: UIView, XibBasics {
     }
     
     @IBAction private func addImage(_ sender: Any) {
+        do {
+            newImageUUID = try Image.realUUID()
+        } catch let error {
+            let alert = UIAlertController(title: "Alert!", message: "Problem adding image: \(error)", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            vc?.present(alert, animated: true, completion: nil)
+            return
+        }
+        
         smAcquireImage = SMAcquireImage(withParentViewController: vc)
         smAcquireImage.delegate = self
         smAcquireImage.showAlert(fromView: self)
@@ -100,14 +110,23 @@ class ImagesView: UIView, XibBasics {
 
 extension ImagesView : SMAcquireImageDelegate {
     func smAcquireImageURLForNewImage(_ acquireImage:SMAcquireImage) -> SMRelativeLocalURL {
-        let fileExtras = FileExtras()
-        fileExtras.filePrefix = Identifiers.APP_NAME
-        fileExtras.directoryPathFromDocuments = SMIdentifiers.LARGE_IMAGE_DIRECTORY
-        return fileExtras.newURLForImage()
+        let directoryURL = FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY)
+        FileStorage.createDirectoryIfNeeded(directoryURL)
+        
+        // Prior to v2.2
+        // let newFileName = FileStorage.createTempFileName(inDirectory: directoryURL?.path, withPrefix: Identifiers.APP_NAME, andExtension: FileExtras.defaultFileExtension)
+        // e.g., WhatDidILike.qQ18P.jpg
+        
+        // v2.2 and after
+        let newFileName = Image.createFileName(usingNewImageFileUUID: newImageUUID)
+        // e.g.,WhatDidILike.EA698671-D62D-46BA-94A1-C40C3DCFC7E1.jpg
+
+        return SMRelativeLocalURL(withRelativePath: SMIdentifiers.LARGE_IMAGE_DIRECTORY + "/" + newFileName, toBaseURLType: .documentsDirectory)!
     }
 
     func smAcquireImage(_ acquireImage:SMAcquireImage, newImageURL: SMRelativeLocalURL, mimeType:String) {
         let newImageObj = Image.newObject()
+        newImageObj.uuid = newImageUUID
         newImageObj.fileName = newImageURL.lastPathComponent
         imagesOwnerObj.addToImages(newImageObj)
         newImageObj.save()

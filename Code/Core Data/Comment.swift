@@ -110,9 +110,9 @@ extension Comment {
 }
 
 extension Comment: ImportExport {
-    var largeImageFiles: [String] {
+    var largeImages: [Image] {
         if let images = self.images?.array as? [Image] {
-            return images.map{$0.largeImageFiles}.flatMap{$0}
+            return images
         }
         else {
             return []
