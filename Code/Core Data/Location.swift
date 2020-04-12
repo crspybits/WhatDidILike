@@ -221,6 +221,7 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
     }
     
     // After the call, uuidOfPlaceRemoved will be set to the uuid of the place iff the associated place was removed as part of this removal.
+    // saves context prior to returning
     func remove(uuidOfPlaceRemoved: inout String?, removeImages: Bool = true) {
         // Does the place associated with this location have more than one location?
         if place?.locations?.count == 1 {
@@ -241,6 +242,9 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
         
         rating!.remove()
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
+        
+        // Without this, place?.locations?.count may not get updated-- so if removing locations in a loop, you may not get the uuidOfPlaceRemoved with doing the save.
+        CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
     static func metersToMiles(meters:Float) -> Float {

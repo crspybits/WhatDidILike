@@ -12,6 +12,7 @@ BUGS
 FILTERS
     * Select some number of (a) place categories, or (b) place lists to filter by. E.g., I want only Chinese restaurants.
     
+    * Do I have a free text search for places for filtering?
     
 OTHER
     * Add item sorting order to UI in Settings. When there are many items within a place, need some way to manage them. Sorting by name seems the most obvious, but might also want sorting by last modification date. Need increasing/decreasing sort orders too.
@@ -67,7 +68,16 @@ IMPORT/EXPORT
 
     * Test restarting a backup after cancelling it midway through.
 
-    * I want a debug-build-only UI tool that enables a user to compare all data in a backup to places currently in Core Data. It would need to have a progress UI (Alert) that indicates it's progress. After doing a restore for a place-- which would need to bypass any UUID collision mechanisms, it would test the two places for equality.
+    * Test production data against backup using new UI comparison tool.
+    
+    * Once finished the "Restore Now", give a final Alert indicating how many places restored if it was successful.
+    
+    * For pre-UUID places, what happens on a restore? Do the places get assigned a UUID? How is a comparison carried out with those places?
+    
+    * DONE: I just did a restore from the WhatDidILike.beta iCloud folder. The restore seemed to work correctly, but I got an Alert! "Comparison failed: placeNotRemoved". The last log message in the console was: exportedPlace: Optional("Boulder Beer The Pub"); coreDataPlace: Optional("Boulder Beer The Pub") [compareAll() in PlaceExporter.swift, line 285]
+        --> It's interesting to note that this is a place with 2 locations.
+
+    * DONE: I want a debug-build-only UI tool that enables a user to compare all data in a backup to places currently in Core Data. It would need to have a progress UI (Alert) that indicates it's progress. After doing a restore for a place-- which would need to bypass any UUID collision mechanisms, it would test the two places for equality.
 
     * DONE: Currently on a Place UUID collision when creating a new place, I cause the code to fail. I don't have to do this. I could keep attempting generating new UUIDs until I get a distinct one.
     

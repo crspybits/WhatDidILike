@@ -32,6 +32,8 @@ class SyncSettingsCell: UITableViewCell {
         Layout.format(textBox: textView)
         separator.backgroundColor = .separatorBackground
         setFolderTextInUI(Parameters.displayBackupFolder.stringValue)
+        
+        Log.msg("Parameters.displayBackupFolder.stringValue: \(Parameters.displayBackupFolder.stringValue)")
 
         syncICloudIfNeeded(showAlert: false)
     }
@@ -52,7 +54,7 @@ class SyncSettingsCell: UITableViewCell {
                 if showAlert {
                     let message = "If there are files that need downloading from the cloud -- downloading may take a while after you do this. e.g., don't do a Restore yet."
                     DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "Sync Successful!", message: message, preferredStyle: .alert)
+                        let alert = UIAlertController(title: "Sync Started!", message: message, preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
                         self.parentVC?.present(alert, animated: true, completion: nil)
                     }

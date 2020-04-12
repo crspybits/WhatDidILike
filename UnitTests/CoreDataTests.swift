@@ -441,4 +441,26 @@ class CoreDataTests: XCTestCase {
         }
         try t4()
     }
+    
+    func testThatRemovingBothLocationsForAPlaceAlsoRemovesPlace() throws {
+        let place = try Place.newObject()
+        let location1 = try Location.newObject()
+        let location2 = try Location.newObject()
+        place.addToLocations(location1)
+        place.addToLocations(location2)
+
+        guard var locations = place.locations as? Set<Location>,
+            locations.count == 2 else {
+            XCTFail()
+            return
+        }
+            
+        var uuidOfPlaceRemoved: String?
+        while locations.count > 0 {
+            let location = locations.removeFirst()
+            location.remove(uuidOfPlaceRemoved: &uuidOfPlaceRemoved, removeImages: false)
+        }
+        
+        XCTAssert(uuidOfPlaceRemoved != nil)
+    }
 }
