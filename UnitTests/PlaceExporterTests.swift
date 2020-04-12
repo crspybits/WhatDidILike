@@ -43,8 +43,8 @@ class PlaceExporterTests: XCTestCase {
     }
     
     @discardableResult
-    func exportWithNoImages() throws -> (Place, URL, PlaceExporter)? {
-        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL)
+    func exportWithNoImages(initializeREADME:Bool = true) throws -> (Place, URL, PlaceExporter)? {
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL, initializeREADME: initializeREADME)
         
         let place = try Place.newObject()
         place.name = "My Favorite Restaurant"
@@ -456,9 +456,12 @@ class PlaceExporterTests: XCTestCase {
     }
     
     func testReExportAfterChangingPlaceNameShouldNotCreateAnotherExportDirectory() throws {
+        removePlaces()
+        
         let exportDirectoryURLs0 = try FileManager.default.contentsOfDirectory(atPath: Self.exportURL.path)
 
-        guard let (place, _, placeExporter) = try exportWithNoImages(),
+        // Don't initialize README because I don't want to count that in the directory contents.
+        guard let (place, _, placeExporter) = try exportWithNoImages(initializeREADME: false),
             let placeName = place.name else {
             XCTFail()
             return
@@ -486,5 +489,172 @@ class PlaceExporterTests: XCTestCase {
         // This is: Despite the fact that the place name was changed, and the export place folder can't be reconstituted directly.
         
         XCTAssert(exportDirectoryURLs0.count + 1 == exportDirectoryURLs2.count)
+    }
+    
+    func testCompareAllWithNoPlacesInCoreData() throws {
+        removePlaces()
+        Parameters.backupFolderBookmark.dataValue = Data()
+        Parameters.displayBackupFolder.stringValue = ""
+        
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL, accessor: .none, initializeREADME: false)
+        let result = try placeExporter.compareAll()
+        XCTAssert(result.equal(.same))
+    }
+    
+    func testCompareAllWithNoPlacesInCoreDataButExportedPlaces() throws {
+        removePlaces()
+        Parameters.backupFolderBookmark.dataValue = Data()
+        Parameters.displayBackupFolder.stringValue = ""
+        
+        let place1 = try Place.newObject()
+        let place2 = try Place.newObject()
+
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL, accessor: .none, initializeREADME: false)
+        
+        for place in [place1, place2] {
+            try placeExporter.export(place: place)
+        }
+        
+        try placeExporter.updateAlreadyExported()
+        
+        place1.remove()
+        place2.remove()
+        
+        let result = try placeExporter.compareAll()
+        XCTAssert(result.equal(.same))
+    }
+    
+    func testCompareAllWithPlaceInCoreDataAndNoExport() throws {
+        removePlaces()
+        Parameters.backupFolderBookmark.dataValue = Data()
+        Parameters.displayBackupFolder.stringValue = ""
+        
+        let place = try Place.newObject()
+        
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL, accessor: .none, initializeREADME: false)
+        let result = try placeExporter.compareAll()
+        XCTAssert(result.equal(.different(.cannotFindPlaceInExport)))
+
+        place.remove()
+        XCTAssert(try Place.numberOfObjects() == 0)
+    }
+    
+    func testCompareAllWithPlacesInCoreDataThatAreNotInExport() throws {
+        removePlaces()
+        Parameters.backupFolderBookmark.dataValue = Data()
+        Parameters.displayBackupFolder.stringValue = ""
+        
+        let place1 = try Place.newObject()
+        let place2 = try Place.newObject()
+
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL, accessor: .none, initializeREADME: false)
+        
+        for place in [place1, place2] {
+            try placeExporter.export(place: place)
+        }
+        
+        try placeExporter.updateAlreadyExported()
+        
+        let place3 = try Place.newObject()
+        
+        // So, now 3 places in core data, but only two of those in export.
+                
+        let result = try placeExporter.compareAll()
+        XCTAssert(result.equal(.different(.notEnoughCoreDataPlaces)))
+
+        place1.remove()
+        place2.remove()
+        place3.remove()
+
+        XCTAssert(try Place.numberOfObjects() == 0)
+    }
+    
+    func testCompareAllWithOneCoreDataPlaceRemovedAfterExport() throws {
+        removePlaces()
+        Parameters.backupFolderBookmark.dataValue = Data()
+        Parameters.displayBackupFolder.stringValue = ""
+        
+        let place1 = try Place.newObject()
+        let place2 = try Place.newObject()
+
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL, accessor: .none, initializeREADME: false)
+        
+        for place in [place1, place2] {
+            try placeExporter.export(place: place)
+        }
+        
+        try placeExporter.updateAlreadyExported()
+                
+        place1.remove()
+        
+        // Now, one of the places removed-- but the backup should still be sufficient.
+                
+        let result = try placeExporter.compareAll()
+        XCTAssert(result.equal(.same))
+
+        place2.remove()
+
+        XCTAssert(try Place.numberOfObjects() == 0)
+    }
+    
+    func testCompareAllWithChangedPlaceInCoreDataRelativeToExport() throws {
+        removePlaces()
+        Parameters.backupFolderBookmark.dataValue = Data()
+        Parameters.displayBackupFolder.stringValue = ""
+        
+        let place1 = try Place.newObject()
+        let place2 = try Place.newObject()
+
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL, accessor: .none, initializeREADME: false)
+        
+        for place in [place1, place2] {
+            try placeExporter.export(place: place)
+        }
+        
+        try placeExporter.updateAlreadyExported()
+        
+        place1.addToItems(try Item.newObject())
+        
+        // Now, one of the places in core data don't match those in export.
+                
+        do {
+            let result = try placeExporter.compareAll()
+            XCTAssert(result.equal(.different(.placesNotEqual)))
+        } catch let error {
+            XCTFail("\(error)")
+        }
+        
+        place1.remove()
+        place2.remove()
+
+        XCTAssert(try Place.numberOfObjects() == 0)
+    }
+    
+    func testCompareAllWithSameCoreDataAsExport() throws {
+        removePlaces()
+        Parameters.backupFolderBookmark.dataValue = Data()
+        Parameters.displayBackupFolder.stringValue = ""
+        
+        let place1 = try Place.newObject()
+        place1.addToItems(try Item.newObject())
+
+        let place2 = try Place.newObject()
+        place2.name = "Foobly"
+
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL, accessor: .none, initializeREADME: false)
+        
+        for place in [place1, place2] {
+            try placeExporter.export(place: place)
+        }
+        
+        try placeExporter.updateAlreadyExported()
+                        
+        let result = try placeExporter.compareAll()
+        XCTAssert(result.equal(.same))
+        
+        place1.remove()
+        place2.remove()
+
+        XCTAssert(try Place.numberOfObjects() == 0)
     }
 }

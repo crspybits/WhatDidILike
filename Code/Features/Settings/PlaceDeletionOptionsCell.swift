@@ -23,7 +23,7 @@ class PlaceDeletionOptionsCell: UITableViewCell {
     }
 }
 
-extension PlaceDeletionOptionsCell: SyncSettingsCellDelegate {
+extension PlaceDeletionOptionsCell: SettingsCellDelegate {
     func backupFolder(isAvailable: Bool) {
         yesNo.isEnabled = (try? Parameters.securityScopedExportFolder()) != nil
     }

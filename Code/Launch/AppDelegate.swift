@@ -61,11 +61,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             try ConvertFromV2.doIt()
         } catch let error {
-            Log.msg("Failed converting from V2")
+            Log.msg("Failed converting from V2: \(error)")
         }
         
+        // This is perhaps not the best way to do this, but I'm too far down the current path to change. And some of my XCTests are failing if I don't bypass the UI during testing.
+#if DEBUG
+        if isTesting {
+            self.window?.rootViewController = UIViewController()
+        }
+#endif
         return true
     }
+    
+    // From https://stackoverflow.com/questions/24688512/what-is-the-proper-way-to-detect-if-unit-tests-are-running-at-runtime-in-xcode
+    let isTesting = { () -> Bool in
+        if let _ = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] {
+            return true
+        } else if let testingEnv = ProcessInfo.processInfo.environment["DYLD_INSERT_LIBRARIES"] {
+            return testingEnv.contains("libXCTTargetBootstrapInject.dylib")
+        } else {
+            return false
+        }
+    }()
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

@@ -15,6 +15,7 @@ Version 2.2
 		- Added collision detection for Place UUID's.
 		- Added UUID's to Image Core Data objects, for forming file names.
 		- Added UUID collision detection for image files.
+		- Added integration test: Comparing core data places against exported places.
 	* Fixed bug: When typing into the Place Name field, after each character is typed, the cursor moves to the end of the field. It ought not to.
 	
 Version 2.1 (3/17/20)

@@ -107,6 +107,8 @@
 		83A597C61F67A24100736DE2 /* ListManager.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A597C41F67A24100736DE2 /* ListManager.xib */; };
 		83A6D56F2434D8D6000F9727 /* UUIDCollisionAvoidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6D56E2434D8D6000F9727 /* UUIDCollisionAvoidance.swift */; };
 		83A6D5712434DBCC000F9727 /* UUIDCollisionAvoidanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6D5702434DBCC000F9727 /* UUIDCollisionAvoidanceTests.swift */; };
+		83A6D57A243EBF32000F9727 /* CompareBackupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6D578243EBF32000F9727 /* CompareBackupCell.swift */; };
+		83A6D57B243EBF32000F9727 /* CompareBackupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A6D579243EBF32000F9727 /* CompareBackupCell.xib */; };
 		83B496BD1F4BD0830083610D /* Identifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496BC1F4BCFB50083610D /* Identifiers.swift */; };
 		83B496C11F4BDE300083610D /* CoreDataExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496C01F4BDE300083610D /* CoreDataExtras.swift */; };
 		83B496C51F4BE0F40083610D /* Place+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */; };
@@ -253,6 +255,8 @@
 		83A597C41F67A24100736DE2 /* ListManager.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListManager.xib; sourceTree = "<group>"; };
 		83A6D56E2434D8D6000F9727 /* UUIDCollisionAvoidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDCollisionAvoidance.swift; sourceTree = "<group>"; };
 		83A6D5702434DBCC000F9727 /* UUIDCollisionAvoidanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDCollisionAvoidanceTests.swift; sourceTree = "<group>"; };
+		83A6D578243EBF32000F9727 /* CompareBackupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareBackupCell.swift; sourceTree = "<group>"; };
+		83A6D579243EBF32000F9727 /* CompareBackupCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CompareBackupCell.xib; sourceTree = "<group>"; };
 		83B496BC1F4BCFB50083610D /* Identifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiers.swift; sourceTree = "<group>"; };
 		83B496C01F4BDE300083610D /* CoreDataExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataExtras.swift; sourceTree = "<group>"; };
 		83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -429,6 +433,8 @@
 				839FC10C2425CD1D001822D2 /* SyncSettingsCell.xib */,
 				839FC127242D7CFD001822D2 /* PlaceDeletionOptionsCell.swift */,
 				839FC128242D7CFD001822D2 /* PlaceDeletionOptionsCell.xib */,
+				83A6D578243EBF32000F9727 /* CompareBackupCell.swift */,
+				83A6D579243EBF32000F9727 /* CompareBackupCell.xib */,
 				839FC112242660FE001822D2 /* BackupWithAlert.swift */,
 				839FC11924285CC8001822D2 /* RestoreWithAlert.swift */,
 			);
@@ -720,6 +726,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8385206B1F8B2A77001D97D3 /* ImagesView.xib in Resources */,
+				83A6D57B243EBF32000F9727 /* CompareBackupCell.xib in Resources */,
 				83946812205CB70D0009C318 /* SortControl.xib in Resources */,
 				839FC1082425C8DB001822D2 /* Settings.storyboard in Resources */,
 				837E12611F8F2C4C00D8E4E1 /* CommentPromptVC.xib in Resources */,
@@ -880,6 +887,7 @@
 				836F7862241B14E30006D7CA /* Checkin.swift in Sources */,
 				8396CE391F4BCB8A00660D73 /* Item+CoreDataProperties.swift in Sources */,
 				837788EA1F6607020014B8A2 /* UIViewController+Scrolling.swift in Sources */,
+				83A6D57A243EBF32000F9727 /* CompareBackupCell.swift in Sources */,
 				83A2D5E51F5CE1160003C5F9 /* PlaceNameView.swift in Sources */,
 				83EE7DCD1F5D118700628CA8 /* ItemNameView.swift in Sources */,
 				8327AEB61F95BE3500E170A2 /* Rating+CoreDataProperties.swift in Sources */,
@@ -1157,10 +1165,15 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = BH68R29JBE;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
 				INFOPLIST_FILE = UnitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = biz.SpasticMuffin.WhatDidILikeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WhatDidILike.app/WhatDidILike";

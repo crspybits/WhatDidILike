@@ -88,9 +88,11 @@ extension Place {
         Two types of uuid collision can occur as a result of this call:
         1) The creationDate of the colliding uuid in the imported place differs from the creationDate in the core data Place it is colliding with. In this case a new necessarily different ("real") UUID is allocated. Really, this is the (albeit) unlikely event that when creating the new Place object, a real UUID collision occurred. Saves the place returned before returning.
         2) The creationDates are the same. In this case, nil is returned and no Place managed object is created.
+        
+        `testing`-- If you set this to true (for debug builds only), then (a) no place UUID conflict resolution is done, and (b) images from export are not copied into app.
     */
     @discardableResult
-    static func `import`(from placeExportDirectory: URL, in parentDirectory: URL, accessor:URL.Accessor = .none) throws -> Place? {
+    static func `import`(from placeExportDirectory: URL, in parentDirectory: URL, accessor:URL.Accessor = .none, testing: Bool = false) throws -> Place? {
         let jsonFileName = URL(fileURLWithPath: placeExportDirectory.path + "/" + placeJSON)
         var place:Place!
         
@@ -104,32 +106,37 @@ extension Place {
                 throw ImportExportError.noUUIDInPlaceJSON
             }
 
-            let havePlaceUuidCollision: Bool
-            switch try Place.alreadyExists(uuid: importUUID) {
-            case .exists:
-                // This is not the type of collision being reported by Place. Something is seriously wrong!
-                throw ImportExportError.wrongInternalCollisionResult
-                
-            case .existsWithObject(let collidingPlace):
-                if collidingPlace.creationDate == importPlacePeek.creationDate {
-                    // The place we are importing has the same creation date as the UUID collision. I'm taking this to mean: The place we are importing is really the same place, and we're not just having a UUID collision.
-                    // It seems important to emphasize that this isn't really a UUID collision. It's more of a possible conflict where we might want to try to integrate changes from a backup (if, say, it's stored in iCloud) with local changes. For now, not going to worry about this.
-                    Log.msg("Import attempt of place with same UUID and same creationDate: Skipping")
-                    return // to get out of `parentDirectory.accessor`
+            var havePlaceUuidCollision = false
+            
+            if !testing {
+                switch try Place.alreadyExists(uuid: importUUID) {
+                case .exists:
+                    // This is not the type of collision being reported by Place. Something is seriously wrong!
+                    throw ImportExportError.wrongInternalCollisionResult
+                    
+                case .existsWithObject(let collidingPlace):
+                    if collidingPlace.creationDate == importPlacePeek.creationDate {
+                        // The place we are importing has the same creation date as the UUID collision. I'm taking this to mean: The place we are importing is really the same place, and we're not just having a UUID collision.
+                        // It seems important to emphasize that this isn't really a UUID collision. It's more of a possible conflict where we might want to try to integrate changes from a backup (if, say, it's stored in iCloud) with local changes. For now, not going to worry about this.
+                        Log.msg("Import attempt of place with same UUID and same creationDate: Skipping")
+                        return // to get out of `parentDirectory.accessor`
+                    }
+                    else {
+                        // The place we are importing has a different creation date than the UUID collision. Presumably, this is the rare real collision-- where places are being imported into a set of meaningfully different other places.
+                        havePlaceUuidCollision = true
+                    }
+                case .doesNotExist:
+                    havePlaceUuidCollision = false
                 }
-                else {
-                    // The place we are importing has a different creation date than the UUID collision. Presumably, this is the rare real collision-- where places are being imported into a set of meaningfully different other places.
-                    havePlaceUuidCollision = true
-                }
-            case .doesNotExist:
-                havePlaceUuidCollision = false
             }
             
             let decoder = JSONDecoder()
             place = try decoder.decode(Place.self, from: jsonData)
             
-            // TODO: Need collision avoidance on UUID's for images.
-
+            if testing {
+                return // to get out of `parentDirectory.accessor`
+            }
+            
             /* So, if we get a UUID collision across existing Place uuid's and exported Place uuid's, we previously always caused the import to stop. Now, instead doing the following:
                 1) Generate a new (distinct) UUID for this imported Place.
                 2) Rely on some other method/process to clean up later. E.g., garbage collection to remove the now duplicated place in the export folders.
@@ -138,6 +145,8 @@ extension Place {
             if havePlaceUuidCollision {
                 place.uuid = try Place.realUUID()
             }
+            
+            // Copy images from export into app.
             
             for image in place.largeImages {
                 // Use existing names or do we have a UUID collision? Since we've already dealt with Place UUID collisions we know we're importing a new Place.
@@ -174,6 +183,7 @@ extension Place {
                 do {
                     try FileManager.default.copyItem(at: exportedImageURL, to: appImageURL)
                 } catch let error {
+                    // TODO: `locations` will not have been removed as part of this removal/error handling.
                     CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
                     throw ImportExportError.errorCopyingFile(error)
                 }

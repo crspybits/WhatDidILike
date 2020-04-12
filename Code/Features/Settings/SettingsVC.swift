@@ -19,8 +19,9 @@ private struct CellDescription {
 
 class SettingsVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
-    weak var syncCellDelegate: SyncSettingsCellDelegate!
-
+    var compareCell: CompareBackupCell?
+    var deletionOptionsCell: PlaceDeletionOptionsCell?
+    
     private let syncCell = CellDescription(cellName: "SyncSettingsCell") { id, indexPath, settingsVC in
 
         guard let cell = settingsVC.tableView.dequeueReusableCell(withIdentifier: id, for: indexPath) as? SyncSettingsCell else {
@@ -39,17 +40,35 @@ class SettingsVC: UIViewController {
             return nil
         }
         
-        settingsVC.syncCellDelegate = cell
-        
+        settingsVC.deletionOptionsCell = cell
+                
+        return cell
+    }
+    
+    private let compareBackupCell = CellDescription(cellName: "CompareBackupCell") { id, indexPath, settingsVC in
+
+        guard let cell = settingsVC.tableView.dequeueReusableCell(withIdentifier: id, for: indexPath) as? CompareBackupCell else {
+            return nil
+        }
+
+        cell.parentVC = settingsVC
+        settingsVC.compareCell = cell
+
         return cell
     }
     
     // Map from row number to description.
     private var cellDescriptions: [Int: CellDescription] {
-        return [
+        var result = [
             0: syncCell,
-            1: placeDeletionCell
+            1: placeDeletionCell,
         ]
+        
+        #if DEBUG
+            result[2] = compareBackupCell
+        #endif
+        
+        return result
     }
 
     override func viewDidLoad() {
@@ -90,8 +109,9 @@ extension SettingsVC: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension SettingsVC: SyncSettingsCellDelegate {
+extension SettingsVC: SettingsCellDelegate {
     func backupFolder(isAvailable: Bool) {
-        syncCellDelegate?.backupFolder(isAvailable: isAvailable)
+        deletionOptionsCell?.backupFolder(isAvailable: isAvailable)
+        compareCell?.backupFolder(isAvailable: isAvailable)
     }
 }

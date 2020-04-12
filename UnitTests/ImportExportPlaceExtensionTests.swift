@@ -22,13 +22,18 @@ extension XCTestCase {
         
         Self.exportURL = url
         
-        if !FileManager.default.fileExists(atPath: url.path) {
-            do {
-                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
-            } catch {
-                XCTFail()
+        do {
+            if FileManager.default.fileExists(atPath: url.path) {
+                try FileManager.default.removeItem(at: url)
             }
+            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
+        } catch {
+            XCTFail()
         }
+    }
+    
+    func setupLargeImagesFolder() {
+        try? FileManager.default.createDirectory(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY), withIntermediateDirectories: false, attributes: nil)
     }
 }
 

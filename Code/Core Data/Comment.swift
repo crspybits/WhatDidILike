@@ -71,10 +71,12 @@ public class Comment: BaseObject, ImagesManagedObject, Codable, EquatableObjects
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func remove() {
-        for imageObj in images! {
-            let image = imageObj as! Image
-            image.remove()
+    func remove(removeImages: Bool = true) {
+        if removeImages {
+            for imageObj in images! {
+                let image = imageObj as! Image
+                image.remove()
+            }
         }
         
         rating!.remove()

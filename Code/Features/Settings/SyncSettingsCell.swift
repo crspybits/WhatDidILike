@@ -10,13 +10,12 @@ import UIKit
 import SMCoreLib
 import CoreServices
 
-protocol SyncSettingsCellDelegate: AnyObject {
+protocol SettingsCellDelegate: AnyObject {
     func backupFolder(isAvailable: Bool)
 }
 
 class SyncSettingsCell: UITableViewCell {
-    weak var delegate: SyncSettingsCellDelegate!
-    
+    weak var delegate: SettingsCellDelegate?
     @IBOutlet weak var sync: UIButton!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var backupNow: UIButton!
@@ -38,7 +37,7 @@ class SyncSettingsCell: UITableViewCell {
     }
     
     private func syncICloudIfNeeded(showAlert: Bool) {
-        guard let exportFolder = self.getExportFolder() else {
+        guard let exportFolder = Parameters.getExportFolder(parentVC: parentVC) else {
             return
         }
     
@@ -89,27 +88,9 @@ class SyncSettingsCell: UITableViewCell {
         parentVC?.present(documentPicker, animated: true, completion: nil)
     }
     
-    private func getExportFolder() -> URL? {
-        guard Parameters.displayBackupFolder.stringValue != "" else {
-            return nil
-        }
-        
-        let exportFolder: URL
-        do {
-            exportFolder = try Parameters.securityScopedExportFolder()
-        } catch {
-            let alert = UIAlertController(title: "Alert!", message: "Could not securely access the backup folder.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            parentVC?.present(alert, animated: true, completion: nil)
-            return nil
-        }
-        
-        return exportFolder
-    }
-    
     @IBAction func backupNowAction(_ sender: Any) {
         guard let parentVC = parentVC,
-            let exportFolder = getExportFolder() else {
+            let exportFolder = Parameters.getExportFolder(parentVC: parentVC) else {
             return
         }
 
@@ -134,7 +115,7 @@ class SyncSettingsCell: UITableViewCell {
     
     private func setFolderTextInUI(_ text: String) {
         var iCloudFolder = false
-        if let exportFolder = getExportFolder(),
+        if let exportFolder = Parameters.getExportFolder(parentVC: parentVC),
             let iCloud = try? exportFolder.inICloud() {
             iCloudFolder = iCloud
         }
@@ -148,7 +129,7 @@ class SyncSettingsCell: UITableViewCell {
     
     @IBAction func restoreAction(_ sender: Any) {
         guard let parentVC = parentVC,
-            let exportFolder = getExportFolder() else {
+            let exportFolder = Parameters.getExportFolder(parentVC: parentVC) else {
             return
         }
         

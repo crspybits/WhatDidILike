@@ -204,4 +204,22 @@ class Parameters {
     static func securityScopedExportFolder() throws -> URL {
         return try URL.securityScopedResourceFromBookmark(data: Parameters.backupFolderBookmark.dataValue)
     }
+    
+    static func getExportFolder(parentVC: UIViewController!) -> URL? {
+        guard Parameters.displayBackupFolder.stringValue != "" else {
+            return nil
+        }
+        
+        let exportFolder: URL
+        do {
+            exportFolder = try Parameters.securityScopedExportFolder()
+        } catch {
+            let alert = UIAlertController(title: "Alert!", message: "Could not securely access the backup folder.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            parentVC?.present(alert, animated: true, completion: nil)
+            return nil
+        }
+        
+        return exportFolder
+    }
 }

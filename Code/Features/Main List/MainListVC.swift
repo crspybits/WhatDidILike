@@ -12,6 +12,11 @@ import M13ProgressSuite
 import Presentr
 
 class MainListVC: UIViewController {
+#if DEBUG
+    static let resetPlaceDataSourceNotification = "ResetPlaceDataSourceNotification"
+    static let createPlaceDataSourceNotification = "CreatePlaceDataSourceNotification"
+#endif
+
     private static let converted = SMPersistItemBool(name: "MainListVC.converted", initialBoolValue: false, persistType: .userDefaults)
     
     @IBOutlet weak var tableView: UITableView!
@@ -30,6 +35,18 @@ class MainListVC: UIViewController {
         setupBarButtonItems()
         
         tableView.register(PlaceVCCell.self, forCellReuseIdentifier: cellReuseId)
+        
+#if DEBUG
+        // Workaround for issue in an integration test.
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: Self.resetPlaceDataSourceNotification), object: nil, queue: nil) { _ in
+            self.coreDataSource = nil
+        }
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: Self.createPlaceDataSourceNotification), object: nil, queue: nil) { _ in
+            self.coreDataSource = CoreDataSource(delegate: self)
+        }
+#endif
     }
     
     private func setupBarButtonItems() {

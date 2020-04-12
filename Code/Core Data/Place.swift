@@ -11,7 +11,11 @@ import CoreData
 import SMCoreLib
 
 @objc(Place)
-public class Place: BaseObject, Codable, EquatableObjects, UUIDCollisionAvoidance {    
+public class Place: BaseObject, Codable, EquatableObjects, UUIDCollisionAvoidance {
+    enum PlaceError : Error {
+        case cannotCountPlaces(Error)
+    }
+    
     static let UUID_KEY = "uuid"
     static let lastExportField = "lastExport"
 
@@ -33,6 +37,18 @@ public class Place: BaseObject, Codable, EquatableObjects, UUIDCollisionAvoidanc
         let uuid: String = try realUUID()
         let result = try super.newObject() as! Place
         result.uuid = uuid
+        return result
+    }
+    
+    class func numberOfObjects() throws -> UInt {
+        var error: NSError?
+        let result = CoreData.sessionNamed(CoreDataExtras.sessionName)
+            .countOfObjects(withEntityName: entityName(), andError: &error)
+        
+        if let error = error {
+            throw PlaceError.cannotCountPlaces(error)
+        }
+            
         return result
     }
     
@@ -81,10 +97,11 @@ public class Place: BaseObject, Codable, EquatableObjects, UUIDCollisionAvoidanc
     }
     
     // Assumes deletion of any needed location has already occurred.
-    func remove() {
+    // The `removeImages` is provided for testing.
+    func remove(removeImages: Bool = true) {
         for itemObj in items! {
             let item = itemObj as! Item
-            item.remove()
+            item.remove(removeImages: removeImages)
         }
         
         // Not going remove a category even if there are no places referencing it any more. The user can manually delete it if they want to.

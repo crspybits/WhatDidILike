@@ -3,8 +3,12 @@ WhatDidILike
 BUGS
     * On iOS 10.3.1, iPhone 7, when the sort/filter modal is presented it is too high-- too near the status bar.
     
+    * On a failed place import, locations need to be removed too. See Place import:
+    // TODO: `locations` will not have been removed as part of this removal/error handling.
+    
     * DONE: When typing into the Place Name field, after each character is typed, the cursor moves to the end of the field. It ought not to.
     
+
 FILTERS
     * Select some number of (a) place categories, or (b) place lists to filter by. E.g., I want only Chinese restaurants.
     
@@ -15,23 +19,14 @@ OTHER
     * We need to sort the lists of a place before presenting. So that the order is consistent.
     
     * We should sort the locations of a place before presenting-- in some, say, user defined order. This is needed because otherwise with table views we run into problems with unordered sets.
+    
+    * Place merging: Suppose someone has Place representing Restaurant1 with some data, and then creates another place not seeing Restaurant1 in their data. So now they have two places, both representing Restaurant1. It would be nice to have a merge tool to combine both of these into one.
+    
+    * Similar to place merging, it would be nice to have some mechanism when creating a place asking the user if the place they are creating is a duplicate. Could do this by: 1) comparing names of places-- after they finish entering the new place name, and/or by 2) the latitude/longitude of locations.
 
 
 IMPORT/EXPORT
-    * Need collision avoidance on UUID's for images.
-        Now using uuid's to form image file names -- to avoid naming conflicts on a restore
-    
-    * Currently on a Place UUID collision when creating a new place, I cause the code to fail. I don't have to do this. I could keep attempting generating new UUIDs until I get a distinct one.
-    
-    * What is happening currently with an export when I run across a UUID that is in the export folder, but that is not in Core Data? (Note that this can currently occur because of the "Remove backup place when place removed?" setting, and could also occur due to UUID collision issues.). Does the export fail?
-    
-    * What about "export garbage collection"? 1) Get a list of all folders in the export directory and their corresponding Place UUID's. 2) Do an export, keeping track of the UUID's of the Places thus exported. 3) Garbage collection then consists of a) determining the places from 1) that were not overwritten, and b) removing those from the export folder.
-        The purpose of this garbage collection is to deal with the consequences of a UUID collision prevention technique. It would also have the effect (wanted or unwanted?) of removing Places from a backup that had not been removed before, but had been remmoved before from Core Data.
-    
-    * Test restarting a backup after cancelling it midway through.
-    
-    * If I release WhatDidILike without the capability to use iCloud Drive to sync data across devices I may need to at least alert users to the fact that this is not supported. e.g., to give some help text in Settings.
-    
+
     * Currently, my plan is to skip place restores when the place is already present in core data. However, I may want to give a minimal level of support to syncing data across devices, I should check the dates of (a) the Core Data place versus (b) the place in the iCloud backup. If the iCloud backup has a more recent change, a restore seems needed.
 
     * The sync message wording is vague. How can a user know if it's done?
@@ -62,7 +57,21 @@ IMPORT/EXPORT
     * Backgound (automatic) export: Looks like this is going to require an extensive overhaul of the way I'm dealing with Managed Object Context's for Core Data-- because a background thread requires its own MOC.
         HOWEVER: If this operation was done on the main thread, while the entire app is in the background, this could resolve the issue. I.e., I'd not have to overhaul the way I'm dealing with Core Data. I'd have to enable some kind of background task operation.
 
-    * When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory? Suppose the following occurs: (1) The app is removed and re-installed, (2) some places are created, and (3) a restore occurs. During (2), the images created will have new names assigned which are not necessarily different than those in the backup -- because the names are constructed to be different only from those in the largeImages directory. When a restore occurs in (3), if the names of images are the same as the new ones from (2), there will be a conflict.
+    * What about "export garbage collection"? 1) Get a list of all folders in the export directory and their corresponding Place UUID's. 2) Do an export, keeping track of the UUID's of the Places thus exported. 3) Garbage collection then consists of a) determining the places from 1) that were not overwritten, and b) removing those from the export folder.
+        The purpose of this garbage collection is to deal with the consequences of a UUID collision prevention technique. It would also have the effect (wanted or unwanted?) of removing Places from a backup that had not been removed before, but had been removed before from Core Data.
+        Could add to this Image file garbage collection. Making sure that the only image files within an exported place correspond to the one's in Core Data for the place. My current image file collision avoidance technique can result in duplicate image files in an export directory. e.g., in an place export directory there would be imageFile1 and imageFile2, both would be the same image, but only one would be referenced from the place.json file.
+
+    * What is happening currently with an export when I run across a UUID that is in the export folder, but that is not in Core Data? (Note that this can currently occur because of the "Remove backup place when place removed?" setting, and could also occur due to UUID collision issues.). Does the export fail?
+
+    * If I release WhatDidILike without the capability to use iCloud Drive to sync data across devices I need to at least alert users to the fact that this is not supported. e.g., to give some help text in Settings.
+
+    * Test restarting a backup after cancelling it midway through.
+
+    * I want a debug-build-only UI tool that enables a user to compare all data in a backup to places currently in Core Data. It would need to have a progress UI (Alert) that indicates it's progress. After doing a restore for a place-- which would need to bypass any UUID collision mechanisms, it would test the two places for equality.
+
+    * DONE: Currently on a Place UUID collision when creating a new place, I cause the code to fail. I don't have to do this. I could keep attempting generating new UUIDs until I get a distinct one.
+    
+    * DONE: When a place is imported, do I need to be concerned with image name conflicts? I.e., that a name for an image already exists in the large images directory? Suppose the following occurs: (1) The app is removed and re-installed, (2) some places are created, and (3) a restore occurs. During (2), the images created will have new names assigned which are not necessarily different than those in the backup -- because the names are constructed to be different only from those in the largeImages directory. When a restore occurs in (3), if the names of images are the same as the new ones from (2), there will be a conflict.
     
         One way to handle the problem above would be to change the structure of the image folders from the simple largeImages folder to using sub-folders, similar to what I'm doing for the backup now. (This seems easier than having to do some kind of migration conversion).
         I'd need to then handle two different folder structure structure's for images as stored local to the app. I could handle this via a flag in the Place managed object. Any newly imported place could have its images stored local to the app in this manner, thus avoiding the name conflict issue.
@@ -70,8 +79,11 @@ IMPORT/EXPORT
                 WhatDidILike.qQ18P.jpg
             we'd have names like:
                 WhatDidILike.EA698671-D62D-46BA-94A1-C40C3DCFC7E1.jpg
-                
-    * iOS uses RFC 4122 v4 UUID's-- these are purely random numbers. So, there is some small chance of having a collision. This applies to both the Place UUID's I have and the image UUID's, in terms of the backup/restore process. This is for the same reasoning as used above: (1) The app is installed, used, and a backup is made. (2) The app is removed and re-installed, (3) some new places are created, and (4) a restore occurs. During (3), the images and/or places created will have id's/names assigned based on UUID's. There is a non-zero chance of a collision with UUID's that are in the backup from (1). When a restore occurs in (4), if the names of images/id's for places are the same as the new ones from (1), there will be a conflict. While this is not a high-risk (e.g., medical) application it would be good if there was some simple code for resolving conflicts.
+    
+    * DONE: iOS uses RFC 4122 v4 UUID's-- these are purely random numbers. So, there is some small chance of having a collision. This applies to both the Place UUID's I have and the image UUID's, in terms of the backup/restore process. This is for the same reasoning as used above: (1) The app is installed, used, and a backup is made. (2) The app is removed and re-installed, (3) some new places are created, and (4) a restore occurs. During (3), the images and/or places created will have id's/names assigned based on UUID's. There is a non-zero chance of a collision with UUID's that are in the backup from (1). When a restore occurs in (4), if the names of images/id's for places are the same as the new ones from (1), there will be a conflict. While this is not a high-risk (e.g., medical) application it would be good if there was some simple code for resolving conflicts.
+    
+    * DONE: Need collision avoidance on UUID's for images.
+        Now using uuid's to form image file names -- to avoid naming conflicts on a restore
 
     * [Cannot reproduce] I just did a "simple" import: Imported a test of a single exported place. The import worked, but afterwards on the Setting screen, it says "1 of 1 place needs backup". No places should need exporting immed. after an import.
 

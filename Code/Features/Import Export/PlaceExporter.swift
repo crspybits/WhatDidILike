@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SMCoreLib
 
 class PlaceExporter {
     let parentDirectory: URL
@@ -62,7 +63,7 @@ class PlaceExporter {
     }
     
     struct ExportedPlace {
-        // The full URL of the place in the exported directory, e.g., iCloud
+        // The full URL of the place in the exported file directory, e.g., iCloud
         // The form of the last component will have been formatted the first time the place is exported, and will remain the same even if the user changes the place name in WhatDidILike.
         let location: URL
         
@@ -193,6 +194,133 @@ class PlaceExporter {
         
         return alreadyExported.location
     }
+    
+    enum DifferentResult {
+        case notEnoughCoreDataPlaces
+        case cannotFindPlaceInExport
+        case placesNotEqual
+    }
+    
+    enum ComparisonResult {
+        // Returned when there are some places in Core Data and in the export, and they are the same, and when there are no places in Core Data.
+        case same
+        
+        case different(DifferentResult)
+        
+        func equal(_ other: ComparisonResult) -> Bool {
+            switch self {
+            case .same:
+                switch other {
+                case .same:
+                    return true
+                case .different:
+                    return false
+                }
+            case .different(let diff1):
+                switch self {
+                case .same:
+                    return false
+                case .different(let diff2):
+                    return diff1 == diff2
+                }
+            }
+        }
+    }
+    
+    enum ComparisonError: Error {
+        case cannotGetPlaces
+        case cannotGetUUID
+        case moreThanOneInstanceOfUUIDInExport
+        case cannotLoadPlaceFromExport
+        case locationsWereNotCorrectType
+        case placeNotRemoved
+        case numberPlacesChanged(old: UInt, new: UInt)
+    }
+
+#if DEBUG
+    // Compare all places in Core Data against those in the current backup.
+    // The direction of the comparison is from core data to export directory -- so it doesn't matter if there are more exported places than core data places. Which could arise, say, if core data places were removed *after* an export.
+    func compareAll() throws -> ComparisonResult {
+        // These are the places in Core Data.
+        guard let coreDataPlaces = Place.fetchAllObjects() else {
+            throw ComparisonError.cannotGetPlaces
+        }
+        
+        if coreDataPlaces.count == 0 {
+            return .same
+        }
+        
+        // Enough places in the export to account for all the core data places?
+        guard coreDataPlaces.count >= alreadyExported.count else {
+            return .different(.notEnoughCoreDataPlaces)
+        }
+        
+        let startNumberPlaces = try Place.numberOfObjects()
+        
+        for coreDataPlace in coreDataPlaces {
+            guard let uuid = coreDataPlace.uuid else {
+                throw ComparisonError.cannotGetUUID
+            }
+            
+            // Need to see if that Place UUID exists in the export.
+            let filteredExports = alreadyExported.filter {$0.uuid == uuid}
+            if filteredExports.count == 0 {
+                return .different(.cannotFindPlaceInExport)
+            }
+            
+            guard filteredExports.count == 1 else {
+                throw ComparisonError.moreThanOneInstanceOfUUIDInExport
+            }
+            
+            let exportedPlaceDescription = filteredExports[0]
+            
+            // Then, need to reconstitute that exported place as a Core Data object.
+            // This will be a duplicate Core Data place if it exists. Will need to follow up with a `remove` in that case.
+            guard let exportedPlace = try Place.import(from: exportedPlaceDescription.location, in: parentDirectory, accessor: accessor, testing: true) else {
+                throw ComparisonError.cannotLoadPlaceFromExport
+            }
+
+            // Then compare the exported place and the Core Data place.
+            let placeInCoreAndExportAreEqual = Place.equal(exportedPlace, coreDataPlace)
+            Log.msg("exportedPlace: \(String(describing: exportedPlace.name)); coreDataPlace: \(String(describing: coreDataPlace.name))")
+            
+            if let locations = exportedPlace.locations, locations.count > 0 {
+                guard let locations = locations as? Set<Location> else {
+                    throw ComparisonError.locationsWereNotCorrectType
+                }
+                
+                var unused: String?
+                for location in locations {
+                    // Didn't restore images, so doesn't remove image files.
+                    location.remove(uuidOfPlaceRemoved: &unused, removeImages: false)
+                }
+                
+                // The last location removed should remove the place
+                guard let _ = unused else {
+                    throw ComparisonError.placeNotRemoved
+                }
+            }
+            else {
+                // Not a realistic case, but including for testing. Places always ought to have at least one location.
+                exportedPlace.remove(removeImages: false)
+            }
+            
+            CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+            
+            guard placeInCoreAndExportAreEqual else {
+                return .different(.placesNotEqual)
+            }
+        }
+        
+        let endNumberPlaces = try Place.numberOfObjects()
+
+        guard startNumberPlaces == endNumberPlaces else {
+            throw ComparisonError.numberPlacesChanged(old: startNumberPlaces, new: endNumberPlaces)
+        }
+        
+        return .same
+    }
+#endif
 }
 
 // Adapted from https://stackoverflow.com/questions/34388582/get-subdirectories-using-swift

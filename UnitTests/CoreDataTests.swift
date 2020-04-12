@@ -11,9 +11,8 @@ import XCTest
 import SMCoreLib
 
 class CoreDataTests: XCTestCase {
-
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        setupLargeImagesFolder()
     }
 
     override func tearDown() {
@@ -183,5 +182,263 @@ class CoreDataTests: XCTestCase {
         }
         
         XCTAssert(images.count == 2)
+    }
+    
+    func testCountNumberOfPlaces() throws {
+        removePlaces()
+        XCTAssert(try Place.numberOfObjects() == 0)
+        
+        _ = try Place.newObject()
+        XCTAssert(try Place.numberOfObjects() == 1)
+        removePlaces()
+    }
+    
+    // Test both parameter settings.
+    func testImageRemovalForPlace() throws {
+        removePlaces()
+        var uuid: String?
+        
+        // No image tests
+        let t1 = {
+            uuid = nil
+            let place = try Place.newObject()
+            let location = try Location.newObject()
+            place.addToLocations(location)
+            location.remove(uuidOfPlaceRemoved: &uuid)
+            XCTAssert(uuid != nil)
+        }
+        try t1()
+
+        let t2 = {
+            uuid = nil
+            let place = try Place.newObject()
+            let location = try Location.newObject()
+            place.addToLocations(location)
+            location.remove(uuidOfPlaceRemoved: &uuid, removeImages: false)
+            XCTAssert(uuid != nil)
+        }
+        try t2()
+        
+        // With image tests
+        
+        let t3 = {
+            uuid = nil
+            let place = try Place.newObject()
+            let location = try Location.newObject()
+            place.addToLocations(location)
+
+            guard let (image, filePath) = try self.makeExampleImage() else {
+                XCTFail()
+                return
+            }
+            
+            location.addToImages(image)
+            location.remove(uuidOfPlaceRemoved: &uuid)
+            
+            XCTAssert(!FileManager.default.fileExists(atPath: filePath.path))
+            XCTAssert(uuid != nil)
+        }
+        try t3()
+        
+        let t4 = {
+            uuid = nil
+            let place = try Place.newObject()
+            let location = try Location.newObject()
+            place.addToLocations(location)
+
+            guard let (image, filePath) = try self.makeExampleImage() else {
+                XCTFail()
+                return
+            }
+            
+            location.addToImages(image)
+            location.remove(uuidOfPlaceRemoved: &uuid, removeImages: false)
+            
+            XCTAssert(FileManager.default.fileExists(atPath: filePath.path))
+            XCTAssert(uuid != nil)
+        }
+        try t4()
+    }
+    
+    func testImageRemovalForComment() throws {
+        // No image tests
+        let comment1 = try Comment.newObject()
+        comment1.remove()
+            
+        let comment2 = try Comment.newObject()
+        comment2.remove(removeImages: false)
+        
+        // With image tests
+        
+        // First: Image deletion
+        let name = "example"
+        let ext = "jpeg"
+
+        let bundle = Bundle(for: Self.self)
+        guard let bundleImageURL = bundle.url(forResource: name, withExtension: ext) else {
+            XCTFail()
+            return
+        }
+        
+        let fileName = Image.createFileName(usingNewImageFileUUID: try Image.realUUID())
+        let filePath = URL(fileURLWithPath: Image.filePath(for: fileName))
+        try FileManager.default.copyItem(at: bundleImageURL, to: filePath)
+        XCTAssert(FileManager.default.fileExists(atPath: filePath.path))
+
+        let comment3 = try Comment.newObject()
+        
+        let image1 = Image.newObject()
+        image1.fileName = fileName
+        comment3.addToImages(image1)
+        // Should remove image too.
+        comment3.remove()
+        XCTAssert(!FileManager.default.fileExists(atPath: filePath.path))
+        
+        // Second: Without image deletion
+        let fileName2 = Image.createFileName(usingNewImageFileUUID: try Image.realUUID())
+        let filePath2 = URL(fileURLWithPath: Image.filePath(for: fileName2))
+        try FileManager.default.copyItem(at: bundleImageURL, to: filePath2)
+        XCTAssert(FileManager.default.fileExists(atPath: filePath2.path))
+
+        let comment4 = try Comment.newObject()
+        
+        let image2 = Image.newObject()
+        image2.fileName = fileName2
+        comment4.addToImages(image2)
+        // Should *not* remove image too.
+        comment4.remove(removeImages: false)
+        XCTAssert(FileManager.default.fileExists(atPath: filePath2.path))
+    }
+    
+    private func makeExampleImage() throws -> (Image, filePath: URL)? {
+        let name = "example"
+        let ext = "jpeg"
+
+        let bundle = Bundle(for: Self.self)
+        guard let bundleImageURL = bundle.url(forResource: name, withExtension: ext) else {
+            XCTFail()
+            return nil
+        }
+        
+        let fileName = Image.createFileName(usingNewImageFileUUID: try Image.realUUID())
+        let filePath = URL(fileURLWithPath: Image.filePath(for: fileName))
+        try FileManager.default.copyItem(at: bundleImageURL, to: filePath)
+        XCTAssert(FileManager.default.fileExists(atPath: filePath.path))
+        
+        let image = Image.newObject()
+        image.fileName = fileName
+        
+        return (image, filePath)
+    }
+    
+    func testImageRemovalForItem() throws {
+        // No image tests
+        let t1 = {
+            let item = try Item.newObject()
+            let comment = try Comment.newObject()
+            item.addToComments(comment)
+            item.remove()
+        }
+        try t1()
+        
+        let t2 = {
+            let item = try Item.newObject()
+            let comment = try Comment.newObject()
+            item.addToComments(comment)
+            item.remove(removeImages: false)
+        }
+        try t2()
+        
+        // With image tests
+        
+        // First, with image deletion
+        let t3 = {
+            let item = try Item.newObject()
+
+            guard let (image, filePath) = try self.makeExampleImage() else {
+                XCTFail()
+                return
+            }
+
+            let comment = try Comment.newObject()
+            item.addToComments(comment)
+            comment.addToImages(image)
+            
+            // Should remove image too.
+            item.remove()
+            
+            XCTAssert(!FileManager.default.fileExists(atPath: filePath.path))
+        }
+        try t3()
+        
+        // Second, with image deletion
+        let t4 = {
+            let item = try Item.newObject()
+
+            guard let (image, filePath) = try self.makeExampleImage() else {
+                XCTFail()
+                return
+            }
+            
+            let comment = try Comment.newObject()
+            item.addToComments(comment)
+            comment.addToImages(image)
+            
+            // Should *not* remove image too.
+            item.remove(removeImages: false)
+            
+            XCTAssert(FileManager.default.fileExists(atPath: filePath.path))
+        }
+        try t4()
+    }
+    
+    func testImageRemovalForLocation() throws {
+        removePlaces()
+        var uuid: String?
+        
+        // No image tests
+        let t1 = {
+            let location = try Location.newObject()
+            location.remove(uuidOfPlaceRemoved: &uuid)
+        }
+        try t1()
+         
+        let t2 = {
+            let location = try Location.newObject()
+            location.remove(uuidOfPlaceRemoved: &uuid, removeImages: false)
+        }
+        try t2()
+        
+        // With image tests
+        
+        let t3 = {
+            let location = try Location.newObject()
+
+            guard let (image, filePath) = try self.makeExampleImage() else {
+                XCTFail()
+                return
+            }
+            
+            location.addToImages(image)
+            location.remove(uuidOfPlaceRemoved: &uuid)
+            
+            XCTAssert(!FileManager.default.fileExists(atPath: filePath.path))
+        }
+        try t3()
+        
+        let t4 = {
+            let location = try Location.newObject()
+
+            guard let (image, filePath) = try self.makeExampleImage() else {
+                XCTFail()
+                return
+            }
+            
+            location.addToImages(image)
+            location.remove(uuidOfPlaceRemoved: &uuid, removeImages: false)
+            
+            XCTAssert(FileManager.default.fileExists(atPath: filePath.path))
+        }
+        try t4()
     }
 }

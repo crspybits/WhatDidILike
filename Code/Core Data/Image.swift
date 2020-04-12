@@ -144,7 +144,8 @@ public class Image: NSManagedObject, Codable, EquatableObjects, UUIDCollisionAvo
     }
     
     static func equal(_ lhs: Image?, _ rhs: Image?) -> Bool {
-        return lhs?.fileName == rhs?.fileName
+        return lhs?.fileName == rhs?.fileName &&
+            lhs?.uuid == rhs?.uuid
     }
 }
 

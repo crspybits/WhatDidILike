@@ -221,20 +221,22 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
     }
     
     // After the call, uuidOfPlaceRemoved will be set to the uuid of the place iff the associated place was removed as part of this removal.
-    func remove(uuidOfPlaceRemoved: inout String?) {
+    func remove(uuidOfPlaceRemoved: inout String?, removeImages: Bool = true) {
         // Does the place associated with this location have more than one location?
-        if place!.locations!.count == 1 {
+        if place?.locations?.count == 1 {
             // No: the associated place needs to be removed too.
             uuidOfPlaceRemoved = place!.uuid
-            place!.remove()
+            place!.remove(removeImages: removeImages)
         }
         else {
             uuidOfPlaceRemoved = nil
         }
         
-        for imageObj in images! {
-            let image = imageObj as! Image
-            image.remove()
+        if removeImages {
+            for imageObj in images! {
+                let image = imageObj as! Image
+                image.remove()
+            }
         }
         
         rating!.remove()

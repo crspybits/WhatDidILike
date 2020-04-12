@@ -62,10 +62,10 @@ public class Item: BaseObject, Codable, EquatableObjects {
         CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
     }
     
-    func remove() {
+    func remove(removeImages: Bool = true) {
         for commentObj in comments! {
             let comment = commentObj as! Comment
-            comment.remove()
+            comment.remove(removeImages: removeImages)
         }
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(self)
