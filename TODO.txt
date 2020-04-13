@@ -1,10 +1,10 @@
 WhatDidILike
 
 BUGS
-    * On iOS 10.3.1, iPhone 7, when the sort/filter modal is presented it is too high-- too near the status bar.
-    
     * On a failed place import, locations need to be removed too. See Place import:
-    // TODO: `locations` will not have been removed as part of this removal/error handling.
+// TODO: `locations` will not have been removed as part of this removal/error handling.
+
+    * On iOS 10.3.1, iPhone 7, when the sort/filter modal is presented it is too high-- too near the status bar.
     
     * DONE: When typing into the Place Name field, after each character is typed, the cursor moves to the end of the field. It ought not to.
     
@@ -62,10 +62,6 @@ IMPORT/EXPORT
         The purpose of this garbage collection is to deal with the consequences of a UUID collision prevention technique. It would also have the effect (wanted or unwanted?) of removing Places from a backup that had not been removed before, but had been removed before from Core Data.
         Could add to this Image file garbage collection. Making sure that the only image files within an exported place correspond to the one's in Core Data for the place. My current image file collision avoidance technique can result in duplicate image files in an export directory. e.g., in an place export directory there would be imageFile1 and imageFile2, both would be the same image, but only one would be referenced from the place.json file.
 
-    * What is happening currently with an export when I run across a UUID that is in the export folder, but that is not in Core Data? (Note that this can currently occur because of the "Remove backup place when place removed?" setting, and could also occur due to UUID collision issues.). Does the export fail?
-    
-    * Add to the help information for the backup, a link to the iCloud.com online-- to show users they can access the backup there if they backup to iCloud.
-    
     * Is there a way of enabling iCloud backup of the raw Core Data and images from the app? i.e., in place backup? So we don't have to have this doubling of storage space? (Note that my current mechanism still may have its usefulness-- it's more user friendly/user accessible). See:
         https://developer.apple.com/icloud/icloud-drive/
         https://stackoverflow.com/questions/26295176/icloud-documents-not-visible?rq=1
@@ -77,17 +73,22 @@ IMPORT/EXPORT
         https://developer.apple.com/documentation/foundation/nsfilemanager/ 1411653-urlforubiquitycontaineridentifie
         
         NOTE: One advantage of the way I currently have things setup is that it is conceptually possible to upload the backup files to other services such as Dropbox, or Google Drive. They just have to have "selectable" folders.
-        
-    * For at least iCloud backup, do we need to tell the user that this will double the data space required for the app on the device? E.g., for my app, I've got about 1GB in images. With iCloud backup, that goes up to about 2GB.
-        --> This raises another question: Should we try to estimate, prior to a backup, if there is sufficient storage space available and warn the user if there is not?
-        
-    * For non-iCloud backups should we warn the user that a backup that doesn't store off the device is not all that useful? e.g., if the device were to be lost or if you broke your device, you'd lose the backup.
 
-    * If I release WhatDidILike without the capability to use iCloud Drive to sync data across devices I need to at least alert users to the fact that this is not supported. e.g., to give some help text in Settings.
+    * Should we try to estimate, prior to a backup, if there is sufficient storage space available and warn the user if there is not?
     
     * Should put a spinner on the sync: It can take appreciable time for just the sync itself to happen. E.g., 5 or so seconds with my full data set on an iOS simulator.
     
     * Once finished the "Restore Now", give a final Alert indicating how many places restored if it was successful.
+
+    * What is happening currently with an export when I run across a UUID that is in the export folder, but that is not in Core Data? (Note that this can currently occur because of the "Remove backup place when place removed?" setting, and could also occur due to UUID collision issues.). Does the export fail?
+
+    * DONE: Add to the help information for the backup, a link to the iCloud.com online-- to show users they can access the backup there if they backup to iCloud.
+
+    * DONE: For at least iCloud backup, do we need to tell the user that this will double the data space required for the app on the device? E.g., for my app, I've got about 1GB in images. With iCloud backup, that goes up to about 2GB.
+    
+    * DONE: If I release WhatDidILike without the capability to use iCloud Drive to sync data across devices I need to at least alert users to the fact that this is not supported. e.g., to give some help text in Settings.
+    
+    * DONE: For non-iCloud backups should we warn the user that a backup that doesn't store off the device is not all that useful? e.g., if the device were to be lost or if you broke your device, you'd lose the backup.
     
     * DONE: For pre-UUID places, what happens on a restore? Do the places get assigned a UUID? How is a comparison carried out with those places?
         - NOTE:
