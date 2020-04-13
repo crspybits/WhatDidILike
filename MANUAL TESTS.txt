@@ -1,0 +1,22 @@
+DEBUG-BUILD ONLY
+
+    BACKUP / RESTORE
+    
+        * Test production data against backup using UI comparison tool.
+            a) Load production Core Data into app
+            b) Do an export
+            c) Remove app
+            d) Do a restore
+            e) Do a compare of core data against export
+            f) Expect: "Same!!"
+
+ANY BUILD
+
+    BACKUP / RESTORE
+    
+        * Test restarting a backup after cancelling it midway through.
+        
+        * Test iCloud sync on an iPhone with my full data set
+            - How long does it last prior to the message that the sync was successful?
+            - Does the spinner stay up for the duration? i.e., is it clear that the sync is taking some appreciable time? (It takes about 5 seconds on an iOS simulator).
+

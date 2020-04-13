@@ -63,16 +63,37 @@ IMPORT/EXPORT
         Could add to this Image file garbage collection. Making sure that the only image files within an exported place correspond to the one's in Core Data for the place. My current image file collision avoidance technique can result in duplicate image files in an export directory. e.g., in an place export directory there would be imageFile1 and imageFile2, both would be the same image, but only one would be referenced from the place.json file.
 
     * What is happening currently with an export when I run across a UUID that is in the export folder, but that is not in Core Data? (Note that this can currently occur because of the "Remove backup place when place removed?" setting, and could also occur due to UUID collision issues.). Does the export fail?
+    
+    * Add to the help information for the backup, a link to the iCloud.com online-- to show users they can access the backup there if they backup to iCloud.
+    
+    * Is there a way of enabling iCloud backup of the raw Core Data and images from the app? i.e., in place backup? So we don't have to have this doubling of storage space? (Note that my current mechanism still may have its usefulness-- it's more user friendly/user accessible). See:
+        https://developer.apple.com/icloud/icloud-drive/
+        https://stackoverflow.com/questions/26295176/icloud-documents-not-visible?rq=1
+        https://stackoverflow.com/questions/26865643/icloud-drive-folder
+        https://stackoverflow.com/questions/30385940/
+        https://medium.com/@guilhermerambo/synchronizing-data-with-cloudkit-94c6246a3fda
+        https://forums.developer.apple.com/thread/101683
+        https://stackoverflow.com/questions/27817690/how-to-store-big-image-in-cloudkit
+        https://developer.apple.com/documentation/foundation/nsfilemanager/ 1411653-urlforubiquitycontaineridentifie
+        
+        NOTE: One advantage of the way I currently have things setup is that it is conceptually possible to upload the backup files to other services such as Dropbox, or Google Drive. They just have to have "selectable" folders.
+        
+    * For at least iCloud backup, do we need to tell the user that this will double the data space required for the app on the device? E.g., for my app, I've got about 1GB in images. With iCloud backup, that goes up to about 2GB.
+        --> This raises another question: Should we try to estimate, prior to a backup, if there is sufficient storage space available and warn the user if there is not?
+        
+    * For non-iCloud backups should we warn the user that a backup that doesn't store off the device is not all that useful? e.g., if the device were to be lost or if you broke your device, you'd lose the backup.
 
     * If I release WhatDidILike without the capability to use iCloud Drive to sync data across devices I need to at least alert users to the fact that this is not supported. e.g., to give some help text in Settings.
-
-    * Test restarting a backup after cancelling it midway through.
-
-    * Test production data against backup using new UI comparison tool.
+    
+    * Should put a spinner on the sync: It can take appreciable time for just the sync itself to happen. E.g., 5 or so seconds with my full data set on an iOS simulator.
     
     * Once finished the "Restore Now", give a final Alert indicating how many places restored if it was successful.
     
-    * For pre-UUID places, what happens on a restore? Do the places get assigned a UUID? How is a comparison carried out with those places?
+    * DONE: For pre-UUID places, what happens on a restore? Do the places get assigned a UUID? How is a comparison carried out with those places?
+        - NOTE:
+            a) Only a v2.2 or greater app can do a backup.
+            b) That app will have had its places updated to have UUIDs.
+            c) So all places that are exported will get get exported with a UUID.
     
     * DONE: I just did a restore from the WhatDidILike.beta iCloud folder. The restore seemed to work correctly, but I got an Alert! "Comparison failed: placeNotRemoved". The last log message in the console was: exportedPlace: Optional("Boulder Beer The Pub"); coreDataPlace: Optional("Boulder Beer The Pub") [compareAll() in PlaceExporter.swift, line 285]
         --> It's interesting to note that this is a place with 2 locations.

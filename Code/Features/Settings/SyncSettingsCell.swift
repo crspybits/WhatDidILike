@@ -149,6 +149,14 @@ class SyncSettingsCell: UITableViewCell {
     @IBAction func syncAction(_ sender: Any) {
         syncICloudIfNeeded(showAlert: true)
     }
+    
+    @IBAction func helpAction(_ sender: Any) {
+        guard let helpViewer = HelpViewerVC.create(toViewHelpFile: "backupHelp.html") else {
+            return
+        }
+        
+        parentVC?.navigationController?.pushViewController(helpViewer, animated: true)
+    }
 }
 
 extension SyncSettingsCell: UIDocumentPickerDelegate {

@@ -94,13 +94,37 @@
                             <action selector="syncAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ATo-0a-wN5"/>
                         </connections>
                     </button>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="help" translatesAutoresizingMaskIntoConstraints="NO" id="Rby-lE-WVR">
+                        <rect key="frame" x="211" y="9" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="9rj-If-BZI"/>
+                            <constraint firstAttribute="height" constant="30" id="Z06-ga-21w"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IB2-Cu-oa0">
+                        <rect key="frame" x="206" y="4" width="40" height="40"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="bSE-1r-sI3"/>
+                            <constraint firstAttribute="height" constant="40" id="sck-8t-2ls"/>
+                        </constraints>
+                        <state key="normal">
+                            <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                        </state>
+                        <connections>
+                            <action selector="helpAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="C70-8m-6O0"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="DK6-SR-41p" firstAttribute="trailing" secondItem="h9Q-pG-K9q" secondAttribute="trailing" id="00L-SX-YXC"/>
+                    <constraint firstItem="IB2-Cu-oa0" firstAttribute="firstBaseline" secondItem="cuA-ML-FKC" secondAttribute="firstBaseline" id="9FU-9O-60n"/>
                     <constraint firstItem="y9m-ml-5VC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="C9Z-3b-XB0"/>
+                    <constraint firstItem="IB2-Cu-oa0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="CZk-cI-5t8"/>
                     <constraint firstItem="cuA-ML-FKC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="EHd-DK-LHh"/>
                     <constraint firstItem="5sB-1Q-ti5" firstAttribute="leading" secondItem="cuA-ML-FKC" secondAttribute="leading" id="EZb-7f-ViS"/>
                     <constraint firstItem="Z8o-mH-1Gj" firstAttribute="trailing" secondItem="9D4-hu-IPl" secondAttribute="trailing" id="IjP-Cu-qfm"/>
+                    <constraint firstItem="IB2-Cu-oa0" firstAttribute="leading" secondItem="cuA-ML-FKC" secondAttribute="trailing" constant="20" id="Iyr-6e-yNT"/>
                     <constraint firstItem="mIB-is-Nsd" firstAttribute="trailing" secondItem="h9Q-pG-K9q" secondAttribute="trailing" id="Jim-il-Y90"/>
                     <constraint firstItem="mIB-is-Nsd" firstAttribute="trailing" secondItem="9D4-hu-IPl" secondAttribute="trailing" id="KDX-oa-huR"/>
                     <constraint firstItem="cuA-ML-FKC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="MtA-x0-loV"/>
@@ -119,6 +143,8 @@
                     <constraint firstItem="h9Q-pG-K9q" firstAttribute="width" secondItem="y9m-ml-5VC" secondAttribute="width" id="k7g-ft-0Di"/>
                     <constraint firstItem="Cr4-4r-MZv" firstAttribute="top" secondItem="Z8o-mH-1Gj" secondAttribute="bottom" constant="20" id="lne-qq-YeJ"/>
                     <constraint firstItem="DK6-SR-41p" firstAttribute="centerY" secondItem="ntd-Pj-rYq" secondAttribute="centerY" id="n9f-Kh-KDx"/>
+                    <constraint firstItem="IB2-Cu-oa0" firstAttribute="centerY" secondItem="Rby-lE-WVR" secondAttribute="centerY" id="p0X-q1-NVz"/>
+                    <constraint firstItem="IB2-Cu-oa0" firstAttribute="centerX" secondItem="Rby-lE-WVR" secondAttribute="centerX" id="tYo-S6-e6U"/>
                     <constraint firstItem="DK6-SR-41p" firstAttribute="centerX" secondItem="ntd-Pj-rYq" secondAttribute="centerX" id="xNU-Sp-RD5"/>
                     <constraint firstItem="DK6-SR-41p" firstAttribute="top" secondItem="h9Q-pG-K9q" secondAttribute="top" id="zIe-sf-Wzz"/>
                 </constraints>
@@ -137,5 +163,6 @@
     </objects>
     <resources>
         <image name="clear" width="100" height="100"/>
+        <image name="help" width="256" height="256"/>
     </resources>
 </document>

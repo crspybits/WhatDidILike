@@ -109,6 +109,9 @@
 		83A6D5712434DBCC000F9727 /* UUIDCollisionAvoidanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6D5702434DBCC000F9727 /* UUIDCollisionAvoidanceTests.swift */; };
 		83A6D57A243EBF32000F9727 /* CompareBackupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6D578243EBF32000F9727 /* CompareBackupCell.swift */; };
 		83A6D57B243EBF32000F9727 /* CompareBackupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A6D579243EBF32000F9727 /* CompareBackupCell.xib */; };
+		83A6D5842443D764000F9727 /* HelpViewerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6D5822443D764000F9727 /* HelpViewerVC.swift */; };
+		83A6D5872443DB8D000F9727 /* HelpViewerVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83A6D5862443DB8D000F9727 /* HelpViewerVC.storyboard */; };
+		83A6D5892443DD88000F9727 /* backupHelp.html in Resources */ = {isa = PBXBuildFile; fileRef = 83A6D5882443DD88000F9727 /* backupHelp.html */; };
 		83B496BD1F4BD0830083610D /* Identifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496BC1F4BCFB50083610D /* Identifiers.swift */; };
 		83B496C11F4BDE300083610D /* CoreDataExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496C01F4BDE300083610D /* CoreDataExtras.swift */; };
 		83B496C51F4BE0F40083610D /* Place+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */; };
@@ -257,6 +260,10 @@
 		83A6D5702434DBCC000F9727 /* UUIDCollisionAvoidanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDCollisionAvoidanceTests.swift; sourceTree = "<group>"; };
 		83A6D578243EBF32000F9727 /* CompareBackupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareBackupCell.swift; sourceTree = "<group>"; };
 		83A6D579243EBF32000F9727 /* CompareBackupCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CompareBackupCell.xib; sourceTree = "<group>"; };
+		83A6D57E2443A208000F9727 /* MANUAL TESTS.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "MANUAL TESTS.txt"; sourceTree = "<group>"; };
+		83A6D5822443D764000F9727 /* HelpViewerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewerVC.swift; sourceTree = "<group>"; };
+		83A6D5862443DB8D000F9727 /* HelpViewerVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HelpViewerVC.storyboard; sourceTree = "<group>"; };
+		83A6D5882443DD88000F9727 /* backupHelp.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = backupHelp.html; sourceTree = "<group>"; };
 		83B496BC1F4BCFB50083610D /* Identifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiers.swift; sourceTree = "<group>"; };
 		83B496C01F4BDE300083610D /* CoreDataExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataExtras.swift; sourceTree = "<group>"; };
 		83B496C41F4BE0F40083610D /* Place+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -473,6 +480,16 @@
 			name = Place;
 			sourceTree = "<group>";
 		};
+		83A6D5812443D70F000F9727 /* Help Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				83A6D5822443D764000F9727 /* HelpViewerVC.swift */,
+				83A6D5862443DB8D000F9727 /* HelpViewerVC.storyboard */,
+			);
+			name = "Help Viewer";
+			path = "Features/Help Viewer";
+			sourceTree = "<group>";
+		};
 		83B496BB1F4BCFB50083610D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -502,6 +519,7 @@
 			isa = PBXGroup;
 			children = (
 				839FC1182427EF5E001822D2 /* TODO.txt */,
+				83A6D57E2443A208000F9727 /* MANUAL TESTS.txt */,
 				839FC1112425ECDA001822D2 /* WhatDidILike.entitlements */,
 				83D49CC81F4AC26900409B0F /* Code */,
 				83D49CDB1F4AC2C700409B0F /* UnitTests */,
@@ -565,6 +583,7 @@
 		83D49CD61F4AC2AA00409B0F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				83A6D5882443DD88000F9727 /* backupHelp.html */,
 				83D49CD71F4AC2AA00409B0F /* Assets.xcassets */,
 				83D49CD81F4AC2AA00409B0F /* Info.plist */,
 				830CCC7D1F83276A003668B7 /* rotatingEarth.gif */,
@@ -603,6 +622,7 @@
 				83D752CD1F93D9F200EF4E5D /* Sorting and Filtering */,
 				836F784E241960F60006D7CA /* Recommendations */,
 				839FC1062425C88A001822D2 /* Settings */,
+				83A6D5812443D70F000F9727 /* Help Viewer */,
 				839FC0C0242004B2001822D2 /* Import Export */,
 				837E12571F8F2B4C00D8E4E1 /* Conversion */,
 			);
@@ -726,11 +746,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				8385206B1F8B2A77001D97D3 /* ImagesView.xib in Resources */,
+				83A6D5892443DD88000F9727 /* backupHelp.html in Resources */,
 				83A6D57B243EBF32000F9727 /* CompareBackupCell.xib in Resources */,
 				83946812205CB70D0009C318 /* SortControl.xib in Resources */,
 				839FC1082425C8DB001822D2 /* Settings.storyboard in Resources */,
 				837E12611F8F2C4C00D8E4E1 /* CommentPromptVC.xib in Resources */,
 				830CCC7E1F83276A003668B7 /* rotatingEarth.gif in Resources */,
+				83A6D5872443DB8D000F9727 /* HelpViewerVC.storyboard in Resources */,
 				839FC0FD2425C27C001822D2 /* Tabs.storyboard in Resources */,
 				8394680A205C8E2B0009C318 /* SortyFilter.xib in Resources */,
 				83B533841F5D0C670028E6B5 /* RatingView.xib in Resources */,
@@ -956,6 +978,7 @@
 				83B496BD1F4BD0830083610D /* Identifiers.swift in Sources */,
 				839FC0FF2425C2F6001822D2 /* Tabs.swift in Sources */,
 				831B042A1F5CC7BD000E21C4 /* PlaceCategory.swift in Sources */,
+				83A6D5842443D764000F9727 /* HelpViewerVC.swift in Sources */,
 				839FC1102425D7F5001822D2 /* SettingsNav.swift in Sources */,
 				837E12671F90827A00D8E4E1 /* Parameters.swift in Sources */,
 				836F7850241961200006D7CA /* Recommendations.swift in Sources */,
@@ -1042,7 +1065,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1096,7 +1119,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1118,7 +1141,7 @@
 				CURRENT_PROJECT_VERSION = 202003142239;
 				DEVELOPMENT_TEAM = BH68R29JBE;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.WhatDidILike;
@@ -1145,7 +1168,7 @@
 				CURRENT_PROJECT_VERSION = 202003142239;
 				DEVELOPMENT_TEAM = BH68R29JBE;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.WhatDidILike;
