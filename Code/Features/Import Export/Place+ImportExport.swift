@@ -86,13 +86,14 @@ extension Place {
     /* Decodes a single place from the given place export directory, creating the needed managed objects.
         If needed, images are copied into the large images directory in the Documents directory from the place export directory.
         Two types of uuid collision can occur as a result of this call:
-        1) The creationDate of the colliding uuid in the imported place differs from the creationDate in the core data Place it is colliding with. In this case a new necessarily different ("real") UUID is allocated. Really, this is the (albeit) unlikely event that when creating the new Place object, a real UUID collision occurred. Saves the place returned before returning.
+        1) The creationDate of the colliding uuid in the imported place differs from the creationDate in the core data Place it is colliding with. In this case a new necessarily different ("real") UUID is allocated. Really, this is the (albeit) unlikely event that when creating the new Place object, a real UUID collision occurred. Saves the place returned before returning. In addition, the place export directory is renamed to reflect this new UUID.
         2) The creationDates are the same. In this case, nil is returned and no Place managed object is created.
         
         `testing`-- If you set this to true (for debug builds only), then (a) no place UUID conflict resolution is done, and (b) images from export are not copied into app.
     */
     @discardableResult
     static func `import`(from placeExportDirectory: URL, in parentDirectory: URL, accessor:URL.Accessor = .none, testing: Bool = false) throws -> Place? {
+        var placeExportDirectory = placeExportDirectory
         let jsonFileName = URL(fileURLWithPath: placeExportDirectory.path + "/" + placeJSON)
         var place:Place!
         
@@ -139,11 +140,21 @@ extension Place {
             
             /* So, if we get a UUID collision across existing Place uuid's and exported Place uuid's, we previously always caused the import to stop. Now, instead doing the following:
                 1) Generate a new (distinct) UUID for this imported Place.
-                2) Rely on some other method/process to clean up later. E.g., garbage collection to remove the now duplicated place in the export folders.
+                2) Rename old export folder to new one based on new UUID.
             */
             
             if havePlaceUuidCollision {
+                // Need to rename directory where the place export is stored to reflect a new UUID.
+                let originalPlaceExportDirectory = placeExportDirectory
+                
+                // Setup the new UUID
                 place.uuid = try Place.realUUID()
+                
+                let newPlaceExportDirectory = place.createDirectoryName(in: parentDirectory)
+                
+                try FileManager.default.moveItem(at: originalPlaceExportDirectory, to: newPlaceExportDirectory)
+                
+                placeExportDirectory = newPlaceExportDirectory
             }
             
             // Copy images from export into app.

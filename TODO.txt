@@ -4,6 +4,8 @@ BUGS
     * On a failed place import, locations need to be removed too. See Place import:
 // TODO: `locations` will not have been removed as part of this removal/error handling.
 
+    * FIX: "Rely on some other method/process to clean up later. E.g., garbage collection to remove the now duplicated place in the export folders."
+
     * On iOS 10.3.1, iPhone 7, when the sort/filter modal is presented it is too high-- too near the status bar.
     
     * DONE: When typing into the Place Name field, after each character is typed, the cursor moves to the end of the field. It ought not to.
@@ -75,12 +77,31 @@ IMPORT/EXPORT
         NOTE: One advantage of the way I currently have things setup is that it is conceptually possible to upload the backup files to other services such as Dropbox, or Google Drive. They just have to have "selectable" folders.
 
     * Should we try to estimate, prior to a backup, if there is sufficient storage space available and warn the user if there is not?
+        See https://stackoverflow.com/questions/5712527
     
     * Should put a spinner on the sync: It can take appreciable time for just the sync itself to happen. E.g., 5 or so seconds with my full data set on an iOS simulator.
     
     * Once finished the "Restore Now", give a final Alert indicating how many places restored if it was successful.
+    
+    * Run a test:
+        a) Do an export to iCloud
+        b) Wait for upload to iCloud to complete.
+        a) Remove data from iCloud
+        b) When does the data, if at all, start to be removed from the device folder for iCloud? Or do you have to do an explicit sync?
 
-    * What is happening currently with an export when I run across a UUID that is in the export folder, but that is not in Core Data? (Note that this can currently occur because of the "Remove backup place when place removed?" setting, and could also occur due to UUID collision issues.). Does the export fail?
+    * DONE: What is happening currently with an export when I run across a UUID that is in the export folder, but that is not in Core Data? (Note that this can currently occur because of the "Remove backup place when place removed?" setting, and could also occur due to UUID collision issues.). Does the export fail?
+        ANSWER: Places are exported from Core Data, not based on the places in the export folder. So, based on Core Data, this is not an issue. BUT: What about the following scenario:
+        a) Have the "No" setting for removing backup.
+        b) Remove a place.
+        c) Create a new place. It happens to have, due to a UUID collision, the same UUID as the place removed in b).
+        d) Suppose the user does an export.
+        e) Then an import.
+        f) Now, we'll have two places with the same UUID.
+        
+        What can we do:
+        i) When importing, check for Place UUID collision. Are we already doing this?
+            I.e., does the place being imported have the same UUID as one in Core Data?
+        WE have this covered already. Do we have a test case for it?
 
     * DONE: Add to the help information for the backup, a link to the iCloud.com online-- to show users they can access the backup there if they backup to iCloud.
 

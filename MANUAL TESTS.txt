@@ -3,6 +3,10 @@ DEBUG-BUILD ONLY
     BACKUP / RESTORE
     
         * Test production data against backup using UI comparison tool.
+            - Remove data from iCloud.com
+            - Sync within the app-- Hmmm. This seems wrong. A bug?
+                The sync uses the place export folders. By its nature, removing the data from
+                iCloud ought to start removing those place folders. So this is something of a race condition. How long before the cloud data on the device starts getting updated?
             a) Load production Core Data into app
             b) Do an export
             c) Remove app

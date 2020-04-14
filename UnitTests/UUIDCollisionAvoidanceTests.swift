@@ -98,7 +98,17 @@ class UUIDCollisionAvoidanceTests: XCTestCase {
         // 6) To resolve the UUID collision, the uuid of the new place should have been changed.
         XCTAssert(place2.uuid != place1UUID)
         
-        // 7) Cleanup.
+        // 7) And the export directory for the place ought to have been renamed based on the new UUID.
+        XCTAssert(!FileManager.default.fileExists(atPath: placeExportDirectory.path))
+        
+        let newPlaceExportDirectory = place2.createDirectoryName(in: Self.exportURL)
+        XCTAssert(placeExportDirectory.path != newPlaceExportDirectory.path)
+        XCTAssert(FileManager.default.fileExists(atPath: newPlaceExportDirectory.path))
+        
+        let newUUID = try Place.getUUIDFrom(url: newPlaceExportDirectory)
+        XCTAssert(newUUID == place2.uuid)
+        
+        // 8) Cleanup.
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place1)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
     }
