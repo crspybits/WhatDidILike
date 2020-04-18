@@ -212,8 +212,37 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         XCTFail()
     }
     
-    func testPeekAtPlace() {
-        XCTFail()
+    func testPeekAtPlace() throws {
+        removePlaces()
+        
+        // 1) Export a place
+        let place = try Place.newObject()
+        place.save()
+        
+        XCTAssert(place.creationDate != nil)
+        
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL)
+        let urls = try placeExporter.export(place: place)
+        
+        guard urls.count == 1 else {
+            XCTFail()
+            return
+        }
+    
+        // 2) Peek at it.
+        
+        // Remove the place.json from the end of the URL
+        let placeExportURL = urls[0].deletingLastPathComponent()
+
+        let (_, partialPlace) = try Place.peek(with: placeExportURL, in: Self.exportURL)
+        
+        // 3) Make sure the peek reflects the exported place.
+        XCTAssert(partialPlace.creationDate == place.creationDate)
+        XCTAssert(partialPlace.uuid == place.uuid)
+        
+        // 4) Cleanup
+        place.remove()
+        place.save()
     }
 }
 
