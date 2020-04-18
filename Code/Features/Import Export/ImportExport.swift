@@ -22,6 +22,7 @@ enum ImportExportError: Error {
     case wrongInternalCollisionResult
     case imageHasNoFileName
     case noImagesFoundForExistingUUID
+    case cannotGetPlaces
 }
 
 protocol ImportExport {

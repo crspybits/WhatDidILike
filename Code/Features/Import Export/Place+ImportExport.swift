@@ -15,7 +15,7 @@ extension Place {
     static let separator = "_"
     
     // Makes the name only; doesn't check the actual directory for the existence of this directory.
-    func createDirectoryName(in parentDirectory: URL) -> URL {
+    func exportDirectoryName(in parentDirectory: URL) -> URL {
         var fileName = ""
         if let name = name?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), name.count > 0 {
             for char in name {
@@ -34,7 +34,10 @@ extension Place {
             fileName += uuid
         }
         
-        return URL(fileURLWithPath: fileName, relativeTo: parentDirectory)
+        // Problems with this, downstream
+        // return URL(fileURLWithPath: fileName, relativeTo: parentDirectory)
+        
+        return parentDirectory.appendingPathComponent(fileName)
     }
     
     // Pull the uuid out of the last component of the URL
@@ -61,7 +64,7 @@ extension Place {
     
     // Assumes the place has not already been exported.
     func createNewDirectory(in parentDirectory: URL) throws -> URL {
-        let directoryName = createDirectoryName(in: parentDirectory)
+        let directoryName = exportDirectoryName(in: parentDirectory)
         
         guard !FileManager.default.fileExists(atPath: directoryName.path) else {
             throw ImportExportError.placeExportDirectoryAlreadyExists
@@ -83,6 +86,22 @@ extension Place {
         }
     }
     
+    static func peek(with placeExportDirectory: URL, in parentDirectory: URL, accessor:URL.Accessor = .none) throws -> (placeData: Data, PartialPlace) {
+        let jsonFileName = URL(fileURLWithPath: placeExportDirectory.path + "/" + placeJSON)
+    
+        // I initially thought that I needed to access the jsonFileName as security scoped, but nope. That fails. Need to do security scoped access on the parentDirectory.
+    
+        var partialPlace: PartialPlace!
+        var jsonData:Data!
+        
+        try parentDirectory.accessor(accessor) { url in
+            jsonData = try Data(contentsOf: jsonFileName)
+            partialPlace = try Place.partialDecode(data: jsonData)
+        }
+    
+        return (jsonData, partialPlace)
+    }
+    
     /* Decodes a single place from the given place export directory, creating the needed managed objects.
         If needed, images are copied into the large images directory in the Documents directory from the place export directory.
         Two types of uuid collision can occur as a result of this call:
@@ -94,19 +113,15 @@ extension Place {
     @discardableResult
     static func `import`(from placeExportDirectory: URL, in parentDirectory: URL, accessor:URL.Accessor = .none, testing: Bool = false) throws -> Place? {
         var placeExportDirectory = placeExportDirectory
-        let jsonFileName = URL(fileURLWithPath: placeExportDirectory.path + "/" + placeJSON)
         var place:Place!
-        
-        // I initially thought that I needed to access the jsonFileName as security scoped, but nope. That fails. Need to do security scoped access on the parentDirectory.
-        
+                
+        let (jsonData, importPlacePeek) = try peek(with: placeExportDirectory, in: parentDirectory, accessor: accessor)
+ 
+         guard let importUUID = importPlacePeek.uuid else {
+             throw ImportExportError.noUUIDInPlaceJSON
+         }
+ 
         try parentDirectory.accessor(accessor) { url in
-            let jsonData = try Data(contentsOf: jsonFileName)
-            let importPlacePeek = try Place.partialDecode(data: jsonData)
-
-            guard let importUUID = importPlacePeek.uuid else {
-                throw ImportExportError.noUUIDInPlaceJSON
-            }
-
             var havePlaceUuidCollision = false
             
             if !testing {
@@ -150,7 +165,7 @@ extension Place {
                 // Setup the new UUID
                 place.uuid = try Place.realUUID()
                 
-                let newPlaceExportDirectory = place.createDirectoryName(in: parentDirectory)
+                let newPlaceExportDirectory = place.exportDirectoryName(in: parentDirectory)
                 
                 try FileManager.default.moveItem(at: originalPlaceExportDirectory, to: newPlaceExportDirectory)
                 
@@ -218,30 +233,6 @@ extension Place {
         place.save()
         
         return place
-    }
-    
-    // Return the collection of places that are "dirty"-- that have been changed since their last export (or that have never been exported).
-    static func needExport() -> ([Place], totalNumber: Int)? {
-        guard let allPlaces = Place.fetchAllObjects() else {
-            return nil
-        }
-        
-        var result = [Place]()
-        
-        for place in allPlaces {
-            if let lastExport = place.lastExport {
-                if place.lastExportModificationDate > lastExport {
-                    // There was a change to the place after the last export. Need to re-export the place.
-                    result += [place]
-                }
-            }
-            else {
-                // No lastExport date -- it needs exporting for the first time.
-                result += [place]
-            }
-        }
-        
-        return (result, allPlaces.count)
     }
         
     // If the backup folder is changed, need to reset the lastExport field of all places-- to force export to the new backup location.

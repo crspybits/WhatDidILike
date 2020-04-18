@@ -53,7 +53,7 @@ class UUIDCollisionAvoidanceTests: XCTestCase {
         try placeExporter.export(place: place1)
 
         // 3) Import the place. We have *not* removed the prior place. Therefore, this attempts to import a place with the same uuid as an existing place.
-        let placeExportDirectory = place1.createDirectoryName(in: Self.exportURL)
+        let placeExportDirectory = place1.exportDirectoryName(in: Self.exportURL)
         
         XCTAssert(try Place.alreadyExists(uuid: place1UUID).exists())
         
@@ -82,7 +82,7 @@ class UUIDCollisionAvoidanceTests: XCTestCase {
         try placeExporter.export(place: place1)
 
         // 3) Import the place. We have *not* removed the prior place. Therefore, this attempts to import a place with the same uuid as an existing place.
-        let placeExportDirectory = place1.createDirectoryName(in: Self.exportURL)
+        let placeExportDirectory = place1.exportDirectoryName(in: Self.exportURL)
         
         XCTAssert(try Place.alreadyExists(uuid: place1UUID).exists())
         
@@ -101,7 +101,7 @@ class UUIDCollisionAvoidanceTests: XCTestCase {
         // 7) And the export directory for the place ought to have been renamed based on the new UUID.
         XCTAssert(!FileManager.default.fileExists(atPath: placeExportDirectory.path))
         
-        let newPlaceExportDirectory = place2.createDirectoryName(in: Self.exportURL)
+        let newPlaceExportDirectory = place2.exportDirectoryName(in: Self.exportURL)
         XCTAssert(placeExportDirectory.path != newPlaceExportDirectory.path)
         XCTAssert(FileManager.default.fileExists(atPath: newPlaceExportDirectory.path))
         

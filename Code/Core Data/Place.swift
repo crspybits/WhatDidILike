@@ -161,7 +161,7 @@ public class Place: BaseObject, Codable, EquatableObjects, UUIDCollisionAvoidanc
     struct PartialPlace: Decodable {
         let uuid: String?
         let creationDate: NSDate?
-        
+
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
@@ -238,7 +238,7 @@ extension Place {
         return super.dates + result
     }
     
-    // I'm providing this because the `dates` property was originally intended for recommendations for places. The date updates provided by PlaceList and PlaceCategory don't really fit this because they are more or less independent of Place's. e.g., if I change a PlaceCategory name that impacts multiple Place's.
+    // I'm providing this because the `dates` property was originally intended for recommendations for places. The date updates provided by PlaceList and PlaceCategory don't really fit this (i.e., recommendations) because they are more or less independent of Place's. e.g., if I change a PlaceCategory name that impacts multiple Place's.
     var lastExportModificationDate: Date {
         var result = dates
         

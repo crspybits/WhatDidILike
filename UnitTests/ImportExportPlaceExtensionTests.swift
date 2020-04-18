@@ -49,7 +49,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
     func testCreateDirectoryNameWithNoPlaceName() throws {
         let place = try Place.newObject()
         
-        let directoryName = place.createDirectoryName(in: Self.exportURL)
+        let directoryName = place.exportDirectoryName(in: Self.exportURL)
                 
         guard !FileManager.default.fileExists(atPath: directoryName.path) else {
             XCTFail()
@@ -67,7 +67,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         let place = try Place.newObject()
         place.name = "My Favorite Restaurant"
         
-        let directoryName = place.createDirectoryName(in: Self.exportURL)
+        let directoryName = place.exportDirectoryName(in: Self.exportURL)
                 
         guard !FileManager.default.fileExists(atPath: directoryName.path) else {
             XCTFail()
@@ -117,7 +117,7 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         // newFile.path igores the relativeTo part. Odd.
         // let newFile = URL(fileURLWithPath: "tmp.txt", relativeTo: newDirectory)
 
-        let newFile = URL(fileURLWithPath: newDirectory.path + "/" + "tmp.txt", relativeTo: nil)
+        let newFile = newDirectory.appendingPathComponent("tmp.txt")
 
         let contents = "Hello World!".data(using: .utf8)!
         
@@ -126,19 +126,16 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         try place.reCreateDirectory(placeExportDirectory: Self.exportURL)
     }
     
-    func testNeedExportWithNoPlaces() {
+    func testNeedExportWithNoPlaces() throws {
         removePlaces()
         
-        guard let (exportPlaces, totalNumber) = Place.needExport() else {
-            XCTFail()
-            return
-        }
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL, accessor: .securityScoped)
+        let exportPlaces = try placeExporter.needExport()
         
         XCTAssert(exportPlaces.count == 0)
-        XCTAssert(totalNumber == 0)
     }
     
-    func testNeedExportWithPlacesButNoneNeedingExport() throws {
+    func testNeedExportWithPlacesAndOneNeedingExport() throws {
         removePlaces()
 
         let place = try Place.newObject()
@@ -149,14 +146,12 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         // Make sure `willSave` doesn't update the modification date by just changing lastExport.
         place.save()
         
-        guard let (exportPlaces, totalNumber) = Place.needExport() else {
-            XCTFail()
-            return
-        }
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL)
+        let exportPlaces = try placeExporter.needExport()
         
-        XCTAssert(exportPlaces.count == 0)
-        XCTAssert(totalNumber == 1)
-        
+        // This is 1-- because the place hasn't yet been exported. No export folder.
+        XCTAssert(exportPlaces.count == 1)
+                
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
     }
     
@@ -166,60 +161,15 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         let place = try Place.newObject()
         // place.lastExport will be nil
         
-        guard let (exportPlaces, totalNumber) = Place.needExport() else {
-            XCTFail()
-            return
-        }
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL)
+        let exportPlaces = try placeExporter.needExport()
 
         guard exportPlaces.count == 1 else {
             XCTFail()
             return
         }
         
-        XCTAssert(totalNumber == 1)
         XCTAssert(exportPlaces[0].uuid == place.uuid)
-    }
-    
-    func testNeedExportWithPlacesWithOneMoreRecentlyChanged() throws {
-        removePlaces()
-
-        let place = try Place.newObject()
-        
-        // Simulate an export
-        place.lastExport = Date()
-        
-        guard let (exportPlaces, _) = Place.needExport() else {
-            XCTFail()
-            return
-        }
-        
-        guard exportPlaces.count == 0 else {
-            XCTFail()
-            return
-        }
-        
-        // Wait for some time to go by, so the modification date is different from the lastExport date.
-        usleep(200)
-        
-        // Because if the lastExport and another field (e.g., name, below) are changed together, the modificationDate doesn't get updated.
-        place.save()
-        
-        // This should make the place `dirty`-- needing export
-        place.name = "foo"
-        place.save() // Needed to get the modification date updated.
-        
-        guard let (exportPlaces2, _) = Place.needExport() else {
-            XCTFail()
-            return
-        }
-        
-        guard exportPlaces2.count == 1 else {
-            XCTFail()
-            return
-        }
-        
-        XCTAssert(exportPlaces2[0].uuid == place.uuid)
-        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
     }
     
     func testCreateLargeImagesDirectoryIfNeededWithFolderAbsent() throws {
@@ -259,6 +209,10 @@ class ImportExportPlaceExtensionTests: XCTestCase {
             return
         }
         
+        XCTFail()
+    }
+    
+    func testPeekAtPlace() {
         XCTFail()
     }
 }

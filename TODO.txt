@@ -75,6 +75,14 @@ IMPORT/EXPORT
         https://developer.apple.com/documentation/foundation/nsfilemanager/ 1411653-urlforubiquitycontaineridentifie
         
         NOTE: One advantage of the way I currently have things setup is that it is conceptually possible to upload the backup files to other services such as Dropbox, or Google Drive. They just have to have "selectable" folders.
+        
+    * What happens on a sync if the folder is not there? Log message? App crash?
+        This is relevant b/c it can happen if a user deletes data from iCloud.
+        
+    * We don't have a specific named folder in iCloud Drive. E.g., Petunia has
+        iCloud~biz~SpasticMuffin~Petunia
+    for WhatDidILike, so far it is:
+        com~apple~CloudDocss
 
     * Should we try to estimate, prior to a backup, if there is sufficient storage space available and warn the user if there is not?
         See https://stackoverflow.com/questions/5712527
@@ -83,11 +91,20 @@ IMPORT/EXPORT
     
     * Once finished the "Restore Now", give a final Alert indicating how many places restored if it was successful.
     
-    * Run a test:
+    * If I do the following:
+        a) Backup the place data to, say, iCloud
+        b) Go to iCloud.com and remove that data.
+        c) Force a sync (e.g., in the simulator: Debug -> "Trigger iCloud Sync").
+        d) In Settings, try a "backup" again. It says "No places need exporting".
+        This happens because the decision to export is based purely a date for the place in Core Data. We should also include checking for the exported data. If it's not in the export folder, or if a check of its exported data indicates its stale, a re-export ought to happen.
+    
+    * DONE: Run a test:
         a) Do an export to iCloud
         b) Wait for upload to iCloud to complete.
         a) Remove data from iCloud
         b) When does the data, if at all, start to be removed from the device folder for iCloud? Or do you have to do an explicit sync?
+            -> In the simulator, it's not being removed, even after I do a sync.
+        LOOKS LIKE YOU HAVE to use Debug -> "Trigger iCloud Sync" in the Simulator. See also https://stackoverflow.com/questions/7793139/using-icloud-in-ios-simulator/19710768
 
     * DONE: What is happening currently with an export when I run across a UUID that is in the export folder, but that is not in Core Data? (Note that this can currently occur because of the "Remove backup place when place removed?" setting, and could also occur due to UUID collision issues.). Does the export fail?
         ANSWER: Places are exported from Core Data, not based on the places in the export folder. So, based on Core Data, this is not an issue. BUT: What about the following scenario:

@@ -13,6 +13,7 @@ import SMCoreLib
 class CoreDataTests: XCTestCase {
     override func setUp() {
         setupLargeImagesFolder()
+        setupExportFolder()
     }
 
     override func tearDown() {
@@ -38,19 +39,36 @@ class CoreDataTests: XCTestCase {
         
         let place = try Place.newObject()
         place.name = "Foo"
-        place.lastExport = Date()
         place.save()
         
-        guard let (places, _) = Place.needExport() else {
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL)
+        let urls = try placeExporter.export(place: place)
+        guard urls.count > 0 else {
             XCTFail()
             return
         }
         
+        try placeExporter.updateAlreadyExported()
+              
+        let placeCategory = try PlaceCategory.newObject(withName: "Something")
+        place.category = placeCategory
+        place.lastExport = Date() + 20
+        place.save()
+        
+        // Seems to be something interesting going on with the file system. I immediately check the file system for the exported place, I don't find it. Seems to need a delay.
+
+        let places = try placeExporter.needExport()
+        
         XCTAssert(places.count == 0)
+        
+        place.remove()
+        CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeCategory)
     }
     
     func testToEnsureAddingPlaceToPlaceListDoesNotUpdateModificationDate() throws {
         removePlaces()
+        
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL)
         
         let placeCategoryName = "Foo Biz"
         guard let placeCategory1 = try? PlaceCategory.newObject(withName: placeCategoryName) else {
@@ -68,14 +86,24 @@ class CoreDataTests: XCTestCase {
         
         place1.save()
         
-        guard let (places, _) = Place.needExport(), places.count == 0 else {
+        let urls1 = try placeExporter.export(place: place1)
+        guard urls1.count > 0 else {
+            XCTFail()
+            return
+        }
+                
+        let place2 = try Place.newObject()
+        place2.save()
+        
+        let urls2 = try placeExporter.export(place: place2)
+        guard urls2.count > 0 else {
             XCTFail()
             return
         }
         
-        let place2 = try Place.newObject()
+        try placeExporter.updateAlreadyExported()
         
-        // This the line of interest. This actually updates the `places` relation of the place category. And we're testing to ensure the modificationDate of the place category doesn't change as a result.
+        // This is the line of interest. This actually updates the `places` relation of the place category. And we're testing to ensure the modificationDate of the place category doesn't change as a result.
         place2.category = placeCategory1
 
         // Establish this place also as not needing export.
@@ -83,7 +111,8 @@ class CoreDataTests: XCTestCase {
          
         place2.save()
         
-        guard let (places2, _) = Place.needExport(), places2.count == 0 else {
+        let places2 = try placeExporter.needExport()
+        guard places2.count == 0 else {
             XCTFail()
             return
         }
@@ -101,6 +130,8 @@ class CoreDataTests: XCTestCase {
             return
         }
         
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL)
+        
         let place1 = try Place.newObject()
         place1.generalDescription = "Foo"
         place1.name = "Bar"
@@ -108,25 +139,30 @@ class CoreDataTests: XCTestCase {
         
         // Establish this place as not needing export.
         place1.lastExport = Date()
-        
         place1.save()
         
-        guard let (places, _) = Place.needExport(), places.count == 0 else {
-            XCTFail()
-            return
-        }
+        // It needs actual export too-- or `placeNeedsExporting` returns true.
+        try placeExporter.export(place: place1)
         
         let place2 = try Place.newObject()
+        place2.save()
+        
+        // Similarly, place2 needs actual export too-- or `placeNeedsExporting` returns true.
+        try placeExporter.export(place: place2)
         
         // This the line of interest. This actually updates the `places` relation of the place list. And we're testing to ensure the modificationDate of the place list doesn't change as a result.
         place2.addToLists(placeList1)
 
-        // Establish this place also as not needing export.
+        // Establish this place as not needing export.
         place2.lastExport = Date()
          
         place2.save()
         
-        guard let (places2, _) = Place.needExport(), places2.count == 0 else {
+        try placeExporter.updateAlreadyExported()
+        
+        let places2 = try placeExporter.needExport()
+        
+        guard places2.count == 0 else {
             XCTFail()
             return
         }

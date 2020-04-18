@@ -18,6 +18,10 @@ class PlaceExporterTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+    
+    func testPlaceNeedsExporting() {
+        XCTFail()
+    }
 
     func testExportedPlaceThatHasNotBeenExported() throws {
         let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL)
@@ -31,6 +35,8 @@ class PlaceExporterTests: XCTestCase {
     }
     
     func testExportedPlaceThatHasBeenExported() throws {
+        removePlaces()
+        
         guard let (place, _, placeExporter) = try exportWithNoImages() else {
             XCTFail()
             return
@@ -40,6 +46,12 @@ class PlaceExporterTests: XCTestCase {
         
         let exportedPlace = try placeExporter.exportedPlace(place: place)
         XCTAssert(exportedPlace != nil)
+        
+        let places = try placeExporter.needExport()
+        guard places.count == 0 else {
+            XCTFail()
+            return
+        }
     }
     
     @discardableResult
@@ -265,7 +277,7 @@ class PlaceExporterTests: XCTestCase {
             return
         }
         
-        let placeExportDirectory = place.createDirectoryName(in: Self.exportURL)
+        let placeExportDirectory = place.exportDirectoryName(in: Self.exportURL)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
         
         guard try Place.fetchObject(withUUID: uuid) == nil else {
@@ -316,7 +328,7 @@ class PlaceExporterTests: XCTestCase {
         try FileManager.default.removeItem(at: documentsImageURL)
         try FileManager.default.removeItem(at: documentsImageURL2)
 
-        let placeExportDirectory = place.createDirectoryName(in: Self.exportURL)
+        let placeExportDirectory = place.exportDirectoryName(in: Self.exportURL)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
 
         guard let importedPlace = try Place.import(from: placeExportDirectory, in: Self.exportURL) else {
@@ -360,18 +372,28 @@ class PlaceExporterTests: XCTestCase {
     }
     
     private func getREADME() throws -> String? {
-        let readMePath = Self.exportURL.path + "/" + PlaceExporter.readMe
-        let readMeURL = URL(fileURLWithPath: readMePath)
-        
+        let readMeURL = Self.exportURL.appendingPathComponent(PlaceExporter.readMe)
         let data = try Data(contentsOf: readMeURL)
         return String(data: data, encoding: .utf8)
     }
     
+    // Need to also make sure that if the README contents are changed on the second export, that the update actually occurs.
     func testThatREADMEIsReplacedOnSecondExport() throws {
         let readMeURL = PlaceExporter.readMe(in: Self.exportURL)
         try? FileManager.default.removeItem(at: readMeURL)
 
         try PlaceExporter.initializeExport(directory: Self.exportURL)
+        
+        // Append to the README contents -- to test a "change"
+        try FileManager.default.removeItem(at: readMeURL)
+        let changedContents = PlaceExporter.readMeContents + "extra"
+        
+        guard let data = changedContents.data(using: .utf8) else {
+            XCTFail()
+            return
+        }
+        
+        try data.write(to: readMeURL)
         
         // Make sure this second export doesn't fail.
         try PlaceExporter.initializeExport(directory: Self.exportURL)
@@ -381,6 +403,7 @@ class PlaceExporterTests: XCTestCase {
             return
         }
         
+        // make sure the contents *do not* reflect the changedContents
         XCTAssert(contents == PlaceExporter.readMeContents)
     }
     
@@ -489,6 +512,46 @@ class PlaceExporterTests: XCTestCase {
         // This is: Despite the fact that the place name was changed, and the export place folder can't be reconstituted directly.
         
         XCTAssert(exportDirectoryURLs0.count + 1 == exportDirectoryURLs2.count)
+    }
+    
+    func testCheckForReExportAfterNoChangeShouldNotNeedExport() throws {
+        removePlaces()
+        
+        guard let (place, _, placeExporter) = try exportWithNoImages() else {
+            XCTFail()
+            return
+        }
+        
+        try placeExporter.updateAlreadyExported()
+        
+        do {
+            let needsExporting = try placeExporter.placeNeedsExporting(place)
+            XCTAssert(!needsExporting)
+        } catch {
+            XCTFail()
+        }
+    }
+    
+    // Initially I had not covered this case. A re-export after removing a directory manually didn't actually re-export.
+    func testReExportAfterPlaceDataInExportWasRemovedShouldActuallyExport() throws {
+        removePlaces()
+        
+        guard let (place, _, placeExporter) = try exportWithNoImages() else {
+            XCTFail()
+            return
+        }
+        
+        let placeExportFolder = place.exportDirectoryName(in: Self.exportURL)
+        try FileManager.default.removeItem(at: placeExportFolder)
+        
+        try placeExporter.updateAlreadyExported()
+
+        do {
+            let needsExporting = try placeExporter.placeNeedsExporting(place)
+            XCTAssert(needsExporting)
+        } catch {
+            XCTFail()
+        }
     }
     
     func testCompareAllWithNoPlacesInCoreData() throws {

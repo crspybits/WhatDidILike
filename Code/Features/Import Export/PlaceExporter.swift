@@ -58,8 +58,7 @@ class PlaceExporter {
     }
     
     static func readMe(in directory: URL) -> URL {
-        let readMePath = directory.path + "/" + readMe
-        return URL(fileURLWithPath: readMePath)
+        return directory.appendingPathComponent(readMe)
     }
     
     struct ExportedPlace {
@@ -110,6 +109,35 @@ class PlaceExporter {
         return filtered[0]
     }
     
+    /* Uses two checks for this:
+        a) the lastExport date in relation to the lastExportModificationDate,
+        b) The presence (or absence) of an export folder for the place.
+    */
+    func placeNeedsExporting(_ place: Place) throws -> Bool {
+        if let lastExport = place.lastExport {
+            if place.lastExportModificationDate > lastExport {
+                // There was a change to the place after the last export. Need to re-export the place.
+                Log.msg("Change to place")
+                return true
+            }
+        }
+        else {
+            Log.msg("No lastExport date")
+            // No lastExport date -- it needs exporting for the first time.
+            return true
+        }
+        
+        guard let _ = try exportedPlace(place: place) else {
+            Log.msg("Not already exported")
+            // Not exported already. Needs exporting.
+            return true
+        }
+
+        // Going to assume that if the place is in the export directory, we exported it. And not peek into and check for dates.
+
+        return false
+    }
+    
     // Attempts to create a child directory, in the parent directory, using the form:
     //  <CleanedPlaceName>_<uuid>
     // where <CleanedPlaceName> has any non-alphabetic/non-numeric characters replaced with underscores.
@@ -141,7 +169,9 @@ class PlaceExporter {
             let encoder = JSONEncoder()
             let jsonData = try encoder.encode(place)
             
-            jsonFileName = URL(fileURLWithPath: exportDirectory.path + "/" + Place.placeJSON)
+            jsonFileName = exportDirectory.appendingPathComponent(Place.placeJSON, isDirectory: false)
+            
+            Log.msg("jsonFileName: \(String(describing: jsonFileName))")
             
             guard FileManager.default.createFile(atPath: jsonFileName.path, contents: jsonData, attributes: nil) else {
                 throw ImportExportError.cannotCreateJSONFile
@@ -153,7 +183,7 @@ class PlaceExporter {
                 }
                 
                 let originalImageURL = URL(fileURLWithPath: Image.filePath(for: imageFileName))
-                let exportImageURL = URL(fileURLWithPath: exportDirectory.path + "/" + imageFileName)
+                let exportImageURL = exportDirectory.appendingPathComponent(imageFileName)
                 try FileManager.default.copyItem(at: originalImageURL, to: exportImageURL)
                 
                 imageURLs += [exportImageURL]
@@ -164,6 +194,23 @@ class PlaceExporter {
         
         return [jsonFileName] + imageURLs
     }
+
+    // Return the collection of places that are "dirty"-- that have been changed since their last export (or that have never been exported).
+    func needExport() throws -> [Place] {
+        guard let allPlaces = Place.fetchAllObjects() else {
+            throw ImportExportError.cannotGetPlaces
+        }
+                
+        var result = [Place]()
+        
+        for place in allPlaces {
+            if try placeNeedsExporting(place) {
+                result += [place]
+            }
+        }
+        
+        return result
+    }
     
     // Attempts to force a download sync of already exported places iCloud Drive. This method is here to address the following problems I've been having with a failure synchronization. First, on the simulator, only the place folders in iCloud Drive download, not their contents. (Going into the Files app into a place folder does cause contents to download). Second, for a specific place.json file for one place I modified manually on the iCloud Drive web UI, this is now showing up as missing on my iPhone.
     // Always uses security scoped accessor-- this can't easily be tested in unit tests.
@@ -171,6 +218,9 @@ class PlaceExporter {
     static func forceSync(foldersIn cloudDriveDirectory: URL) throws {
         let alreadyExported = try Self.exportedPlaces(in: cloudDriveDirectory, accessor: .securityScoped)
         try cloudDriveDirectory.accessor(.securityScoped) { url in
+            // 4/14/20; This is my attempt to force a sync for the case of a user deleting the cloudDriveDirectory directory in iCloud. The individual forceSync's for export places is insuffient in my tests. BUT: This insufficiency may be just because I was testing on the simulator.
+            try cloudDriveDirectory.forceSync()
+            
             for exportedPlace in alreadyExported {
                 try exportedPlace.location.forceSync()
             }

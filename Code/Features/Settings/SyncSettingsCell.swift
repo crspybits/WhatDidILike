@@ -66,16 +66,32 @@ class SyncSettingsCell: UITableViewCell {
     }
     
     func updatePlacesNeedingBackup() {
-        if let (placesToExport, total) = Place.needExport(), placesToExport.count > 0 {
+        guard let exportFolder = Parameters.getExportFolder(parentVC: parentVC) else {
+            return
+        }
+                
+        var placeExporter: PlaceExporter!
+        var totalPlaces:UInt!
+        
+        do {
+            totalPlaces = try Place.numberOfObjects()
+            placeExporter = try PlaceExporter(parentDirectory: exportFolder, accessor: .securityScoped)
+        } catch let error {
+            Log.msg("\(error)")
+            return
+        }
+        
+        if let placesToExport = try? placeExporter.needExport(),
+            placesToExport.count > 0 {
             let terms: String
-            if total == 1 {
+            if totalPlaces == 1 {
                 terms = "place needs"
             }
             else {
                 terms = "places need"
             }
             
-            placesNeedingBackup.text = "(\(placesToExport.count) of \(total) \(terms) backup)"
+            placesNeedingBackup.text = "(\(placesToExport.count) of \(totalPlaces!) \(terms) backup)"
             placesNeedingBackup.isHidden = false
         }
         else {

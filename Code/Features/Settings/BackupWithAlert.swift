@@ -23,23 +23,24 @@ class BackupWithAlert {
     
     func start(usingSecurityScopedFolder securityScopedFolder: URL, completion:(()->())? = nil) {
         self.securityScopedFolder = securityScopedFolder
-        guard let (placesToExport, _) = Place.needExport() else {
-            completion?()
-            return
-        }
         
-        guard placesToExport.count > 0 else {
-            let alert = UIAlertController(title: "No places need exporting", message: nil, preferredStyle: .alert)
+        do {
+            placeExporter = try PlaceExporter(parentDirectory: securityScopedFolder, accessor: .securityScoped)
+        } catch let error {
+            let alert = UIAlertController(title: "Alert!", message: "There was an error initializing the export: \(error)", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             parentVC?.present(alert, animated: true, completion: nil)
             completion?()
             return
         }
         
-        do {
-            placeExporter = try PlaceExporter(parentDirectory: securityScopedFolder, accessor: .securityScoped)
-        } catch let error {
-            let alert = UIAlertController(title: "Alert!", message: "There was an error initializing the export: \(error)", preferredStyle: .alert)
+        guard let placesToExport = try? placeExporter.needExport() else {
+            completion?()
+            return
+        }
+        
+        guard placesToExport.count > 0 else {
+            let alert = UIAlertController(title: "No places need exporting", message: nil, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             parentVC?.present(alert, animated: true, completion: nil)
             completion?()
