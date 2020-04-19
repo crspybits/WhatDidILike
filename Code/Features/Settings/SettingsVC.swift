@@ -21,7 +21,8 @@ class SettingsVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var compareCell: CompareBackupCell?
     var deletionOptionsCell: PlaceDeletionOptionsCell?
-    
+    private var spinner:Spinner?
+
     private let syncCell = CellDescription(cellName: "SyncSettingsCell") { id, indexPath, settingsVC in
 
         guard let cell = settingsVC.tableView.dequeueReusableCell(withIdentifier: id, for: indexPath) as? SyncSettingsCell else {
@@ -85,6 +86,13 @@ class SettingsVC: UIViewController {
         tableView.allowsSelection = false
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if spinner == nil {
+            spinner = Spinner(superview: view)
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -113,5 +121,13 @@ extension SettingsVC: SettingsCellDelegate {
     func backupFolder(isAvailable: Bool) {
         deletionOptionsCell?.backupFolder(isAvailable: isAvailable)
         compareCell?.backupFolder(isAvailable: isAvailable)
+    }
+    
+    func startSpinner()  {
+        spinner?.start()
+    }
+    
+    func stopSpinner() {
+        spinner?.stop()
     }
 }

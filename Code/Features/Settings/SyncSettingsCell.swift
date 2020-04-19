@@ -12,6 +12,14 @@ import CoreServices
 
 protocol SettingsCellDelegate: AnyObject {
     func backupFolder(isAvailable: Bool)
+    func startSpinner()
+    func stopSpinner()
+}
+
+extension SettingsCellDelegate {
+    // Make the spinner methods optional
+    func startSpinner() {}
+    func stopSpinner() {}
 }
 
 class SyncSettingsCell: UITableViewCell {
@@ -29,16 +37,19 @@ class SyncSettingsCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        placesNeedingBackup.text = ""
+        updatePlacesNeedingBackup()
+        
         Layout.format(textBox: textView)
         separator.backgroundColor = .separatorBackground
         setFolderTextInUI(Parameters.displayBackupFolder.stringValue)
         
         Log.msg("Parameters.displayBackupFolder.stringValue: \(Parameters.displayBackupFolder.stringValue)")
 
-        syncICloudIfNeeded(showAlert: false)
+        syncICloudIfNeeded(showUIIndications: false)
     }
     
-    private func syncICloudIfNeeded(showAlert: Bool) {
+    private func syncICloudIfNeeded(showUIIndications: Bool) {
         guard let exportFolder = Parameters.getExportFolder(parentVC: parentVC) else {
             return
         }
@@ -47,13 +58,18 @@ class SyncSettingsCell: UITableViewCell {
             return
         }
         
+        if showUIIndications {
+            delegate?.startSpinner()
+        }
+        
         DispatchQueue.global(qos: .background).async {
             do {
                 try PlaceExporter.forceSync(foldersIn: exportFolder)
                 
-                if showAlert {
+                if showUIIndications {
                     let message = "If there are files that need downloading from the cloud -- downloading may take a while after you do this. e.g., don't do a Restore yet."
                     DispatchQueue.main.async {
+                        self.delegate?.stopSpinner()
                         let alert = UIAlertController(title: "Sync Started!", message: message, preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
                         self.parentVC?.present(alert, animated: true, completion: nil)
@@ -163,7 +179,7 @@ class SyncSettingsCell: UITableViewCell {
     }
     
     @IBAction func syncAction(_ sender: Any) {
-        syncICloudIfNeeded(showAlert: true)
+        syncICloudIfNeeded(showUIIndications: true)
     }
     
     @IBAction func helpAction(_ sender: Any) {

@@ -17,6 +17,7 @@ class RestoreWithAlert {
     private var securityScopedFolder: URL!
     private var completion:(()->())?
     private var actualNumberOfImports = 0
+    private var cancel = false
     
     init(parentVC: UIViewController) {
         self.parentVC = parentVC
@@ -24,7 +25,8 @@ class RestoreWithAlert {
     
     func start(usingSecurityScopedFolder securityScopedFolder: URL, completion:(()->())? = nil) {
         self.securityScopedFolder = securityScopedFolder
-
+        cancel = false
+        
         guard let placesToImport = try? PlaceExporter.exportedPlaces(in: securityScopedFolder, accessor: .securityScoped) else {
             completion?()
             return
@@ -42,7 +44,7 @@ class RestoreWithAlert {
 
         activity = UIAlertController(title: "Importing...", message: nil, preferredStyle: .alert)
         activity.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-            self.placesToImport = nil
+            self.cancel = true
         }))
         parentVC?.present(activity, animated: true, completion: nil)
         
@@ -52,23 +54,34 @@ class RestoreWithAlert {
     }
     
     private func importNext() {
+        guard !cancel else {
+            return
+        }
+        
         guard let placesToImport = placesToImport,
             placesToImport.count > 0 else {
             
             let title:String
             if actualNumberOfImports == 0 {
                 title = "No places need importing-- they have already been imported."
-                let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-                
-                activity.dismiss(animated: true) {[unowned self] in
-                    self.parentVC?.present(alert, animated: true) {[unowned self] in
-                        self.completion?()
-                    }
-                }
             }
             else {
-                self.activity.dismiss(animated: true) {[unowned self] in
+                let terms: String
+                if actualNumberOfImports == 1 {
+                    terms = "place was"
+                }
+                else {
+                    terms = "places were"
+                }
+                
+                title = "\(actualNumberOfImports) \(terms) imported."
+            }
+            
+            let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            
+            activity.dismiss(animated: true) {[unowned self] in
+                self.parentVC?.present(alert, animated: true) {[unowned self] in
                     self.completion?()
                 }
             }

@@ -87,11 +87,11 @@ IMPORT/EXPORT
     * Should we try to estimate, prior to a backup, if there is sufficient storage space available and warn the user if there is not?
         See https://stackoverflow.com/questions/5712527
     
-    * Should put a spinner on the sync: It can take appreciable time for just the sync itself to happen. E.g., 5 or so seconds with my full data set on an iOS simulator.
+    * DONE: Should put a spinner on the sync: It can take appreciable time for just the sync itself to happen. E.g., 5 or so seconds with my full data set on an iOS simulator.
     
-    * Once finished the "Restore Now", give a final Alert indicating how many places restored if it was successful.
+    * DONE: Once finished the "Restore Now", give a final Alert indicating how many places restored if it was successful.
     
-    * If I do the following:
+    * DONE: If I do the following:
         a) Backup the place data to, say, iCloud
         b) Go to iCloud.com and remove that data.
         c) Force a sync (e.g., in the simulator: Debug -> "Trigger iCloud Sync").
