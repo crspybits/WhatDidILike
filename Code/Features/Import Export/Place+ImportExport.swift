@@ -109,6 +109,8 @@ extension Place {
         2) The creationDates are the same. In this case, nil is returned and no Place managed object is created.
         
         `testing`-- If you set this to true (for debug builds only), then (a) no place UUID conflict resolution is done, and (b) images from export are not copied into app.
+        
+        On an import failure, a cleanup is done so Core Data objects remain and no files remain from attempted import.
     */
     @discardableResult
     static func `import`(from placeExportDirectory: URL, in parentDirectory: URL, accessor:URL.Accessor = .none, testing: Bool = false) throws -> Place? {
@@ -194,8 +196,11 @@ extension Place {
                     }
                     
                     if images.count > 1 {
-                        // Collision. Need to rename the `image` with a different UUID. Upon the next backup, this image will be duplicated in the backup. It will be present at it's prior name. And it will be present at the new name.
-                        // TODO: Rename the image file in the export.
+                        // Collision. Upon the next backup, this image will be duplicated in the backup. It will be present at it's prior name. And it will be present at the new name.
+                        // Note that the place.json in the export still reflects the old (colliding) image naming.
+                        // On a full cleanup, we'd need to update the place.json with the new uuid naming, and rename the image file in the export on this basis.
+                        // For now, I'm going to not worry about either of these. This may be best done in a garbage collection manner and not here-- this code is complicated enough as it stands and I can't see modifying the place.json file in an import.
+
                         let newUUID: String = try Image.realUUID()
                         image.uuid = newUUID
                         imageFileName = Image.createFileName(usingNewImageFileUUID: newUUID)

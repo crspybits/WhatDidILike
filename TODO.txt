@@ -1,10 +1,11 @@
 WhatDidILike
 
 BUGS
-    * "// TODO: Rename the image file in the export."
-
     * On iOS 10.3.1, iPhone 7, when the sort/filter modal is presented it is too high-- too near the status bar.
 
+    * DONE: "// TODO: Rename the image file in the export."
+        Actually, not doing this. This was a cleanup after a collision, but as I've commented in the code, just a renaming of the image isn't enough, and it seems it would be better done as a garbage collection.
+    
     * DONE: On a failed place import, locations need to be removed too. See Place import:
 // TODO: `locations` will not have been removed as part of this removal/error handling.
 
