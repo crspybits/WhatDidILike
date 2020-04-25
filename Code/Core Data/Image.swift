@@ -127,6 +127,7 @@ public class Image: NSManagedObject, Codable, EquatableObjects, UUIDCollisionAvo
         try container.encode(uuid, forKey: .uuid)
     }
     
+    // Failure to remove the file doesn't actually throw an error or otherwise cause the removal to fail-- it just logs an error.
     func remove() {
         do {
             try FileManager.default.removeItem(atPath: filePath)

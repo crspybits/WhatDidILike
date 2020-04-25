@@ -244,6 +244,140 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         place.remove()
         place.save()
     }
+    
+    func createImageWithUUIDName() throws -> Image? {
+        let name = "example"
+        let ext = "jpeg"
+
+        let bundle = Bundle(for: Self.self)
+        guard let bundleURL = bundle.url(forResource: name, withExtension: ext) else {
+            XCTFail()
+            return nil
+        }
+        
+        let imageUUID: String = try Image.realUUID()
+        let imageFileNameWithUUID = Image.createFileName(usingNewImageFileUUID: imageUUID)
+        
+        let documentsImageURL = URL(fileURLWithPath: Image.filePath(for: imageFileNameWithUUID))
+        
+        if !FileManager.default.fileExists(atPath: documentsImageURL.path) {
+            try? FileManager.default.createDirectory(at: FileStorage.url(ofItem: SMIdentifiers.LARGE_IMAGE_DIRECTORY), withIntermediateDirectories: false, attributes: nil)
+            do {
+                try FileManager.default.copyItem(at: bundleURL, to: documentsImageURL)
+            } catch {
+                XCTFail()
+                return nil
+            }
+        }
+        
+        let image = Image.newObject()
+        image.fileName = imageFileNameWithUUID
+        image.uuid = imageUUID
+        
+        return image
+    }
+    
+    func testFailureCopyingImageFromExportToAppWhenDoingPlaceImport() throws {
+        // Remove places and locations so we can be confident of results after the test when testing for number of places and locations.
+        removePlaces()
+        if let locations = Location.fetchAllObjects() {
+            var unusedUuid:String?
+            for location in locations {
+                location.remove(uuidOfPlaceRemoved: &unusedUuid)
+            }
+        }
+        
+        // A) Prepare for the import-- create a place and export it.
+        let place = try Place.newObject()
+        place.name = "Fooby"
+        let location = try Location.newObject()
+        place.addToLocations(location)
+        
+        // Give the place/location a couple of images.
+        guard let image1 = try createImageWithUUIDName() else {
+            XCTFail()
+            return
+        }
+        
+        guard let image2 = try createImageWithUUIDName() else {
+            XCTFail()
+            return
+        }
+        
+        guard let image1UUID = image1.uuid,
+            let image2UUID = image2.uuid else {
+            XCTFail()
+            return
+        }
+        
+        guard let image2FileName = image2.fileName else {
+            XCTFail()
+            return
+        }
+        
+        location.addToImages(image1)
+        location.addToImages(image2)
+        
+        let placeExporter = try PlaceExporter(parentDirectory: Self.exportURL)
+        let exportedURLs = try placeExporter.export(place: place)
+        
+        // urls: The .json file and the two images.
+        guard exportedURLs.count == 3 else {
+            XCTFail()
+            return
+        }
+
+        // B) Interfere with the exported place so that an import of the place will fail.
+        // Which one of the URL's is for the second image?
+        
+        var secondImageExportURL:URL!
+        for url in exportedURLs {
+            if url.path.contains(image2FileName) {
+                secondImageExportURL = url
+            }
+        }
+                
+        XCTAssert(secondImageExportURL != nil)
+        try FileManager.default.removeItem(at: secondImageExportURL)
+        
+        // C) Remove the place, location, and images from Core Data so we can do an import
+        // This should remove all of the images and the place.
+        var uuid: String?
+        location.remove(uuidOfPlaceRemoved: &uuid)
+        XCTAssert(uuid != nil)
+        
+        // D) Do the import, and expect a failure.
+        let placeExportURL = exportedURLs[0].deletingLastPathComponent()
+
+        do {
+            try Place.import(from: placeExportURL, in: Self.exportURL)
+        } catch {
+            // Expect to be here.
+            
+            // E) Check for proper cleanup
+            
+            // There should be no place in Core Data with the given UUID after the failure.
+            // And since we cleaned up, there should be no places at all.
+            let places = Place.fetchAllObjects()
+            XCTAssert(places?.count == 0)
+            
+            // There should be no locations related to that place remaining after that failure.
+            let locations = Location.fetchAllObjects()
+            XCTAssert(locations?.count == 0)
+            
+            // There should be no images in the app as a result of the partial copy.
+            let image1 = try Image.fetchObject(withUUID: image1UUID)
+            XCTAssert(image1 == nil)
+            
+            let image2 = try Image.fetchObject(withUUID: image2UUID)
+            XCTAssert(image2 == nil)
+            
+            return
+        }
+        
+        // Didn't get failure on import. Whoops.
+        XCTFail()
+    }
 }
 
 extension XCTestCase {

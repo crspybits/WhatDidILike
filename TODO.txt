@@ -1,13 +1,13 @@
 WhatDidILike
 
 BUGS
-    * On a failed place import, locations need to be removed too. See Place import:
-// TODO: `locations` will not have been removed as part of this removal/error handling.
-
     * "// TODO: Rename the image file in the export."
 
     * On iOS 10.3.1, iPhone 7, when the sort/filter modal is presented it is too high-- too near the status bar.
-    
+
+    * DONE: On a failed place import, locations need to be removed too. See Place import:
+// TODO: `locations` will not have been removed as part of this removal/error handling.
+
     * DONE: In Dark mode, I cannot see the spinner-- which I believe comes up, when pressing the "Sync" button.
 
     * DONE: Dark mode: The horizontal lines in the Settings-- i.e., the separators between cells, are not consistent in their white color. The bottom two-- e.g., below the "Remove backup place ..." are brighter.

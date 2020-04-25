@@ -210,8 +210,27 @@ extension Place {
                 do {
                     try FileManager.default.copyItem(at: exportedImageURL, to: appImageURL)
                 } catch let error {
-                    // TODO: `locations` will not have been removed as part of this removal/error handling.
-                    CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place)
+                    // Remove any locations as part of this removal/error handling.
+                    // All the substructure for the place must get removed.
+                    // And any images copied so far ought to be removed.
+                    
+                    if let locations = place.locations as? Set<Location> {
+                        var unusedUuid: String?
+                        for location in locations {
+                            location.remove(uuidOfPlaceRemoved: &unusedUuid)
+                        }
+                        
+                        if unusedUuid == nil {
+                            Log.msg("ERROR: Why wasn't the place removed in the cleanup?")
+                        }
+                    }
+                    else {
+                        // Shouldn't get here, but put it in just in case. I.e., any place ought to have had a location and we should have used the above code to do the cleanup.
+                        place.remove()
+                    }
+                    
+                    CoreData.sessionNamed(CoreDataExtras.sessionName).saveContext()
+
                     throw ImportExportError.errorCopyingFile(error)
                 }
             }
