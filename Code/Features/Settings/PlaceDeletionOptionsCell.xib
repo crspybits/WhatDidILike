@@ -55,6 +55,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="separator" destination="s6v-kE-CPU" id="4pc-Jt-83C"/>
                 <outlet property="yesNo" destination="gsp-Tc-ABt" id="ObR-p1-Yus"/>
             </connections>
             <point key="canvasLocation" x="100.72463768115942" y="92.745535714285708"/>

@@ -195,6 +195,7 @@ extension Place {
                     
                     if images.count > 1 {
                         // Collision. Need to rename the `image` with a different UUID. Upon the next backup, this image will be duplicated in the backup. It will be present at it's prior name. And it will be present at the new name.
+                        // TODO: Rename the image file in the export.
                         let newUUID: String = try Image.realUUID()
                         image.uuid = newUUID
                         imageFileName = Image.createFileName(usingNewImageFileUUID: newUUID)
@@ -202,7 +203,7 @@ extension Place {
                     }
                     // Else: No collision-- use the original file name.
                 }
-                // Else: The image.uuid is nil. This must be a pre-v2.2 image-- it's not named with the UUID. Just use the original file name.
+                // Else: The image.uuid is nil. This must be a pre-v2.2 image-- it's not named with a UUID. Just use the original file name.
                                     
                 let appImageURL = URL(fileURLWithPath: Image.filePath(for: imageFileName))
 

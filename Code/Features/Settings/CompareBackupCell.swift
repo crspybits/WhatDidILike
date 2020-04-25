@@ -11,9 +11,11 @@ import UIKit
 class CompareBackupCell: UITableViewCell, SettingsCellDelegate {
     weak var parentVC: UIViewController?
     @IBOutlet weak var compare: UIButton!
+    @IBOutlet weak var separator: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        separator.backgroundColor = .separatorBackground
         setupCompare()
     }
     

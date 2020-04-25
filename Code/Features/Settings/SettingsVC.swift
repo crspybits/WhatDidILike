@@ -89,7 +89,18 @@ class SettingsVC: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if spinner == nil {
-            spinner = Spinner(superview: view)
+            var spinnerStyle: UIActivityIndicatorViewStyle = .gray
+            
+            if #available(iOS 12.0, *) {
+                switch traitCollection.userInterfaceStyle {
+                case .light, .unspecified:
+                    break
+                case .dark:
+                    spinnerStyle = .white
+                }
+            }
+            
+            spinner = Spinner(activityIndicatorStyle: spinnerStyle, superview: view)
         }
     }
     

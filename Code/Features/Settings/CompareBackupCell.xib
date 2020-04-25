@@ -54,6 +54,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="compare" destination="weq-Yg-YuZ" id="xQW-SK-OTu"/>
+                <outlet property="separator" destination="VF1-Zx-Act" id="AL5-d9-bHv"/>
             </connections>
             <point key="canvasLocation" x="10.144927536231885" y="75.669642857142847"/>
         </tableViewCell>

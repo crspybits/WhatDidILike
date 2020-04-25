@@ -11,11 +11,13 @@ import SMCoreLib
 
 class PlaceDeletionOptionsCell: UITableViewCell {
     @IBOutlet weak var yesNo: UISegmentedControl!
+    @IBOutlet weak var separator: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         yesNo.selectedSegmentIndex = Parameters.removeBackupPlace.boolValue ? 0 : 1
         yesNo.isEnabled = (try? Parameters.securityScopedExportFolder()) != nil
+        separator.backgroundColor = .separatorBackground
     }
     
     @IBAction func yesNoAction(_ sender: Any) {

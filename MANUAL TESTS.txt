@@ -28,3 +28,5 @@ ANY BUILD
             - How long does it last prior to the message that the sync was successful?
             - Does the spinner stay up for the duration? i.e., is it clear that the sync is taking some appreciable time? (It takes about 5 seconds on an iOS simulator).
 
+        * For release, have to make sure that iCloud container is named
+            iCloud.com.WhatDidILike (not iCloud.com.WhatDidILike.beta)

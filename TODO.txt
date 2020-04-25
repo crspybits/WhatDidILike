@@ -4,9 +4,15 @@ BUGS
     * On a failed place import, locations need to be removed too. See Place import:
 // TODO: `locations` will not have been removed as part of this removal/error handling.
 
-    * FIX: "Rely on some other method/process to clean up later. E.g., garbage collection to remove the now duplicated place in the export folders."
+    * "// TODO: Rename the image file in the export."
 
     * On iOS 10.3.1, iPhone 7, when the sort/filter modal is presented it is too high-- too near the status bar.
+    
+    * DONE: In Dark mode, I cannot see the spinner-- which I believe comes up, when pressing the "Sync" button.
+
+    * DONE: Dark mode: The horizontal lines in the Settings-- i.e., the separators between cells, are not consistent in their white color. The bottom two-- e.g., below the "Remove backup place ..." are brighter.
+
+    * DONE: FIX: "Rely on some other method/process to clean up later. E.g., garbage collection to remove the now duplicated place in the export folders."
     
     * DONE: When typing into the Place Name field, after each character is typed, the cursor moves to the end of the field. It ought not to.
     
@@ -78,15 +84,28 @@ IMPORT/EXPORT
         
     * What happens on a sync if the folder is not there? Log message? App crash?
         This is relevant b/c it can happen if a user deletes data from iCloud.
-        
-    * We don't have a specific named folder in iCloud Drive. E.g., Petunia has
-        iCloud~biz~SpasticMuffin~Petunia
-    for WhatDidILike, so far it is:
-        com~apple~CloudDocss
 
     * Should we try to estimate, prior to a backup, if there is sufficient storage space available and warn the user if there is not?
         See https://stackoverflow.com/questions/5712527
+        
+    * Currently cannot backup to Google Drive or Dropbox. Those entries, when scoped for selecting folders, are grayed out in the UIDocumentPickerViewController. See also
+        https://stackoverflow.com/questions/58262986
+        https://www.dropboxforum.com/t5/Dropbox-API-Support-Feedback/iOS-Document-Picker-greyed-out/td-p/374480
+        
+    * DONE: Suppose a backup runs out of storage space. Will the entire backup fail at that point or will it keep trying? I think it should give up.
+        I think it will fail when it runs out, and give up. It should fail on a single export(place: Place) and then fail entirely.
+        
+    * DONE: What if there's a failure trying to access the Backup/Restore Folder? Should I reset it to empty? I'm just getting this now in a failure to access securityScopedExportFolder(). In this case it is because I've actually, in development, changed the iCloud container.
+        Seems like a rare edge case, where the user could recover by clearing the folder. Not going to worry about for now.
     
+    * DONE: We don't have a specific named folder in iCloud Drive. E.g., Petunia has
+        iCloud~biz~SpasticMuffin~Petunia
+    for WhatDidILike, so far it is:
+        com~apple~CloudDocs
+    Where did I see this?
+        One place-- in the UI in the Backup/Restore Folder in the WhatDidILike settings
+            Hmmm. Not actually sure if this is true-- I'm still seeing the com~apple~CloudDocs despite the fact that I changed the container name.
+        
     * DONE: Should put a spinner on the sync: It can take appreciable time for just the sync itself to happen. E.g., 5 or so seconds with my full data set on an iOS simulator.
     
     * DONE: Once finished the "Restore Now", give a final Alert indicating how many places restored if it was successful.
