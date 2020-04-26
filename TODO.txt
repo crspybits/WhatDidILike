@@ -92,6 +92,22 @@ IMPORT/EXPORT
     * Currently cannot backup to Google Drive or Dropbox. Those entries, when scoped for selecting folders, are grayed out in the UIDocumentPickerViewController. See also
         https://stackoverflow.com/questions/58262986
         https://www.dropboxforum.com/t5/Dropbox-API-Support-Feedback/iOS-Document-Picker-greyed-out/td-p/374480
+    
+    * Social media integrations:
+        (a) Export info from a place to Yelp
+        (b) To Facebook
+        (c) To Instagram
+        (d) To Pinterest
+    
+    * Should I write an additional html file into the place export folders that would let a human view the place data? I.e., format the place/location info into a nice web page?
+    
+    * The date formats in the place.json file aren't very human readable. E.g.,
+        "modificationDate": 609569555.55133605,
+        "creationDate": 387243594.25358099,
+        Perhaps they ought to be?
+    
+    * DONE: When I merely navigate to a place in the UI, the place gets marked in Settings as needing backup.
+        Cause: The rateValueChangeCallback was effectively updating the modificationDate of the rating despite the fact that the rating was not changed by the user. This was because the `rateValueChangeCallback` got called even during setup.
         
     * DONE: I think changes to sorting attributes are causing places to be marked as needing backup. I just sorted places by their distance from me, and all places are again needing backup.
     

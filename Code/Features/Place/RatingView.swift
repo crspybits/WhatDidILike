@@ -225,8 +225,13 @@ class RatingView: UIView, XibBasics {
         
         self.rating = rating
         ourRating = rating.rating
-        rateView.rateValue = emojiRating
         
+        // 4/26/20-- The awkwardness with the callback is so that the modificationDate of the rating doesn't change just by initializing the rateValue of the rateView.
+        let callback = rateView.rateValueChangeCallback
+        rateView.rateValueChangeCallback = nil
+        rateView.rateValue = emojiRating
+        rateView.rateValueChangeCallback = callback
+
         recommendedByText.text = rating.recommendedBy
         
         recommendedByText.save = { update in
