@@ -7,20 +7,28 @@ DEBUG-BUILD ONLY
             - On the simulator, use Debug -> "Trigger iCloud Sync"
             a) Load production Core Data into app
             b) Do an export
-            c) Remove app
-            d) Do a restore
-            e) Do a compare of core data against export
-            f) Expect: "Same!!"
+            c) Wait for iOS to finish uploading data to iCloud
+            d) Remove app
+            e) Re-install app
+            f) Do a restore
+            g) Do a compare of core data against export
+            h) Expect: "Same!!"
 
         * Test to ensure backup works after removing cloud data. Steps:
             a) Backup the place data to, say, iCloud
             b) Go to iCloud.com and remove that data.
             c) Force a sync (e.g., in the simulator: Debug -> "Trigger iCloud Sync").
-            d) In Settings, try a "backup" again. All places should get backed up.
+            d) Recreate the iCloud folder
+            e) In Settings, try a "backup" again. All places should get backed up.
 
 ANY BUILD
 
     BACKUP / RESTORE
+    
+        * Test "Remove backup place when place removed."
+            a) Turn it on
+            b) Remove a place
+            c) Make sure the place in the export is removed.
     
         * Test restarting a backup after cancelling it midway through.
         

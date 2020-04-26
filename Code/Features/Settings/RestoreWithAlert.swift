@@ -43,8 +43,11 @@ class RestoreWithAlert {
         }
 
         activity = UIAlertController(title: "Importing...", message: nil, preferredStyle: .alert)
-        activity.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+        activity.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {[unowned self] _ in
             self.cancel = true
+            
+            // Report partial imports.
+            self.reportNumberImports()
         }))
         parentVC?.present(activity, animated: true, completion: nil)
         
@@ -61,31 +64,7 @@ class RestoreWithAlert {
         guard let placesToImport = placesToImport,
             placesToImport.count > 0 else {
             
-            let title:String
-            if actualNumberOfImports == 0 {
-                title = "No places need importing-- they have already been imported."
-            }
-            else {
-                let terms: String
-                if actualNumberOfImports == 1 {
-                    terms = "place was"
-                }
-                else {
-                    terms = "places were"
-                }
-                
-                title = "\(actualNumberOfImports) \(terms) imported."
-            }
-            
-            let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            
-            activity.dismiss(animated: true) {[unowned self] in
-                self.parentVC?.present(alert, animated: true) {[unowned self] in
-                    self.completion?()
-                }
-            }
-
+            reportNumberImports()
             return
         }
         
@@ -111,6 +90,33 @@ class RestoreWithAlert {
         // Async so that other work on the main thread can take place.
         DispatchQueue.main.async {
             self.importNext()
+        }
+    }
+    
+    private func reportNumberImports() {
+        let title:String
+        if actualNumberOfImports == 0 {
+            title = "No places need importing-- they have already been imported."
+        }
+        else {
+            let terms: String
+            if actualNumberOfImports == 1 {
+                terms = "place was"
+            }
+            else {
+                terms = "places were"
+            }
+            
+            title = "\(actualNumberOfImports) \(terms) imported."
+        }
+        
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        
+        activity.dismiss(animated: true) {[unowned self] in
+            self.parentVC?.present(alert, animated: true) {[unowned self] in
+                self.completion?()
+            }
         }
     }
 }
