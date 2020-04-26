@@ -499,4 +499,42 @@ class CoreDataTests: XCTestCase {
         
         XCTAssert(uuidOfPlaceRemoved != nil)
     }
+    
+    func testThatIgnoredFieldsDoNotUpdateModificationDate() throws {
+        /*
+        Place.suggestionField,
+        Location.TRY_AGAIN_KEY,
+        Location.DISTANCE_KEY,
+        Location.internalRatingField
+         */
+         
+        let originalDate = (Date() - 100) as NSDate
+         
+        let place = try Place.newObject()
+        // So I can detect a change
+        place.modificationDate = originalDate
+        place.save()
+        
+        place.suggestion = 1
+        place.save()
+        
+        XCTAssert(place.modificationDate == originalDate)
+        
+        let location = try Location.newObject()
+        // So I can detect a change
+        location.modificationDate = originalDate
+        location.save()
+        
+        location.internalGoBack = 1
+        location.save()
+        XCTAssert(location.modificationDate == originalDate)
+
+        location.internalDistance = 1
+        location.save()
+        XCTAssert(location.modificationDate == originalDate)
+        
+        location.internalRating = 1
+        location.save()
+        XCTAssert(location.modificationDate == originalDate)
+    }
 }

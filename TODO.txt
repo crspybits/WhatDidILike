@@ -93,6 +93,8 @@ IMPORT/EXPORT
         https://stackoverflow.com/questions/58262986
         https://www.dropboxforum.com/t5/Dropbox-API-Support-Feedback/iOS-Document-Picker-greyed-out/td-p/374480
         
+    * DONE: I think changes to sorting attributes are causing places to be marked as needing backup. I just sorted places by their distance from me, and all places are again needing backup.
+    
     * DONE: Suppose a backup runs out of storage space. Will the entire backup fail at that point or will it keep trying? I think it should give up.
         I think it will fail when it runs out, and give up. It should fail on a single export(place: Place) and then fail entirely.
         

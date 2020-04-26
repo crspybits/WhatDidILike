@@ -16,6 +16,7 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
     static let DISTANCE_KEY = "internalDistance"
     static let SUGGESTION_KEY = "place.suggestion"
     static let TRY_AGAIN_KEY = "internalGoBack"
+    static let internalRatingField = "internalRating"
 
     // I'm not using `internalDistance` directly just to emphasize that this is a little different. It's for the UI so we can order locations by distance.
     // Unit is meters.

@@ -18,6 +18,7 @@ public class Place: BaseObject, Codable, EquatableObjects, UUIDCollisionAvoidanc
     
     static let UUID_KEY = "uuid"
     static let lastExportField = "lastExport"
+    static let suggestionField = "suggestion"
 
     override class func entityName() -> String {
         return "Place"

@@ -15,6 +15,14 @@ import SMCoreLib
 public class BaseObject: NSManagedObject {
     static let modificationDateField = "modificationDate"
     
+    // Two other fields are defined in `willSave`. These are ignored because they are derived or computed fields and are not a reason for re-exporting an object.
+    static let ignoreInWillSave = [
+        Place.suggestionField,
+        Location.TRY_AGAIN_KEY,
+        Location.DISTANCE_KEY,
+        Location.internalRatingField
+    ]
+    
     // Subclass *must* override
     class func entityName() -> String {
         assert(false)
@@ -51,7 +59,14 @@ public class BaseObject: NSManagedObject {
             return
         }
         
-        let changes = changedValues()
+        var changes = changedValues()
+        for key in Self.ignoreInWillSave {
+            changes.removeValue(forKey: key)
+        }
+        
+        guard changes.count > 0 else {
+            return
+        }
         
         // Don't repeatedly (recursively) change the modificationDate
         guard changes[Self.modificationDateField] == nil else {
