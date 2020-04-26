@@ -76,6 +76,9 @@ class SyncSettingsCell: UITableViewCell {
                     }
                 }
             } catch let error {
+                DispatchQueue.main.async {
+                    self.delegate?.stopSpinner()
+                }
                 Log.error("Failed to forceSync: \(error)")
             }
         }
