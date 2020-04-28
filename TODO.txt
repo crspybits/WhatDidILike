@@ -101,7 +101,9 @@ IMPORT/EXPORT
     
     * Should I write an additional html file into the place export folders that would let a human view the place data? I.e., format the place/location info into a nice web page?
     
-    * The date formats in the place.json file aren't very human readable. E.g.,
+    * DONE: Add docs: Duration of a backup to cloud. It may take some time to actually complete a backup to the cloud.
+    
+    * DONE: The date formats in the place.json file aren't very human readable. E.g.,
         "modificationDate": 609569555.55133605,
         "creationDate": 387243594.25358099,
         Perhaps they ought to be?
