@@ -1284,7 +1284,7 @@ class CodableTests: XCTestCase {
     }
     
     func testDateEncoding() throws {
-        let exampleDate = "2020-04-27T19:21:32.657-06:00"
+        let exampleDate = "2020-04-27T19:21:32.657Z"
         let expectedJSON = "{\"date\":\"\(exampleDate)\"}"
 
         let dateFormatter = DateFormatter()
