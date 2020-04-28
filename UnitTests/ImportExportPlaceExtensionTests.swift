@@ -237,7 +237,8 @@ class ImportExportPlaceExtensionTests: XCTestCase {
         let (_, partialPlace) = try Place.peek(with: placeExportURL, in: Self.exportURL)
         
         // 3) Make sure the peek reflects the exported place.
-        XCTAssert(partialPlace.creationDate == place.creationDate)
+        XCTAssert(CodableExtras.equalDates(partialPlace.creationDate as Date?, place.creationDate as Date?))
+
         XCTAssert(partialPlace.uuid == place.uuid)
         
         // 4) Cleanup

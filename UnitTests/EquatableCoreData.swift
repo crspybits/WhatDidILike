@@ -208,8 +208,8 @@ class EquatableCoreData: XCTestCase {
             return
         }
         
-        let encoder = JSONEncoder()
-        let decoder = JSONDecoder()
+        let encoder = JSONEncoder.encoder
+        let decoder = JSONDecoder.decoder
         
         var success = 0
         

@@ -133,7 +133,7 @@ extension Place {
                     throw ImportExportError.wrongInternalCollisionResult
                     
                 case .existsWithObject(let collidingPlace):
-                    if collidingPlace.creationDate == importPlacePeek.creationDate {
+                    if CodableExtras.equalDates(collidingPlace.creationDate as Date?, importPlacePeek.creationDate as Date?) {
                         // The place we are importing has the same creation date as the UUID collision. I'm taking this to mean: The place we are importing is really the same place, and we're not just having a UUID collision.
                         // It seems important to emphasize that this isn't really a UUID collision. It's more of a possible conflict where we might want to try to integrate changes from a backup (if, say, it's stored in iCloud) with local changes. For now, not going to worry about this.
                         Log.msg("Import attempt of place with same UUID and same creationDate: Skipping")
@@ -148,7 +148,7 @@ extension Place {
                 }
             }
             
-            let decoder = JSONDecoder()
+            let decoder = JSONDecoder.decoder
             place = try decoder.decode(Place.self, from: jsonData)
             
             if testing {

@@ -34,20 +34,20 @@ class CodableTests: XCTestCase {
             return
         }
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(place1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let place2 = try? decoder.decode(Place.self, from: data) else {
             XCTFail()
             return
         }
-        
-        XCTAssert(place2.creationDate == place1.creationDate)
-        XCTAssert(place2.modificationDate == place1.modificationDate)
+
+        XCTAssert(CodableExtras.equalDates(place2.creationDate as Date?, place1.creationDate as Date?))
+        XCTAssert(CodableExtras.equalDates(place2.modificationDate as Date?, place1.modificationDate as Date?))
         
         XCTAssert(place2.uuid == uuid)
         XCTAssert(place1.generalDescription == place2.generalDescription)
@@ -73,13 +73,13 @@ class CodableTests: XCTestCase {
         
         XCTAssert(placeCategory1.places?.count == 1)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(place1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let place2 = try? decoder.decode(Place.self, from: data) else {
             XCTFail()
             return
@@ -103,7 +103,7 @@ class CodableTests: XCTestCase {
             return
         }
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(placeCategory1) else {
             XCTFail()
             return
@@ -111,7 +111,7 @@ class CodableTests: XCTestCase {
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(placeCategory1)
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let placeCategory2 = try? decoder.decode(PlaceCategory.self, from: data) else {
             XCTFail()
             return
@@ -128,13 +128,13 @@ class CodableTests: XCTestCase {
             return
         }
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(placeCategory1) else {
             XCTFail()
             return
         }
                 
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let placeCategory2 = try? decoder.decode(PlaceCategory.self, from: data) else {
             XCTFail()
             return
@@ -157,13 +157,13 @@ class CodableTests: XCTestCase {
             return
         }
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(place1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let place2 = try? decoder.decode(Place.self, from: data) else {
             XCTFail()
             return
@@ -189,7 +189,7 @@ class CodableTests: XCTestCase {
             return
         }
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data1 = try? encoder.encode(place1) else {
             XCTFail()
             return
@@ -205,7 +205,7 @@ class CodableTests: XCTestCase {
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let place1b = try? decoder.decode(Place.self, from: data1) else {
             XCTFail()
             return
@@ -243,13 +243,13 @@ class CodableTests: XCTestCase {
         item1.name = name1
         place1.addToItems(item1)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(place1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let place2 = try? decoder.decode(Place.self, from: data) else {
             XCTFail()
             return
@@ -289,13 +289,13 @@ class CodableTests: XCTestCase {
         item2.name = name2
         place1.addToItems(item2)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(place1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let place2 = try? decoder.decode(Place.self, from: data) else {
             XCTFail()
             return
@@ -337,13 +337,13 @@ class CodableTests: XCTestCase {
         
         place1.addToLists(placeList1)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(place1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let place2 = try? decoder.decode(Place.self, from: data) else {
             XCTFail()
             return
@@ -405,13 +405,13 @@ class CodableTests: XCTestCase {
         
         place1.addToLists(placeList2)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(place1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let place2 = try? decoder.decode(Place.self, from: data) else {
             XCTFail()
             return
@@ -471,7 +471,7 @@ class CodableTests: XCTestCase {
         place1.addToLists(placeList)
         place2.addToLists(placeList)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data1 = try? encoder.encode(place1) else {
             XCTFail()
             return
@@ -489,7 +489,7 @@ class CodableTests: XCTestCase {
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place1)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place2)
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let place1b = try? decoder.decode(Place.self, from: data1) else {
             XCTFail()
             return
@@ -536,13 +536,13 @@ class CodableTests: XCTestCase {
         let image = Image.newObject()
         image.fileName = "Foo"
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(image) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let image2 = try? decoder.decode(Image.self, from: data) else {
             XCTFail()
             return
@@ -562,20 +562,21 @@ class CodableTests: XCTestCase {
         rating.recommendedBy = "Foo Bar"
         rating.modificationDate = Date()
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(rating) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let rating2 = try? decoder.decode(Rating.self, from: data) else {
             XCTFail()
             return
         }
         
-        XCTAssert(rating.modificationDate == rating2.modificationDate)
-
+        
+        XCTAssert(CodableExtras.equalDates(rating.modificationDate as Date?, rating2.modificationDate as Date?))
+        
         XCTAssert(rating.again?.boolValue == rating2.again?.boolValue)
         XCTAssert(rating.meThem?.boolValue == rating2.meThem?.boolValue)
         XCTAssert(rating.rating == rating2.rating)
@@ -591,20 +592,21 @@ class CodableTests: XCTestCase {
         comment.creationDate = NSDate()
         comment.modificationDate = NSDate()
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(comment) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let comment2 = try? decoder.decode(Comment.self, from: data) else {
             XCTFail()
             return
         }
         
-        XCTAssert(comment.creationDate == comment2.creationDate)
-        XCTAssert(comment.modificationDate == comment2.modificationDate)
+        XCTAssert(CodableExtras.equalDates(comment.creationDate as Date?, comment2.creationDate as Date?))
+        XCTAssert(CodableExtras.equalDates(comment.modificationDate as Date?, comment2.modificationDate as Date?))
+
         XCTAssert(comment.comment == comment2.comment)
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(comment)
@@ -622,13 +624,13 @@ class CodableTests: XCTestCase {
         comment.addToImages(image)
         XCTAssert(comment.images != nil)
 
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(comment) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let comment2 = try? decoder.decode(Comment.self, from: data) else {
             XCTFail()
             return
@@ -674,13 +676,13 @@ class CodableTests: XCTestCase {
         
         XCTAssert(comment.images?.array.count == 2)
 
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(comment) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let comment2 = try? decoder.decode(Comment.self, from: data) else {
             XCTFail()
             return
@@ -726,13 +728,13 @@ class CodableTests: XCTestCase {
 
         comment.rating = rating
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(comment) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let comment2 = try? decoder.decode(Comment.self, from: data) else {
             XCTFail()
             return
@@ -764,21 +766,22 @@ class CodableTests: XCTestCase {
         item.creationDate = NSDate()
         item.modificationDate = NSDate()
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(item) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let item2 = try? decoder.decode(Item.self, from: data) else {
             XCTFail()
             return
         }
         
         XCTAssert(item2.name == name)
-        XCTAssert(item2.creationDate == item.creationDate)
-        XCTAssert(item2.modificationDate == item.modificationDate)
+        
+        XCTAssert(CodableExtras.equalDates(item.creationDate as Date?, item2.creationDate as Date?))
+        XCTAssert(CodableExtras.equalDates(item.modificationDate as Date?, item2.modificationDate as Date?))
 
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(item)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(item2)
@@ -794,13 +797,13 @@ class CodableTests: XCTestCase {
         comment.comment = commentText
         item.addToComments(comment)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(item) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let item2 = try? decoder.decode(Item.self, from: data) else {
             XCTFail()
             return
@@ -837,13 +840,13 @@ class CodableTests: XCTestCase {
         comment2.comment = commentText2
         item.addToComments(comment2)
 
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(item) else {
             XCTFail()
             return
         }
 
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let item2 = try? decoder.decode(Item.self, from: data) else {
             XCTFail()
             return
@@ -889,13 +892,13 @@ class CodableTests: XCTestCase {
             return
         }
 
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(item) else {
             XCTFail()
             return
         }
 
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let item2 = try? decoder.decode(Item.self, from: data) else {
             XCTFail()
             return
@@ -939,20 +942,20 @@ class CodableTests: XCTestCase {
         location1.creationDate = NSDate()
         location1.modificationDate = NSDate()
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(location1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let location2 = try? decoder.decode(Location.self, from: data) else {
             XCTFail()
             return
         }
         
-        XCTAssert(location1.creationDate == location2.creationDate)
-        XCTAssert(location1.modificationDate == location2.modificationDate)
+        XCTAssert(CodableExtras.equalDates(location1.creationDate as Date?, location2.creationDate as Date?))
+        XCTAssert(CodableExtras.equalDates(location1.modificationDate as Date?, location2.modificationDate as Date?))
         
         XCTAssert(location2.address == address)
         XCTAssert(location2.location?.coordinate.latitude == clLocation.coordinate.latitude)
@@ -973,13 +976,13 @@ class CodableTests: XCTestCase {
         location1.addToImages(image)
         XCTAssert(location1.images != nil)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(location1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let location2 = try? decoder.decode(Location.self, from: data) else {
             XCTFail()
             return
@@ -1016,13 +1019,13 @@ class CodableTests: XCTestCase {
         
         XCTAssert(location.images?.array.count == 2)
 
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(location) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let location2 = try? decoder.decode(Location.self, from: data) else {
             XCTFail()
             return
@@ -1058,13 +1061,13 @@ class CodableTests: XCTestCase {
 
         location.rating = rating
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(location) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let location2 = try? decoder.decode(Location.self, from: data) else {
             XCTFail()
             return
@@ -1094,13 +1097,13 @@ class CodableTests: XCTestCase {
         XCTAssert(checkin.date != nil)
         location1.addToCheckin(checkin)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(location1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let location2 = try? decoder.decode(Location.self, from: data) else {
             XCTFail()
             return
@@ -1118,7 +1121,7 @@ class CodableTests: XCTestCase {
             return
         }
         
-        XCTAssert(checkinArray[0].date == checkin.date)
+        XCTAssert(CodableExtras.equalDates(checkinArray[0].date as Date?, checkin.date as Date?))
 
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(location1)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(location2)
@@ -1135,13 +1138,13 @@ class CodableTests: XCTestCase {
         XCTAssert(checkin2.date != nil)
         location1.addToCheckin(checkin2)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(location1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let location2 = try? decoder.decode(Location.self, from: data) else {
             XCTFail()
             return
@@ -1166,8 +1169,8 @@ class CodableTests: XCTestCase {
             return
         }
         
-        XCTAssert(checkinArray[0].date == checkin.date)
-        XCTAssert(checkinArray[1].date == checkin2.date)
+        XCTAssert(CodableExtras.equalDates(checkinArray[0].date as Date?, checkin.date as Date?))
+        XCTAssert(CodableExtras.equalDates(checkinArray[1].date as Date?, checkin2.date as Date?))
 
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(location1)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(location2)
@@ -1176,19 +1179,19 @@ class CodableTests: XCTestCase {
     func testCheckin() {
         let checkin = Checkin.newObject()
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(checkin) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let checkin2 = try? decoder.decode(Checkin.self, from: data) else {
             XCTFail()
             return
         }
         
-        XCTAssert(checkin.date == checkin2.date)
+        XCTAssert(CodableExtras.equalDates(checkin.date as Date?, checkin2.date as Date?))
         
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(checkin)
         CoreData.sessionNamed(CoreDataExtras.sessionName).remove(checkin2)
@@ -1200,13 +1203,13 @@ class CodableTests: XCTestCase {
         let location1 = try Location.newObject()
         place1.addToLocations(location1)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(place1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let place2 = try? decoder.decode(Place.self, from: data) else {
             XCTFail()
             return
@@ -1234,13 +1237,13 @@ class CodableTests: XCTestCase {
         let location2 = try Location.newObject()
         place1.addToLocations(location2)
         
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         guard let data = try? encoder.encode(place1) else {
             XCTFail()
             return
         }
         
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         guard let place2 = try? decoder.decode(Place.self, from: data) else {
             XCTFail()
             return
@@ -1262,7 +1265,7 @@ class CodableTests: XCTestCase {
     func testPartialPlaceDecode() throws {
          let place1 = try Place.newObject()
          
-         let encoder = JSONEncoder()
+         let encoder = JSONEncoder.encoder
          guard let data = try? encoder.encode(place1) else {
              XCTFail()
              return
@@ -1274,5 +1277,50 @@ class CodableTests: XCTestCase {
          XCTAssert(partialPlace.uuid != nil)
 
          CoreData.sessionNamed(CoreDataExtras.sessionName).remove(place1)
+    }
+    
+    private struct TestDate: Codable, Equatable {
+        let date:Date
+    }
+    
+    func testDateEncoding() throws {
+        let exampleDate = "2020-04-27T19:21:32.657-06:00"
+        let expectedJSON = "{\"date\":\"\(exampleDate)\"}"
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = CodableExtras.format
+        
+        guard let date = dateFormatter.date(from: exampleDate) else {
+            XCTFail()
+            return
+        }
+        
+        let testDate = TestDate(date: date)
+        let data = try JSONEncoder.encoder.encode(testDate)
+        guard let json = String(data: data, encoding: .utf8) else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssert(expectedJSON == json)
+    }
+    
+    func testDateDecoding() throws {
+        let exampleDate = "2020-04-27T19:21:32.657-06:00"
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = CodableExtras.format
+        
+        guard let date = dateFormatter.date(from: exampleDate) else {
+            XCTFail()
+            return
+        }
+        
+        let testDate = TestDate(date: date)
+        let data = try JSONEncoder.encoder.encode(testDate)
+
+        let result = try JSONDecoder.decoder.decode(TestDate.self, from: data)
+        
+        XCTAssert(testDate == result)
     }
 }

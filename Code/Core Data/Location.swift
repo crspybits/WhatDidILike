@@ -258,7 +258,7 @@ public class Location: BaseObject, ImagesManagedObject, Codable, EquatableObject
     
     static func equal(_ lhs: Location?, _ rhs: Location?) -> Bool {
         // For some reason, checking the internalLocations for equality fails, but checking the encoded data succeeds.
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder.encoder
         let lhsLocationData = try? encoder.encode(lhs?.location)
         let rhsLocationData = try? encoder.encode(rhs?.location)
 

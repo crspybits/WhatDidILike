@@ -166,7 +166,7 @@ class PlaceExporter {
                 exportDirectory = try place.createNewDirectory(in: parentDirectory)
             }
         
-            let encoder = JSONEncoder()
+            let encoder = JSONEncoder.encoder
             let jsonData = try encoder.encode(place)
             
             jsonFileName = exportDirectory.appendingPathComponent(Place.placeJSON, isDirectory: false)

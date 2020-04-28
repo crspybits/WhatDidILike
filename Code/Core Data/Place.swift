@@ -171,7 +171,7 @@ public class Place: BaseObject, Codable, EquatableObjects, UUIDCollisionAvoidanc
     }
     
     static func partialDecode(data: Data) throws -> PartialPlace {
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder.decoder
         return try decoder.decode(PartialPlace.self, from: data)
     }
     
