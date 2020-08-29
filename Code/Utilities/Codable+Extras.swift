@@ -30,6 +30,7 @@ enum CodableExtras {
 }
 
 private var dateFormat: DateFormatter {
+    // Adapted from https://useyourloaf.com/blog/swift-codable-with-custom-dates/
     let formatter = DateFormatter()
     formatter.dateFormat = CodableExtras.format
 
